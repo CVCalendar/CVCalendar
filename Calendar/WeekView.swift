@@ -22,10 +22,7 @@ class WeekView: UIView {
         
         self.monthView = monthView
         self.index = index
-        self.frame = self.makeFrame()
         self.makeDayViews()
-        
-        self.backgroundColor = UIColor.greenColor()
     }
     
     override init(frame: CGRect) {
@@ -39,18 +36,6 @@ class WeekView: UIView {
     func commonInit() {
         self.makeDayViews()
     }
-    
-    func makeFrame() -> CGRect {
-        let width = CGFloat(self.monthView!.calendarView!.frame.width)
-        let height = CGFloat(self.calendarViewData.weekViewHeight!)
-        let space = CGFloat(self.calendarViewData.verticalSpaceBetweenWeekViews!)
-        
-        var y = CGFloat(self.index!) * (height + space) + space/2
-        
-        let frame = CGRectMake(0, y, width, height)
-        
-        return frame
-    }
 
     // MARK: - Day View build
     
@@ -59,8 +44,33 @@ class WeekView: UIView {
         
         self.days = [DayView]()
         for i in 0..<7 {
-            let day = DayView(weekView: self, indexPath: NSIndexPath(forRow: i, inSection: self.index!))
+            let day = DayView(weekView: self, frame: self.dayViewFrame(i), index: i)
+            self.days?.append(day)
             self.addSubview(day)
         }
     }
+    
+    func dayViewFrame(i: Int) -> CGRect {
+        let width = CGFloat(self.calendarViewData.dayViewWidth!)
+        let space = CGFloat(self.calendarViewData.horizontalSpaceBetweenDayViews!)
+        
+        let weekViewHeight = CGFloat(self.calendarViewData.weekViewHeight!)
+        let symbolHeight = CGFloat(self.calendarViewData.symbolsHeight!)
+        
+        var y: CGFloat = 0
+        var x: CGFloat = 0
+        var height: CGFloat = 0
+        
+        if self.index == 0 {
+            x = (CGFloat(i) * (width + space)) + space/2
+            height = symbolHeight
+        } else {
+            x = (CGFloat(i) * (width + space)) + space/2
+            height = weekViewHeight
+        }
+        
+        return CGRectMake(x, 0, width, height)
+    }
+    
+
 }

@@ -19,6 +19,8 @@
 		5518A1C21A3B767700EEB561 /* CalendarViewMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5518A1C11A3B767700EEB561 /* CalendarViewMode.swift */; };
 		5518A1C71A3B77B700EEB561 /* CalendarWeekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5518A1C61A3B77B700EEB561 /* CalendarWeekday.swift */; };
 		5518A1C91A3B7AB800EEB561 /* CalendarViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5518A1C81A3B7AB800EEB561 /* CalendarViewDelegate.swift */; };
+		551EA3C51A433953000476AD /* UIColor+ColorFromCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551EA3C41A433953000476AD /* UIColor+ColorFromCode.swift */; };
+		552537351A3F3DE70087F7C7 /* CalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552537341A3F3DE70087F7C7 /* CalendarManager.swift */; };
 		5528FBE91A3CD0CE001AB38D /* WeekView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5528FBE81A3CD0CE001AB38D /* WeekView.swift */; };
 		5528FBEF1A3DE07F001AB38D /* DayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5528FBEE1A3DE07F001AB38D /* DayView.swift */; };
 		5528FBF91A3DEF0F001AB38D /* CalendarViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5528FBF81A3DEF0F001AB38D /* CalendarViewData.swift */; };
@@ -51,6 +53,8 @@
 		5518A1C11A3B767700EEB561 /* CalendarViewMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewMode.swift; sourceTree = "<group>"; };
 		5518A1C61A3B77B700EEB561 /* CalendarWeekday.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarWeekday.swift; sourceTree = "<group>"; };
 		5518A1C81A3B7AB800EEB561 /* CalendarViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewDelegate.swift; sourceTree = "<group>"; };
+		551EA3C41A433953000476AD /* UIColor+ColorFromCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+ColorFromCode.swift"; sourceTree = "<group>"; };
+		552537341A3F3DE70087F7C7 /* CalendarManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarManager.swift; sourceTree = "<group>"; };
 		5528FBE81A3CD0CE001AB38D /* WeekView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekView.swift; sourceTree = "<group>"; };
 		5528FBEE1A3DE07F001AB38D /* DayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayView.swift; sourceTree = "<group>"; };
 		5528FBF81A3DEF0F001AB38D /* CalendarViewData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewData.swift; sourceTree = "<group>"; };
@@ -95,12 +99,14 @@
 		5518A1951A3B6DF400EEB561 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
+				552537331A3F3DD60087F7C7 /* Utils */,
 				5518A1CA1A3B7B2100EEB561 /* Enums */,
 				5518A1BA1A3B6E2500EEB561 /* Protocols */,
 				5518A1B91A3B6E1B00EEB561 /* Views */,
 				5518A1B81A3B6E0F00EEB561 /* Controllers */,
 				5518A1CB1A3B7B4000EEB561 /* Demo */,
 				5518A1961A3B6DF400EEB561 /* Supporting Files */,
+				551EA3C41A433953000476AD /* UIColor+ColorFromCode.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -177,6 +183,14 @@
 				5518A19C1A3B6DF400EEB561 /* Main.storyboard */,
 			);
 			name = Demo;
+			sourceTree = "<group>";
+		};
+		552537331A3F3DD60087F7C7 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				552537341A3F3DE70087F7C7 /* CalendarManager.swift */,
+			);
+			name = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -287,7 +301,9 @@
 				5518A1C21A3B767700EEB561 /* CalendarViewMode.swift in Sources */,
 				5518A1C71A3B77B700EEB561 /* CalendarWeekday.swift in Sources */,
 				5518A1C91A3B7AB800EEB561 /* CalendarViewDelegate.swift in Sources */,
+				551EA3C51A433953000476AD /* UIColor+ColorFromCode.swift in Sources */,
 				5528FBE91A3CD0CE001AB38D /* WeekView.swift in Sources */,
+				552537351A3F3DE70087F7C7 /* CalendarManager.swift in Sources */,
 				5518A1C01A3B755B00EEB561 /* CalendarViewDataSource.swift in Sources */,
 				5518A1BE1A3B74AC00EEB561 /* MonthView.swift in Sources */,
 			);

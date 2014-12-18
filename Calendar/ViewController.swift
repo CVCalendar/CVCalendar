@@ -11,6 +11,8 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet weak var calendarHolderView: CalendarView!
+    @IBOutlet weak var heightLayout: NSLayoutConstraint!
+    @IBOutlet weak var calendarHeight: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,15 +20,22 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        self.calendarHolderView.updateAppearance()
+
+        
+        self.calendarHolderView.completeInitializationOnAppearing()
+        self.updateContraints()
     }
+    
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    
+    func updateContraints() {
+        self.heightLayout.constant = self.calendarHolderView.frame.height
+    }
 
 }
 

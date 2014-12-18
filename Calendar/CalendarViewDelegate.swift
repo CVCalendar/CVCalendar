@@ -17,9 +17,13 @@ protocol CalendarViewDelegate {
     optional func calendarView(calendarViewData: CalendarViewData, textFontForCalendarView calendarView: CalendarView) -> UIFont?
     optional func calendarView(calendarViewData: CalendarViewData, textColorForCalendarView calendarView: CalendarView) -> UIColor?
     
+    
+    
     optional func calendarView(calendarViewData: CalendarViewData, weekViewHeightForCalendarView calendarView: CalendarView) -> Float
     optional func calendarView(calendarViewData: CalendarViewData, verticalSpaceBetweenWeekViewsForCalendarView calendarView: CalendarView) -> Float
     
     optional func calendarView(calendarViewData: CalendarViewData, dayViewWidthForCalendarView calendarView: CalendarView) -> Float
     optional func calendarView(calendarViewData: CalendarViewData, horizontalSpaceBetweenDayViewsForCalendarView calendarView: CalendarView) -> Float
+    
+    optional func calendarView(calendarViewData: CalendarViewData, symbolsHeightForCalendarView calendarView: CalendarView) -> Float
 }

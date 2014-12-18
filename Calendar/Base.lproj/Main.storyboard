@@ -18,20 +18,40 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0h7-Vp-hfw" customClass="CalendarView" customModule="Calendar" customModuleProvider="target">
-                                <rect key="frame" x="16" y="20" width="568" height="263"/>
-                                <color key="backgroundColor" red="0.0" green="0.50196081399917603" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <rect key="frame" x="16" y="20" width="568" height="250"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" red="1" green="0.43529412150000002" blue="0.81176471709999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="250" id="GVd-r4-Wb9"/>
+                                </constraints>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4lp-hL-ZOc">
+                                <rect key="frame" x="279" y="278" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="0h7-Vp-hfw" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="HJf-9t-poA"/>
-                            <constraint firstItem="0h7-Vp-hfw" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="S9v-WB-jPM"/>
-                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="0h7-Vp-hfw" secondAttribute="bottom" constant="317" id="Sse-wK-tvA"/>
-                            <constraint firstItem="0h7-Vp-hfw" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="o1W-tV-yAO"/>
+                            <constraint firstItem="0h7-Vp-hfw" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="12Z-ay-dK4"/>
+                            <constraint firstItem="4lp-hL-ZOc" firstAttribute="top" secondItem="0h7-Vp-hfw" secondAttribute="bottom" constant="8" symbolic="YES" id="1CG-xE-qww"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="0h7-Vp-hfw" secondAttribute="bottom" constant="330" id="6qn-CP-ZmR"/>
+                            <constraint firstItem="0h7-Vp-hfw" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="9YO-Wg-Je2"/>
+                            <constraint firstItem="0h7-Vp-hfw" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="i5U-aT-9xg"/>
+                            <constraint firstItem="0h7-Vp-hfw" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="kgH-CC-rjQ"/>
+                            <constraint firstItem="4lp-hL-ZOc" firstAttribute="centerX" secondItem="0h7-Vp-hfw" secondAttribute="centerX" id="rX6-fX-RtA"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="i5U-aT-9xg"/>
+                                <exclude reference="6qn-CP-ZmR"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="calendarHolderView" destination="0h7-Vp-hfw" id="Od5-ze-4aY"/>
+                        <outlet property="heightLayout" destination="GVd-r4-Wb9" id="sKw-mN-Kje"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>

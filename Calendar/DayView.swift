@@ -11,45 +11,56 @@ import UIKit
 class DayView: UIView {
 
     var weekView: WeekView?
-    var indexPath: NSIndexPath?
+    var index: Int?
     var dateLabel: UILabel?
+    var weekSymbols: Array<String>?
+    
+    lazy var calendarManager: CalendarManager = {
+        return CalendarManager.sharedManager()
+    }()
     
     lazy var calendarViewData: CalendarViewData = {
        return self.weekView!.calendarViewData
     }()
 
-    init(weekView: WeekView, indexPath: NSIndexPath) {
-        super.init()
+    
+    init(weekView: WeekView, frame: CGRect, index: Int) {
+        super.init(frame: frame)
         
         self.weekView = weekView
-        self.indexPath = indexPath
-        self.backgroundColor = UIColor.yellowColor()
+        self.index = index
         
-        self.frame = self.makeFrame()
-        
-        self.dateLabel = UILabel()
-        self.dateLabel?.text = "Test"
-        self.dateLabel?.textAlignment = NSTextAlignment.Center
-        self.dateLabel?.frame = CGRectMake(0, 0, self.frame.width, self.frame.height)
-        
-        self.addSubview(self.dateLabel!)
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+        self.commonInit()
     }
 
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func makeFrame() -> CGRect {
-        let space = CGFloat(self.calendarViewData.horizontalSpaceBetweenDayViews!)
-        let height = CGFloat(self.calendarViewData.weekViewHeight!)
-        let width = CGFloat(self.calendarViewData.dayViewWidth!)
+    func commonInit() {
+        self.backgroundColor = UIColor.colorFromCode(0x926CD6)
+        self.alpha = 0.5
         
-        let x = CGFloat(self.indexPath!.row) * (width + space) + space/2
+        self.dateLabel = UILabel()
+        self.weekSymbols = (self.calendarManager.shortWeekdaySymbols() as [String])
         
-        return CGRectMake(x, 0, width, height)
+        if let index = self.weekView?.index {
+            if index == 0 {
+                self.dateLabel?.text = self.weekSymbols![self.index!].uppercaseString
+                self.dateLabel?.textAlignment = NSTextAlignment.Center
+                
+                self.dateLabel?.font = UIFont.boldSystemFontOfSize(10)
+                self.backgroundColor = UIColor.clearColor()
+            }
+        }
+
+        
+        self.dateLabel?.textAlignment = NSTextAlignment.Center
+        self.dateLabel?.frame = CGRectMake(0, 0, self.frame.width, self.frame.height)
+        
+        self.addSubview(self.dateLabel!)
+        
+        self.layer.cornerRadius = 5
+        self.layer.masksToBounds = true
     }
 }

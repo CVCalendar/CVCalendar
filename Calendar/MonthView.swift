@@ -42,12 +42,10 @@ class MonthView: UIView {
     
     func commonInit() {
         self.frame = CGRectMake(0, 0, self.calendarView!.frame.width, self.calendarView!.frame.height)
-        self.backgroundColor = UIColor.redColor()
-        
         self.makeWeekViews()
     }
     
-    // MARK: - Weeks build
+    // MARK: - Weeks making
     
     func makeWeekViews() {
         self.weeks = [WeekView]()
@@ -55,6 +53,42 @@ class MonthView: UIView {
             let week = WeekView(monthView: self, index: i)
             self.weeks?.append(week)
             self.addSubview(week)
+        }
+        
+        self.makeWeekFrames()
+    }
+    
+    func makeWeekFrames() {
+        if let weeks = self.weeks {
+
+            let width = CGFloat(self.calendarView!.frame.width)
+            let space = CGFloat(self.calendarViewData.verticalSpaceBetweenWeekViews!)
+            var height: CGFloat
+            var y: CGFloat = 0
+            var x: CGFloat = 0
+            
+            let weekHeight = self.calendarViewData.weekViewHeight!
+            let symbolsHeight = self.calendarViewData.symbolsHeight!
+            
+            for i in 0..<weeks.count {
+                let week = weeks[i]
+                
+                if i != 0 {
+                    height = CGFloat(weekHeight)
+                    
+                    if i == 1 {
+                        y += CGFloat(symbolsHeight)
+                    } else {
+                        y += CGFloat(weekHeight)
+                    }
+                } else {
+                    height = CGFloat(symbolsHeight)
+                    y = 0
+                }
+                
+                y += space
+                week.frame = CGRectMake(x, y, width, height)
+            }
         }
     }
     

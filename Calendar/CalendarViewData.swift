@@ -10,6 +10,10 @@ import UIKit
 
 class CalendarViewData: NSObject {
     
+    private let defaultDivIndicator: Float = 3
+    private let defaultSpace: Float = 2
+    private let defaultSymbolViewHeight: Float = 10
+    
     let calendarView: CalendarView?
     
     var dataSource: CalendarViewDataSource? {
@@ -70,17 +74,10 @@ class CalendarViewData: NSObject {
                 self.textColor = textColor
             }
             
-            if let weekViewHeight = delegate.calendarView?(self, weekViewHeightForCalendarView: self.calendarView!) {
-                self.weekViewHeight = weekViewHeight
+            if let symbolsHeight = delegate.calendarView?(self, symbolsHeightForCalendarView: self.calendarView!) {
+                self.symbolsHeight = symbolsHeight
             } else {
-                var space: Float?
-                if let _space = self.verticalSpaceBetweenWeekViews {
-                    space = Float(_space)
-                } else {
-                    space = 2
-                }
-                
-                self.weekViewHeight = Float(self.calendarView!.frame.height) / Float(self.numberOfWeeks!) - space!
+                self.symbolsHeight = self.defaultSymbolViewHeight
             }
             
             if let verticalSpaceBetweenWeekViews = delegate.calendarView?(self, verticalSpaceBetweenWeekViewsForCalendarView: self.calendarView!) {
@@ -92,14 +89,7 @@ class CalendarViewData: NSObject {
             if let dayViewWidth = delegate.calendarView?(self, dayViewWidthForCalendarView: self.calendarView!) {
                 self.dayViewWidth = dayViewWidth
             } else {
-                var space: Float?
-                if let _space = self.horizontalSpaceBetweenDayViews {
-                    space = _space
-                } else {
-                    space = 2
-                }
-                
-                self.dayViewWidth = Float(self.calendarView!.frame.width) / 7 - space!
+                self.dayViewWidth = self.dayViewSide()
             }
             
             if let horizontalSpaceBetweenDayViews = delegate.calendarView?(self, horizontalSpaceBetweenDayViewsForCalendarView: self.calendarView!) {
@@ -107,6 +97,19 @@ class CalendarViewData: NSObject {
             } else {
                 self.horizontalSpaceBetweenDayViews = 2
             }
+            
+            if let weekViewHeight = delegate.calendarView?(self, weekViewHeightForCalendarView: self.calendarView!) {
+                self.weekViewHeight = weekViewHeight
+            } else {
+                /*var frame = self.calendarView!.frame
+                frame.size.height += CGFloat(self.heightForWeekView(frame) - self.symbolsHeight!) + (CGFloat(self.verticalSpaceBetweenWeekViews!) * CGFloat(self.numberOfWeeks! - 1))
+         
+                
+                self.weekViewHeight = self.heightForWeekView(frame)*/
+                
+                self.weekViewHeight = self.dayViewSide()
+            }
+            
             
         } else {
             println("SOMETHING GONE WRONG...")
@@ -143,9 +146,37 @@ class CalendarViewData: NSObject {
     var textFont: UIFont?
     var textColor: UIColor?
     
+    var symbolsHeight: Float?
+    
     var weekViewHeight: Float?
     var verticalSpaceBetweenWeekViews: Float?
     
     var dayViewWidth: Float?
     var horizontalSpaceBetweenDayViews: Float?
+    
+    func heightForWeekView(frame: CGRect) -> Float {
+        var space: Float?
+        if let _space = self.verticalSpaceBetweenWeekViews {
+            space = Float(_space)
+        } else {
+            space = self.defaultSpace
+        }
+        
+        return (Float(frame.height) / Float(self.numberOfWeeks!)) - space!
+    }
+    
+    func dayViewSide() -> Float {
+        var side: Float = 0
+        
+        var space: Float?
+        if let _space = self.horizontalSpaceBetweenDayViews {
+            space = _space
+        } else {
+            space = self.defaultSpace
+        }
+        
+        side = Float(self.calendarView!.frame.width / 7) - space!
+        
+        return side
+    }
 }
