@@ -39,11 +39,13 @@ class CalendarView: UIView, CalendarViewDataSource, CalendarViewDelegate {
     func completeInitializationOnAppearing() {
         if self.date == nil {
             self.date = NSDate()
+            
+            println(self.calendarManager.weekdayForDate(self.calendarManager.monthDateRange(self.date!).monthEndDate).description())
         }
         
         self.data?.dataSource = self
         self.data?.delegate = self
-        self.monthView = MonthView(calendarView: self)
+        self.monthView = MonthView(calendarView: self, date: self.date!)
         
         self.addSubview(self.monthView!)
         

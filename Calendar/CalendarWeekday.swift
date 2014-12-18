@@ -9,11 +9,25 @@
 import UIKit
 
 enum CalendarWeekday: Int {
-    case Sunday = 0
+    case Sunday = 1
     case Monday
     case Tuesday
     case Wednesday
     case Thursday
     case Friday
     case Saturday
+    
+    func description() -> String {
+        switch self {
+        case .Sunday: return "Sunday"
+        case .Monday: return "Monday"
+        case .Tuesday: return "Tuesday"
+        case .Wednesday: return "Wednesday"
+        case .Thursday: return "Thursday"
+        case .Friday: return "Friday"
+        case .Saturday: return "Saturday"
+            
+        default: return "Some day..."
+        }
+    }
 }

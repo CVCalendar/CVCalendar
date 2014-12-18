@@ -62,6 +62,50 @@ class CalendarManager: NSObject {
         return (year!, month!, day!)
     }
     
+    func weekdayForDate(date: NSDate) -> CalendarWeekday {
+        let units = NSCalendarUnit.WeekdayCalendarUnit
+        
+        let components = self.calendar!.components(units, fromDate: date)
+        
+        return CalendarWeekday(rawValue: Int(components.weekday))!
+    }
+    
+    func sortedWeekdaysForDate(date: NSDate) -> [Int : [Int]] {
+        var weekdays = [Int : [Int]]()
+        
+        let firstDateInMonth = self.monthDateRange(date).monthStartDate
+        let daysInFirstWeek = self.dateRange(firstDateInMonth).day - 7
+        let weeksCount = self.monthDateRange(firstDateInMonth).countOfWeeks
+        let lastDayInMonth = self.dateRange(self.monthDateRange(date).monthEndDate).day
+        
+        for i in 0..<daysInFirstWeek {
+            var days = [Int]()
+            
+            let day = self.componentsForDate(firstDateInMonth).day + i
+            days.append(day)
+            
+            for j in 1...weeksCount {
+                let _day = day + 7
+                if _day < lastDayInMonth {
+                    days.append(_day)
+                } else {
+                    break
+                }
+            }
+            
+            weekdays.updateValue(days, forKey: i)
+        }
+        
+        return weekdays
+    }
+    
+    func componentsForDate(date: NSDate) -> NSDateComponents {
+        let units = (NSCalendarUnit.YearCalendarUnit | NSCalendarUnit.MonthCalendarUnit | NSCalendarUnit.WeekCalendarUnit)
+        let components = self.calendar!.components(units, fromDate: date)
+        
+        return components
+    }
+    
     func monthSymbols() -> [AnyObject] {
         return self.calendar!.monthSymbols
     }

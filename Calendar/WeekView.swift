@@ -44,7 +44,7 @@ class WeekView: UIView {
         
         self.days = [DayView]()
         for i in 0..<7 {
-            let day = DayView(weekView: self, frame: self.dayViewFrame(i), index: i)
+            let day = DayView(weekView: self, frame: self.dayViewFrame(i), index: i, date: NSDate())
             self.days?.append(day)
             self.addSubview(day)
         }

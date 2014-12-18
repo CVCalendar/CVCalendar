@@ -11,11 +11,14 @@ import UIKit
 class MonthView: UIView {
     let calendarView: CalendarView?
     
+    var date: NSDate?
+    
     lazy var calendarViewData: CalendarViewData = {
        return self.calendarView!.data!
     }()
     
-    var weeks: [WeekView]?
+    var weekViews: [WeekView]?
+    var weeks: [[Int]]?
     
     lazy var countOfWeeks: Int? = {
         if let _weeks = self.calendarView?.data?.numberOfWeeks {
@@ -25,10 +28,11 @@ class MonthView: UIView {
         }
     }()
     
-    init(calendarView: CalendarView) {
+    init(calendarView: CalendarView, date: NSDate) {
         super.init()
         
         self.calendarView = calendarView
+        self.date = date
         self.commonInit()
     }
     
@@ -48,10 +52,10 @@ class MonthView: UIView {
     // MARK: - Weeks making
     
     func makeWeekViews() {
-        self.weeks = [WeekView]()
+        self.weekViews = [WeekView]()
         for i in 0..<self.countOfWeeks! {
             let week = WeekView(monthView: self, index: i)
-            self.weeks?.append(week)
+            self.weekViews?.append(week)
             self.addSubview(week)
         }
         
@@ -59,7 +63,7 @@ class MonthView: UIView {
     }
     
     func makeWeekFrames() {
-        if let weeks = self.weeks {
+        if let weeks = self.weekViews {
 
             let width = CGFloat(self.calendarView!.frame.width)
             let space = CGFloat(self.calendarViewData.verticalSpaceBetweenWeekViews!)

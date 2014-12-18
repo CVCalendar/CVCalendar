@@ -12,6 +12,7 @@ class DayView: UIView {
 
     var weekView: WeekView?
     var index: Int?
+    var date: NSDate?
     var dateLabel: UILabel?
     var weekSymbols: Array<String>?
     
@@ -24,11 +25,12 @@ class DayView: UIView {
     }()
 
     
-    init(weekView: WeekView, frame: CGRect, index: Int) {
+    init(weekView: WeekView, frame: CGRect, index: Int, date: NSDate) {
         super.init(frame: frame)
         
         self.weekView = weekView
         self.index = index
+        self.date = date
         
         self.commonInit()
     }
@@ -51,6 +53,10 @@ class DayView: UIView {
                 
                 self.dateLabel?.font = UIFont.boldSystemFontOfSize(10)
                 self.backgroundColor = UIColor.clearColor()
+            } else {
+                self.dateLabel?.text = String(self.calendarManager.dateRange(self.date!).day)
+                self.dateLabel?.font = UIFont.boldSystemFontOfSize(20)
+                self.dateLabel?.textColor = UIColor.whiteColor()
             }
         }
 
