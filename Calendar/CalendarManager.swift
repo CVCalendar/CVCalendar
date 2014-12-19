@@ -116,6 +116,7 @@ class CalendarManager: NSObject {
         var weekdaysOut = [Int : [Int]]()
         
         let firstDateInMonth = self.monthDateRange(date).monthStartDate
+        let lastDateInMonth = self.monthDateRange(date).monthEndDate
         let daysInRight = abs(7 - self.weekdayForDate(firstDateInMonth)) + 1
         let weeksCount = self.monthDateRange(firstDateInMonth).countOfWeeks
         let lastDayInMonth = self.dateRange(self.monthDateRange(date).monthEndDate).day
@@ -136,7 +137,6 @@ class CalendarManager: NSObject {
                 } else {
                     if isWeekOfDate(leftDay, firstDateInMonth) {
                         daysOut.append(self.dateRange(leftDay).day)
-                        println("Left")
                     }
                     
                 }
@@ -152,7 +152,9 @@ class CalendarManager: NSObject {
                     if isMonthOfDate(_leftDay, firstDateInMonth) {
                         daysIn.append(self.dateRange(_leftDay).day)
                     } else {
-                        daysOut.append(self.dateRange(_leftDay).day)
+                        if isWeekOfDate(_leftDay, firstDateInMonth) {
+                            daysOut.append(self.dateRange(_leftDay).day)
+                        }
                     }
                 }
                 
@@ -175,6 +177,8 @@ class CalendarManager: NSObject {
             
             daysIn.append(self.dateRange(rightDay).day)
             
+            rightDay
+            
             let weekday = self.weekdayForDate(rightDay)
             
             var _rightDay = rightDay
@@ -186,7 +190,9 @@ class CalendarManager: NSObject {
                 if isMonthOfDate(_rightDay, firstDateInMonth) {
                     daysIn.append(self.dateRange(_rightDay).day)
                 } else {
-                    daysOut.append(self.dateRange(_rightDay).day)
+                    if isWeekOfDate(_rightDay, lastDateInMonth) {
+                        daysOut.append(self.dateRange(_rightDay).day)
+                    }
                 }
             }
             
