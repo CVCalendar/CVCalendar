@@ -62,45 +62,144 @@ class CalendarManager: NSObject {
         return (year!, month!, day!)
     }
     
-    func weekdayForDate(date: NSDate) -> CalendarWeekday {
+    func weekdayForDate(date: NSDate) -> Int {
         let units = NSCalendarUnit.WeekdayCalendarUnit
         
         let components = self.calendar!.components(units, fromDate: date)
         
-        return CalendarWeekday(rawValue: Int(components.weekday))!
+        return Int(components.weekday)
     }
     
-    func sortedWeekdaysForDate(date: NSDate) -> [Int : [Int]] {
-        var weekdays = [Int : [Int]]()
+    func sortedWeekdaysForDate(date: NSDate) -> (weekdaysIn: [Int : [Int]], weekdaysOut: [Int : [Int]]) {
+        
+        func dateBeforeDate(date: NSDate) -> NSDate {
+            let components = self.componentsForDate(date)
+            components.day -= 1
+            
+            return self.calendar!.dateFromComponents(components)!
+        }
+        
+        func dateAfterDate(date: NSDate) -> NSDate {
+            let components = self.componentsForDate(date)
+            components.day += 1
+            
+            return self.calendar!.dateFromComponents(components)!
+        }
+        
+        func isMonthOfDate(currentDate: NSDate, initialDate: NSDate) -> Bool {
+            let currentMonth = self.dateRange(currentDate).month
+            let initialMonth = self.dateRange(initialDate).month
+            
+            if currentMonth == initialMonth {
+                println("Given month: \(currentMonth), initial: \(initialMonth)")
+                return true
+            } else {
+                return false
+            }
+        }
+        
+        func isWeekOfDate(currentDate: NSDate, initialDate: NSDate) -> Bool {
+            let currentComponents = self.componentsForDate(currentDate)
+            let initialComponents = self.componentsForDate(initialDate)
+            
+            let currentWeek  = currentComponents.weekOfMonth
+            let initialWeek = initialComponents.weekOfMonth
+            
+            if currentWeek == initialWeek {
+                return true
+            } else {
+                return false
+            }
+        }
+        
+        var weekdaysIn = [Int : [Int]]()
+        var weekdaysOut = [Int : [Int]]()
         
         let firstDateInMonth = self.monthDateRange(date).monthStartDate
-        let daysInFirstWeek = self.dateRange(firstDateInMonth).day - 7
+        let daysInRight = abs(7 - self.weekdayForDate(firstDateInMonth)) + 1
         let weeksCount = self.monthDateRange(firstDateInMonth).countOfWeeks
         let lastDayInMonth = self.dateRange(self.monthDateRange(date).monthEndDate).day
         
-        for i in 0..<daysInFirstWeek {
-            var days = [Int]()
-            
-            let day = self.componentsForDate(firstDateInMonth).day + i
-            days.append(day)
-            
-            for j in 1...weeksCount {
-                let _day = day + 7
-                if _day < lastDayInMonth {
-                    days.append(_day)
+        let firstWeekdayInMonth = self.weekdayForDate(firstDateInMonth)
+        
+        // Check the left part
+        let daysInLeft = 7 - daysInRight
+        if daysInLeft > 0 {
+            var leftDay = firstDateInMonth
+            for i in 0..<daysInLeft {
+                var daysIn = [Int]()
+                var daysOut = [Int]()
+                
+                leftDay = dateBeforeDate(leftDay)
+                if isMonthOfDate(leftDay, firstDateInMonth) {
+                    daysIn.append(self.dateRange(leftDay).day)
                 } else {
-                    break
+                    if isWeekOfDate(leftDay, firstDateInMonth) {
+                        daysOut.append(self.dateRange(leftDay).day)
+                        println("Left")
+                    }
+                    
+                }
+                
+                let weekday = self.weekdayForDate(leftDay)
+                
+                var _leftDay = leftDay
+                for j in 1..<weeksCount {
+                    let components = self.componentsForDate(_leftDay)
+                    components.day += 7
+                    _leftDay = self.calendar!.dateFromComponents(components)!
+                    
+                    if isMonthOfDate(_leftDay, firstDateInMonth) {
+                        daysIn.append(self.dateRange(_leftDay).day)
+                    } else {
+                        daysOut.append(self.dateRange(_leftDay).day)
+                    }
+                }
+                
+                weekdaysIn.updateValue(daysIn, forKey: weekday)
+                weekdaysOut.updateValue(daysOut, forKey: weekday)
+            }
+        }
+        
+        
+        
+        // Check the right side
+        var rightDay = firstDateInMonth
+        for i in 0..<daysInRight {
+            var daysIn = [Int]()
+            var daysOut = [Int]()
+            
+            if i != 0 {
+                rightDay = dateAfterDate(rightDay)
+            }
+            
+            daysIn.append(self.dateRange(rightDay).day)
+            
+            let weekday = self.weekdayForDate(rightDay)
+            
+            var _rightDay = rightDay
+            for j in 1..<weeksCount {
+                let components = self.componentsForDate(_rightDay)
+                components.day += 7
+                _rightDay = self.calendar!.dateFromComponents(components)!
+                
+                if isMonthOfDate(_rightDay, firstDateInMonth) {
+                    daysIn.append(self.dateRange(_rightDay).day)
+                } else {
+                    daysOut.append(self.dateRange(_rightDay).day)
                 }
             }
             
-            weekdays.updateValue(days, forKey: i)
+            weekdaysIn.updateValue(daysIn, forKey: weekday)
+            weekdaysOut.updateValue(daysOut, forKey: weekday)
         }
         
-        return weekdays
+        
+        return (weekdaysIn, weekdaysOut)
     }
     
     func componentsForDate(date: NSDate) -> NSDateComponents {
-        let units = (NSCalendarUnit.YearCalendarUnit | NSCalendarUnit.MonthCalendarUnit | NSCalendarUnit.WeekCalendarUnit)
+        let units = NSCalendarUnit.YearCalendarUnit | NSCalendarUnit.MonthCalendarUnit | NSCalendarUnit.WeekCalendarUnit | NSCalendarUnit.DayCalendarUnit
         let components = self.calendar!.components(units, fromDate: date)
         
         return components

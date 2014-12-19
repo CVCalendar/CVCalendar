@@ -39,8 +39,6 @@ class CalendarView: UIView, CalendarViewDataSource, CalendarViewDelegate {
     func completeInitializationOnAppearing() {
         if self.date == nil {
             self.date = NSDate()
-            
-            println(self.calendarManager.weekdayForDate(self.calendarManager.monthDateRange(self.date!).monthEndDate).description())
         }
         
         self.data?.dataSource = self
