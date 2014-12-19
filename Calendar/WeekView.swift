@@ -13,6 +13,9 @@ class WeekView: UIView {
     let monthView: MonthView?
     var days: [DayView]?
     
+    var weekdaysIn: [Int : [Int]]?
+    var weekdaysOut: [Int : [Int]]?
+    
     lazy var calendarViewData: CalendarViewData = {
         return self.monthView!.calendarViewData
     }()
@@ -22,6 +25,22 @@ class WeekView: UIView {
         
         self.monthView = monthView
         self.index = index
+        
+        if self.index != 0 {
+            if let _weekdaysIn = self.monthView!.weekdaysIn {
+                
+                self.weekdaysIn = self.monthView?.calendarView?.calendarManager.weekdaysForWeek(self.index!, weekdays: _weekdaysIn, date: self.monthView!.date!)
+                
+                //println("WEEK VIEW: \(self.weekdaysIn)")
+            }
+            
+            if let weekdaysOut = self.monthView?.weekdaysOut {
+                self.weekdaysOut = weekdaysOut
+                
+                println("WEEK VIEW OUT: \(self.monthView?.weekdaysOut)")
+            }
+        }
+        
         self.makeDayViews()
     }
     
@@ -44,7 +63,7 @@ class WeekView: UIView {
         
         self.days = [DayView]()
         for i in 0..<7 {
-            let day = DayView(weekView: self, frame: self.dayViewFrame(i), index: i, date: NSDate())
+            let day = DayView(weekView: self, frame: self.dayViewFrame(i), index: i+1, date: NSDate())
             self.days?.append(day)
             self.addSubview(day)
         }

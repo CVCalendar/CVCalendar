@@ -78,7 +78,7 @@ class CalendarView: UIView, CalendarViewDataSource, CalendarViewDelegate {
     }
 
     func calendarView(calendarViewData: CalendarViewData, numberOfWeeksForCalendarView calendarView: CalendarView) -> Int {
-        return self.calendarManager.monthDateRange(NSDate()).countOfWeeks + 1
+        return self.calendarManager.monthDateRange(self.date!).countOfWeeks + 1
     }
     
     func calendarView(calendarViewData: CalendarViewData, shouldShowDaysOutForCalendarView calendarView: CalendarView) -> Bool {

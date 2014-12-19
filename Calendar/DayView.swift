@@ -48,15 +48,38 @@ class DayView: UIView {
         
         if let index = self.weekView?.index {
             if index == 0 {
-                self.dateLabel?.text = self.weekSymbols![self.index!].uppercaseString
+                self.dateLabel?.text = self.weekSymbols![self.index! - 1].uppercaseString
                 self.dateLabel?.textAlignment = NSTextAlignment.Center
-                
                 self.dateLabel?.font = UIFont.boldSystemFontOfSize(10)
                 self.backgroundColor = UIColor.clearColor()
             } else {
-                self.dateLabel?.text = String(self.calendarManager.dateRange(self.date!).day)
+                // TODO: Fix an issue with determining which day out to use
+                //println("self.index = \(self.weekView?.index)")
+                var text: String = ""
+                var textColor: UIColor = .whiteColor()
+                var day = (self.weekView!.weekdaysIn![self.index!])?[0]
+                
+                if day == nil {
+                    day = self.weekView!.weekdaysOut![self.index!]![0]
+                    if let _day = day {
+                        text = String(_day)
+                        textColor = UIColor.groupTableViewBackgroundColor()
+                    }
+                    
+                } else {
+                    text = String(day!)
+                }
+                
+                
+                self.dateLabel?.text = text
                 self.dateLabel?.font = UIFont.boldSystemFontOfSize(20)
-                self.dateLabel?.textColor = UIColor.whiteColor()
+                self.dateLabel?.textColor = textColor
+            }
+        }
+        
+        if let text = self.dateLabel?.text {
+            if text == "" {
+                self.backgroundColor = UIColor.clearColor()
             }
         }
 

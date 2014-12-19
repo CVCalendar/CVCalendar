@@ -12,6 +12,8 @@ class MonthView: UIView {
     let calendarView: CalendarView?
     
     var date: NSDate?
+    var weekdaysIn: [Int : [Int]]?
+    var weekdaysOut: [Int : [Int]]?
     
     lazy var calendarViewData: CalendarViewData = {
        return self.calendarView!.data!
@@ -33,6 +35,7 @@ class MonthView: UIView {
         
         self.calendarView = calendarView
         self.date = date
+
         self.commonInit()
     }
     
@@ -45,6 +48,12 @@ class MonthView: UIView {
     }
     
     func commonInit() {
+        self.weekdaysIn = self.calendarView?.calendarManager.sortedWeekdaysForDate(self.date!).weekdaysIn
+
+        if self.calendarViewData.shouldShowDaysOut! {
+            self.weekdaysOut = self.calendarView?.calendarManager.sortedWeekdaysForDate(self.date!).weekdaysOut
+        }
+        
         self.frame = CGRectMake(0, 0, self.calendarView!.frame.width, self.calendarView!.frame.height)
         self.makeWeekViews()
     }
