@@ -177,8 +177,6 @@ class CalendarManager: NSObject {
             
             daysIn.append(self.dateRange(rightDay).day)
             
-            rightDay
-            
             let weekday = self.weekdayForDate(rightDay)
             
             var _rightDay = rightDay
