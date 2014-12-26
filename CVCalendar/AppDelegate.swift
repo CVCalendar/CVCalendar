@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  Calendar
+//  CVCalendar
 //
-//  Created by E. Mozharovsky on 12/15/14.
+//  Created by E. Mozharovsky on 12/26/14.
 //  Copyright (c) 2014 GameApp. All rights reserved.
 //
 

@@ -1,15 +1,15 @@
 //
-//  CalendarTests.swift
-//  CalendarTests
+//  CVCalendarTests.swift
+//  CVCalendarTests
 //
-//  Created by E. Mozharovsky on 12/15/14.
+//  Created by E. Mozharovsky on 12/26/14.
 //  Copyright (c) 2014 GameApp. All rights reserved.
 //
 
 import UIKit
 import XCTest
 
-class CalendarTests: XCTestCase {
+class CVCalendarTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

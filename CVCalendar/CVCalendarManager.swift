@@ -1,25 +1,25 @@
 //
-//  CalendarManager.swift
-//  Calendar
+//  CVCalendarManager.swift
+//  CVCalendar
 //
-//  Created by E. Mozharovsky on 12/15/14.
+//  Created by E. Mozharovsky on 12/26/14.
 //  Copyright (c) 2014 GameApp. All rights reserved.
 //
 
 import UIKit
 
-class CalendarManager: NSObject {
+class CVCalendarManager: NSObject {
     private var components: NSDateComponents?
     private var calendar: NSCalendar?
     
     var currentDate: NSDate?
     
-    class func sharedManager() -> CalendarManager {
-        var calendarManager: CalendarManager? = nil
+    class func sharedManager() -> CVCalendarManager {
+        var calendarManager: CVCalendarManager? = nil
         var t: dispatch_once_t = 0
         
         dispatch_once(&t, { () -> Void in
-            calendarManager = CalendarManager()
+            calendarManager = CVCalendarManager()
         })
         
         return calendarManager!
@@ -70,7 +70,7 @@ class CalendarManager: NSObject {
         return Int(components.weekday)
     }
     
-    func sortedWeekdaysForDate(date: NSDate) -> (weekdaysIn: [Int : [Int]], weekdaysOut: [Int : [Int]]) {
+    func weekdaysForDate(date: NSDate) -> (weekdaysIn: [Int : [Int]], weekdaysOut: [Int : [Int]]) {
         
         func dateBeforeDate(date: NSDate) -> NSDate {
             let components = self.componentsForDate(date)
@@ -216,7 +216,7 @@ class CalendarManager: NSObject {
             if let _values = values {
                 for value in _values {
                     if doesBelongToWeek(value) {
-    
+                        
                         _weekdays.updateValue([value], forKey: key)
                         
                         break
@@ -226,6 +226,29 @@ class CalendarManager: NSObject {
         }
         
         return _weekdays
+    }
+    
+    func weeksWithWeekdaysForMonthDate(date: NSDate) -> (weeksIn: [[Int : [Int]]], weeksOut: [[Int : [Int]]]) {
+        let numberOfWeeks = self.monthDateRange(date).countOfWeeks
+        
+        let weekdays = self.weekdaysForDate(date)
+        var weeksIn = [[Int : [Int]]]()
+        var weeksOut = [[Int : [Int]]]()
+        
+        for i in 1...numberOfWeeks {
+            let weekIn = self.weekdaysForWeek(i, weekdays: weekdays.weekdaysIn, date: date)
+            let weekOut = self.weekdaysForWeek(i, weekdays: weekdays.weekdaysOut, date: date)
+            
+            if weekIn.count > 0 {
+                weeksIn.append(weekIn)
+            }
+            
+            if weekOut.count > 0 {
+                weeksOut.append(weekOut)
+            }
+        }
+        
+        return (weeksIn, weeksOut)
     }
     
     func componentsForDate(date: NSDate) -> NSDateComponents {
