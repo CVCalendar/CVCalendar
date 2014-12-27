@@ -10,8 +10,21 @@ import UIKit
 
 class CVCalendarView: UIView {
     
-    var monthView: CVCalendarMonthView?
+    // MARK: Delegate Management 
+    var shouldShowWeekdaysOut: Bool? = false
+    var delegate: CVCalendarViewDelegate? {
+        didSet {
+            self.setupDelegate()
+        }
+    }
     
+    func setupDelegate() {
+        self.shouldShowWeekdaysOut = self.delegate?.shouldShowWeekdaysOut()
+    }
+    
+    // MARK: Month View Preparation & Building
+    
+    var monthView: CVCalendarMonthView?
     var monthViewHolder: UIView? {
         didSet {
             self.updateMonthViewsFrames()
@@ -24,11 +37,7 @@ class CVCalendarView: UIView {
         self.monthViewHolder!.addSubview(self.monthView!)
     }
     
-    let appearance = CVCalendarViewAppearance()
-    
-    // MARK: - Calendar View Data Source
-    
-    var monthDates: [NSDate]?
+    // MARK: - Initialization
     
     override init() {
         super.init()

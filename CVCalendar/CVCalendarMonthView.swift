@@ -9,6 +9,8 @@
 import UIKit
 
 class CVCalendarMonthView: UIView {
+    
+    // MARK: - Public properties
 
     var calendarView: CVCalendarView?
     var date: NSDate?
@@ -20,6 +22,8 @@ class CVCalendarMonthView: UIView {
     var weeksOut: [[Int : [Int]]]?
     
     var currentDay: Int?
+    
+    // MARK: - Initialization 
 
     init(calendarView: CVCalendarView, date: NSDate) {
         super.init()
@@ -39,13 +43,16 @@ class CVCalendarMonthView: UIView {
     }
     
     func commonInit() {
-        let calendarManager = CVCalendarManager.sharedManager()
+        let calendarManager = CVCalendarManager.sharedManager
         self.numberOfWeeks = calendarManager.monthDateRange(self.date!).countOfWeeks
         self.weeksIn = calendarManager.weeksWithWeekdaysForMonthDate(self.date!).weeksIn
         self.weeksOut = calendarManager.weeksWithWeekdaysForMonthDate(self.date!).weeksOut
         
+        
         self.currentDay = calendarManager.dateRange(NSDate()).day
     }
+    
+    // MARK: - Content filling
     
     func updateAppearance(frame: CGRect) {
         self.frame = frame
@@ -60,5 +67,13 @@ class CVCalendarMonthView: UIView {
             let weekView = CVCalendarWeekView(monthView: self, frame: frame, index: i)
             self.addSubview(weekView)
         }
+    }
+    
+    // MARK: - Events receiving
+    
+    func receiveDayViewTouch(dayView: CVCalendarDayView) {
+        let controlCoordinator = CVCalendarDayViewControlCoordinator.sharedControlCoordinator
+        controlCoordinator.performDayViewSelection(dayView)
+        self.calendarView!.delegate?.didSelectDayView(dayView)
     }
 }

@@ -10,10 +10,14 @@ import UIKit
 
 class CVCalendarWeekView: UIView {
     
+    // MARK: - Public properties
+    
     let monthView: CVCalendarMonthView?
     let index: Int?
     let weekdaysIn: [Int : [Int]]?
     let weekdaysOut: [Int : [Int]]?
+    
+    // MARK: - Initialization
 
     init(monthView: CVCalendarMonthView, frame: CGRect, index: Int) {
         super.init()
@@ -27,11 +31,12 @@ class CVCalendarWeekView: UIView {
             self.weekdaysIn = weeksIn[self.index!]
         }
 
-        let weeksOut = self.monthView!.weeksOut!
-        if self.index == 0 {
-            self.weekdaysOut = weeksOut[1]
-        } else if self.index == self.monthView!.numberOfWeeks! - 1 {
-            self.weekdaysOut = weeksOut[0]
+        if let weeksOut = self.monthView!.weeksOut {
+            if self.index == 0 {
+                self.weekdaysOut = weeksOut[1]
+            } else if self.index == self.monthView!.numberOfWeeks! - 1 {
+                self.weekdaysOut = weeksOut[0]
+            }
         }
         
         //self.backgroundColor = UIColor.redColor()
@@ -47,6 +52,8 @@ class CVCalendarWeekView: UIView {
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Content filling 
 
     func createDayViews() {
         for i in 1...7 {

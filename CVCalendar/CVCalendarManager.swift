@@ -8,28 +8,29 @@
 
 import UIKit
 
+private let sharedInstance = CVCalendarManager()
+
 class CVCalendarManager: NSObject {
+    // MARK: - Private properties
     private var components: NSDateComponents?
     private var calendar: NSCalendar?
     
+    // MARK: - Public properties
     var currentDate: NSDate?
     
-    class func sharedManager() -> CVCalendarManager {
-        var calendarManager: CVCalendarManager? = nil
-        var t: dispatch_once_t = 0
-        
-        dispatch_once(&t, { () -> Void in
-            calendarManager = CVCalendarManager()
-        })
-        
-        return calendarManager!
+    class var sharedManager: CVCalendarManager {
+        return sharedInstance
     }
+    
+    // MARK: - Private initialization
     
     private override init() {
         self.calendar = NSCalendar.currentCalendar()
         self.currentDate = NSDate()
         self.components = self.calendar?.components(NSCalendarUnit.MonthCalendarUnit | NSCalendarUnit.DayCalendarUnit, fromDate: self.currentDate!)
     }
+    
+    // MARK: - Common date analysis
     
     func monthDateRange(date: NSDate) -> (countOfWeeks: NSInteger, monthStartDate: NSDate, monthEndDate: NSDate) {
         let units = (NSCalendarUnit.YearCalendarUnit | NSCalendarUnit.MonthCalendarUnit | NSCalendarUnit.WeekCalendarUnit)
@@ -69,6 +70,8 @@ class CVCalendarManager: NSObject {
         
         return Int(components.weekday)
     }
+    
+    // MARK: - Analysis sorting
     
     func weekdaysForDate(date: NSDate) -> (weekdaysIn: [Int : [Int]], weekdaysOut: [Int : [Int]]) {
         
@@ -250,6 +253,8 @@ class CVCalendarManager: NSObject {
         
         return (weeksIn, weeksOut)
     }
+    
+    // MARK: - Util methods
     
     func componentsForDate(date: NSDate) -> NSDateComponents {
         let units = NSCalendarUnit.YearCalendarUnit | NSCalendarUnit.MonthCalendarUnit | NSCalendarUnit.WeekOfMonthCalendarUnit | NSCalendarUnit.DayCalendarUnit

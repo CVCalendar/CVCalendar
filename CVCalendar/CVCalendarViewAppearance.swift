@@ -8,7 +8,13 @@
 
 import UIKit
 
+private let sharedInstance = CVCalendarViewAppearance()
+
 class CVCalendarViewAppearance: NSObject {
+    
+    class var sharedCalendarViewAppearance: CVCalendarViewAppearance {
+        return sharedInstance
+    }
 
     var spaceBetweenWeekViews: CGFloat? = 0
     var spaceBetweenDayViews: CGFloat? = 0
@@ -107,7 +113,7 @@ class CVCalendarViewAppearance: NSObject {
         }
     }
     
-    override init() {
+    private override init() {
         super.init()
     }
 }

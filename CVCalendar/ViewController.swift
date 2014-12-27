@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, CVCalendarViewDelegate {
     
     @IBOutlet weak var monthViewHolder: UIView!
     
@@ -18,6 +18,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         self.calendarView = CVCalendarView()
+        self.calendarView?.delegate = self
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -29,6 +30,14 @@ class ViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func shouldShowWeekdaysOut() -> Bool {
+        return true
+    }
+    
+    func didSelectDayView(dayView: CVCalendarDayView) {
+        println("I've finnally found it!!!")
     }
 }
 

@@ -10,9 +10,17 @@ import UIKit
 
 class CVCalendarRenderer: NSObject {
     
+    // MARK: Initialization 
+    
     private override init() {
         super.init()
     }
+    
+    // MARK: - Public properties
+    
+    lazy var appearance: CVCalendarViewAppearance = {
+        return CVCalendarViewAppearance.sharedCalendarViewAppearance
+        }()
     
     class func sharedRenderer() -> CVCalendarRenderer {
         var _self: CVCalendarRenderer?
@@ -25,11 +33,11 @@ class CVCalendarRenderer: NSObject {
         return _self!
     }
     
+    // MARK: - Rendering 
+    
     func renderWeekFrameForMonthView(monthView: CVCalendarMonthView, weekIndex: Int) -> CGRect {
-        let appearance = monthView.calendarView!.appearance
-        
         let width = monthView.frame.width
-        let space = appearance.spaceBetweenWeekViews!
+        let space = self.appearance.spaceBetweenWeekViews!
         var height = CGFloat((monthView.frame.height / CGFloat(monthView.numberOfWeeks!)) - space) + space / 0.5
         
         let y: CGFloat = CGFloat(weekIndex) * (height + space)
@@ -39,9 +47,7 @@ class CVCalendarRenderer: NSObject {
     }
     
     func renderDayFrameForMonthView(weekView: CVCalendarWeekView, dayIndex: Int) -> CGRect {
-        let appearance = weekView.monthView!.calendarView!.appearance
-        
-        let space = appearance.spaceBetweenDayViews!
+        let space = self.appearance.spaceBetweenDayViews!
         let width = CGFloat((weekView.frame.width / 7) - space)
         let height = weekView.frame.height
         
