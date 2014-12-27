@@ -22,6 +22,10 @@ class CVCalendarView: UIView {
         self.shouldShowWeekdaysOut = self.delegate?.shouldShowWeekdaysOut()
     }
     
+    // MARK: - Animator Management
+    
+    var animator: CVCalendarViewAnimatorDelegate? = CVCalendarViewAnimator()
+    
     // MARK: Month View Preparation & Building
     
     var monthView: CVCalendarMonthView?

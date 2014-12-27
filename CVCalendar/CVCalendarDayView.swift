@@ -102,24 +102,17 @@ class CVCalendarDayView: UIView {
         if self.isOut {
             color = appearance.dayLabelWeekdayOutTextColor
         } else if self.isCurrentDay {
-            color = appearance.dayLabelPresentWeekdayTextColor
+            self.weekView!.monthView!.receiveDayViewTouch(self)
         } else {
             color = appearance.dayLabelWeekdayInTextColor
         }
         
-        var font: UIFont?
-        if self.isCurrentDay {
-            if appearance.dayLabelPresentWeekdayInitallyBold {
-                font = UIFont.boldSystemFontOfSize(appearance.dayLabelPresentWeekdayTextSize!)
-            } else {
-                font = UIFont.systemFontOfSize(appearance.dayLabelPresentWeekdayTextSize!)
-            }
-        } else {
-            font = UIFont.systemFontOfSize(appearance.dayLabelWeekdayTextSize!)
-        }
+        var font = UIFont.systemFontOfSize(appearance.dayLabelWeekdayTextSize!)
         
-        self.dayLabel!.textColor = color!
-        self.dayLabel!.font = font
+        if !self.isCurrentDay {
+            self.dayLabel!.textColor = color!
+            self.dayLabel!.font = font
+        }
         
         self.addSubview(self.dayLabel!)
     }
@@ -139,13 +132,70 @@ class CVCalendarDayView: UIView {
     
     func setupGestures() {
         println("Gesture added!")
-        let a = UITapGestureRecognizer(target: self, action: "dayViewTapped")
-        self.addGestureRecognizer(a)
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: "dayViewTapped")
+        self.addGestureRecognizer(tapRecognizer)
     }
     
     func dayViewTapped() {
         let monthView = self.weekView!.monthView!
         monthView.receiveDayViewTouch(self)
+    }
+    
+    // MARK: - Label states management
+    
+    func setDayLabelHighlighted() {
+        let appearance = CVCalendarViewAppearance.sharedCalendarViewAppearance
+        
+        var color: UIColor?
+        var _alpha: CGFloat?
+        
+        if self.isCurrentDay {
+            color = appearance.dayLabelPresentWeekdayHighlightedBackgroundColor!
+            _alpha = appearance.dayLabelPresentWeekdayHighlightedBackgroundAlpha!
+            self.dayLabel?.textColor = appearance.dayLabelPresentWeekdayHighlightedTextColor!
+            self.dayLabel?.font = UIFont.boldSystemFontOfSize(appearance.dayLabelPresentWeekdayHighlightedTextSize!)
+        } else {
+            color = appearance.dayLabelWeekdayHighlightedBackgroundColor
+            _alpha = appearance.dayLabelWeekdayHighlightedBackgroundAlpha
+            self.dayLabel?.textColor = appearance.dayLabelWeekdayHighlightedTextColor
+            self.dayLabel?.font = UIFont.boldSystemFontOfSize(appearance.dayLabelWeekdayHighlightedTextSize!)
+        }
+        
+        self.circleView = CVCircleView(frame: CGRectMake(0, 0, self.frame.width, self.frame.height), color: color!, _alpha: _alpha!)
+        self.insertSubview(self.circleView!, atIndex: 0)
+        
+        if self.isOut {
+            // TODO: Change the current month
+        }
+    }
+    
+    func setDayLabelUnhighlighted() {
+        let appearance = CVCalendarViewAppearance.sharedCalendarViewAppearance
+        
+        var color: UIColor?
+        if self.isOut {
+            color = appearance.dayLabelWeekdayOutTextColor
+        } else if self.isCurrentDay {
+            color = appearance.dayLabelPresentWeekdayTextColor
+        } else {
+            color = appearance.dayLabelWeekdayInTextColor
+        }
+        
+        var font: UIFont?
+        if self.isCurrentDay {
+            if appearance.dayLabelPresentWeekdayInitallyBold {
+                font = UIFont.boldSystemFontOfSize(appearance.dayLabelPresentWeekdayTextSize!)
+            } else {
+                font = UIFont.systemFontOfSize(appearance.dayLabelPresentWeekdayTextSize!)
+            }
+        } else {
+            font = UIFont.systemFontOfSize(appearance.dayLabelWeekdayTextSize!)
+        }
+        
+        self.dayLabel?.textColor = color
+        self.dayLabel?.font = font
+        
+        self.circleView?.removeFromSuperview()
     }
     
 }

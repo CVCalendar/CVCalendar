@@ -1,0 +1,14 @@
+//
+//  CVCalendarViewAnimatorDelegate.swift
+//  CVCalendar
+//
+//  Created by E. Mozharovsky on 12/27/14.
+//  Copyright (c) 2014 GameApp. All rights reserved.
+//
+
+import UIKit
+
+protocol CVCalendarViewAnimatorDelegate {
+    func animateSelection(dayView: CVCalendarDayView)
+    func animateDeselection(dayView: CVCalendarDayView)
+}
