@@ -18,7 +18,7 @@ class ViewController: UIViewController, CVCalendarViewDelegate {
         super.viewDidLoad()
         
         self.calendarView = CVCalendarView()
-        self.calendarView?.delegate = self
+        self.calendarView?.calendarDelegate = self
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -37,7 +37,7 @@ class ViewController: UIViewController, CVCalendarViewDelegate {
     }
     
     func didSelectDayView(dayView: CVCalendarDayView) {
-        println("I've finnally found it!!!")
+        // TODO:
     }
 }
 

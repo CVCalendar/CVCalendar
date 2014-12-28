@@ -13,7 +13,8 @@ private let sharedInstance = CVCalendarManager()
 class CVCalendarManager: NSObject {
     // MARK: - Private properties
     private var components: NSDateComponents?
-    private var calendar: NSCalendar?
+    
+    var calendar: NSCalendar?
     
     // MARK: - Public properties
     var currentDate: NSDate?
@@ -184,12 +185,7 @@ class CVCalendarManager: NSObject {
         return (weekdaysIn, weekdaysOut)
     }
     
-    // TODO: Improve performance
-    func weekdaysForWeek(index: Int, weekdays: [Int : [Int]], date: NSDate) -> [Int : [Int]] {
-        
-        //println("Started weekdaysForWeek...")
-        //println("Index = \(index)")
-        
+    func weekdaysInForWeek(index: Int, weekdaysIn: [Int : [Int]], date: NSDate) -> [Int : [Int]] {
         func doesBelongToWeek(day: Int) -> Bool {
             let components = self.componentsForDate(date)
             components.day = day
@@ -197,9 +193,6 @@ class CVCalendarManager: NSObject {
             let _date = self.calendar!.dateFromComponents(components)!
             let _components = self.componentsForDate(_date)
             let dayWeekOfMonth = _components.weekOfMonth
-            
-            //println("DayOfWeekForMonth: \(dayWeekOfMonth)")
-            //println("Index + 1: \(index + 1)")
             
             if dayWeekOfMonth == index  {
                 return true
@@ -212,14 +205,13 @@ class CVCalendarManager: NSObject {
         
         var _weekdays = [Int : [Int]]()
         
-        let keys = weekdays.keys
+        let keys = weekdaysIn.keys
         for key in keys {
-            let values = weekdays[key]
+            let values = weekdaysIn[key]
             
             if let _values = values {
                 for value in _values {
                     if doesBelongToWeek(value) {
-                        
                         _weekdays.updateValue([value], forKey: key)
                         
                         break
@@ -231,6 +223,33 @@ class CVCalendarManager: NSObject {
         return _weekdays
     }
     
+    func weekdaysOutForWeek(index: Int, weekdaysOut: [Int : [Int]], date: NSDate) -> [Int : [Int]] {
+        let countOfWeeks = self.monthDateRange(date).countOfWeeks
+        var weekdays = [Int : [Int]]()
+        if index == 1 || index == countOfWeeks {
+            let keys = weekdaysOut.keys
+            for key in keys {
+                let values = weekdaysOut[key]!
+                for value in values {
+                    if index == 1 {
+                        if value > 20 {
+                            weekdays.updateValue([value], forKey: key)
+                            break
+                        }
+                    } else if index == countOfWeeks {
+                        if value < 10 {
+                            weekdays.updateValue([value], forKey: key)
+                            break
+                        }
+                    }
+                    
+                }
+            }
+        }
+        
+        return weekdays
+    }
+    
     func weeksWithWeekdaysForMonthDate(date: NSDate) -> (weeksIn: [[Int : [Int]]], weeksOut: [[Int : [Int]]]) {
         let numberOfWeeks = self.monthDateRange(date).countOfWeeks
         
@@ -239,8 +258,8 @@ class CVCalendarManager: NSObject {
         var weeksOut = [[Int : [Int]]]()
         
         for i in 1...numberOfWeeks {
-            let weekIn = self.weekdaysForWeek(i, weekdays: weekdays.weekdaysIn, date: date)
-            let weekOut = self.weekdaysForWeek(i, weekdays: weekdays.weekdaysOut, date: date)
+            let weekIn = self.weekdaysInForWeek(i, weekdaysIn: weekdays.weekdaysIn, date: date)
+            let weekOut = self.weekdaysOutForWeek(i, weekdaysOut: weekdays.weekdaysOut, date: date)
             
             if weekIn.count > 0 {
                 weeksIn.append(weekIn)

@@ -12,14 +12,14 @@ class CVCalendarView: UIView {
     
     // MARK: Delegate Management 
     var shouldShowWeekdaysOut: Bool? = false
-    var delegate: CVCalendarViewDelegate? {
+    var calendarDelegate: CVCalendarViewDelegate? {
         didSet {
             self.setupDelegate()
         }
     }
     
     func setupDelegate() {
-        self.shouldShowWeekdaysOut = self.delegate?.shouldShowWeekdaysOut()
+        self.shouldShowWeekdaysOut = self.calendarDelegate?.shouldShowWeekdaysOut()
     }
     
     // MARK: - Animator Management
@@ -28,25 +28,27 @@ class CVCalendarView: UIView {
     
     // MARK: Month View Preparation & Building
     
-    var monthView: CVCalendarMonthView?
+    var contentView: CVCalendarContentView?
     var monthViewHolder: UIView? {
         didSet {
-            self.updateMonthViewsFrames()
+            let width = self.monthViewHolder!.frame.width
+            let height = self.monthViewHolder!.frame.height
+            let x = CGFloat(0)
+            let y = CGFloat(0)
+            
+            let frame = CGRectMake(x, y, width, height)
+            
+            let presentMonthView = CVCalendarMonthView(calendarView: self, date: NSDate())
+            presentMonthView.updateAppearance(frame)
+            self.contentView = CVCalendarContentView(frame: frame, calendarView: self, presentedMonthView: presentMonthView)
+            self.monthViewHolder?.addSubview(self.contentView!)
         }
-    }
-    
-    func updateMonthViewsFrames() {
-        let size = self.monthViewHolder!.frame.size
-        self.monthView!.updateAppearance(CGRectMake(0, 0, size.width, size.height))
-        self.monthViewHolder!.addSubview(self.monthView!)
     }
     
     // MARK: - Initialization
     
     override init() {
         super.init()
-        
-        self.monthView = CVCalendarMonthView(calendarView: self, date: NSDate())
     }
     
     override init(frame: CGRect) {

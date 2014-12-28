@@ -74,6 +74,6 @@ class CVCalendarMonthView: UIView {
     func receiveDayViewTouch(dayView: CVCalendarDayView) {
         let controlCoordinator = CVCalendarDayViewControlCoordinator.sharedControlCoordinator
         controlCoordinator.performDayViewSelection(dayView)
-        self.calendarView!.delegate?.didSelectDayView(dayView)
+        self.calendarView!.calendarDelegate?.didSelectDayView(dayView)
     }
 }

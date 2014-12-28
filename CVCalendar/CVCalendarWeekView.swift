@@ -17,6 +17,7 @@ class CVCalendarWeekView: UIView {
     let weekdaysIn: [Int : [Int]]?
     let weekdaysOut: [Int : [Int]]?
     
+    
     // MARK: - Initialization
 
     init(monthView: CVCalendarMonthView, frame: CGRect, index: Int) {
@@ -30,17 +31,44 @@ class CVCalendarWeekView: UIView {
         if self.index! < weeksIn.count {
             self.weekdaysIn = weeksIn[self.index!]
         }
-
+        
         if let weeksOut = self.monthView!.weeksOut {
-            if self.index == 0 {
-                self.weekdaysOut = weeksOut[1]
-            } else if self.index == self.monthView!.numberOfWeeks! - 1 {
-                self.weekdaysOut = weeksOut[0]
+            if self.weekdaysIn?.count < 7 {
+                if weeksOut.count > 1 {
+                    let daysOut = 7 - self.weekdaysIn!.count
+                    
+                    var result: [Int : [Int]]?
+                    for weekdaysOut in weeksOut {
+                        if weekdaysOut.count == daysOut {
+                            let manager = CVCalendarManager.sharedManager
+                            
+                            
+                            let key = weekdaysOut.keys.array[0]
+                            let value = weekdaysOut[key]![0]
+                            if value > 20 {
+                                if self.index == 0 {
+                                    result = weekdaysOut
+                                    break
+                                }
+                            } else if value < 10 {
+                                if self.index == manager.monthDateRange(self.monthView!.date!).countOfWeeks - 1 {
+                                    result = weekdaysOut
+                                    break
+                                }
+                            }
+                        }
+                    }
+                    
+                    self.weekdaysOut = result!
+                } else {
+                    self.weekdaysOut = weeksOut[0]
+                }
+                
             }
         }
         
         //self.backgroundColor = UIColor.redColor()
-        println("Week #\(index) created successfully!")
+        println("Week #\(index) created successfully! Month: \(CVCalendarManager.sharedManager.dateRange(self.monthView!.date!).month)")
         
         self.createDayViews()
     }

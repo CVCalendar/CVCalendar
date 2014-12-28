@@ -44,23 +44,33 @@ class CVCalendarDayView: UIView {
             return false
         }
         
+        
         let weekdaysIn = self.weekView!.weekdaysIn!
-        if (self.weekView!.index == 0) || (self.weekView!.index == self.weekView!.monthView!.numberOfWeeks! - 1) {
-            if let weekdaysOut = self.weekView!.weekdaysOut {
-                if hasDayAtWeekdayIndex(self.weekdayIndex!, weekdaysOut) {
-                    self.day = weekdaysOut[self.weekdayIndex!]![0]
-                    self.isOut = true
-                } else {
-                    self.day = weekdaysIn[self.weekdayIndex!]![0]
-                }
+
+        if let weekdaysOut = self.weekView?.weekdaysOut {
+            if hasDayAtWeekdayIndex(self.weekdayIndex!, weekdaysOut) {
+                self.isOut = true
+                self.day = weekdaysOut[self.weekdayIndex!]![0]
+            } else if hasDayAtWeekdayIndex(self.weekdayIndex!, weekdaysIn) {
+                self.day = weekdaysIn[self.weekdayIndex!]![0]
             }
         } else {
             self.day = weekdaysIn[self.weekdayIndex!]![0]
         }
         
-        if self.day == self.weekView!.monthView!.currentDay {
-            self.isCurrentDay = true
+
+        
+        if self.day == self.weekView!.monthView!.currentDay && !self.isOut {
+            let manager = CVCalendarManager.sharedManager
+            let dateRange = manager.dateRange(self.weekView!.monthView!.date!)
+            let currentDateRange = manager.dateRange(NSDate())
+            
+            if dateRange.month == currentDateRange.month && dateRange.year == currentDateRange.year {
+                self.isCurrentDay = true
+            }
+            
         }
+
         
         if !self.weekView!.monthView!.calendarView!.shouldShowWeekdaysOut! {
             if !self.isOut {
@@ -75,9 +85,6 @@ class CVCalendarDayView: UIView {
             self.topMarkerSetup()
             self.setupGestures()
         }
-
-        //self.backgroundColor = UIColor.greenColor()
-        println("Day #\(self.day!) in Week #\(self.weekView!.index!) successfully created!")
     }
     
     override init(frame: CGRect) {
@@ -131,7 +138,6 @@ class CVCalendarDayView: UIView {
     // MARK: - Events handling
     
     func setupGestures() {
-        println("Gesture added!")
         let tapRecognizer = UITapGestureRecognizer(target: self, action: "dayViewTapped")
         self.addGestureRecognizer(tapRecognizer)
     }
