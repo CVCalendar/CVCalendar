@@ -202,6 +202,7 @@ class CVCalendarDayView: UIView {
         self.dayLabel?.font = font
         
         self.circleView?.removeFromSuperview()
+        self.circleView = nil
     }
     
 }

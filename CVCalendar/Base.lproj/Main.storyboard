@@ -17,15 +17,15 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5MO-md-CcA">
-                                <rect key="frame" x="0.0" y="48" width="600" height="350"/>
+                                <rect key="frame" x="16" y="48" width="568" height="350"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="5MO-md-CcA" secondAttribute="bottom" constant="202" id="4FX-Z7-lGE"/>
-                            <constraint firstAttribute="trailing" secondItem="5MO-md-CcA" secondAttribute="trailing" id="7Qx-xQ-vCX"/>
-                            <constraint firstItem="5MO-md-CcA" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="TtS-nh-MG6"/>
+                            <constraint firstAttribute="trailing" secondItem="5MO-md-CcA" secondAttribute="trailing" constant="16" id="7Qx-xQ-vCX"/>
+                            <constraint firstItem="5MO-md-CcA" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="16" id="TtS-nh-MG6"/>
                             <constraint firstItem="5MO-md-CcA" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" constant="48" id="wkF-94-bYh"/>
                         </constraints>
                     </view>

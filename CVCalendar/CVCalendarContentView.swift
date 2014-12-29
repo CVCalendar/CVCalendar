@@ -8,11 +8,19 @@
 
 import UIKit
 
+enum ScrollDirection {
+    case None
+    case Left
+    case Right
+}
+
 class CVCalendarContentView: UIScrollView, UIScrollViewDelegate {
     
     var lastContentOffset: CGFloat = 0
     var monthViews: [CVCalendarMonthView]?
-    var page = 1
+    var page: Int = 1
+    
+    var direction: ScrollDirection = .None
     var presentedMonthView: CVCalendarMonthView?
     var presentedDate: NSDate?
     
@@ -50,7 +58,7 @@ class CVCalendarContentView: UIScrollView, UIScrollViewDelegate {
     // MARK: - Insertion & Removing
     
     func insertMonthView(monthView: CVCalendarMonthView, atIndex index: Int) {
-        let width = self.contentSize.width / CGFloat(self.monthViews!.count)
+        let width = self.contentSize.width / 3
         let height = self.frame.height
         let x = CGFloat(index) * width
         let y = CGFloat(0)
@@ -72,9 +80,9 @@ class CVCalendarContentView: UIScrollView, UIScrollViewDelegate {
         }
         
         if self.lastContentOffset > scrollView.contentOffset.x {
-            // right
+            self.direction = .Right
         } else if self.lastContentOffset < self.contentOffset.x {
-            // left
+            self.direction = .Left
         }
         
         self.lastContentOffset = scrollView.contentOffset.x
@@ -91,8 +99,8 @@ class CVCalendarContentView: UIScrollView, UIScrollViewDelegate {
         self.monthViews?.append(self.presentedMonthView!)
         
         self.insertMonthView(previousMonth, atIndex: self.page - 1)
-        self.insertMonthView(nextMonth, atIndex: self.page + 1)
         self.insertMonthView(self.presentedMonthView!, atIndex: self.page)
+        self.insertMonthView(nextMonth, atIndex: self.page + 1)
     }
     
     // TODO: Add Month Views on the content view
@@ -122,4 +130,56 @@ class CVCalendarContentView: UIScrollView, UIScrollViewDelegate {
         
         return monthView
     }
+    
+    func replaceMonthView(monthView: CVCalendarMonthView, toPage page: Int, animatable: Bool) {
+        var frame = monthView.frame
+        frame.origin.x = frame.width * CGFloat(page)
+        monthView.frame = frame
+        if animatable {
+           self.scrollRectToVisible(frame, animated: false)
+        }
+    }
+    
+    func scrolledLeft() {
+        println("Page = \(page)")
+        let leftMonthView = self.presentedMonthView!
+        self.presentedMonthView = self.monthViews![self.page]
+        self.presentedDate = self.presentedMonthView!.date!
+        
+        let extraMonthView = self.monthViews!.removeAtIndex(0) as CVCalendarMonthView
+        extraMonthView.removeFromSuperview()
+        
+        
+        
+        self.replaceMonthView(self.presentedMonthView!, toPage: 1, animatable: true)
+        self.replaceMonthView(leftMonthView, toPage: 0, animatable: false)
+        
+        let rightMonthView = self.getNextMonth()
+        self.monthViews?.append(rightMonthView)
+        self.insertMonthView(rightMonthView, atIndex: 2)
+        
+        println("MonthViews count: \(monthViews!.count)")
+    }
+    
+    func scrolledRight() {
+        
+    }
+    
+    func scrollViewWillBeginDecelerating(scrollView: UIScrollView) {
+        println("scrollViewWillBeginDecelerating")
+    }
+
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        if self.direction == .Left {
+            self.scrolledLeft()
+            
+            self.direction = .None
+        } else if self.direction == .Right {
+            
+        }
+        
+        
+    }
+    
 }
