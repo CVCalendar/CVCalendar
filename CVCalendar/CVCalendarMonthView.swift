@@ -61,10 +61,12 @@ class CVCalendarMonthView: UIView {
     
     func createWeekViews() {
         let renderer = CVCalendarRenderer.sharedRenderer()
+        self.weekViews = [CVCalendarWeekView]()
         
         for i in 0..<self.numberOfWeeks! {
             let frame = renderer.renderWeekFrameForMonthView(self, weekIndex: i)
             let weekView = CVCalendarWeekView(monthView: self, frame: frame, index: i)
+            self.weekViews?.append(weekView)
             self.addSubview(weekView)
         }
     }
@@ -75,5 +77,17 @@ class CVCalendarMonthView: UIView {
         let controlCoordinator = CVCalendarDayViewControlCoordinator.sharedControlCoordinator
         controlCoordinator.performDayViewSelection(dayView)
         self.calendarView!.calendarDelegate?.didSelectDayView(dayView)
+    }
+    
+    func destroy() {
+        for week in self.weekViews! {
+            for day in week.dayViews! {
+                day.weekView = nil
+            }
+            
+            week.monthView = nil
+        }
+        
+        self.weekViews = nil
     }
 }

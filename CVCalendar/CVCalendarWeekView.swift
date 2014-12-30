@@ -12,10 +12,12 @@ class CVCalendarWeekView: UIView {
     
     // MARK: - Public properties
     
-    let monthView: CVCalendarMonthView?
+    var monthView: CVCalendarMonthView?
     let index: Int?
     let weekdaysIn: [Int : [Int]]?
     let weekdaysOut: [Int : [Int]]?
+    
+    var dayViews: [CVCalendarDayView]?
     
     
     // MARK: - Initialization
@@ -84,11 +86,13 @@ class CVCalendarWeekView: UIView {
     // MARK: - Content filling 
 
     func createDayViews() {
+        self.dayViews = [CVCalendarDayView]()
         for i in 1...7 {
             let renderer = CVCalendarRenderer.sharedRenderer()
             let frame = renderer.renderDayFrameForMonthView(self, dayIndex: i-1)
             
             let dayView = CVCalendarDayView(weekView: self, frame: frame, weekdayIndex: i)
+            self.dayViews?.append(dayView)
             self.addSubview(dayView)
         }
     }

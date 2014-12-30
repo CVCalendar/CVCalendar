@@ -12,12 +12,13 @@ class CVCalendarDayView: UIView {
     
     // MARK: - Public properties
 
-    let weekView: CVCalendarWeekView?
+    var weekView: CVCalendarWeekView?
     let weekdayIndex: Int?
     let day: Int? 
     
     var dayLabel: UILabel?
     var circleView: CVCircleView?
+    var topMarker: CALayer?
     
     var isOut = false
     var isCurrentDay = false
@@ -132,7 +133,9 @@ class CVCalendarDayView: UIView {
         layer.borderWidth = height
         layer.frame = CGRectMake(0, 0, CGRectGetWidth(self.frame), height)
         
-        self.layer.addSublayer(layer)
+        self.topMarker = layer
+        
+        self.layer.addSublayer(self.topMarker!)
     }
     
     // MARK: - Events handling
