@@ -80,14 +80,16 @@ class CVCalendarMonthView: UIView {
     }
     
     func destroy() {
-        for week in self.weekViews! {
-            for day in week.dayViews! {
-                day.weekView = nil
+        if self.weekViews != nil {
+            for week in self.weekViews! {
+                for day in week.dayViews! {
+                    day.weekView = nil
+                }
+                
+                week.monthView = nil
             }
             
-            week.monthView = nil
+            self.weekViews = nil
         }
-        
-        self.weekViews = nil
     }
 }
