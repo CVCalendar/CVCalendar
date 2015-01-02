@@ -440,11 +440,13 @@ class CVCalendarContentView: UIScrollView, UIScrollViewDelegate {
     
     // MARK: - Month Views' toggling
     
+    private var togglingBlocked = false
     func togglePresentedDate(date: NSDate) {
         var currentMonthView = self.monthViews![1]
         let currentDate = currentMonthView!.date!
         
-        if !self.date(currentDate, equalToPresentedDate: date) {
+        if !self.date(currentDate, equalToPresentedDate: date) && !self.togglingBlocked {
+            self.togglingBlocked = true
             let rightMonthView = self.getNextMonth(date)
             let leftMonthView = self.getPreviousMonth(date)
             
@@ -485,6 +487,8 @@ class CVCalendarContentView: UIScrollView, UIScrollViewDelegate {
                     let presentedDate = CVDate(date: date)
                     self.calendarView!.presentedDate = presentedDate
                     self.selectDayViewWithDay(presentedDate.day!, inMonthView: presentedMonthView)
+                    
+                    self.togglingBlocked = false
             }
         }
     }
