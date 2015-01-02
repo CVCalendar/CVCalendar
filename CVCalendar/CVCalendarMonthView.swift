@@ -48,7 +48,6 @@ class CVCalendarMonthView: UIView {
         self.weeksIn = calendarManager.weeksWithWeekdaysForMonthDate(self.date!).weeksIn
         self.weeksOut = calendarManager.weeksWithWeekdaysForMonthDate(self.date!).weeksOut
         
-        
         self.currentDay = calendarManager.dateRange(NSDate()).day
     }
     
@@ -71,12 +70,14 @@ class CVCalendarMonthView: UIView {
         }
     }
     
+    
     // MARK: - Events receiving
     
     func receiveDayViewTouch(dayView: CVCalendarDayView) {
         let controlCoordinator = CVCalendarDayViewControlCoordinator.sharedControlCoordinator
         controlCoordinator.performDayViewSelection(dayView)
-        self.calendarView!.calendarDelegate?.didSelectDayView(dayView)
+        
+        self.calendarView!.didSelectDayView(dayView)
     }
     
     func destroy() {
@@ -90,6 +91,18 @@ class CVCalendarMonthView: UIView {
             }
             
             self.weekViews = nil
+        }
+    }
+    
+    // MARK: Content reload 
+    
+    func reloadWeekViewsWithMonthFrame(frame: CGRect) {
+        self.frame = frame
+        for i in 0..<self.weekViews!.count {
+            let frame = CVCalendarRenderer.sharedRenderer().renderWeekFrameForMonthView(self, weekIndex: i)
+            let weekView = self.weekViews![i]
+            weekView.frame = frame
+            weekView.reloadDayViews()
         }
     }
 }

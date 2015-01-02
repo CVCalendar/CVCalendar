@@ -69,9 +69,6 @@ class CVCalendarWeekView: UIView {
             }
         }
         
-        //self.backgroundColor = UIColor.redColor()
-        println("Week #\(index) created successfully! Month: \(CVCalendarManager.sharedManager.dateRange(self.monthView!.date!).month)")
-        
         self.createDayViews()
     }
     
@@ -94,6 +91,18 @@ class CVCalendarWeekView: UIView {
             let dayView = CVCalendarDayView(weekView: self, frame: frame, weekdayIndex: i)
             self.dayViews?.append(dayView)
             self.addSubview(dayView)
+        }
+    }
+    
+    // MARK: - Content reload
+    
+    func reloadDayViews() {
+        for i in 0..<self.dayViews!.count {
+            let frame = CVCalendarRenderer.sharedRenderer().renderDayFrameForMonthView(self, dayIndex: i)
+            
+            let dayView = self.dayViews![i]
+            dayView.frame = frame
+            dayView.reloadContent()
         }
     }
     

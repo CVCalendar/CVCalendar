@@ -39,8 +39,4 @@ class CVCircleView: UIView {
         CGContextSetStrokeColorWithColor(context, self.color!.CGColor)
         CGContextDrawPath(context, kCGPathFillStroke)
     }
-
-    deinit {
-        println("Deinited a CircleView")
-    }
 }

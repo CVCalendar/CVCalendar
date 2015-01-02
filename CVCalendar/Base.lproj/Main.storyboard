@@ -5,6 +5,30 @@
     </dependencies>
     <scenes>
         <!--View Controller-->
+        <scene sceneID="IqM-QM-VJ2">
+            <objects>
+                <viewController id="dpW-oK-eIS" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="hnT-Mu-akl"/>
+                        <viewControllerLayoutGuide type="bottom" id="J95-IF-d4n"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="iwU-KA-XeN">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="1eC-o1-NqI">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5jM-I5-90t" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="840" y="-378"/>
+        </scene>
+        <!--CVCalendar-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
                 <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="CVCalendar" customModuleProvider="target" sceneMemberID="viewController">
@@ -16,25 +40,80 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5MO-md-CcA">
-                                <rect key="frame" x="16" y="48" width="568" height="350"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5MO-md-CcA" customClass="CVCalendarView" customModule="CVCalendar" customModuleProvider="target">
+                                <rect key="frame" x="16" y="146" width="568" height="350"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <outlet property="calendarDelegate" destination="vXZ-lx-hvc" id="t2a-hS-5AC"/>
+                                </connections>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable showing days out" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S8y-2g-sjM">
+                                <rect key="frame" x="16" y="556" width="221" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6yc-Wh-7KD" customClass="CVCalendarMenuView" customModule="CVCalendar" customModuleProvider="target">
+                                <rect key="frame" x="16" y="120" width="568" height="24"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QSa-Xe-UPt">
+                                <rect key="frame" x="535" y="552" width="51" height="31"/>
+                                <connections>
+                                    <action selector="switchChanged:" destination="vXZ-lx-hvc" eventType="valueChanged" id="FJP-Xt-e0D"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="January, 2015" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Qx-0o-Y3N">
+                                <rect key="frame" x="237" y="72" width="127" height="24"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <color key="textColor" red="0.29803922772407532" green="0.29803922772407532" blue="0.29803922772407532" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="5MO-md-CcA" secondAttribute="bottom" constant="202" id="4FX-Z7-lGE"/>
+                            <constraint firstItem="6yc-Wh-7KD" firstAttribute="trailing" secondItem="5MO-md-CcA" secondAttribute="trailing" id="2LV-mX-ktR"/>
+                            <constraint firstItem="5MO-md-CcA" firstAttribute="top" secondItem="6yc-Wh-7KD" secondAttribute="bottom" constant="2" id="3Vh-Zs-54i"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="5MO-md-CcA" secondAttribute="bottom" constant="104" id="4FX-Z7-lGE"/>
                             <constraint firstAttribute="trailing" secondItem="5MO-md-CcA" secondAttribute="trailing" constant="16" id="7Qx-xQ-vCX"/>
+                            <constraint firstItem="6yc-Wh-7KD" firstAttribute="leading" secondItem="5MO-md-CcA" secondAttribute="leading" id="8gb-O9-9e7"/>
+                            <constraint firstItem="S8y-2g-sjM" firstAttribute="centerY" secondItem="QSa-Xe-UPt" secondAttribute="centerY" id="NQ5-MZ-Mqr"/>
                             <constraint firstItem="5MO-md-CcA" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="16" id="TtS-nh-MG6"/>
-                            <constraint firstItem="5MO-md-CcA" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" constant="48" id="wkF-94-bYh"/>
+                            <constraint firstItem="QSa-Xe-UPt" firstAttribute="top" secondItem="5MO-md-CcA" secondAttribute="bottom" constant="56" id="bvs-EQ-tAu"/>
+                            <constraint firstItem="QSa-Xe-UPt" firstAttribute="trailing" secondItem="5MO-md-CcA" secondAttribute="trailing" id="hxV-Ki-Kgc"/>
+                            <constraint firstItem="S8y-2g-sjM" firstAttribute="leading" secondItem="5MO-md-CcA" secondAttribute="leading" id="mSf-mA-0Co"/>
+                            <constraint firstItem="8Qx-0o-Y3N" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="8" id="uAo-Fc-Zoj"/>
+                            <constraint firstItem="8Qx-0o-Y3N" firstAttribute="centerX" secondItem="5MO-md-CcA" secondAttribute="centerX" id="uZB-JH-g70"/>
+                            <constraint firstItem="6yc-Wh-7KD" firstAttribute="top" secondItem="8Qx-0o-Y3N" secondAttribute="bottom" constant="24" id="upV-SR-1qQ"/>
+                            <constraint firstItem="5MO-md-CcA" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" constant="146" id="wkF-94-bYh"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="CVCalendar" id="6gt-xw-foJ"/>
                     <connections>
-                        <outlet property="monthViewHolder" destination="5MO-md-CcA" id="tDx-S5-d0M"/>
+                        <outlet property="calendarView" destination="5MO-md-CcA" id="gL8-og-lie"/>
+                        <outlet property="daysOutSwitch" destination="QSa-Xe-UPt" id="aRx-an-I9K"/>
+                        <outlet property="menuView" destination="6yc-Wh-7KD" id="TgU-2v-9NI"/>
+                        <outlet property="monthLabel" destination="8Qx-0o-Y3N" id="Y5v-ox-WsL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="782" y="507"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="GXK-IK-0gr">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="GYb-Am-ygg" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="pOC-vJ-B2y">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1XL-Di-leE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-30" y="507"/>
         </scene>
     </scenes>
 </document>

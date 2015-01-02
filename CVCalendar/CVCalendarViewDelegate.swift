@@ -6,10 +6,11 @@
 //  Copyright (c) 2014 GameApp. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 @objc
 protocol CVCalendarViewDelegate {
     func shouldShowWeekdaysOut() -> Bool
     func didSelectDayView(dayView: CVCalendarDayView)
+    func presentedDateUpdated(date: CVDate)
 }

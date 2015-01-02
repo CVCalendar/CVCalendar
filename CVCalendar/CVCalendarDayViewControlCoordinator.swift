@@ -48,11 +48,11 @@ class CVCalendarDayViewControlCoordinator: NSObject {
     }
     
     private func presentSelectionOnDayView(dayView: CVCalendarDayView) {
-        self.animator?.animateSelection(dayView)
+        self.animator?.animateSelection(dayView, withControlCoordinator: CVCalendarDayViewControlCoordinator.sharedControlCoordinator)
     }
     
     private func presentDeselectionOnDayView(dayView: CVCalendarDayView) {
-        self.animator?.animateDeselection(dayView)
+        self.animator?.animateDeselection(dayView, withControlCoordinator: CVCalendarDayViewControlCoordinator.sharedControlCoordinator)
     }
     
     func animationStarted() {

@@ -71,20 +71,17 @@ class CVCalendarDayView: UIView {
             }
             
         }
-
         
-        if !self.weekView!.monthView!.calendarView!.shouldShowWeekdaysOut! {
-            if !self.isOut {
-                self.labelSetup()
-                self.topMarkerSetup()
-                self.setupGestures()
-            } else {
-                self.removeFromSuperview()
+        self.labelSetup()
+        self.topMarkerSetup()
+        self.setupGestures()
+        
+        var shouldShowDaysOut = self.weekView!.monthView!.calendarView!.shouldShowWeekdaysOut!
+        
+        if self.isOut {
+            if !shouldShowDaysOut {
+                self.hidden = true
             }
-        } else {
-            self.labelSetup()
-            self.topMarkerSetup()
-            self.setupGestures()
         }
     }
     
@@ -206,6 +203,31 @@ class CVCalendarDayView: UIView {
         
         self.circleView?.removeFromSuperview()
         self.circleView = nil
+    }
+    
+    // MARK: - Content reload
+    
+    func reloadContent() {
+        var shouldShowDaysOut = self.weekView!.monthView!.calendarView!.shouldShowWeekdaysOut!
+        if !shouldShowDaysOut {
+            if self.isOut {
+                self.hidden = true
+            }
+        } else {
+            if self.isOut {
+                self.hidden = false
+            }
+        }
+        
+        self.dayLabel?.frame = CGRectMake(0, 0, self.frame.width, self.frame.height)
+        
+        self.topMarker?.frame.size.width = self.frame.width
+        
+        if self.circleView != nil {
+            self.setDayLabelUnhighlighted()
+            self.setDayLabelHighlighted()
+        }
+        
     }
     
 }
