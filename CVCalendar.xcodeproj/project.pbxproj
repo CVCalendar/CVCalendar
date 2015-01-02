@@ -153,8 +153,8 @@
 				55E18D091A45F2AA004B84C1 /* Main.storyboard */,
 				55E18D0C1A45F2AA004B84C1 /* Images.xcassets */,
 				55E18D0E1A45F2AA004B84C1 /* LaunchScreen.xib */,
-				55E18D031A45F2AA004B84C1 /* Supporting Files */,
 				55CAB21B1A54741400A78AF4 /* CVDate.swift */,
+				55E18D031A45F2AA004B84C1 /* Supporting Files */,
 			);
 			path = CVCalendar;
 			sourceTree = "<group>";

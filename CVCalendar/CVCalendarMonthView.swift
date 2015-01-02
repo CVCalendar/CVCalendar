@@ -81,13 +81,17 @@ class CVCalendarMonthView: UIView {
     }
     
     func destroy() {
+        let coordinator = CVCalendarDayViewControlCoordinator.sharedControlCoordinator
         if self.weekViews != nil {
-            for week in self.weekViews! {
-                for day in week.dayViews! {
-                    day.weekView = nil
+            for weekView in self.weekViews! {
+                for dayView in weekView.dayViews! {
+                    if dayView == coordinator.selectedDayView {
+                        coordinator.selectedDayView = nil
+                    }
+                    dayView.weekView = nil
                 }
                 
-                week.monthView = nil
+                weekView.monthView = nil
             }
             
             self.weekViews = nil

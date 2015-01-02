@@ -37,7 +37,7 @@ class CVCalendarContentView: UIScrollView, UIScrollViewDelegate {
         
         self.frame = frame
         self.contentSize = CGSizeMake(self.frame.width * 3, self.frame.height)
-        self.showsHorizontalScrollIndicator = false
+        self.showsHorizontalScrollIndicator = true
         self.pagingEnabled = true
         self.delegate = self
         
@@ -314,5 +314,127 @@ class CVCalendarContentView: UIScrollView, UIScrollViewDelegate {
             monthView.frame.origin.x = CGFloat(key) * self.frame.width
             self.addSubview(monthView)
         }
+    }
+    
+    // MARK: - Day View Out selection
+    
+    func dateBeforeDate(date: NSDate) -> NSDate {
+        let components = CVCalendarManager.sharedManager.componentsForDate(date)
+        let calendar = NSCalendar.currentCalendar()
+        
+        components.month -= 1
+        
+        let dateBefore = calendar.dateFromComponents(components)!
+        
+        return dateBefore
+    }
+    
+    func dateAfterDate(date: NSDate) -> NSDate {
+        let components = CVCalendarManager.sharedManager.componentsForDate(date)
+        let calendar = NSCalendar.currentCalendar()
+        
+        components.month += 1
+        
+        let dateAfter = calendar.dateFromComponents(components)!
+        
+        return dateAfter
+    }
+    
+    func selectDayViewWithDay(day: Int, inMonthView monthView: CVCalendarMonthView) {
+        let coordinator = CVCalendarDayViewControlCoordinator.sharedControlCoordinator
+        for weekView in monthView.weekViews! {
+            for dayView in weekView.dayViews! {
+                if dayView.day == day && !dayView.isOut {
+                    coordinator.performDayViewSelection(dayView)
+                }
+            }
+        }
+    }
+    
+    func performedDayViewSelection(dayView: CVCalendarDayView) {
+        if dayView.isOut {
+            if dayView.day > 20 {
+                let presentedDate = dayView.weekView!.monthView!.date!
+                self.calendarView!.presentedDate = CVDate(date: self.dateBeforeDate(presentedDate))
+                
+                self.presentPreviousMonth(dayView)
+                
+            } else {
+                let presentedDate = dayView.weekView!.monthView!.date!
+                self.calendarView!.presentedDate = CVDate(date: self.dateAfterDate(presentedDate))
+                self.presentNextMonth(dayView)
+            }
+        }
+    }
+    
+    func presentNextMonth(dayView: CVCalendarDayView) {
+        var extraMonthView = self.monthViews![0]
+        let leftMonthView = self.monthViews![1]!
+        let presentedMonthView = self.monthViews![2]!
+        
+        UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+            self.prepareTopMarkersOnDayViews(leftMonthView, hidden: true)
+            
+            extraMonthView!.frame.origin.x -= self.frame.width
+            leftMonthView.frame.origin.x -= self.frame.width
+            presentedMonthView.frame.origin.x -= self.frame.width
+            
+            }, completion: { (finished) -> Void in
+                extraMonthView!.removeFromSuperview()
+                extraMonthView!.destroy()
+                extraMonthView = nil
+                
+                let rightMonthView = self.getNextMonth(presentedMonthView.date!)
+                
+                self.monthViews?.updateValue(leftMonthView, forKey: 0)
+                self.monthViews?.updateValue(presentedMonthView, forKey: 1)
+                self.monthViews?.updateValue(rightMonthView, forKey: 2)
+                
+                self.insertMonthView(rightMonthView, atIndex: 2)
+                
+                self.selectDayViewWithDay(dayView.day!, inMonthView: presentedMonthView)
+                
+                self.prepareTopMarkersOnDayViews(self.monthViews![0]!, hidden: false)
+                self.prepareTopMarkersOnDayViews(self.monthViews![1]!, hidden: false)
+                self.prepareTopMarkersOnDayViews(self.monthViews![2]!, hidden: false)
+        })
+    }
+    
+    func presentPreviousMonth(dayView: CVCalendarDayView) {
+        
+        var extraMonthView = self.monthViews!.removeValueForKey(2)
+        let rightMonthView = self.monthViews![1]!
+        let presentedMonthView = self.monthViews![0]!
+        
+        
+        UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+            self.prepareTopMarkersOnDayViews(rightMonthView, hidden: true)
+            
+            extraMonthView!.frame.origin.x += self.frame.width
+            rightMonthView.frame.origin.x += self.frame.width
+            presentedMonthView.frame.origin.x += self.frame.width
+            
+            
+            
+            }, completion: { (finished) -> Void in
+                
+                extraMonthView!.removeFromSuperview()
+                extraMonthView!.destroy()
+                extraMonthView = nil
+                
+                let leftMonthView = self.getPreviousMonth(presentedMonthView.date!)
+                
+                self.monthViews?.updateValue(leftMonthView, forKey: 0)
+                self.monthViews?.updateValue(presentedMonthView, forKey: 1)
+                self.monthViews?.updateValue(rightMonthView, forKey: 2)
+                
+                self.insertMonthView(leftMonthView, atIndex: 0)
+                
+                self.selectDayViewWithDay(dayView.day!, inMonthView: presentedMonthView)
+                
+                self.prepareTopMarkersOnDayViews(self.monthViews![0]!, hidden: false)
+                self.prepareTopMarkersOnDayViews(self.monthViews![1]!, hidden: false)
+                self.prepareTopMarkersOnDayViews(self.monthViews![2]!, hidden: false)
+        })
     }
 }

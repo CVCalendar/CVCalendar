@@ -19,7 +19,13 @@ class CVCalendarView: UIView {
     
     // MARK: - Calendar View Delegate
     
-    var shouldShowWeekdaysOut: Bool? = false
+    var shouldShowWeekdaysOut: Bool? {
+        if let delegate = self.delegate {
+            return delegate.shouldShowWeekdaysOut()
+        } else {
+            return false
+        }
+    }
     
     @IBOutlet var calendarDelegate: AnyObject? {
         set {
@@ -35,15 +41,7 @@ class CVCalendarView: UIView {
         }
     }
     
-    private var delegate: CVCalendarViewDelegate? {
-        didSet {
-            self.setupDelegate()
-        }
-    }
-    
-    func setupDelegate() {
-        self.shouldShowWeekdaysOut = self.delegate?.shouldShowWeekdaysOut()
-    }
+    private var delegate: CVCalendarViewDelegate?
     
     // MARK: - Calendar Appearance Delegate
     
@@ -130,6 +128,7 @@ class CVCalendarView: UIView {
     }
     
     func didSelectDayView(dayView: CVCalendarDayView) {
+        self.contentView?.performedDayViewSelection(dayView)
         self.delegate?.didSelectDayView(dayView)
     }
     

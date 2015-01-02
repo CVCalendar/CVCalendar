@@ -103,21 +103,26 @@ class CVCalendarDayView: UIView {
         self.dayLabel!.textAlignment = NSTextAlignment.Center
         self.dayLabel!.frame = CGRectMake(0, 0, self.frame.width, self.frame.height)
         
+        var font = UIFont.systemFontOfSize(appearance.dayLabelWeekdayTextSize!)
         var color: UIColor?
         if self.isOut {
             color = appearance.dayLabelWeekdayOutTextColor
         } else if self.isCurrentDay {
-            self.weekView!.monthView!.receiveDayViewTouch(self)
+            color = appearance.dayLabelPresentWeekdayTextColor
+            font = UIFont.boldSystemFontOfSize(appearance.dayLabelPresentWeekdayTextSize!)
+            let coordinator = CVCalendarDayViewControlCoordinator.sharedControlCoordinator
+            if coordinator.selectedDayView == nil {
+                self.weekView!.monthView!.receiveDayViewTouch(self)
+            }
+            
         } else {
             color = appearance.dayLabelWeekdayInTextColor
         }
         
-        var font = UIFont.systemFontOfSize(appearance.dayLabelWeekdayTextSize!)
         
-        if !self.isCurrentDay {
-            self.dayLabel!.textColor = color!
-            self.dayLabel!.font = font
-        }
+        
+        self.dayLabel!.textColor = color!
+        self.dayLabel!.font = font
         
         self.addSubview(self.dayLabel!)
     }
