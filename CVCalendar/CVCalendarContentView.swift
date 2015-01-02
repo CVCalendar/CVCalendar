@@ -437,4 +437,68 @@ class CVCalendarContentView: UIScrollView, UIScrollViewDelegate {
                 self.prepareTopMarkersOnDayViews(self.monthViews![2]!, hidden: false)
         })
     }
+    
+    // MARK: - Month Views' toggling
+    
+    func togglePresentedDate(date: NSDate) {
+        var currentMonthView = self.monthViews![1]
+        let currentDate = currentMonthView!.date!
+        
+        if !self.date(currentDate, equalToPresentedDate: date) {
+            let rightMonthView = self.getNextMonth(date)
+            let leftMonthView = self.getPreviousMonth(date)
+            
+            var extraLeftMonthView = self.monthViews!.removeValueForKey(0)
+            var extraRightMonthView = self.monthViews!.removeValueForKey(2)
+            
+            extraLeftMonthView?.removeFromSuperview()
+            extraLeftMonthView?.destroy()
+            extraLeftMonthView = nil
+            
+            extraRightMonthView?.removeFromSuperview()
+            extraRightMonthView?.destroy()
+            extraRightMonthView = nil
+            
+            let presentedMonthView = CVCalendarMonthView(calendarView: self.calendarView!, date: date)
+            let frame = CGRectMake(0, 0, self.frame.width, self.frame.height)
+            presentedMonthView.updateAppearance(frame)
+            presentedMonthView.alpha = 0
+            
+            self.insertMonthView(presentedMonthView, atIndex: 1)
+            
+            UIView.animateWithDuration(0.8, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+                presentedMonthView.alpha = 1
+                currentMonthView?.alpha = 0
+                }) { (finished) -> Void in
+                    self.monthViews!.removeValueForKey(1)
+                    currentMonthView!.removeFromSuperview()
+                    currentMonthView!.destroy()
+                    currentMonthView = nil
+                    
+                    self.monthViews!.updateValue(leftMonthView, forKey: 0)
+                    self.monthViews!.updateValue(presentedMonthView, forKey: 1)
+                    self.monthViews!.updateValue(rightMonthView, forKey: 2)
+                    
+                    self.insertMonthView(leftMonthView, atIndex: 0)
+                    self.insertMonthView(rightMonthView, atIndex: 2)
+                    
+                    let presentedDate = CVDate(date: date)
+                    self.calendarView!.presentedDate = presentedDate
+                    self.selectDayViewWithDay(presentedDate.day!, inMonthView: presentedMonthView)
+            }
+        }
+    }
+    
+    func date(currentDate: NSDate, equalToPresentedDate presentedDate: NSDate) -> Bool {
+        let calendarManager = CVCalendarManager.sharedManager
+        
+        let currentDateMonthStartDate = calendarManager.monthDateRange(currentDate).monthStartDate
+        let presentedDateMonthStartDate = calendarManager.monthDateRange(presentedDate).monthStartDate
+        
+        if currentDateMonthStartDate == presentedDateMonthStartDate {
+            return true
+        } else {
+            return false
+        }
+    }
 }

@@ -91,5 +91,9 @@ class ViewController: UIViewController, CVCalendarViewDelegate {
             self.view.insertSubview(updatedMonthLabel, aboveSubview: self.monthLabel)
         }
     }
+    
+    @IBAction func todayMonthView() {
+        self.calendarView.toggleTodayMonthView()
+    }
 }
 

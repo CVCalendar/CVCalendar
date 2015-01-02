@@ -147,4 +147,8 @@ class CVCalendarView: UIView {
         let frame = CGRectMake(x, y, width, height)
         self.contentView!.updateFrames(frame)
     }
+    
+    func toggleTodayMonthView() {
+        self.contentView!.togglePresentedDate(NSDate())
+    }
 }

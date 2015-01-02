@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -53,7 +54,7 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6yc-Wh-7KD" customClass="CVCalendarMenuView" customModule="CVCalendar" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6yc-Wh-7KD" customClass="CVCalendarMenuView" customModule="CVCalendar" customModuleProvider="target">
                                 <rect key="frame" x="16" y="120" width="568" height="24"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
@@ -63,15 +64,25 @@
                                     <action selector="switchChanged:" destination="vXZ-lx-hvc" eventType="valueChanged" id="FJP-Xt-e0D"/>
                                 </connections>
                             </switch>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="January, 2015" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Qx-0o-Y3N">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="January, 2015" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Qx-0o-Y3N">
                                 <rect key="frame" x="237" y="72" width="127" height="24"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                 <color key="textColor" red="0.29803922772407532" green="0.29803922772407532" blue="0.29803922772407532" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tDy-gG-sVf">
+                                <rect key="frame" x="551" y="67" width="33" height="33"/>
+                                <state key="normal" image="present-100">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="todayMonthView" destination="vXZ-lx-hvc" eventType="touchUpInside" id="e9M-WM-5hu"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="tDy-gG-sVf" secondAttribute="trailing" id="1hW-dc-aoL"/>
                             <constraint firstItem="6yc-Wh-7KD" firstAttribute="trailing" secondItem="5MO-md-CcA" secondAttribute="trailing" id="2LV-mX-ktR"/>
                             <constraint firstItem="5MO-md-CcA" firstAttribute="top" secondItem="6yc-Wh-7KD" secondAttribute="bottom" constant="2" id="3Vh-Zs-54i"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="5MO-md-CcA" secondAttribute="bottom" constant="104" id="4FX-Z7-lGE"/>
@@ -81,8 +92,9 @@
                             <constraint firstItem="5MO-md-CcA" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="16" id="TtS-nh-MG6"/>
                             <constraint firstItem="QSa-Xe-UPt" firstAttribute="top" secondItem="5MO-md-CcA" secondAttribute="bottom" constant="56" id="bvs-EQ-tAu"/>
                             <constraint firstItem="QSa-Xe-UPt" firstAttribute="trailing" secondItem="5MO-md-CcA" secondAttribute="trailing" id="hxV-Ki-Kgc"/>
+                            <constraint firstItem="tDy-gG-sVf" firstAttribute="top" secondItem="8Qx-0o-Y3N" secondAttribute="top" constant="-5" id="kUT-uz-Tvt"/>
                             <constraint firstItem="S8y-2g-sjM" firstAttribute="leading" secondItem="5MO-md-CcA" secondAttribute="leading" id="mSf-mA-0Co"/>
-                            <constraint firstItem="8Qx-0o-Y3N" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="8" id="uAo-Fc-Zoj"/>
+                            <constraint firstItem="8Qx-0o-Y3N" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="52" id="uAo-Fc-Zoj"/>
                             <constraint firstItem="8Qx-0o-Y3N" firstAttribute="centerX" secondItem="5MO-md-CcA" secondAttribute="centerX" id="uZB-JH-g70"/>
                             <constraint firstItem="6yc-Wh-7KD" firstAttribute="top" secondItem="8Qx-0o-Y3N" secondAttribute="bottom" constant="24" id="upV-SR-1qQ"/>
                             <constraint firstItem="5MO-md-CcA" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" constant="146" id="wkF-94-bYh"/>
@@ -116,4 +128,7 @@
             <point key="canvasLocation" x="-30" y="507"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="present-100" width="33" height="33"/>
+    </resources>
 </document>
