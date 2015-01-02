@@ -344,7 +344,7 @@ class CVCalendarContentView: UIScrollView, UIScrollViewDelegate {
         let coordinator = CVCalendarDayViewControlCoordinator.sharedControlCoordinator
         for weekView in monthView.weekViews! {
             for dayView in weekView.dayViews! {
-                if dayView.day == day && !dayView.isOut {
+                if dayView.date?.day == day && !dayView.isOut {
                     coordinator.performDayViewSelection(dayView)
                 }
             }
@@ -353,7 +353,7 @@ class CVCalendarContentView: UIScrollView, UIScrollViewDelegate {
     
     func performedDayViewSelection(dayView: CVCalendarDayView) {
         if dayView.isOut {
-            if dayView.day > 20 {
+            if dayView.date?.day > 20 {
                 let presentedDate = dayView.weekView!.monthView!.date!
                 self.calendarView!.presentedDate = CVDate(date: self.dateBeforeDate(presentedDate))
                 
@@ -392,7 +392,7 @@ class CVCalendarContentView: UIScrollView, UIScrollViewDelegate {
                 
                 self.insertMonthView(rightMonthView, atIndex: 2)
                 
-                self.selectDayViewWithDay(dayView.day!, inMonthView: presentedMonthView)
+                self.selectDayViewWithDay(dayView.date!.day!, inMonthView: presentedMonthView)
                 
                 self.prepareTopMarkersOnDayViews(self.monthViews![0]!, hidden: false)
                 self.prepareTopMarkersOnDayViews(self.monthViews![1]!, hidden: false)
@@ -430,7 +430,7 @@ class CVCalendarContentView: UIScrollView, UIScrollViewDelegate {
                 
                 self.insertMonthView(leftMonthView, atIndex: 0)
                 
-                self.selectDayViewWithDay(dayView.day!, inMonthView: presentedMonthView)
+                self.selectDayViewWithDay(dayView.date!.day!, inMonthView: presentedMonthView)
                 
                 self.prepareTopMarkersOnDayViews(self.monthViews![0]!, hidden: false)
                 self.prepareTopMarkersOnDayViews(self.monthViews![1]!, hidden: false)

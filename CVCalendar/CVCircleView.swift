@@ -32,6 +32,7 @@ class CVCircleView: UIView {
         
         CGContextSetLineWidth(context, 0.5)
         
+
         CGContextAddArc(context, (frame.size.width)/2, frame.size.height/2, (frame.size.width - 10)/2, 0.0, CGFloat(M_PI * 2.0), 1)
         
         // Draw

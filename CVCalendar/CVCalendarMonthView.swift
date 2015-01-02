@@ -80,6 +80,8 @@ class CVCalendarMonthView: UIView {
         self.calendarView!.didSelectDayView(dayView)
     }
     
+    // MARK: - View Destruction
+    
     func destroy() {
         let coordinator = CVCalendarDayViewControlCoordinator.sharedControlCoordinator
         if self.weekViews != nil {

@@ -26,6 +26,14 @@ class CVDate: NSObject {
         self.day = calendarManager.dateRange(date).day
     }
     
+    init(day: Int, month: Int, year: Int) {
+        super.init()
+        
+        self.year = year
+        self.month = month
+        self.day = day
+    }
+    
     func description() -> String {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "MMMM"

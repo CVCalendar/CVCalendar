@@ -13,4 +13,7 @@ protocol CVCalendarViewDelegate {
     func shouldShowWeekdaysOut() -> Bool
     func didSelectDayView(dayView: CVCalendarDayView)
     func presentedDateUpdated(date: CVDate)
+
+    func dotMarker(shouldShowOnDayView dayView: CVCalendarDayView) -> Bool
+    func dotMarker(colorOnDayView dayView: CVCalendarDayView) -> UIColor
 }

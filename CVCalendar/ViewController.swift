@@ -53,6 +53,28 @@ class ViewController: UIViewController, CVCalendarViewDelegate {
         // TODO:
     }
     
+    func dotMarker(colorOnDayView dayView: CVCalendarDayView) -> UIColor {
+        if dayView.date?.day == 3 {
+            return .redColor()
+        } else if dayView.date?.day == 5 {
+            return .blackColor()
+        } else if dayView.date?.day == 2 {
+            return .blueColor()
+        }
+        
+        return .greenColor()
+    }
+    
+    func dotMarker(shouldShowOnDayView dayView: CVCalendarDayView) -> Bool {
+        if dayView.date?.day == 3 || dayView.date?.day == 5 || dayView.date?.day == 2 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    
+    
     func presentedDateUpdated(date: CVDate) {
         if self.monthLabel.text != date.description() && self.animationFinished {
             let updatedMonthLabel = UILabel()
