@@ -15,7 +15,6 @@ class CVCalendarMonthView: UIView {
     var calendarView: CVCalendarView?
     var date: NSDate?
     var numberOfWeeks: Int?
-    var menuView: CVCalendarMenuView?
     var weekViews: [CVCalendarWeekView]?
     
     var weeksIn: [[Int : [Int]]]?

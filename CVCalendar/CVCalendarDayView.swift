@@ -179,7 +179,10 @@ class CVCalendarDayView: UIView {
                 
                 self.insertSubview(self.dotMarker!, atIndex: 0)
                 
-
+                let coordinator = CVCalendarDayViewControlCoordinator.sharedControlCoordinator
+                if self == coordinator.selectedDayView {
+                    self.moveDotMarker(false)
+                }
             }
         }
     }
@@ -198,8 +201,32 @@ class CVCalendarDayView: UIView {
     
     // MARK: - Label states management
     
+    func moveDotMarker(unwinded: Bool) {
+        if self.dotMarker != nil {
+            if !unwinded {
+                let radius = (self.circleView!.frame.size.width - 10)/2
+                let center = CGPointMake((self.circleView!.frame.size.width)/2, self.circleView!.frame.size.height/2)
+                let maxArcPointY = center.y + radius
+                self.diff = maxArcPointY - self.dotMarker!.frame.origin.y
+                
+                if self.diff > 0 {
+                    self.diff = abs(self.diff!)
+                    
+                    UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+                        self.dotMarker!.frame.origin.y += self.diff!
+                        }, completion: nil)
+                } else {
+                    self.diff = nil
+                }
+            } else if self.diff != nil {
+                UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+                    self.dotMarker!.frame.origin.y -= self.diff!
+                    }, completion: nil)
+            }
+        }
+    }
+    
     private var diff: CGFloat?
-    private var dotMarkerMoved = false
     func setDayLabelHighlighted() {
         let appearance = CVCalendarViewAppearance.sharedCalendarViewAppearance
         
@@ -220,23 +247,7 @@ class CVCalendarDayView: UIView {
         
         self.circleView = CVCircleView(frame: CGRectMake(0, 0, self.frame.width, self.frame.height), color: color!, _alpha: _alpha!)
         self.insertSubview(self.circleView!, atIndex: 0)
-        
-        if self.dotMarker != nil {
-            let radius = (self.circleView!.frame.size.width - 10)/2
-            let center = CGPointMake((self.circleView!.frame.size.width)/2, self.circleView!.frame.size.height/2)
-            let maxArcPointY = center.y + radius
-            self.diff = maxArcPointY - self.dotMarker!.frame.origin.y
-        
-            if diff > 0 {
-                self.diff = abs(self.diff!)
-                self.dotMarkerMoved = true
-                
-                UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
-                    self.dotMarker!.frame.origin.y += self.diff!
-                }, completion: nil)
-            }
-        }
-
+        self.moveDotMarker(false)
     }
     
     func setDayLabelUnhighlighted() {
@@ -265,16 +276,7 @@ class CVCalendarDayView: UIView {
         self.dayLabel?.textColor = color
         self.dayLabel?.font = font
         
-        if self.dotMarker != nil {
-            if self.dotMarkerMoved {
-                UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
-                    self.dotMarker!.frame.origin.y -= self.diff!
-                }, completion: {_ in
-                    self.dotMarkerMoved = false
-                })
-            }
-        }
-        
+        self.moveDotMarker(true)
         self.circleView?.removeFromSuperview()
         self.circleView = nil
     }
