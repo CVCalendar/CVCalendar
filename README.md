@@ -101,7 +101,7 @@ Since CVCalendarView and CVCalendarMenuView will be created automatically all yo
 
 <h4>Delegates Setup (Customization).</h4>
 
-<h6>[API page](https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/Pic4.png)</h6>
+<h6> [API page.](https://github.com/Mozharovsky/CVCalendar/wiki) </h6>
 
 A long story in short or customizable properties: 
 * Showing weekdays out 
