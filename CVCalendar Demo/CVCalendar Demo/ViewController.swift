@@ -1,9 +1,9 @@
 //
 //  ViewController.swift
-//  CVCalendar
+//  CVCalendar Demo
 //
-//  Created by E. Mozharovsky on 12/26/14.
-//  Copyright (c) 2014 GameApp. All rights reserved.
+//  Created by Мак-ПК on 1/3/15.
+//  Copyright (c) 2015 GameApp. All rights reserved.
 //
 
 import UIKit
@@ -16,7 +16,7 @@ class ViewController: UIViewController, CVCalendarViewDelegate {
     
     var shouldShowDaysOut = true
     var animationFinished = true
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,7 +29,7 @@ class ViewController: UIViewController, CVCalendarViewDelegate {
         self.calendarView.commitCalendarViewUpdate()
         self.menuView.commitMenuViewUpdate()
     }
-
+    
     @IBAction func switchChanged(sender: UISwitch) {
         if sender.on {
             self.calendarView!.changeDaysOutShowingState(false)
@@ -97,7 +97,7 @@ class ViewController: UIViewController, CVCalendarViewDelegate {
                 
                 updatedMonthLabel.alpha = 1
                 updatedMonthLabel.transform = CGAffineTransformIdentity
-
+                
                 }) { (finished) -> Void in
                     self.animationFinished = true
                     self.monthLabel.frame = updatedMonthLabel.frame
@@ -127,4 +127,3 @@ class ViewController: UIViewController, CVCalendarViewDelegate {
         self.calendarView.toggleMonthViewWithDate(resultDate)
     }
 }
-

@@ -1,21 +1,12 @@
 //
 //  AppDelegate.swift
-//  CVCalendar
+//  CVCalendar Demo
 //
-//  Created by E. Mozharovsky on 12/26/14.
-//  Copyright (c) 2014 GameApp. All rights reserved.
+//  Created by Мак-ПК on 1/3/15.
+//  Copyright (c) 2015 GameApp. All rights reserved.
 //
 
 import UIKit
-
-
-func colorFromCode(code: Int) -> UIColor {
-    let red = CGFloat((code & 0xFF0000) >> 16) / CGFloat(255)
-    let green = CGFloat((code & 0xFF00) >> 8) / CGFloat(255)
-    let blue = CGFloat((code & 0xFF) >> 0) / CGFloat(255)
-    
-    return UIColor(red: red, green: green, blue: blue, alpha: 1)
-}
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -25,15 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-        
-        UINavigationBar.appearance().barTintColor = colorFromCode(0xFF2D55)
-        
-        UINavigationBar.appearance().titleTextAttributes = [
-            NSForegroundColorAttributeName : UIColor.whiteColor()
-        ]
-        
-        UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
-        
         return true
     }
 
