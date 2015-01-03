@@ -76,6 +76,7 @@ Don't forget to add 2 outlets into your code.
 ```
 
 Two views are representing ultimately a MenuView and a CalendarView so they should have corresponding classes. To change their classes go to <b>Identity Inspector</b> and set custom classes. When it's done, you'll see in the dock panel something similar to the picture below.  (Blue UIView -> CVCalendarView, Green UIView -> CVCalendarMenuView)
+
 ![alt tag](https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/Pic3.png)
 
 > <b>NOTE</b>: Please note that both CalendarView and MenuView are calculating their content's frames depending on their own ones. So in your projects you may be editing the size of initial UIViews in the storyboard to reach an optimal content size. 
