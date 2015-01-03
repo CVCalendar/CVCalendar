@@ -64,7 +64,7 @@ So let's get started.
 
 <h4>Basic setup.</h4> 
 
-First, you have to add CVCalendar project into your own project. (TODO: CocoaPods installation)
+First, you have to add <b>CVCalendar</b> folder into your own project. (TODO: CocoaPods installation)
 
 Now you're about to add 2 UIViews to your Storyboard as it shown in the picture below.  
 ![alt tag](https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/Pic2.png)
@@ -101,7 +101,7 @@ Since CVCalendarView and CVCalendarMenuView will be created automatically all yo
 
 <h4>Delegates Setup (Customization).</h4>
 
-<h6>[API page](https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/Pic4.png)</h6>.
+<h6>[API page](https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/Pic4.png).</h6>
 
 A long story in short or customizable properties: 
 * Showing weekdays out 
@@ -116,6 +116,7 @@ Behaviour:
 * Animations on (de)selecting day views
 
 Finally we're going to customize properties. To make this possible you have to implement approptiate protocols. (You can see presented protocols and short descriptions in the <b>Arcitecture Section</b>). Open your Storyboard and do a right-click on CVCalendarView, you'll see the window with outlets and there are a few ones we actually need. Take a look at the picture to make sure you're doing everything properly.
+
 ![alt tag](https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/Pic4.png)
 
 Now depending on what you'd like to change you should implement a particular protocol providing methods for customizing that stuff. For delegates' API description take a look at [<b>this page</b>]
