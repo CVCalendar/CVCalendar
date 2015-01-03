@@ -26,7 +26,6 @@ class ViewController: UIViewController, CVCalendarViewDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        //self.calendarView?.updateCalendarViewFrame()
         self.calendarView.commitCalendarViewUpdate()
         self.menuView.commitMenuViewUpdate()
     }
@@ -90,8 +89,6 @@ class ViewController: UIViewController, CVCalendarViewDelegate {
             updatedMonthLabel.transform = CGAffineTransformMakeTranslation(0, offset)
             updatedMonthLabel.transform = CGAffineTransformMakeScale(1, 0.1)
             
-            
-            
             UIView.animateWithDuration(0.35, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
                 self.animationFinished = false
                 self.monthLabel.transform = CGAffineTransformMakeTranslation(0, -offset)
@@ -116,6 +113,18 @@ class ViewController: UIViewController, CVCalendarViewDelegate {
     
     @IBAction func todayMonthView() {
         self.calendarView.toggleTodayMonthView()
+    }
+    
+    func toggleMonthViewWithMonthOffset(offset: Int) {
+        let calendar = NSCalendar.currentCalendar()
+        let calendarManager = CVCalendarManager.sharedManager
+        let components = calendarManager.componentsForDate(NSDate()) // from today
+        
+        components.month += offset
+        
+        let resultDate = calendar.dateFromComponents(components)!
+        
+        self.calendarView.toggleMonthViewWithDate(resultDate)
     }
 }
 
