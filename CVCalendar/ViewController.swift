@@ -28,7 +28,7 @@ class ViewController: UIViewController, CVCalendarViewDelegate {
         
         //self.calendarView?.updateCalendarViewFrame()
         self.calendarView.commitCalendarViewUpdate()
-        self.menuView.updateFrames()
+        self.menuView.commitMenuViewUpdate()
     }
 
     @IBAction func switchChanged(sender: UISwitch) {

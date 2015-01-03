@@ -52,7 +52,7 @@ class CVCalendarMenuView: UIView {
         }
     }
     
-    func updateFrames() {
+    func commitMenuViewUpdate() {
         let space = 0 as CGFloat
         let width = self.frame.width / 7 - space
         let height = self.frame.height
