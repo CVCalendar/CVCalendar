@@ -49,20 +49,10 @@ class CVCalendarDayView: UIView {
         
         var day: Int?
         
-        let weekdaysIn = self.weekView!.weekdaysIn!
-        if let weekdaysOut = self.weekView?.weekdaysOut {
-            if hasDayAtWeekdayIndex(self.weekdayIndex!, weekdaysOut) {
-                self.isOut = true
-                day = weekdaysOut[self.weekdayIndex!]![0]
-            } else if hasDayAtWeekdayIndex(self.weekdayIndex!, weekdaysIn) {
-                day = weekdaysIn[self.weekdayIndex!]![0]
-            }
-        } else {
-            day = weekdaysIn[self.weekdayIndex!]![0]
-        }
+        
+        // TODO: Get day.
         
 
-        
         if day == self.weekView!.monthView!.currentDay && !self.isOut {
             let manager = CVCalendarManager.sharedManager
             let dateRange = manager.dateRange(self.weekView!.monthView!.date!)
