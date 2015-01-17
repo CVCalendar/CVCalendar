@@ -148,12 +148,13 @@
 		55E1223D1A588CC50013B002 /* CVCalendar */ = {
 			isa = PBXGroup;
 			children = (
-				55E1223E1A588CC50013B002 /* CVCalendarContentView.swift */,
+				55E122431A588CC50013B002 /* CVCalendarMonthView.swift */,
+				55E1224B1A588CC50013B002 /* CVCalendarWeekView.swift */,
 				55E1223F1A588CC50013B002 /* CVCalendarDayView.swift */,
+				55E1223E1A588CC50013B002 /* CVCalendarContentView.swift */,
 				55E122401A588CC50013B002 /* CVCalendarDayViewControlCoordinator.swift */,
 				55E122411A588CC50013B002 /* CVCalendarManager.swift */,
 				55E122421A588CC50013B002 /* CVCalendarMenuView.swift */,
-				55E122431A588CC50013B002 /* CVCalendarMonthView.swift */,
 				55E122441A588CC50013B002 /* CVCalendarRenderer.swift */,
 				55E122451A588CC50013B002 /* CVCalendarView.swift */,
 				55E122461A588CC50013B002 /* CVCalendarViewAnimator.swift */,
@@ -161,7 +162,6 @@
 				55E122481A588CC50013B002 /* CVCalendarViewAppearance.swift */,
 				55E122491A588CC50013B002 /* CVCalendarViewAppearanceDelegate.swift */,
 				55E1224A1A588CC50013B002 /* CVCalendarViewDelegate.swift */,
-				55E1224B1A588CC50013B002 /* CVCalendarWeekView.swift */,
 				55E1224C1A588CC50013B002 /* CVCircleView.swift */,
 				55E1224D1A588CC50013B002 /* CVDate.swift */,
 			);
@@ -477,6 +477,7 @@
 				55E122391A588CB60013B002 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		55E1223A1A588CB60013B002 /* Build configuration list for PBXNativeTarget "CVCalendar DemoTests" */ = {
 			isa = XCConfigurationList;
@@ -485,6 +486,7 @@
 				55E1223C1A588CB60013B002 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

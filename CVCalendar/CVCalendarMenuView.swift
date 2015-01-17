@@ -10,7 +10,9 @@ import UIKit
 
 class CVCalendarMenuView: UIView {
     
-    let symbols = CVCalendarManager.sharedManager.shortWeekdaySymbols() as [String]
+    var starterWeekday = 1
+    
+    var symbols = [String]()
     var symbolViews: [UILabel]?
 
     override init() {
@@ -26,10 +28,41 @@ class CVCalendarMenuView: UIView {
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
+        let propertyName = "CVCalendarStarterWeekday"
+        let firstWeekday = NSBundle.mainBundle().objectForInfoDictionaryKey(propertyName) as? Int
+        if firstWeekday != nil {
+            self.starterWeekday = firstWeekday!
+        } else {
+            let currentCalendar = NSCalendar.currentCalendar()
+            let firstWeekday = currentCalendar.firstWeekday
+            self.starterWeekday = firstWeekday
+        }
+        
+        
+        let calendar = NSCalendar(identifier: NSCalendarIdentifierGregorian)!
+        calendar.components(NSCalendarUnit.MonthCalendarUnit | NSCalendarUnit.DayCalendarUnit, fromDate: NSDate())
+        calendar.firstWeekday = self.starterWeekday
+        
+        symbols = calendar.weekdaySymbols as [String]
+        
         self.createDaySymbols()
     }
     
     func createDaySymbols() {
+        // Change symbols with their places if needed.
+        let dateFormatter = NSDateFormatter()
+        var weekdays = dateFormatter.shortWeekdaySymbols as NSArray
+        
+        let firstWeekdayIndex = starterWeekday - 1
+        if (firstWeekdayIndex > 0) {
+            let copy = weekdays
+            weekdays = (weekdays.subarrayWithRange(NSMakeRange(firstWeekdayIndex, 7 - firstWeekdayIndex)))
+            weekdays = weekdays.arrayByAddingObjectsFromArray(copy.subarrayWithRange(NSMakeRange(0, firstWeekdayIndex)))
+        }
+        
+        self.symbols = weekdays as [String]
+        
+        // Add symbols.
         self.symbolViews = [UILabel]()
         let space = 0 as CGFloat
         let width = self.frame.width / 7 - space

@@ -30,6 +30,8 @@ class ViewController: UIViewController, CVCalendarViewDelegate {
         self.menuView.commitMenuViewUpdate()
     }
     
+    // MARK: - IB Actions
+    
     @IBAction func switchChanged(sender: UISwitch) {
         if sender.on {
             self.calendarView!.changeDaysOutShowingState(false)
@@ -39,10 +41,12 @@ class ViewController: UIViewController, CVCalendarViewDelegate {
             self.shouldShowDaysOut = false
         }
     }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    @IBAction func todayMonthView() {
+        self.calendarView.toggleTodayMonthView()
     }
+    
+    // MARK: Calendar View Delegate
     
     func shouldShowWeekdaysOut() -> Bool {
         return self.shouldShowDaysOut
@@ -72,6 +76,13 @@ class ViewController: UIViewController, CVCalendarViewDelegate {
         }
     }
     
+    func dotMarker(shouldMoveOnHighlightingOnDayView dayView: CVCalendarDayView) -> Bool {
+        return false
+    }
+    
+    func topMarker(shouldDisplayOnDayView dayView: CVCalendarDayView) -> Bool {
+        return true
+    }
     
     
     func presentedDateUpdated(date: CVDate) {
@@ -109,10 +120,6 @@ class ViewController: UIViewController, CVCalendarViewDelegate {
             
             self.view.insertSubview(updatedMonthLabel, aboveSubview: self.monthLabel)
         }
-    }
-    
-    @IBAction func todayMonthView() {
-        self.calendarView.toggleTodayMonthView()
     }
     
     func toggleMonthViewWithMonthOffset(offset: Int) {

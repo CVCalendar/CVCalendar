@@ -12,7 +12,6 @@ class CVDate: NSObject {
     private let date: NSDate?
     let year: Int?
     let month: Int?
-    let week: Int?
     let day: Int?
     
     init(date: NSDate) {
@@ -25,18 +24,13 @@ class CVDate: NSObject {
         self.year = calendarManager.dateRange(date).year
         self.month = calendarManager.dateRange(date).month
         self.day = calendarManager.dateRange(date).day
-        
-        // figuring out the week
-        let components = calendarManager.componentsForDate(date)
-        self.week = components.weekOfMonth - 1 // the same indexing way we use for building week views
     }
     
-    init(day: Int, month: Int, week: Int, year: Int) {
+    init(day: Int, month: Int, year: Int) {
         super.init()
         
         self.year = year
         self.month = month
-        self.week = week
         self.day = day
     }
     

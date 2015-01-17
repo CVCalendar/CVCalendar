@@ -18,6 +18,7 @@ class CVCalendarView: UIView {
     }
     
     // MARK: - Calendar View Delegate
+    
     var shouldShowWeekdaysOut: Bool? {
         if let delegate = self.delegate {
             return delegate.shouldShowWeekdaysOut()
@@ -101,14 +102,6 @@ class CVCalendarView: UIView {
     
     override init() {
         super.init()
-        
-        self.monthViewHolder = self
-        
-        self.hidden = true
-        let presentMonthView = CVCalendarMonthView(calendarView: self, date: NSDate())
-        presentMonthView.updateAppearance(frame)
-        self.contentView = CVCalendarContentView(frame: CGRectMake(0,0,self.frame.width,self.frame.height), calendarView: self, presentedMonthView: presentMonthView)
-        self.addSubview(self.contentView!)
     }
     
     override init(frame: CGRect) {
