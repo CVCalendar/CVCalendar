@@ -113,7 +113,6 @@ class CVCalendarView: UIView {
         super.init(coder: aDecoder)
         
         self.monthViewHolder = self
-
         self.hidden = true
         let presentMonthView = CVCalendarMonthView(calendarView: self, date: NSDate())
         presentMonthView.updateAppearance(frame)

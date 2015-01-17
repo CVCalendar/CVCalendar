@@ -37,6 +37,9 @@ class CVCalendarViewAppearance: NSObject {
     var dayLabelWeekdayHighlightedTextColor: UIColor? = .whiteColor()
     var dayLabelPresentWeekdayHighlightedTextColor: UIColor? = .whiteColor()
     
+    var dotMarkerColor: UIColor? = .whiteColor()
+    var dotMarkerOffset: CGFloat? = 3.5
+    
     var delegate: CVCalendarViewAppearanceDelegate? {
         didSet {
             self.setupAppearance()
@@ -110,6 +113,14 @@ class CVCalendarViewAppearance: NSObject {
         
         if let dayLabelPresentWeekdayHighlightedTextColor = self.delegate!.dayLabelPresentWeekdayHighlightedTextColor?() {
             self.dayLabelPresentWeekdayHighlightedTextColor = dayLabelPresentWeekdayHighlightedTextColor
+        }
+        
+        if let dotMarkerColor = self.delegate!.dotMarkerColor?() {
+            self.dotMarkerColor = dotMarkerColor
+        }
+        
+        if let dotMarkerOffset = self.delegate!.dotMarkerOffset?() {
+            self.dotMarkerOffset = dotMarkerOffset
         }
     }
     

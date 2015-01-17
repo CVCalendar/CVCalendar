@@ -12,6 +12,7 @@ class CVDate: NSObject {
     private let date: NSDate?
     let year: Int?
     let month: Int?
+    let week: Int?
     let day: Int?
     
     init(date: NSDate) {
@@ -26,11 +27,12 @@ class CVDate: NSObject {
         self.day = calendarManager.dateRange(date).day
     }
     
-    init(day: Int, month: Int, year: Int) {
+    init(day: Int, month: Int, week: Int, year: Int) {
         super.init()
         
         self.year = year
         self.month = month
+        self.week = week
         self.day = day
     }
     

@@ -30,6 +30,8 @@ protocol CVCalendarViewAppearanceDelegate {
     optional func dayLabelPresentWeekdayHighlightedBackgroundColor() -> UIColor
     optional func dayLabelPresentWeekdayHighlightedBackgroundAlpha() -> CGFloat
     
-
+    // new
+    optional func dotMarkerColor() -> UIColor
+    optional func dotMarkerOffset() -> CGFloat
     
 }
