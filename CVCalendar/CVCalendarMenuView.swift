@@ -29,8 +29,15 @@ class CVCalendarMenuView: UIView {
         super.init(coder: aDecoder)
         
         let propertyName = "CVCalendarStarterWeekday"
-        let firstWeekday = NSBundle.mainBundle().objectForInfoDictionaryKey(propertyName) as Int
-        self.starterWeekday = firstWeekday
+        let firstWeekday = NSBundle.mainBundle().objectForInfoDictionaryKey(propertyName) as? Int
+        if firstWeekday != nil {
+            self.starterWeekday = firstWeekday!
+        } else {
+            let currentCalendar = NSCalendar.currentCalendar()
+            let firstWeekday = currentCalendar.firstWeekday
+            self.starterWeekday = firstWeekday
+        }
+        
         
         let calendar = NSCalendar(identifier: NSCalendarIdentifierGregorian)!
         calendar.components(NSCalendarUnit.MonthCalendarUnit | NSCalendarUnit.DayCalendarUnit, fromDate: NSDate())
@@ -42,9 +49,7 @@ class CVCalendarMenuView: UIView {
     }
     
     func createDaySymbols() {
-        // Sort symbols. 
-        var offset = 0
-        
+        // Change symbols with their places if needed.
         let dateFormatter = NSDateFormatter()
         var weekdays = dateFormatter.shortWeekdaySymbols as NSArray
         
@@ -57,6 +62,7 @@ class CVCalendarMenuView: UIView {
         
         self.symbols = weekdays as [String]
         
+        // Add symbols.
         self.symbolViews = [UILabel]()
         let space = 0 as CGFloat
         let width = self.frame.width / 7 - space

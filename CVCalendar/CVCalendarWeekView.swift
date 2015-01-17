@@ -19,7 +19,6 @@ class CVCalendarWeekView: UIView {
     
     var dayViews: [CVCalendarDayView]?
     
-    
     // MARK: - Initialization
 
     init(monthView: CVCalendarMonthView, frame: CGRect, index: Int) {
@@ -31,9 +30,6 @@ class CVCalendarWeekView: UIView {
         
         // Get weekdays in.
         let weeksIn = self.monthView!.weeksIn!
-        println("Weeks count = \(monthView.numberOfWeeks!)")
-        println("Date = \(monthView.date)")
-        println("Weeks in: \(weeksIn.count)")
         self.weekdaysIn = weeksIn[self.index!]
         
         // Get weekdays out.

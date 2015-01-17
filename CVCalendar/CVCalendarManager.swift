@@ -25,7 +25,7 @@ class CVCalendarManager: NSObject {
     
     // MARK: - Private initialization
     
-    var starterWeekday = 1
+    var starterWeekday: Int?
     
     private override init() {
         self.calendar = NSCalendar(identifier: NSCalendarIdentifierGregorian)
@@ -33,10 +33,16 @@ class CVCalendarManager: NSObject {
         self.components = self.calendar?.components(NSCalendarUnit.MonthCalendarUnit | NSCalendarUnit.DayCalendarUnit, fromDate: self.currentDate!)
         
         let propertyName = "CVCalendarStarterWeekday"
-        let firstWeekday = NSBundle.mainBundle().objectForInfoDictionaryKey(propertyName) as Int
-        
-        self.starterWeekday = firstWeekday
-        self.calendar?.firstWeekday = starterWeekday
+        let firstWeekday = NSBundle.mainBundle().objectForInfoDictionaryKey(propertyName) as? Int
+        if firstWeekday != nil {
+            self.starterWeekday = firstWeekday
+            self.calendar!.firstWeekday = starterWeekday!
+        } else {
+            let currentCalendar = NSCalendar.currentCalendar()
+            let firstWeekday = currentCalendar.firstWeekday
+            self.starterWeekday = firstWeekday
+            self.calendar!.firstWeekday = starterWeekday!
+        }
     }
     
     // MARK: - Common date analysis
