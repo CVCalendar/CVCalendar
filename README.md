@@ -105,6 +105,7 @@ Since CVCalendarView and CVCalendarMenuView will be created automatically all yo
 
 A long story in short or customizable properties: 
 * Showing weekdays out 
+* Moving a dot marker on highlighting
 * Showing a dot marker on a specific day view
 * Dot marker's color
 * Space between week views and day views
@@ -126,6 +127,55 @@ Do NOT forget to connect a particular outlet with your ViewController if you're 
 
 > <b>NOTE</b>: CVCalendar defines default values for all the customizable properties (i.e. for ones defined in the presented protocols). Thus far if you don't implement protocols yourself the calendar will behave as it was initially designed. 
 
+<h3> Manual Setup </h3>
+
+If for some reason you'd like to setup **CVCalendar** manually you have to do the following steps. 
+
+Initialize **CVCalendarView** with either `init` or `init:frame` methods. I suggest to do it in `viewDidLoad` method. Do NOT put initialization in `viewDidAppear:` or `viewWillAppear:` methods! Then setup delegates if you're going to customize options. 
+
+For **CVCalendarMenuView** you simply initialize it as well as CVCalendarView and no delegates are available. 
+
+How it should look like. 
+
+```swift
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // CVCalendarView initialization with frame 
+        self.calendarView = CVCalendarView(frame: CGRectMake(0, 20, 300, 450))
+        
+        // CVCalendarMenuView initialization with frame 
+        self.menuView = CVCalendarMenuView(frame: CGRectMake(0, 0, 300, 15))
+        
+        /* 
+         *  Note that setting up delegates as showed below is not necessary. 
+         */
+        
+        // Calendar delegate 
+        self.calendarView.calendarDelegate = self 
+        
+        // Appearance delegate 
+        self.calendarView.appearanceDelegate = self
+        
+        // Animator delegate
+        self.calendarView.animatorDelegate = self
+    }
+```
+
+And do not forget to commit updates on `viewDidAppear:` method. 
+
+```swift
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Commit frames' updates
+        self.calendarView.commitCalendarViewUpdate()
+        self.menuView.commitMenuViewUpdate()
+    }
+```
+
+Here you go. 
+
 Advanced API
 ==========
 
@@ -133,9 +183,11 @@ For some additional funcionality there are a few handy techniques which can be u
 
 <h5>Starter Weekday</h5>
 
-You might want to use a specific first weekday in CVCalendar. And it's possible to set any weekday as the first one. Initilially, CVCalendar's figuring out your system calendar's first weekday and sets it as its own as well but if you want to change it here we go. 
+You might want to use a specific first weekday in CVCalendar. And it's possible to set any weekday as the first one.
 
-Open your Info.plist and add a new Number cell with name CVCalendarStarterWeekday. Then set the appropriate value. Note, that the minimal value is 1 and the maximal is 7. (Sunday ... Saturday).
+> <b>NOTE</b>: Initilially, CVCalendar's figuring out your system calendar's first weekday and sets it as its own.
+
+Open your Info.plist and add a new Number cell with name **CVCalendarStarterWeekday**. Then set the appropriate value. Note, that the minimal value is 1 and the maximal is 7. (Sunday ... Saturday).
 
 ![alt tag](https://cloud.githubusercontent.com/assets/6762769/5789942/321b16d2-9e4f-11e4-954a-cd04d950ae10.png)
 
