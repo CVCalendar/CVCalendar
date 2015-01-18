@@ -129,7 +129,15 @@ Do NOT forget to connect a particular outlet with your ViewController if you're 
 Advanced API
 ==========
 
-For some additional funcionality there are a few handy methods which can be useful for your app. 
+For some additional funcionality there are a few handy techniques which can be useful for your app. 
+
+<h5>Starter Weekday</h5>
+
+You might want to use a specific first weekday in CVCalendar. And it's possible to set any weekday as the first one. Initilially, CVCalendar's figuring out your system calendar's first weekday and sets it as its own as well but if you want to change it here we go. 
+
+Open your Info.plist and add a new Number cell with name CVCalendarStarterWeekday. Then set the appropriate value. Note, that the minimal value is 1 and the maximal is 7. (Sunday ... Saturday).
+
+![alt tag](https://cloud.githubusercontent.com/assets/6762769/5789942/321b16d2-9e4f-11e4-954a-cd04d950ae10.png)
 
 <h5>Toggling.</h5>
 
@@ -169,4 +177,22 @@ For loading next MonthView.
 For loading previous MonthView.
 ```swift
         self.calendarView.loadPreviousMonthView()
+```
+
+<h5>Days out hiding.</h5>
+
+It's possible not to show days out of the presented month. First, CVCalendar provides a special method for (un)hiding days out with animation. Second, once you've made days out hidden ones it doesn't mean CVCalendar won't show them anymore. You also have to pass an appropriate value in `shouldShowWeekdaysOut:` method to notify CVCalendar you don't want to show days out. 
+
+For animatible hiding. 
+
+```swift 
+            self.calendarView!.changeDaysOutShowingState(true) // just hide days out in loaded Month Views
+            self.shouldShowDaysOut = false // passing value for 'shouldShowWeekdaysOut:'
+```
+
+Unhiding. 
+
+```swift
+            self.calendarView!.changeDaysOutShowingState(false) // just unhide days out in loaded Month Views
+            self.shouldShowDaysOut = true // passing value for 'shouldShowWeekdaysOut:'
 ```
