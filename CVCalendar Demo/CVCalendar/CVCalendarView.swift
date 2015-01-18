@@ -102,10 +102,24 @@ class CVCalendarView: UIView {
     
     override init() {
         super.init()
+        
+        self.monthViewHolder = self
+        self.hidden = true
+        let presentMonthView = CVCalendarMonthView(calendarView: self, date: NSDate())
+        presentMonthView.updateAppearance(CGRectZero)
+        self.contentView = CVCalendarContentView(frame: bounds, calendarView: self, presentedMonthView: presentMonthView)
+        self.addSubview(self.contentView!)
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        self.monthViewHolder = self
+        self.hidden = true
+        let presentMonthView = CVCalendarMonthView(calendarView: self, date: NSDate())
+        presentMonthView.updateAppearance(frame)
+        self.contentView = CVCalendarContentView(frame: bounds, calendarView: self, presentedMonthView: presentMonthView)
+        self.addSubview(self.contentView!)
     }
 
     // IB Initialization
@@ -116,7 +130,7 @@ class CVCalendarView: UIView {
         self.hidden = true
         let presentMonthView = CVCalendarMonthView(calendarView: self, date: NSDate())
         presentMonthView.updateAppearance(frame)
-        self.contentView = CVCalendarContentView(frame: CGRectMake(0,0,self.frame.width,self.frame.height), calendarView: self, presentedMonthView: presentMonthView)
+        self.contentView = CVCalendarContentView(frame: bounds, calendarView: self, presentedMonthView: presentMonthView)
         self.addSubview(self.contentView!)
     }
     

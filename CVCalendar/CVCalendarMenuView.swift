@@ -18,16 +18,26 @@ class CVCalendarMenuView: UIView {
     override init() {
         super.init()
         
+        self.setupWeekdaySymbols()
         self.createDaySymbols()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        self.setupWeekdaySymbols()
+        self.createDaySymbols()
     }
 
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
+
+        self.setupWeekdaySymbols()
+        self.createDaySymbols()
+    }
+    
+    func setupWeekdaySymbols() {
         let propertyName = "CVCalendarStarterWeekday"
         let firstWeekday = NSBundle.mainBundle().objectForInfoDictionaryKey(propertyName) as? Int
         if firstWeekday != nil {
@@ -44,8 +54,6 @@ class CVCalendarMenuView: UIView {
         calendar.firstWeekday = self.starterWeekday
         
         symbols = calendar.weekdaySymbols as [String]
-        
-        self.createDaySymbols()
     }
     
     func createDaySymbols() {
