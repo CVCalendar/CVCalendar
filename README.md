@@ -210,6 +210,7 @@ As well you're able to toggle to any month. Let's create a method that changes M
         let components = calendarManager.componentsForDate(NSDate()) // from today
         
         components.month += offset
+        components.day = 1 // CVCalendar will select this day view
         
         let resultDate = calendar.dateFromComponents(components)!
         
