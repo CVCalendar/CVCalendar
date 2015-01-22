@@ -500,7 +500,8 @@ class CVCalendarContentView: UIScrollView, UIScrollViewDelegate {
                     if self.date(date, equalToPresentedDate: NSDate()) {
                         self.selectDayViewWithDay(presentedDate.day!, inMonthView: presentedMonthView)
                     } else {
-                        self.selectDayViewWithDay(1, inMonthView: presentedMonthView)
+                        let day = CVCalendarManager.sharedManager.dateRange(date).day
+                        self.selectDayViewWithDay(day, inMonthView: presentedMonthView)
                     }
                     
                     
