@@ -1,20 +1,21 @@
 //
-//  CVCalendarContentView.swift
-//  CVCalendar
+//  CVCalendarMonthContentView.swift
+//  CVCalendar Demo
 //
-//  Created by E. Mozharovsky on 12/27/14.
-//  Copyright (c) 2014 GameApp. All rights reserved.
+//  Created by E. Mozharovsky on 1/25/15.
+//  Copyright (c) 2015 GameApp. All rights reserved.
 //
 
 import UIKit
 
 enum ScrollDirection {
     case None
-    case Left
     case Right
+    case Left
 }
 
-class CVCalendarContentView: UIScrollView, UIScrollViewDelegate {
+class CVCalendarMonthContentView: UIScrollView, UIScrollViewDelegate {
+
     var monthViews: [Int : CVCalendarMonthView]?
     
     private var lastContentOffset: CGFloat = 0
@@ -25,7 +26,7 @@ class CVCalendarContentView: UIScrollView, UIScrollViewDelegate {
     private let calendarView: CVCalendarView?
     
     // MARK: - Initialization
-   
+    
     override init() {
         super.init()
     }
@@ -522,4 +523,5 @@ class CVCalendarContentView: UIScrollView, UIScrollViewDelegate {
             return false
         }
     }
+
 }

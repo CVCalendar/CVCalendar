@@ -89,10 +89,9 @@ class CVCalendarMonthView: UIView {
                     if dayView == coordinator.selectedDayView {
                         coordinator.selectedDayView = nil
                     }
-                    dayView.weekView = nil
                 }
                 
-                weekView.monthView = nil
+                weekView.destroy()
             }
             
             self.weekViews = nil

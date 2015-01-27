@@ -8,7 +8,35 @@
 
 import UIKit
 
+enum CVCalendarViewMode {
+    case MonthView
+    case WeekView
+}
+
 class CVCalendarView: UIView {
+    
+    // MARK: - Calendar Mode 
+    
+    var calendarMode: CVCalendarViewMode! = .MonthView
+    
+    func loadCalendarMode() {
+        let calendarModeKey = "CVCalendarViewMode"
+        let calendarMode = NSBundle.mainBundle().objectForInfoDictionaryKey(calendarModeKey) as? String
+        
+        if calendarMode != nil {
+            if calendarMode! == "MonthView" {
+                if self.calendarMode != .MonthView {
+                    self.calendarMode = .MonthView
+                }
+            } else {
+                if self.calendarMode != .WeekView {
+                    self.calendarMode = .WeekView
+                }
+            }
+        }
+        
+        println("Mode is : \(calendarMode?)")
+    }
     
     // MARK: - Current date 
     var presentedDate: CVDate? {
@@ -81,19 +109,12 @@ class CVCalendarView: UIView {
     
     // MARK: - Manual Setup
     
-    var contentView: CVCalendarContentView?
+    var contentView: CVCalendarMonthContentView?
     var monthViewHolder: UIView? {
         didSet {
-            let width = self.monthViewHolder!.frame.width
-            let height = self.monthViewHolder!.frame.height
-            let x = CGFloat(0)
-            let y = CGFloat(0)
-            
-            let frame = CGRectMake(x, y, width, height)
-            
             let presentMonthView = CVCalendarMonthView(calendarView: self, date: NSDate())
-            presentMonthView.updateAppearance(frame)
-            self.contentView = CVCalendarContentView(frame: frame, calendarView: self, presentedMonthView: presentMonthView)
+            presentMonthView.updateAppearance(monthViewHolder!.bounds)
+            self.contentView = CVCalendarMonthContentView(frame: monthViewHolder!.bounds, calendarView: self, presentedMonthView: presentMonthView)
             self.monthViewHolder?.addSubview(self.contentView!)
         }
     }
@@ -103,36 +124,48 @@ class CVCalendarView: UIView {
     override init() {
         super.init()
         
+        loadCalendarMode()
+        
         self.monthViewHolder = self
         self.hidden = true
         let presentMonthView = CVCalendarMonthView(calendarView: self, date: NSDate())
         presentMonthView.updateAppearance(CGRectZero)
-        self.contentView = CVCalendarContentView(frame: bounds, calendarView: self, presentedMonthView: presentMonthView)
+        self.contentView = CVCalendarMonthContentView(frame: bounds, calendarView: self, presentedMonthView: presentMonthView)
         self.addSubview(self.contentView!)
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        loadCalendarMode()
+        
         self.monthViewHolder = self
         self.hidden = true
         let presentMonthView = CVCalendarMonthView(calendarView: self, date: NSDate())
-        presentMonthView.updateAppearance(frame)
-        self.contentView = CVCalendarContentView(frame: bounds, calendarView: self, presentedMonthView: presentMonthView)
+        presentMonthView.updateAppearance(bounds)
+        self.contentView = CVCalendarMonthContentView(frame: bounds, calendarView: self, presentedMonthView: presentMonthView)
         self.addSubview(self.contentView!)
     }
 
     // IB Initialization
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder) 
+        
+        loadCalendarMode()
         
         self.monthViewHolder = self
         self.hidden = true
         let presentMonthView = CVCalendarMonthView(calendarView: self, date: NSDate())
-        presentMonthView.updateAppearance(frame)
-        self.contentView = CVCalendarContentView(frame: bounds, calendarView: self, presentedMonthView: presentMonthView)
-        self.addSubview(self.contentView!)
+        presentMonthView.updateAppearance(bounds)
+        
+        //self.contentView = CVCalendarContentView(frame: bounds, calendarView: self, presentedMonthView: presentMonthView)
+        //self.addSubview(self.contentView!)
+        
+        weekView = CVCalendarWeekContentView(frame: bounds, calendarView: self, presentedMonthView: presentMonthView)
+        addSubview(weekView)
     }
+    
+    var weekView: CVCalendarWeekContentView!
     
     // MARK: - Calendar View Control
     
@@ -143,22 +176,22 @@ class CVCalendarView: UIView {
     func didSelectDayView(dayView: CVCalendarDayView) {
         self.contentView?.performedDayViewSelection(dayView)
         self.delegate?.didSelectDayView(dayView)
+        
+        if weekView != nil {
+            weekView.performedDayViewSelection(dayView)
+        }
+        
     }
     
     // MARK: - Final preparation
     
     // Called on view's appearing.
     func commitCalendarViewUpdate() {
-        let width = self.monthViewHolder!.frame.width
-        let height = self.monthViewHolder!.frame.height
-        let x = CGFloat(0)
-        let y = CGFloat(0)
-        
         let coordinator = CVCalendarDayViewControlCoordinator.sharedControlCoordinator
         coordinator.animator = self.animator
         
-        let frame = CGRectMake(x, y, width, height)
-        self.contentView!.updateFrames(frame)
+        //self.contentView!.updateFrames(monthViewHolder!.bounds)
+        weekView.updateFrames(bounds)
     }
     
     func toggleMonthViewWithDate(date: NSDate) {

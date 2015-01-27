@@ -255,12 +255,14 @@ class CVCalendarDayView: UIView {
                     self.dotMarker!.frame.origin.y -= self.diff!
                     }, completion: nil)
             } else {
+                
                 if let dotMarker = self.dotMarker {
                     if let delegate = self.weekView!.monthView!.calendarView!.delegate {
                         let frame = dotMarker.frame
                         var color: UIColor?
                         if unwinded {
-                            color = delegate.dotMarker(colorOnDayView: self)
+                            let appearance = weekView!.monthView!.calendarView!.appearanceDelegate! // Note: if nil then look at recovery mechanism
+                            color = (isOut) ? appearance.dayLabelWeekdayOutTextColor : delegate.dotMarker(colorOnDayView: self)
                         } else {
                             if let appearance = self.weekView!.monthView!.calendarView!.appearanceDelegate  {
                                 color = appearance.dotMarkerColor!
@@ -332,9 +334,21 @@ class CVCalendarDayView: UIView {
         self.circleView = nil
     }
     
+    // MARK: - View Destruction
+    
+    func destroy() {
+        self.weekView = nil
+        self.dayLabel?.removeFromSuperview()
+        self.circleView?.removeFromSuperview()
+        self.topMarker?.removeAllAnimations()
+        self.dotMarker?.removeFromSuperview()
+    }
+    
     // MARK: - Content reload
     
     func reloadContent() {
+        self.dotMarker?.removeFromSuperview()
+        self.dotMarker = nil
         self.setupDotMarker()
         var shouldShowDaysOut = self.weekView!.monthView!.calendarView!.shouldShowWeekdaysOut!
         if !shouldShowDaysOut {
