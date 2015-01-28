@@ -23,7 +23,10 @@ class CVCalendarMonthContentView: UIScrollView, UIScrollViewDelegate {
     private var pageChanged = false
     private var pageLoadingEnabled = true
     private var direction: ScrollDirection = .None
-    private let calendarView: CVCalendarView?
+    
+    private let controller: CVCalendarContentViewController!
+    private let calendarView: CVCalendarView!
+    private let presentedMonthView: CVCalendarMonthView!
     
     // MARK: - Initialization
     
@@ -31,10 +34,12 @@ class CVCalendarMonthContentView: UIScrollView, UIScrollViewDelegate {
         super.init()
     }
     
-    init(frame: CGRect, calendarView: CVCalendarView, presentedMonthView: CVCalendarMonthView) {
+    init(frame: CGRect, controller: CVCalendarContentViewController) {
         super.init(frame: frame)
         
-        self.calendarView = calendarView
+        self.controller = controller
+        self.calendarView = controller.calendarView
+        self.presentedMonthView = controller.presentedMonthView
         
         self.frame = frame
         self.contentSize = CGSizeMake(self.frame.width * 3, self.frame.height)
