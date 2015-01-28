@@ -48,9 +48,9 @@
                                 </connections>
                             </switch>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T1w-UY-QHC" customClass="CVCalendarView" customModule="CVCalendar_Demo" customModuleProvider="target">
-                                <rect key="frame" x="16" y="103" width="568" height="50"/>
+                                <rect key="frame" x="16" y="103" width="568" height="300"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="3oZ-He-brt"/>
+                                    <constraint firstAttribute="height" constant="300" id="3oZ-He-brt"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="calendarDelegate" destination="vXZ-lx-hvc" id="2DW-PO-jTH"/>

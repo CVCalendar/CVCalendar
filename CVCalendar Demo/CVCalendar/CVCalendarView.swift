@@ -171,18 +171,18 @@ class CVCalendarView: UIView {
     }
     
     func toggleMonthViewWithDate(date: NSDate) {
-        self.contentView!.togglePresentedDate(date)
+        //self.contentView!.togglePresentedDate(date)
     }
     
     func toggleTodayMonthView() {
-        self.contentView!.togglePresentedDate(NSDate())
+        //self.contentView!.togglePresentedDate(NSDate())
     }
     
     func loadNextMonthView() {
-        self.contentView!.presentNextMonth(nil)
+        //self.contentView!.presentNextMonth(nil)
     }
     
     func loadPreviousMonthView() {
-        self.contentView!.presentPreviousMonth(nil)
+        //self.contentView!.presentPreviousMonth(nil)
     }
 }

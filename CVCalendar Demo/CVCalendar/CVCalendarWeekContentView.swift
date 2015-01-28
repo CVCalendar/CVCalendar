@@ -18,6 +18,7 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
     typealias Manager = CVCalendarManager
     typealias Recovery = CVCalendarWeekContentRecovery
     typealias WeekContentView = CVCalendarWeekContentView
+    typealias DayView = CVCalendarDayView
     typealias ContentController = CVCalendarContentViewController
     
     // MARK: Public properties
@@ -495,15 +496,16 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
         }
     }
     
+    // MARK: - Week View Toggling 
+    
+    // TODO: Add an appropriate method.
+    
     // MARK: - Content View Delegate 
     
     func updateFrames() {
         println("Updating 2")
         _updateFrames()
-        
         println("Scroll View UPDATED: \(scrollView)")
-        
-        
     }
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
@@ -520,16 +522,15 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
     }
     
     func performedDayViewSelection(dayView: CVCalendarDayView) {
-        println("Performed seelction")
         _performedDayViewSelection(dayView)
     }
     
-    func presentNextView(view: UIView?) {
-        
+    func presentNextView(dayView: DayView?) {
+        presentNextWeekView(dayView)
     }
     
-    func presentPreviousView(view: UIView?) {
-        
+    func presentPreviousView(dayView: DayView?) {
+        presentPreviousWeekView(dayView)
     }
     
     func updateDayViews(hidden: Bool) {
@@ -539,5 +540,4 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
     func togglePresentedDate(date: NSDate) {
         
     }
-
 }
