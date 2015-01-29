@@ -6,8 +6,10 @@ A custom visual calendar for iOS 8 written in Swift.
 Screenshots
 ==========
 
-![alt tag](https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/Pic1.png) 
-![alt tag](https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/Demo.gif)
+<center>![alt tag](https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/iPhone6_MonthView.png)</center>
+<center>![alt tag](https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/iPhone6_WeekView.png)</center>
+
+<center>![alt tag](https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/Demo.gif)</center>
 
 Arcitecture
 ==========
