@@ -37,7 +37,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>CVCalendarViewMode</key>
-	<string>MonthView</string>
+	<string>WeekView</string>
 	<key>CVCalendarStarterWeekday</key>
 	<integer>1</integer>
 </dict>

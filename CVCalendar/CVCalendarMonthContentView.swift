@@ -42,7 +42,6 @@ class CVCalendarMonthContentView: NSObject, CVCalendarContentDelegate {
     private let controller: CVCalendarContentViewController!
     private let calendarView: CVCalendarView!
     private let presentedMonthView: CVCalendarMonthView!
-    
     private let contentController: ContentController!
     private let scrollView: UIScrollView!
     
@@ -194,8 +193,6 @@ class CVCalendarMonthContentView: NSObject, CVCalendarContentDelegate {
         
         let _date = calendar.dateFromComponents(components)!
         
-        println("")
-        
         let frame = CGRectMake(0, 0, scrollView.frame.width, scrollView.frame.height)
         let monthView = CVCalendarMonthView(calendarView: self.calendarView!, date: _date)
         monthView.updateAppearance(frame)
@@ -316,7 +313,6 @@ class CVCalendarMonthContentView: NSObject, CVCalendarContentDelegate {
         
         let monthViews = self.monthViews!.values
         for monthView in monthViews {
-            println("Month View : \(monthView)")
             monthView.reloadWeekViewsWithMonthFrame(frame)
         }
         
@@ -547,9 +543,7 @@ class CVCalendarMonthContentView: NSObject, CVCalendarContentDelegate {
     // MARK: - Content View Delegate
     
     func updateFrames() {
-        println("Updating 2")
         _updateFrames()
-        println("Scroll View UPDATED: \(scrollView)")
     }
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
@@ -582,6 +576,6 @@ class CVCalendarMonthContentView: NSObject, CVCalendarContentDelegate {
     }
     
     func togglePresentedDate(date: NSDate) {
-        
+        _togglePresentedDate(date)
     }
 }

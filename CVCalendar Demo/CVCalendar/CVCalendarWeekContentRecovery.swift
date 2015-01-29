@@ -30,9 +30,7 @@ class CVCalendarWeekContentRecovery: NSObject {
     }
     
     // MARK: - Recovery Operations
-    
-    private var direction: ScrollDirection = .None
-    func recoverMonthView(monthView: MonthView, direction: ScrollDirection) {
+    func recoverMonthView(monthView: MonthView) {
         func hasDuplicate() -> Bool {
             for _monthView in monthViews {
                 if monthView == _monthView {
@@ -44,7 +42,6 @@ class CVCalendarWeekContentRecovery: NSObject {
         }
         
         if !hasDuplicate() {
-            self.direction = direction
             monthViews.append(monthView)
             flushIfNeeded()
         }
@@ -53,13 +50,16 @@ class CVCalendarWeekContentRecovery: NSObject {
     private let limit = 3
     func flushIfNeeded() {
         func recoveryAllowed(monthView: MonthView) -> Bool {
-            for weekView in monthView.weekViews! {
-                for _weekView in weekContentView.weekViews.values {
-                    if weekView == _weekView {
-                        return false
+            if let weekViews = monthView.weekViews {
+                for weekView in weekViews {
+                    for _weekView in weekContentView.weekViews.values {
+                        if weekView == _weekView {
+                            return false
+                        }
                     }
                 }
-            }
+            } 
+
             
             return true
         }

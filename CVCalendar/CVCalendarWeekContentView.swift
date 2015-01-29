@@ -33,8 +33,6 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
     private var presentedMonthView: MonthView!
     
     private let calendarView: CalendarView!
-    
-    // NEW
     private let scrollView: UIScrollView!
     private let contentController: ContentController!
     
@@ -42,8 +40,6 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
     
     init(contentController: ContentController) {
         super.init()
-        
-        println("Initilized")
         
         self.contentController = contentController
         self.scrollView = contentController.preparedScrollView()
@@ -83,13 +79,22 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
         // Show the central page.
         scrollView.scrollRectToVisible(presentedWeekView.frame, animated: false)
         
-        recovery.recoverMonthView(presentedMonthView, direction: direction)
+        recovery.recoverMonthView(presentedMonthView)
     }
     
     // MARK: - Month Views Loading 
     
     private let calendar = NSCalendar.currentCalendar()
     private let manager = Manager.sharedManager
+    
+    func currentMonthView() -> MonthView {
+        let countOfWeeks = CGFloat(manager.monthDateRange(presentedDate).countOfWeeks)
+        let frame = CGRectMake(0, 0, scrollView.frame.width, scrollView.frame.height * countOfWeeks)
+        let monthView = MonthView(calendarView: self.calendarView!, date: presentedDate)
+        monthView.updateAppearance(frame)
+        
+        return monthView
+    }
     
     func nextMonthView(date: NSDate) -> MonthView {
         let firstDate = manager.monthDateRange(date).monthStartDate
@@ -217,7 +222,7 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
             extraWeekView.removeFromSuperview()
             
             presentedWeekView.utilizable = true
-            recovery.recoverMonthView(presentedWeekView.monthView!, direction: direction)
+            recovery.recoverMonthView(presentedWeekView.monthView!)
             
             replaceWeekView(leftWeekView, toPage: 0, animatable: false)
             replaceWeekView(presentedWeekView, toPage: 1, animatable: true)
@@ -242,7 +247,7 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
             extraWeekView.removeFromSuperview()
             
             presentedWeekView.utilizable = true
-            recovery.recoverMonthView(presentedWeekView.monthView!, direction: direction)
+            recovery.recoverMonthView(presentedWeekView.monthView!)
             
             replaceWeekView(rightWeekView, toPage: 2, animatable: false)
             replaceWeekView(presentedWeekView, toPage: 1, animatable: true)
@@ -362,7 +367,7 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
                 
                 extraWeekView.removeFromSuperview()
                 presentWeekView.utilizable = true
-                self.recovery.recoverMonthView(presentWeekView.monthView!, direction: self.direction)
+                self.recovery.recoverMonthView(presentWeekView.monthView!)
                 
                 let rightWeekView = self.nextWeekView(presentWeekView)
                 
@@ -404,7 +409,7 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
             }, completion: { (finished) -> Void in
 
                 extraWeekView.removeFromSuperview()
-                self.recovery.recoverMonthView(presentedWeekView.monthView!, direction: self.direction)
+                self.recovery.recoverMonthView(presentedWeekView.monthView!)
                 
                 let leftWeekView = self.previousWeekView(presentedWeekView)
                 
@@ -468,29 +473,59 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
         :param: hidden A mask indicating if days out are shown or not.
     */
     func _updateDayViews(hidden: Bool) {
-        println("Updating")
-        for weekView in weekViews.values {
-            let dayViews = weekView.dayViews!
-            for dayView in dayViews {
-                if dayView.isOut {
-                    if !hidden {
-                        dayView.alpha = 0
-                        dayView.hidden = false
+        func monthViews() -> [MonthView] {
+            var monthViews = [MonthView]()
+            
+            func hasDuplicate(monthView: MonthView) -> Bool {
+                for _monthView in monthViews {
+                    if monthView == _monthView {
+                        return true
+                    }
+                }
+                
+                return false
+            }
+            
+            for weekView in weekViews.values {
+                if let monthView = weekView.monthView {
+                    if !hasDuplicate(monthView) {
+                        monthViews.append(monthView)
+                    }
+                }
+            }
+            
+            return monthViews
+        }
+        
+        let presentedMonthViews = monthViews()
+        for monthView in presentedMonthViews {
+            if let weekViews = monthView.weekViews {
+                for weekView in weekViews {
+                    if let dayViews = weekView.dayViews {
+                        for dayView in dayViews {
+                            if dayView.isOut {
+                                if !hidden {
+                                    dayView.alpha = 0
+                                    dayView.hidden = false
+                                }
+                                
+                                UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+                                    if hidden {
+                                        dayView.alpha = 0
+                                    } else {
+                                        dayView.alpha = 1
+                                    }
+                                    
+                                    }, completion: { (finished) -> Void in
+                                        if hidden {
+                                            dayView.hidden = true
+                                            dayView.alpha = 1
+                                        }
+                                })
+                            }
+                        }
                     }
                     
-                    UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
-                        if hidden {
-                            dayView.alpha = 0
-                        } else {
-                            dayView.alpha = 1
-                        }
-                        
-                        }, completion: { (finished) -> Void in
-                            if hidden {
-                                dayView.hidden = true
-                                dayView.alpha = 1
-                            }
-                    })
                 }
             }
         }
@@ -498,14 +533,92 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
     
     // MARK: - Week View Toggling 
     
-    // TODO: Add an appropriate method.
+    private var togglingBlocked = false
+    func _togglePresentedDate(date: NSDate) {
+        let currentWeekView = weekViews[1]!
+        let currentDate = currentWeekView.monthView!.date!
+        
+        // Check if we should toggle. 
+        if dateTogglingAllowed(date) {
+            // Prepare cache data.
+            for weekView in weekViews.values {
+                if let monthView = weekView.monthView {
+                    recovery.recoverMonthView(monthView)
+                }
+            }
+            
+            for key in weekViews.keys {
+                let weekView = weekViews[key]
+                if let monthView = weekView?.monthView {
+                    recovery.recoverMonthView(monthView)
+                }
+                
+                if key != 1 {
+                    weekView?.removeFromSuperview()
+                }
+            }
+            
+            // Update presented month view.
+            self.presentedDate = date
+            self.presentedMonthView = currentMonthView()
+            
+            // Update week views.
+            let presentedWeekView = self.presentedWeekView()
+            let nextWeekView = self.nextWeekView(presentedWeekView)
+            let previousWeekView = self.previousWeekView(presentedWeekView)
+            
+            presentedWeekView.alpha = 0
+            
+            insertWeekView(previousWeekView, atIndex: 0)
+            insertWeekView(presentedWeekView, atIndex: 1)
+            insertWeekView(nextWeekView, atIndex: 2)
+            
+            UIView.animateWithDuration(0.8, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+                presentedWeekView.alpha = 1
+                currentWeekView.alpha = 0
+                }) { (finished) -> Void in
+                    let presentedDate = CVDate(date: date)
+                    self.calendarView!.presentedDate = presentedDate
+                    
+                    if !self.dateTogglingAllowed(date) {
+                        self.selectDayViewWithDay(presentedDate.day!, inMonthView: self.presentedMonthView)
+                    } else {
+                        let day = CVCalendarManager.sharedManager.dateRange(date).day
+                        self.selectDayViewWithDay(day, inMonthView: self.presentedMonthView)
+                    }
+                    
+                    self.togglingBlocked = false
+            }
+        }
+    }
+    
+    func dateTogglingAllowed(date: NSDate) -> Bool {
+        let presentedWeekView = weekViews[1]!
+        let presentedIndex = presentedWeekView.index!
+        let components = manager.componentsForDate(date)
+        let currentIndex = components.weekOfMonth - 1
+        
+        let currentDate = presentedWeekView.monthView!.date!
+        
+        let currentDateMonthStartDate = manager.monthDateRange(currentDate).monthStartDate
+        let presentedDateMonthStartDate = manager.monthDateRange(date).monthStartDate
+        
+        var allowed = false
+        if currentIndex != presentedIndex {
+            allowed = true
+        } else {
+            if currentDateMonthStartDate != presentedDateMonthStartDate {
+                allowed =  true
+            }
+        }
+        
+        return allowed
+    }
     
     // MARK: - Content View Delegate 
     
     func updateFrames() {
-        println("Updating 2")
         _updateFrames()
-        println("Scroll View UPDATED: \(scrollView)")
     }
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
@@ -538,6 +651,6 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
     }
     
     func togglePresentedDate(date: NSDate) {
-        
+        _togglePresentedDate(date)
     }
 }

@@ -107,41 +107,30 @@ class CVCalendarView: UIView {
     
     var animator: CVCalendarViewAnimatorDelegate? = CVCalendarViewAnimator()
     
-    // MARK: - Manual Setup
-    
-    var contentView: CVCalendarMonthContentView?
-    var monthViewHolder: UIView?
-    
     // MARK: - Initialization
     
     override init() {
         super.init()
         
+        hidden = true
         loadCalendarMode()
-        self.monthViewHolder = self
-        self.hidden = true
-        
         contentController = CVCalendarContentViewController(calendarView: self, frame: bounds)
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        hidden = true
         loadCalendarMode()
-        self.monthViewHolder = self
-        self.hidden = true
-        
         contentController = CVCalendarContentViewController(calendarView: self, frame: bounds)
     }
 
     // IB Initialization
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder) 
+        super.init(coder: aDecoder)
         
+        hidden = true
         loadCalendarMode()
-        self.monthViewHolder = self
-        self.hidden = true
-        
         contentController = CVCalendarContentViewController(calendarView: self, frame: bounds)
     }
     
@@ -150,7 +139,7 @@ class CVCalendarView: UIView {
     // MARK: - Calendar View Control
     
     func changeDaysOutShowingState(shouldShow: Bool) {
-        self.contentView!.updateDayViews(shouldShow)
+        contentController.updateDayViews(shouldShow)
     }
     
     func didSelectDayView(dayView: CVCalendarDayView) {
@@ -166,23 +155,22 @@ class CVCalendarView: UIView {
     func commitCalendarViewUpdate() {
         let coordinator = CVCalendarDayViewControlCoordinator.sharedControlCoordinator
         coordinator.animator = self.animator
-        
         contentController.updateFrames(bounds)
     }
     
     func toggleMonthViewWithDate(date: NSDate) {
-        //self.contentView!.togglePresentedDate(date)
+        contentController.togglePresentedDate(date)
     }
     
     func toggleTodayMonthView() {
-        //self.contentView!.togglePresentedDate(NSDate())
+        contentController.togglePresentedDate(NSDate())
     }
     
     func loadNextMonthView() {
-        //self.contentView!.presentNextMonth(nil)
+        contentController.presentNextView(nil)
     }
     
     func loadPreviousMonthView() {
-        //self.contentView!.presentPreviousMonth(nil)
+        contentController.presentPreviousView(nil)
     }
 }

@@ -105,4 +105,26 @@ class CVCalendarContentViewController: UIViewController, UIScrollViewDelegate {
     func performedDayViewSelection(dayView: DayView) {
         delegate.performedDayViewSelection(dayView)
     }
+    
+    // MARK: - Toggle Date
+    
+    func togglePresentedDate(date: NSDate) {
+        delegate.togglePresentedDate(date)
+    }
+    
+    // MARK: - Paging 
+    
+    func presentNextView(dayView: DayView?) {
+        delegate.presentNextView(dayView)
+    }
+    
+    func presentPreviousView(dayView: DayView?) {
+        delegate.presentPreviousView(dayView)
+    }
+    
+    // MARK: - Days Out Showing
+    
+    func updateDayViews(hidden: Bool) {
+        delegate.updateDayViews(hidden)
+    }
 }
