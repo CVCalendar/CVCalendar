@@ -19,6 +19,9 @@ class CVCalendarWeekView: UIView {
     
     var dayViews: [CVCalendarDayView]?
     
+    // For Recovery service.
+    var utilizable = false
+    
     // MARK: - Initialization
 
     init(monthView: CVCalendarMonthView, frame: CGRect, index: Int) {
@@ -95,7 +98,23 @@ class CVCalendarWeekView: UIView {
         }
     }
     
-    // MARK: - Content reload
+    // MARK: - View Destruction
+    
+    func destroy() {
+        self.monthView = nil
+        
+        if dayViews != nil {
+            for dayView in dayViews! {
+                dayView.removeFromSuperview()
+                dayView.destroy()
+            }
+            
+            dayViews = nil
+        }
+
+    }
+    
+     // MARK: - Content reload
     
     func reloadDayViews() {
         for i in 0..<self.dayViews!.count {

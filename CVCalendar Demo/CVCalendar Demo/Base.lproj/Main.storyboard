@@ -26,12 +26,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZPD-eB-kRA" customClass="CVCalendarMenuView" customModule="CVCalendar_Demo" customModuleProvider="target">
                                 <rect key="frame" x="16" y="71" width="568" height="24"/>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T1w-UY-QHC" customClass="CVCalendarView" customModule="CVCalendar_Demo" customModuleProvider="target">
-                                <rect key="frame" x="16" y="103" width="568" height="350"/>
-                                <connections>
-                                    <outlet property="calendarDelegate" destination="vXZ-lx-hvc" id="2DW-PO-jTH"/>
-                                </connections>
-                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HF3-fY-vSc">
                                 <rect key="frame" x="551" y="23" width="33" height="33"/>
                                 <state key="normal" image="present-100">
@@ -53,25 +47,33 @@
                                     <action selector="switchChanged:" destination="vXZ-lx-hvc" eventType="valueChanged" id="4vA-FH-bX6"/>
                                 </connections>
                             </switch>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T1w-UY-QHC" customClass="CVCalendarView" customModule="CVCalendar_Demo" customModuleProvider="target">
+                                <rect key="frame" x="16" y="103" width="568" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="3oZ-He-brt"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="calendarDelegate" destination="vXZ-lx-hvc" id="2DW-PO-jTH"/>
+                                </connections>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="ucX-go-wCw" firstAttribute="bottom" secondItem="l1z-8G-fgL" secondAttribute="bottom" id="1t5-RA-wdP"/>
-                            <constraint firstItem="ZPD-eB-kRA" firstAttribute="trailing" secondItem="T1w-UY-QHC" secondAttribute="trailing" id="28X-v6-c2N"/>
-                            <constraint firstAttribute="bottom" secondItem="l1z-8G-fgL" secondAttribute="bottom" constant="20" symbolic="YES" id="4aC-ps-k6F"/>
-                            <constraint firstItem="ucX-go-wCw" firstAttribute="trailing" secondItem="T1w-UY-QHC" secondAttribute="trailing" id="78a-9J-1cE"/>
-                            <constraint firstItem="ZPD-eB-kRA" firstAttribute="top" secondItem="HF3-fY-vSc" secondAttribute="bottom" constant="15" id="8nL-XW-gEo"/>
-                            <constraint firstItem="ZPD-eB-kRA" firstAttribute="centerX" secondItem="xf5-AN-qLk" secondAttribute="centerX" id="D0w-u1-LTR"/>
-                            <constraint firstItem="HF3-fY-vSc" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="3" id="Ds7-9I-gmo"/>
-                            <constraint firstItem="T1w-UY-QHC" firstAttribute="top" secondItem="ZPD-eB-kRA" secondAttribute="bottom" constant="8" symbolic="YES" id="RXd-Ii-CvD"/>
-                            <constraint firstItem="xf5-AN-qLk" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="8" symbolic="YES" id="UJs-DC-4O4"/>
-                            <constraint firstItem="T1w-UY-QHC" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" constant="103" id="Wbf-MJ-Bba"/>
-                            <constraint firstItem="T1w-UY-QHC" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="X7y-cA-a0X"/>
-                            <constraint firstItem="ZPD-eB-kRA" firstAttribute="trailing" secondItem="HF3-fY-vSc" secondAttribute="trailing" id="cAt-zB-hEg"/>
-                            <constraint firstItem="ZPD-eB-kRA" firstAttribute="leading" secondItem="T1w-UY-QHC" secondAttribute="leading" id="e84-HB-P2q"/>
-                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="T1w-UY-QHC" secondAttribute="bottom" constant="147" id="mhl-hx-JH0"/>
-                            <constraint firstItem="l1z-8G-fgL" firstAttribute="leading" secondItem="T1w-UY-QHC" secondAttribute="leading" id="p1E-n4-Jzi"/>
-                            <constraint firstItem="T1w-UY-QHC" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="tEd-YG-5DU"/>
+                            <constraint firstItem="T1w-UY-QHC" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="1TS-li-VrB"/>
+                            <constraint firstItem="ZPD-eB-kRA" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="59J-xp-B4Q"/>
+                            <constraint firstItem="T1w-UY-QHC" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" constant="103" id="9hA-gc-8YQ"/>
+                            <constraint firstItem="ucX-go-wCw" firstAttribute="trailing" secondItem="T1w-UY-QHC" secondAttribute="trailing" id="GLH-be-aOi"/>
+                            <constraint firstItem="xf5-AN-qLk" firstAttribute="centerX" secondItem="ZPD-eB-kRA" secondAttribute="centerX" id="H78-2a-9fG"/>
+                            <constraint firstItem="T1w-UY-QHC" firstAttribute="top" secondItem="ZPD-eB-kRA" secondAttribute="bottom" constant="8" symbolic="YES" id="IfR-Rn-lpW"/>
+                            <constraint firstItem="l1z-8G-fgL" firstAttribute="leading" secondItem="T1w-UY-QHC" secondAttribute="leading" id="JiT-jq-LeD"/>
+                            <constraint firstItem="T1w-UY-QHC" firstAttribute="leading" secondItem="ZPD-eB-kRA" secondAttribute="leading" id="Lhg-3p-WNM"/>
+                            <constraint firstItem="xf5-AN-qLk" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="8" symbolic="YES" id="XNU-W1-hVv"/>
+                            <constraint firstItem="HF3-fY-vSc" firstAttribute="trailing" secondItem="ZPD-eB-kRA" secondAttribute="trailing" id="eh5-Dv-ORM"/>
+                            <constraint firstItem="HF3-fY-vSc" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="3" id="g3v-dm-1Jg"/>
+                            <constraint firstItem="T1w-UY-QHC" firstAttribute="trailing" secondItem="ZPD-eB-kRA" secondAttribute="trailing" id="oay-Ad-lAp"/>
+                            <constraint firstAttribute="bottom" secondItem="l1z-8G-fgL" secondAttribute="bottom" constant="20" symbolic="YES" id="r7P-Sz-8Xp"/>
+                            <constraint firstItem="ZPD-eB-kRA" firstAttribute="top" secondItem="HF3-fY-vSc" secondAttribute="bottom" constant="15" id="uiU-f1-3Z4"/>
+                            <constraint firstItem="ucX-go-wCw" firstAttribute="bottom" secondItem="l1z-8G-fgL" secondAttribute="bottom" id="zIk-C3-01y"/>
                         </constraints>
                     </view>
                     <connections>
@@ -83,6 +85,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="808" y="547"/>
         </scene>
     </scenes>
     <resources>

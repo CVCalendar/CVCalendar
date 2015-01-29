@@ -34,7 +34,7 @@ class CVCalendarViewAnimator: NSObject, CVCalendarViewAnimatorDelegate {
     func animateDeselectionWithRollingEffect(dayView: CVCalendarDayView, withControlCooordinator coordinator: CVCalendarDayViewControlCoordinator) {
         UIView.animateWithDuration(0.25, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
             coordinator.animationStarted()
-            dayView.circleView!.transform = CGAffineTransformMakeScale(0.1, 0.1)
+            dayView.circleView?.transform = CGAffineTransformMakeScale(0.1, 0.1)
             dayView.circleView?.alpha = 0.0
             
             }) { (Bool) -> Void in
@@ -48,7 +48,7 @@ class CVCalendarViewAnimator: NSObject, CVCalendarViewAnimatorDelegate {
             
             coordinator.animationStarted()
             
-            dayView.circleView!.transform = CGAffineTransformMakeScale(1.3, 1.3)
+            dayView.circleView?.transform = CGAffineTransformMakeScale(1.3, 1.3)
             
             }) { (Bool) -> Void in
                 UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
