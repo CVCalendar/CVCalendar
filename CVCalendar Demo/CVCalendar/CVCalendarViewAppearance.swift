@@ -47,7 +47,7 @@ class CVCalendarViewAppearance: NSObject {
     }
     
     func setupAppearance() {
-        if let spaceBetweenWeekViews = self.delegate!.spaceBetweenDayViews?() {
+        if let spaceBetweenWeekViews = self.delegate!.spaceBetweenWeekViews?() {
             self.spaceBetweenWeekViews = spaceBetweenWeekViews
         }
         
