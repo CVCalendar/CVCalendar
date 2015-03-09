@@ -8,10 +8,22 @@
 
 import UIKit
 
+/// Singleton
 private let instance = CVCalendarDayViewControlCoordinator()
 
+// MARK: - Type work 
+
+typealias DayView = CVCalendarDayView
+typealias Appearance = CVCalendarViewAppearance
+typealias Coordinator = CVCalendarCoordinator
+
+/// Coordinator's control actions
+protocol CVCalendarCoordinator {
+    func performDayViewSingleSelection(dayView: DayView)
+    func performDayViewRangeSelection(dayView: DayView)
+}
+
 class CVCalendarDayViewControlCoordinator: NSObject {
-    
     var inOrderNumber = 0
     
     class var sharedControlCoordinator: CVCalendarDayViewControlCoordinator {
@@ -21,45 +33,54 @@ class CVCalendarDayViewControlCoordinator: NSObject {
     var selectedDayView: CVCalendarDayView? = nil
     var animator: CVCalendarViewAnimatorDelegate?
     
-    lazy var appearance: CVCalendarViewAppearance = {
-       return CVCalendarViewAppearance.sharedCalendarViewAppearance
+    lazy var appearance: Appearance = {
+       return Appearance.sharedCalendarViewAppearance
     }()
     
     private override init() {
         super.init()
     }
     
-    func performDayViewSelection(dayView: CVCalendarDayView) {
-        if let selectedDayView = self.selectedDayView {
-            if selectedDayView != dayView {
-                if self.inOrderNumber < 2 {
-                    self.presentDeselectionOnDayView(self.selectedDayView!)
-                    self.selectedDayView = dayView
-                    self.presentSelectionOnDayView(self.selectedDayView!)
-                }
-            }
-        } else {
-            self.selectedDayView = dayView
-            if self.animator == nil {
-                self.animator = self.selectedDayView!.weekView!.monthView!.calendarView!.animator
-            }
-            self.presentSelectionOnDayView(self.selectedDayView!)
-        }
+    private func presentSelectionOnDayView(dayView: DayView) {
+        animator?.animateSelection(dayView, withControlCoordinator: self)
     }
     
-    private func presentSelectionOnDayView(dayView: CVCalendarDayView) {
-        self.animator?.animateSelection(dayView, withControlCoordinator: CVCalendarDayViewControlCoordinator.sharedControlCoordinator)
-    }
-    
-    private func presentDeselectionOnDayView(dayView: CVCalendarDayView) {
-        self.animator?.animateDeselection(dayView, withControlCoordinator: CVCalendarDayViewControlCoordinator.sharedControlCoordinator)
+    private func presentDeselectionOnDayView(dayView: DayView) {
+        animator?.animateDeselection(dayView, withControlCoordinator: self)
     }
     
     func animationStarted() {
-        self.inOrderNumber++
+        inOrderNumber++
     }
     
     func animationEnded() {
-        self.inOrderNumber--
+        inOrderNumber--
+    }
+}
+
+// MARK: - CVCalendarCoordinator
+
+extension CVCalendarDayViewControlCoordinator: Coordinator {
+    func performDayViewSingleSelection(dayView: DayView) {
+        if let currentlySelectedDatView = selectedDayView {
+            if currentlySelectedDatView != dayView {
+                if inOrderNumber < 2 {
+                    presentDeselectionOnDayView(selectedDayView!)
+                    selectedDayView = dayView
+                    presentSelectionOnDayView(selectedDayView!)
+                }
+            }
+        } else {
+            selectedDayView = dayView
+            if animator == nil {
+                animator = selectedDayView!.weekView!.monthView!.calendarView!.animator
+            }
+            
+            presentSelectionOnDayView(selectedDayView!)
+        }
+    }
+    
+    func performDayViewRangeSelection(dayView: DayView) {
+        println("Day view range selection found")
     }
 }

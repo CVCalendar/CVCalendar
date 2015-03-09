@@ -46,10 +46,8 @@ class CVCalendarContentViewController: UIViewController, UIScrollViewDelegate {
         
         if calendarView.calendarMode == CalendarMode.MonthView {
             delegate = MonthContent(contentController: self)
-            println("Scroll View: \(scrollView)")
         } else {
             delegate = WeekContent(contentController: self)
-            println("Scroll View: \(scrollView)")
         }
     }
     
@@ -74,8 +72,6 @@ class CVCalendarContentViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Appearance Update 
     
     func updateFrames(frame: CGRect) {
-        println("Updating 1")
-        
         presentedMonthView.updateAppearance(frame)
         
         scrollView.frame = frame
@@ -88,6 +84,7 @@ class CVCalendarContentViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Scroll View Delegate 
     
+    var i = 0
     func scrollViewDidScroll(scrollView: UIScrollView) {
         delegate.scrollViewDidScroll(scrollView)
     }
@@ -98,6 +95,11 @@ class CVCalendarContentViewController: UIViewController, UIScrollViewDelegate {
 
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         delegate.scrollViewDidEndDecelerating(scrollView)
+        scrollView.userInteractionEnabled = true
+    }
+    
+    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        scrollView.userInteractionEnabled = false
     }
     
     // MARK: - Day View Selection

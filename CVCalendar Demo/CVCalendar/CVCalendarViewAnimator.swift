@@ -38,7 +38,7 @@ class CVCalendarViewAnimator: NSObject, CVCalendarViewAnimatorDelegate {
             dayView.circleView?.alpha = 0.0
             
             }) { (Bool) -> Void in
-                dayView.setDayLabelUnhighlighted()
+                dayView.setDayLabelUnhighlighted(true)
                 coordinator.animationEnded()
         }
     }
@@ -56,9 +56,24 @@ class CVCalendarViewAnimator: NSObject, CVCalendarViewAnimatorDelegate {
                     dayView.circleView!.transform = CGAffineTransformMakeScale(0.1, 0.1)
                     
                     }) { (Bool) -> Void in
-                        dayView.setDayLabelUnhighlighted()
+                        dayView.setDayLabelUnhighlighted(true)
                         coordinator.animationEnded()
                 }
+        }
+    }
+    
+    func animateDeselectionWithFadeOutEffect(dayView: CVCalendarDayView, withControlCoordinator coordinator: CVCalendarDayViewControlCoordinator) {
+        UIView.animateWithDuration(0.35, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: nil, animations: {
+            
+            coordinator.animationStarted()
+            dayView.circleView!.alpha = 0
+            dayView.setDayLabelUnhighlighted(false)
+            
+        }) {
+            _ in
+            
+            dayView.setDayLabelUnhighlighted(true)
+            coordinator.animationEnded()
         }
     }
     
@@ -69,6 +84,6 @@ class CVCalendarViewAnimator: NSObject, CVCalendarViewAnimatorDelegate {
     }
     
     func animateDeselection(dayView: CVCalendarDayView, withControlCoordinator coordinator: CVCalendarDayViewControlCoordinator) {
-        self.animateDeselectionWithRollingEffect(dayView, withControlCooordinator: coordinator)
+        self.animateDeselectionWithFadeOutEffect(dayView, withControlCoordinator: coordinator)
     }
 }

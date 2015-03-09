@@ -260,7 +260,7 @@ class CVCalendarMonthContentView: NSObject, CVCalendarContentDelegate {
     
     func prepareTopMarkersOnDayViews(monthView: CVCalendarMonthView, hidden: Bool) {
         let weekViews = monthView.weekViews!
-        
+
         for week in weekViews {
             let dayViews = week.dayViews!
             
@@ -321,7 +321,6 @@ class CVCalendarMonthContentView: NSObject, CVCalendarContentDelegate {
         
         let presentedMonthView = self.monthViews![1]!
         scrollView.scrollRectToVisible(presentedMonthView.frame, animated: false)
-        
     }
     
     func replaceMonthViewsOnReload() {
@@ -362,7 +361,7 @@ class CVCalendarMonthContentView: NSObject, CVCalendarContentDelegate {
         for weekView in monthView.weekViews! {
             for dayView in weekView.dayViews! {
                 if dayView.date?.day == day && !dayView.isOut {
-                    coordinator.performDayViewSelection(dayView)
+                    coordinator.performDayViewSingleSelection(dayView)
                 }
             }
         }

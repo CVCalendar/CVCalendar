@@ -34,8 +34,6 @@ class CVCalendarView: UIView {
                 }
             }
         }
-        
-        println("Mode is : \(calendarMode?)")
     }
     
     // MARK: - Current date 

@@ -156,16 +156,9 @@
 		55E1223D1A588CC50013B002 /* CVCalendar */ = {
 			isa = PBXGroup;
 			children = (
-				5535246C1A794AFA00EE9FDE /* CVCalendarContentViewController.swift */,
 				553524691A794AC400EE9FDE /* CVCalendarContentDelegate.swift */,
-				55E122431A588CC50013B002 /* CVCalendarMonthView.swift */,
-				55E1224B1A588CC50013B002 /* CVCalendarWeekView.swift */,
-				55E1223F1A588CC50013B002 /* CVCalendarDayView.swift */,
 				55E122451A588CC50013B002 /* CVCalendarView.swift */,
-				5534574F1A75176E00370955 /* CVCalendarMonthContentView.swift */,
-				553319261A7294AF004DF673 /* CVCalendarWeekContentView.swift */,
 				5534574D1A75114B00370955 /* CVCalendarWeekContentRecovery.swift */,
-				55E122401A588CC50013B002 /* CVCalendarDayViewControlCoordinator.swift */,
 				55E122411A588CC50013B002 /* CVCalendarManager.swift */,
 				55E122421A588CC50013B002 /* CVCalendarMenuView.swift */,
 				55E122441A588CC50013B002 /* CVCalendarRenderer.swift */,
@@ -176,8 +169,31 @@
 				55E1224A1A588CC50013B002 /* CVCalendarViewDelegate.swift */,
 				55E1224C1A588CC50013B002 /* CVCircleView.swift */,
 				55E1224D1A588CC50013B002 /* CVDate.swift */,
+				8F02AC081AAC95E8006D1914 /* ContentViews */,
+				8FEB39991AA9D3CD00A8AC8D /* Range */,
 			);
 			path = CVCalendar;
+			sourceTree = "<group>";
+		};
+		8F02AC081AAC95E8006D1914 /* ContentViews */ = {
+			isa = PBXGroup;
+			children = (
+				5535246C1A794AFA00EE9FDE /* CVCalendarContentViewController.swift */,
+				5534574F1A75176E00370955 /* CVCalendarMonthContentView.swift */,
+				553319261A7294AF004DF673 /* CVCalendarWeekContentView.swift */,
+			);
+			name = ContentViews;
+			sourceTree = "<group>";
+		};
+		8FEB39991AA9D3CD00A8AC8D /* Range */ = {
+			isa = PBXGroup;
+			children = (
+				55E122401A588CC50013B002 /* CVCalendarDayViewControlCoordinator.swift */,
+				55E122431A588CC50013B002 /* CVCalendarMonthView.swift */,
+				55E1224B1A588CC50013B002 /* CVCalendarWeekView.swift */,
+				55E1223F1A588CC50013B002 /* CVCalendarDayView.swift */,
+			);
+			name = Range;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

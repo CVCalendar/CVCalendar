@@ -77,11 +77,15 @@ class ViewController: UIViewController, CVCalendarViewDelegate {
     }
     
     func dotMarker(shouldMoveOnHighlightingOnDayView dayView: CVCalendarDayView) -> Bool {
-        return false
+        return true
     }
     
     func topMarker(shouldDisplayOnDayView dayView: CVCalendarDayView) -> Bool {
         return true
+    }
+    
+    func dotMarkerOffset() -> CGFloat {
+        return 100
     }
     
     
@@ -132,5 +136,9 @@ class ViewController: UIViewController, CVCalendarViewDelegate {
         let resultDate = calendar.dateFromComponents(components)!
         
         self.calendarView.toggleMonthViewWithDate(resultDate)
+    }
+    
+    func dotMarker(moveOffsetOnDayView dayView: DayView) -> CGFloat {
+        return 4
     }
 }

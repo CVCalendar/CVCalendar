@@ -183,6 +183,9 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
         weekViews.updateValue(weekView, forKey: index)
         
         scrollView.addSubview(weekView)
+        
+        //weekView.finishContentReload()
+        //println("Week View { \(weekView) } for index = \(index)")
     }
     
     func replaceWeekView(weekView: WeekView, toPage page: Int, animatable: Bool) {
@@ -228,7 +231,7 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
             replaceWeekView(presentedWeekView, toPage: 1, animatable: true)
             
             insertWeekView(rightWeekView, atIndex: 2)
-        }
+        } 
     }
     
     func scrolledRight() {
@@ -343,7 +346,7 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
         for weekView in monthView.weekViews! {
             for dayView in weekView.dayViews! {
                 if dayView.date?.day == day && !dayView.isOut {
-                    coordinator.performDayViewSelection(dayView)
+                    coordinator.performDayViewSingleSelection(dayView)
                 }
             }
         }
@@ -391,7 +394,6 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
     }
     
     func presentPreviousWeekView(dayView: CVCalendarDayView?) {
-        
         let extraWeekView = weekViews.removeValueForKey(2)!
         let rightWeekView = weekViews[1]!
         let presentedWeekView = weekViews[0]!
@@ -462,8 +464,7 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
                 day.topMarker?.hidden = hidden
             }
         } else {
-            println("Week View = \(weekView)")
-            println("Month Date = \(weekView.monthView?.date)")
+            fatalError("Day Views must not be nil!")
         }
     }
     
