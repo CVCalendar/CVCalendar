@@ -156,8 +156,8 @@
 		55E1223D1A588CC50013B002 /* CVCalendar */ = {
 			isa = PBXGroup;
 			children = (
-				553524691A794AC400EE9FDE /* CVCalendarContentDelegate.swift */,
 				55E122451A588CC50013B002 /* CVCalendarView.swift */,
+				553524691A794AC400EE9FDE /* CVCalendarContentDelegate.swift */,
 				5534574D1A75114B00370955 /* CVCalendarWeekContentRecovery.swift */,
 				55E122411A588CC50013B002 /* CVCalendarManager.swift */,
 				55E122421A588CC50013B002 /* CVCalendarMenuView.swift */,

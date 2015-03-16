@@ -30,7 +30,7 @@ class CVCalendarDayViewControlCoordinator: NSObject {
         return instance
     }
    
-    var selectedDayView: CVCalendarDayView? = nil
+    var selectedDayView: CVCalendarDayView?
     var animator: CVCalendarViewAnimatorDelegate?
     
     lazy var appearance: Appearance = {
@@ -62,6 +62,7 @@ class CVCalendarDayViewControlCoordinator: NSObject {
 
 extension CVCalendarDayViewControlCoordinator: Coordinator {
     func performDayViewSingleSelection(dayView: DayView) {
+        
         if let currentlySelectedDatView = selectedDayView {
             if currentlySelectedDatView != dayView {
                 if inOrderNumber < 2 {

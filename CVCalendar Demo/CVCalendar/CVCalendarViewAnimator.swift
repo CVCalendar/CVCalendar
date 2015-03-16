@@ -15,7 +15,7 @@ class CVCalendarViewAnimator: NSObject, CVCalendarViewAnimatorDelegate {
     }
     
     func animateSelectionWithBounceEffect(dayView: CVCalendarDayView, withControlCooordinator coordinator: CVCalendarDayViewControlCoordinator) {
-        dayView.setDayLabelHighlighted()
+        dayView.setDayLabelSelected()
         
         dayView.dayLabel?.transform = CGAffineTransformMakeScale(0.5, 0.5)
         dayView.circleView?.transform = CGAffineTransformMakeScale(0.5, 0.5)
@@ -26,8 +26,8 @@ class CVCalendarViewAnimator: NSObject, CVCalendarViewAnimatorDelegate {
             dayView.circleView?.transform = CGAffineTransformMakeScale(1, 1)
             dayView.dayLabel?.transform = CGAffineTransformMakeScale(1, 1)
             
-            }) { (Bool) -> Void in
-                coordinator.animationEnded()
+        }) { _ in
+            coordinator.animationEnded()
         }
     }
     
@@ -38,7 +38,7 @@ class CVCalendarViewAnimator: NSObject, CVCalendarViewAnimatorDelegate {
             dayView.circleView?.alpha = 0.0
             
             }) { (Bool) -> Void in
-                dayView.setDayLabelUnhighlighted(true)
+                dayView.setDayLabelUnhighlightedDismissingState(true)
                 coordinator.animationEnded()
         }
     }
@@ -56,7 +56,7 @@ class CVCalendarViewAnimator: NSObject, CVCalendarViewAnimatorDelegate {
                     dayView.circleView!.transform = CGAffineTransformMakeScale(0.1, 0.1)
                     
                     }) { (Bool) -> Void in
-                        dayView.setDayLabelUnhighlighted(true)
+                        dayView.setDayLabelUnhighlightedDismissingState(true)
                         coordinator.animationEnded()
                 }
         }
@@ -67,12 +67,12 @@ class CVCalendarViewAnimator: NSObject, CVCalendarViewAnimatorDelegate {
             
             coordinator.animationStarted()
             dayView.circleView!.alpha = 0
-            dayView.setDayLabelUnhighlighted(false)
+            dayView.setDayLabelUnhighlightedDismissingState(false)
             
         }) {
             _ in
             
-            dayView.setDayLabelUnhighlighted(true)
+            dayView.setDayLabelUnhighlightedDismissingState(true)
             coordinator.animationEnded()
         }
     }

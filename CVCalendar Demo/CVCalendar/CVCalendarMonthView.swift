@@ -8,6 +8,11 @@
 
 import UIKit
 
+enum CVSelectionType {
+    case Single
+    case Range
+}
+
 class CVCalendarMonthView: UIView {
     
     // MARK: - Public properties
@@ -81,10 +86,23 @@ class CVCalendarMonthView: UIView {
     }()
     
     
-    
-    func receiveDayViewTouch(dayView: CVCalendarDayView) {
-        coordinator.performDayViewSingleSelection(dayView)
-        self.calendarView!.didSelectDayView(dayView)
+    var ranged = false
+    func receiveDayViewTouch(dayView: CVCalendarDayView, withSelectionType selectionType: CVSelectionType) {
+        switch selectionType {
+        case .Single:
+            coordinator.performDayViewSingleSelection(dayView)
+            calendarView!.didSelectDayView(dayView)
+        case .Range:
+            if !ranged {
+                dayView.setDayLabelHighlighted()
+                ranged = true
+            } else {
+                dayView.setDayLabelUnhighlightedDismissingState(true)
+                ranged = false
+            }
+            
+        default: break
+        }
     }
     
     // MARK: - View Destruction
@@ -136,7 +154,6 @@ class CVCalendarMonthView: UIView {
             let mode = self.calendarView!.calendarMode!
             if mode == .MonthView {
                 if let interactiveView = self.interactiveView {
-                    println("Updating interactive view for MONTH VIEW!")
                     interactiveView.frame = self.bounds
                     interactiveView.removeFromSuperview()
                     self.addSubview(interactiveView)
@@ -165,10 +182,12 @@ class CVCalendarMonthView: UIView {
         let state: UIGestureRecognizerState = recognizer.state
         
         switch state {
-            case .Began:
+            case .Began, .Ended:
                 //println("Found TAP gesture, location = \(location)")
             
-            locationOwner(location)
+                if let selectedDayView = locationOwner(location) {
+                   receiveDayViewTouch(selectedDayView, withSelectionType: .Range)
+                }
             
             /*
             case .Changed:
@@ -177,29 +196,28 @@ class CVCalendarMonthView: UIView {
                 println("End location: \(location)")
             case .Cancelled:
                 println("Canceled!") */
-            default: println("\nSomething else...")
+            default: break
         }
     }
     
     func didTouchInteractiveView(recognizer: UITapGestureRecognizer) {
         let location = recognizer.locationInView(self.interactiveView)
-        let selectedDayView = locationOwner(location)
-        
-        receiveDayViewTouch(selectedDayView)
+        if let selectedDayView = locationOwner(location) {
+            receiveDayViewTouch(selectedDayView, withSelectionType: .Single)
+        }
     }
     
     func doesBelongToDayView(dayView: DayView, withLocation location: CGPoint) -> Bool {
-        let weekIndex = dayView.weekView!.index!
         var dayViewFrame = dayView.frame
-        
+        let weekIndex = dayView.weekView!.index!
+        let appearance = dayView.weekView!.monthView!.calendarView!.appearanceDelegate!
+
         if weekIndex > 0 {
             dayViewFrame.origin.y += dayViewFrame.height
             dayViewFrame.origin.y *= CGFloat(dayView.weekView!.index!)
         }
         
         if dayView != dayView.weekView!.dayViews!.first! {
-            let appearance = dayView.weekView!.monthView!.calendarView!.appearanceDelegate!
-            dayViewFrame.origin.x += appearance.spaceBetweenDayViews!
             dayViewFrame.origin.y += appearance.spaceBetweenWeekViews! * CGFloat(weekIndex)
         }
         
@@ -211,8 +229,8 @@ class CVCalendarMonthView: UIView {
     }
     
     // TODO: Come up with a more efficient algorithm!
-    func locationOwner(location: CGPoint) -> DayView {
-        var owner: DayView!
+    func locationOwner(location: CGPoint) -> DayView? {
+        var owner: DayView?
         safeExecuteBlock({
             for weekView in self.weekViews! {
                 for dayView in weekView.dayViews! {
@@ -223,7 +241,7 @@ class CVCalendarMonthView: UIView {
                 }
             }
         }, collapsingOnNil: true, withObjects: weekViews)
-        
+
         return owner
     }
 }

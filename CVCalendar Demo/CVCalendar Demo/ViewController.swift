@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, CVCalendarViewDelegate {
+class ViewController: UIViewController, CVCalendarViewDelegate, CVCalendarViewAppearanceDelegate {
     @IBOutlet weak var calendarView: CVCalendarView!
     @IBOutlet weak var menuView: CVCalendarMenuView!
     @IBOutlet weak var monthLabel: UILabel!
@@ -84,10 +84,6 @@ class ViewController: UIViewController, CVCalendarViewDelegate {
         return true
     }
     
-    func dotMarkerOffset() -> CGFloat {
-        return 100
-    }
-    
     
     func presentedDateUpdated(date: CVDate) {
         if self.monthLabel.text != date.description() && self.animationFinished {
@@ -113,13 +109,14 @@ class ViewController: UIViewController, CVCalendarViewDelegate {
                 updatedMonthLabel.alpha = 1
                 updatedMonthLabel.transform = CGAffineTransformIdentity
                 
-                }) { (finished) -> Void in
-                    self.animationFinished = true
-                    self.monthLabel.frame = updatedMonthLabel.frame
-                    self.monthLabel.text = updatedMonthLabel.text
-                    self.monthLabel.transform = CGAffineTransformIdentity
-                    self.monthLabel.alpha = 1
-                    updatedMonthLabel.removeFromSuperview()
+            }) { _ in
+                
+                self.animationFinished = true
+                self.monthLabel.frame = updatedMonthLabel.frame
+                self.monthLabel.text = updatedMonthLabel.text
+                self.monthLabel.transform = CGAffineTransformIdentity
+                self.monthLabel.alpha = 1
+                updatedMonthLabel.removeFromSuperview()
             }
             
             self.view.insertSubview(updatedMonthLabel, aboveSubview: self.monthLabel)
@@ -139,6 +136,14 @@ class ViewController: UIViewController, CVCalendarViewDelegate {
     }
     
     func dotMarker(moveOffsetOnDayView dayView: DayView) -> CGFloat {
-        return 4
+        return 12
+    }
+    
+    func dayLabelPresentWeekdayInitallyBold() -> Bool {
+        return false
+    }
+    
+    func spaceBetweenDayViews() -> CGFloat {
+        return 5
     }
 }
