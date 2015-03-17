@@ -103,16 +103,12 @@ class CVCalendarMonthContentView: NSObject, CVCalendarContentDelegate {
             scrollView.contentOffset = CGPointMake(scrollView.contentOffset.x, 0)
         }
         
-        if self.lastContentOffset > scrollView.contentOffset.x {
-            self.direction = .Right
-        } else if self.lastContentOffset < scrollView.contentOffset.x {
-            self.direction = .Left
-        }
-        
         self.lastContentOffset = scrollView.contentOffset.x
     }
     
+    
     func _scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        println("Page = \(page)")
         if self.pageChanged {
             if self.direction == .Left {
                 if self.monthViews![0] != nil {
@@ -215,7 +211,7 @@ class CVCalendarMonthContentView: NSObject, CVCalendarContentDelegate {
             
             var extraMonthView: CVCalendarMonthView? = self.monthViews!.removeValueForKey(0)
             extraMonthView!.removeFromSuperview()
-            extraMonthView!.destroy()
+            //extraMonthView!.destroy()
             extraMonthView = nil
             
             let rightMonthView = self.getNextMonth(date)
@@ -241,7 +237,7 @@ class CVCalendarMonthContentView: NSObject, CVCalendarContentDelegate {
             
             var extraMonthView: CVCalendarMonthView? = self.monthViews!.removeValueForKey(2)
             extraMonthView!.removeFromSuperview()
-            extraMonthView!.destroy()
+            //extraMonthView!.destroy()
             extraMonthView = nil
             
             let leftMonthView = self.getPreviousMonth(date)
@@ -397,7 +393,7 @@ class CVCalendarMonthContentView: NSObject, CVCalendarContentDelegate {
             
             }, completion: { (finished) -> Void in
                 extraMonthView!.removeFromSuperview()
-                extraMonthView!.destroy()
+                //extraMonthView!.destroy()
                 extraMonthView = nil
                 
                 let rightMonthView = self.getNextMonth(presentedMonthView.date!)
@@ -440,7 +436,7 @@ class CVCalendarMonthContentView: NSObject, CVCalendarContentDelegate {
             }, completion: { (finished) -> Void in
                 
                 extraMonthView!.removeFromSuperview()
-                extraMonthView!.destroy()
+                //extraMonthView!.destroy()
                 extraMonthView = nil
                 
                 let leftMonthView = self.getPreviousMonth(presentedMonthView.date!)
@@ -480,11 +476,11 @@ class CVCalendarMonthContentView: NSObject, CVCalendarContentDelegate {
             var extraRightMonthView = self.monthViews!.removeValueForKey(2)
             
             extraLeftMonthView?.removeFromSuperview()
-            extraLeftMonthView?.destroy()
+            //extraLeftMonthView?.destroy()
             extraLeftMonthView = nil
             
             extraRightMonthView?.removeFromSuperview()
-            extraRightMonthView?.destroy()
+            //extraRightMonthView?.destroy()
             extraRightMonthView = nil
             
             let presentedMonthView = CVCalendarMonthView(calendarView: self.calendarView!, date: date)
@@ -500,7 +496,7 @@ class CVCalendarMonthContentView: NSObject, CVCalendarContentDelegate {
                 }) { (finished) -> Void in
                     self.monthViews!.removeValueForKey(1)
                     currentMonthView!.removeFromSuperview()
-                    currentMonthView!.destroy()
+                    //currentMonthView!.destroy()
                     currentMonthView = nil
                     
                     self.monthViews!.updateValue(leftMonthView, forKey: 0)
@@ -543,6 +539,17 @@ class CVCalendarMonthContentView: NSObject, CVCalendarContentDelegate {
     
     func updateFrames() {
         _updateFrames()
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if decelerate {
+            let rightBorder = scrollView.frame.width
+            if scrollView.contentOffset.x <= rightBorder {
+                self.direction = .Right
+            } else  {
+                self.direction = .Left
+            }
+        }
     }
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {

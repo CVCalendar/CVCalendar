@@ -9,18 +9,43 @@
 import UIKit
 
 class CVCalendarWeekView: UIView {
+    // MARK: - Non public properties
+    private var interactiveView: UIView!
+    
+    override var frame: CGRect {
+        didSet {
+            if let calendarView = calendarView {
+                if calendarView.calendarMode == CVCalendarViewMode.WeekView {
+                    updateInteractiveView()
+                }
+            }
+        }
+    }
+    
+    private var touchController: CVCalendarTouchController {
+        return CVCalendarTouchController.sharedTouchController
+    }
     
     // MARK: - Public properties
     
-    var monthView: CVCalendarMonthView?
-    var index: Int?
+    weak var monthView: CVCalendarMonthView!
+    var dayViews: [CVCalendarDayView]!
+    var index: Int!
+    
     var weekdaysIn: [Int : [Int]]?
     var weekdaysOut: [Int : [Int]]?
+    var utilizable = false /// Recovery service.
     
-    var dayViews: [CVCalendarDayView]?
-    
-    // For Recovery service.
-    var utilizable = false
+    weak var calendarView: CVCalendarView! {
+        get {
+            var calendarView: CVCalendarView!
+            safeExecuteBlock({
+                calendarView = self.monthView!.calendarView!
+            }, collapsingOnNil: false, withObjects: monthView)
+            
+            return calendarView
+        }
+    }
     
     // MARK: - Initialization
 
@@ -36,7 +61,6 @@ class CVCalendarWeekView: UIView {
         self.weekdaysIn = weeksIn[self.index!]
         
         // Get weekdays out.
-        
         if let weeksOut = self.monthView!.weeksOut {
             if self.weekdaysIn?.count < 7 {
                 if weeksOut.count > 1 {
@@ -82,9 +106,63 @@ class CVCalendarWeekView: UIView {
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - Content filling 
+}
 
+// MARK: - Interactive view setup & management
+
+extension CVCalendarWeekView {
+    func updateInteractiveView() {
+        safeExecuteBlock({
+            
+            let mode = self.monthView!.calendarView!.calendarMode!
+            if mode == .WeekView {
+                if let interactiveView = self.interactiveView {
+                    interactiveView.frame = self.bounds
+                    interactiveView.removeFromSuperview()
+                    self.addSubview(interactiveView)
+                } else {
+                    self.interactiveView = UIView(frame: self.bounds)
+                    self.interactiveView.backgroundColor = .clearColor()
+                    
+                    let tapRecognizer = UITapGestureRecognizer(target: self, action: "didTouchInteractiveView:")
+                    let pressRecognizer = UILongPressGestureRecognizer(target: self, action: "didPressInteractiveView:")
+                    pressRecognizer.minimumPressDuration = 0.3
+                    
+                    self.interactiveView.addGestureRecognizer(pressRecognizer)
+                    self.interactiveView.addGestureRecognizer(tapRecognizer)
+                    
+                    self.addSubview(self.interactiveView)
+                }
+            }
+            
+            }, collapsingOnNil: false, withObjects: monthView, monthView?.calendarView)
+    }
+    
+    func didPressInteractiveView(recognizer: UILongPressGestureRecognizer) {
+        let location = recognizer.locationInView(self.interactiveView)
+        let state: UIGestureRecognizerState = recognizer.state
+        
+        switch state {
+        case .Began:
+            touchController.receiveTouchLocation(location, inWeekView: self, withSelectionType: .Range(.Started))
+        case .Changed:
+            touchController.receiveTouchLocation(location, inWeekView: self, withSelectionType: .Range(.Changed))
+        case .Ended:
+            touchController.receiveTouchLocation(location, inWeekView: self, withSelectionType: .Range(.Ended))
+            
+        default: break
+        }
+    }
+    
+    func didTouchInteractiveView(recognizer: UITapGestureRecognizer) {
+        let location = recognizer.locationInView(self.interactiveView)
+        touchController.receiveTouchLocation(location, inWeekView: self, withSelectionType: .Single)
+    }
+}
+
+// MARK: - Content fill & reload
+
+extension CVCalendarWeekView {
     func createDayViews() {
         dayViews = [CVCalendarDayView]()
         let renderer = CVCalendarRenderer.sharedRenderer()
@@ -94,28 +172,11 @@ class CVCalendarWeekView: UIView {
             
             safeExecuteBlock({
                 self.dayViews!.append(dayView)
-            }, collapsingOnNil: true, withObjects: dayViews)
+                }, collapsingOnNil: true, withObjects: dayViews)
             
             addSubview(dayView)
         }
     }
-    
-    // MARK: - View Destruction
-    
-    func destroy() {
-        self.monthView = nil
-        
-        if let dayViews = dayViews {
-            for dayView in dayViews {
-                dayView.removeFromSuperview()
-                dayView.destroy()
-            }
-            
-            self.dayViews = nil
-        }
-    }
-    
-     // MARK: - Content reload
     
     func reloadDayViews() {
         let renderer = CVCalendarRenderer.sharedRenderer()
@@ -128,35 +189,9 @@ class CVCalendarWeekView: UIView {
             }
         }, collapsingOnNil: true, withObjects: dayViews)
     }
-    
-    // MARK: - Interactive view update
-    
-    override var frame: CGRect {
-        didSet {
-            updateInteractiveView()
-        }
-    }
-    
-    private var interactiveView: UIView!
-    func updateInteractiveView() {
-        safeExecuteBlock({
-            let mode = self.monthView!.calendarView!.calendarMode!
-            if mode == .WeekView {
-                if let interactiveView = self.interactiveView {
-                    println("Updating interactive view for WEEK VIEW!")
-                    interactiveView.frame = self.bounds
-                    interactiveView.removeFromSuperview()
-                    self.addSubview(interactiveView)
-                } else {
-                    self.interactiveView = UIView(frame: self.bounds)
-                    self.interactiveView.backgroundColor = .clearColor()
-                    self.addSubview(self.interactiveView)
-                }
-            }
-            
-        }, collapsingOnNil: false, withObjects: monthView, monthView?.calendarView)
-    }
 }
+
+// MARK: - Safe execution
 
 extension CVCalendarWeekView {
     func safeExecuteBlock(block: Void -> Void, collapsingOnNil collapsing: Bool, withObjects objects: AnyObject?...) {

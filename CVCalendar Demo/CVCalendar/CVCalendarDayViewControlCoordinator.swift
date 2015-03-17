@@ -49,35 +49,42 @@ class CVCalendarDayViewControlCoordinator: NSObject {
         animator?.animateDeselection(dayView, withControlCoordinator: self)
     }
     
-    func animationStarted() {
-        inOrderNumber++
+    func selectionPerformedOnDayView() {
+        
     }
     
-    func animationEnded() {
-        inOrderNumber--
+    func deselectionPerformedOnDayView(dayView: DayView) {
+        selectionSet.removeObject(dayView)
     }
+    
+    var selectionSet = Set<DayView>()
 }
 
 // MARK: - CVCalendarCoordinator
 
 extension CVCalendarDayViewControlCoordinator: Coordinator {
     func performDayViewSingleSelection(dayView: DayView) {
+        selectionSet.addObject(dayView)
+        println(selectionSet.count)
         
-        if let currentlySelectedDatView = selectedDayView {
-            if currentlySelectedDatView != dayView {
-                if inOrderNumber < 2 {
-                    presentDeselectionOnDayView(selectedDayView!)
-                    selectedDayView = dayView
-                    presentSelectionOnDayView(selectedDayView!)
+        if selectionSet.count > 1 {
+            let count = selectionSet.count-1
+            for dayViewInQueue in selectionSet {
+                if dayView != dayViewInQueue {
+                    presentDeselectionOnDayView(dayViewInQueue)
+                    
                 }
+                
+            }
+        }
+        
+        if let animator = animator {
+            if selectedDayView != dayView {
+                selectedDayView = dayView
+                presentSelectionOnDayView(dayView)
             }
         } else {
-            selectedDayView = dayView
-            if animator == nil {
-                animator = selectedDayView!.weekView!.monthView!.calendarView!.animator
-            }
-            
-            presentSelectionOnDayView(selectedDayView!)
+            animator = dayView.calendarView.animator!
         }
     }
     
@@ -85,3 +92,72 @@ extension CVCalendarDayViewControlCoordinator: Coordinator {
         println("Day view range selection found")
     }
 }
+
+struct Set<T: AnyObject>: SequenceType, NilLiteralConvertible {
+    private var storage = [T]()
+    
+    subscript(index: Int) -> T? {
+        get {
+            if index < storage.count {
+                return storage[index]
+            } else {
+                return nil
+            }
+        }
+        
+        set {
+            if let value = newValue {
+                addObject(value)
+            }
+        }
+    }
+    
+    mutating func addObject(object: T) {
+        if indexObject(object) == nil {
+            storage.append(object)
+        }
+    }
+    
+    mutating func removeObject(object: T) {
+        if let index = indexObject(object) {
+            storage.removeAtIndex(index)
+        }
+    }
+    
+    var count: Int {
+        return storage.count
+    }
+    
+    var last: T? {
+        return storage.last
+    }
+    
+    private func indexObject(object: T) -> Int? {
+        for (index, storageObj) in enumerate(storage) {
+            if storageObj === object {
+                return index
+            }
+        }
+        
+        return nil
+    }
+    
+    
+    func generate() -> GeneratorOf<T> {
+        var power = 0
+        var nextClosure : () -> T? = {
+            (power < self.count) ? self.storage[power++] : nil
+        }
+        return GeneratorOf<T>(nextClosure)
+    }
+    
+    init(nilLiteral: ()) {
+        
+    }
+    
+    init() {
+        
+    }
+}
+
+

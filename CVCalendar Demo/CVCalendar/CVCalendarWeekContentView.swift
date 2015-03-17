@@ -287,12 +287,6 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
             scrollView.contentOffset = CGPointMake(scrollView.contentOffset.x, 0)
         }
         
-        if self.lastContentOffset > scrollView.contentOffset.x {
-            self.direction = .Right
-        } else if self.lastContentOffset < scrollView.contentOffset.x {
-            self.direction = .Left
-        }
-        
         self.lastContentOffset = scrollView.contentOffset.x
     }
     
@@ -620,6 +614,17 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
     
     func updateFrames() {
         _updateFrames()
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if decelerate {
+            let rightBorder = scrollView.frame.width
+            if scrollView.contentOffset.x <= rightBorder {
+                self.direction = .Right
+            } else  {
+                self.direction = .Left
+            }
+        }
     }
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {

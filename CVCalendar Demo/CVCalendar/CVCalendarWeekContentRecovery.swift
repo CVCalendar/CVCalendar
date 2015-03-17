@@ -72,7 +72,7 @@ class CVCalendarWeekContentRecovery: NSObject {
                     let monthView = monthViews[i]
                     if recoveryAllowed(monthView) {
                         monthView.removeFromSuperview()
-                        monthView.destroy()
+                        //monthView.destroy()
                         removalIndexes.append(i)
                     }
                 }

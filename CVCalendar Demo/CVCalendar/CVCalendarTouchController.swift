@@ -1,0 +1,129 @@
+//
+//  CVCalendarTouchController.swift
+//  CVCalendar Demo
+//
+//  Created by Eugene Mozharovsky on 17/03/15.
+//  Copyright (c) 2015 GameApp. All rights reserved.
+//
+
+import UIKit
+
+private let singleton = CVCalendarTouchController()
+
+class CVCalendarTouchController {
+    // MARK: - Properties
+    lazy var coordinator: CVCalendarCoordinator = {
+        return CVCalendarDayViewControlCoordinator.sharedControlCoordinator
+    }()
+    
+    class var sharedTouchController: CVCalendarTouchController {
+        return singleton
+    }
+    
+    /// Private init.
+    private init() { }
+}
+
+// MARK: - Events receive 
+
+extension CVCalendarTouchController {
+    func receiveTouchLocation(location: CGPoint, inMonthView monthView: CVCalendarMonthView, withSelectionType selectionType: CVSelectionType) {
+        let weekViews = monthView.weekViews
+        if let dayView = ownerTouchLocation(location, onMonthView: monthView) {
+            receiveTouchOnDayView(dayView, withSelectionType: selectionType)
+        }
+    }
+    
+    func receiveTouchLocation(location: CGPoint, inWeekView weekView: CVCalendarWeekView, withSelectionType selectionType: CVSelectionType) {
+        let monthView = weekView.monthView
+        let index = weekView.index
+        let weekViews = monthView.weekViews
+        
+        if let dayView = ownerTouchLocation(location, onWeekView: weekView) {
+            receiveTouchOnDayView(dayView, withSelectionType: selectionType)
+        }
+    }
+    
+    func receiveTouchOnDayView(dayView: CVCalendarDayView) {
+        coordinator.performDayViewSingleSelection(dayView)
+    }
+}
+
+// MARK: - Events management 
+
+private extension CVCalendarTouchController {
+    func receiveTouchOnDayView(dayView: CVCalendarDayView, withSelectionType selectionType: CVSelectionType) {
+        let calendarView = dayView.calendarView
+        
+        switch selectionType {
+        case .Single:
+            coordinator.performDayViewSingleSelection(dayView)
+            calendarView.didSelectDayView(dayView)
+        case let .Range(.Started):
+            dayView.setDayLabelHighlighted()
+        case let .Range(.Ended):
+            dayView.setDayLabelUnhighlightedDismissingState(true)
+        default: break
+        }
+    }
+
+    func monthViewLocation(location: CGPoint, doesBelongToDayView dayView: CVCalendarDayView) -> Bool {
+        var dayViewFrame = dayView.frame
+        let weekIndex = dayView.weekView!.index!
+        let appearance = dayView.weekView!.monthView!.calendarView!.appearanceDelegate!
+        
+        if weekIndex > 0 {
+            dayViewFrame.origin.y += dayViewFrame.height
+            dayViewFrame.origin.y *= CGFloat(dayView.weekView!.index!)
+        }
+        
+        if dayView != dayView.weekView!.dayViews!.first! {
+            dayViewFrame.origin.y += appearance.spaceBetweenWeekViews! * CGFloat(weekIndex)
+        }
+        
+        if location.x >= dayViewFrame.origin.x && location.x <= CGRectGetMaxX(dayViewFrame) && location.y >= dayViewFrame.origin.y && location.y <= CGRectGetMaxY(dayViewFrame) {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func weekViewLocation(location: CGPoint, doesBelongToDayView dayView: CVCalendarDayView) -> Bool {
+        let dayViewFrame = dayView.frame
+        if location.x >= dayViewFrame.origin.x && location.x <= CGRectGetMaxX(dayViewFrame) && location.y >= dayViewFrame.origin.y && location.y <= CGRectGetMaxY(dayViewFrame) {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func ownerTouchLocation(location: CGPoint, onMonthView monthView: CVCalendarMonthView) -> DayView? {
+        var owner: DayView?
+        let weekViews = monthView.weekViews
+        
+        for weekView in weekViews {
+            for dayView in weekView.dayViews! {
+                if self.monthViewLocation(location, doesBelongToDayView: dayView) {
+                    owner = dayView
+                    return owner
+                }
+            }
+        }
+
+        
+        return owner
+    }
+    
+    func ownerTouchLocation(location: CGPoint, onWeekView weekView: CVCalendarWeekView) -> DayView? {
+        var owner: DayView?
+        let dayViews = weekView.dayViews
+        for dayView in dayViews {
+            if weekViewLocation(location, doesBelongToDayView: dayView) {
+                owner = dayView
+                return owner
+            }
+        }
+        
+        return owner
+    }
+}

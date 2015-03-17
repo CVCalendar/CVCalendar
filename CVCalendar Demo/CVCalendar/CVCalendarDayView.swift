@@ -15,8 +15,9 @@ class CVCalendarDayView: UIView {
     let weekdayIndex: Int?
     let date: CVDate?
     
-    var weekView: CVCalendarWeekView!
-    var dayLabel: UILabel!
+    weak var weekView: CVCalendarWeekView?
+    
+    var dayLabel: UILabel?
     var circleView: CVCircleView?
     var topMarker: CALayer?
     var dotMarker: CVCircleView?
@@ -24,7 +25,7 @@ class CVCalendarDayView: UIView {
     var isOut = false
     var isCurrentDay = false
     
-    var monthView: CVCalendarMonthView {
+    unowned var monthView: CVCalendarMonthView {
         get {
             var monthView: CVCalendarMonthView!
             safeExecuteBlock({
@@ -35,7 +36,7 @@ class CVCalendarDayView: UIView {
         }
     }
     
-    var calendarView: CVCalendarView {
+    unowned var calendarView: CVCalendarView {
         get {
             var calendarView: CVCalendarView!
             safeExecuteBlock({
@@ -46,13 +47,19 @@ class CVCalendarDayView: UIView {
         }
     }
     
+    override var frame: CGRect {
+        didSet {
+            topMarkerSetup()
+        }
+    }
+    
     // MARK: - Initialization
     
     init(weekView: CVCalendarWeekView, frame: CGRect, weekdayIndex: Int) {
         super.init()
         
-        self.weekView = weekView
         self.frame = frame
+        self.weekView = weekView
         self.weekdayIndex = weekdayIndex
         
         func hasDayAtWeekdayIndex(weekdayIndex: Int, weekdaysDictionary: [Int : [Int]]) -> Bool {
@@ -113,6 +120,7 @@ class CVCalendarDayView: UIView {
         
         labelSetup()
         setupDotMarker()
+        topMarkerSetup()
     }
     
     override init(frame: CGRect) {
@@ -122,52 +130,9 @@ class CVCalendarDayView: UIView {
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - Override properties 
-    
-    override var frame: CGRect {
-        didSet {
-            topMarkerSetup()
-        }
-    }
-    
-    
-    // MARK: - View Destruction
-    
-    func destroy() {
-        weekView = nil
-        dayLabel?.removeFromSuperview()
-        circleView?.removeFromSuperview()
-        topMarker?.removeAllAnimations()
-        dotMarker?.removeFromSuperview()
-    }
-    
-    // MARK: - Content reload
-    
-    func reloadContent() {
-        setupDotMarker()
-        dayLabel?.frame = bounds
-        
-        var shouldShowDaysOut = calendarView.shouldShowWeekdaysOut!
-        if !shouldShowDaysOut {
-            if isOut {
-                hidden = true
-            }
-        } else {
-            if isOut {
-                hidden = false
-            }
-        }
-    
-        if circleView != nil {
-            setDayLabelDeselectedDismissingState(true)
-            setDayLabelSelected()
-        }
-    }
-    
 }
 
-// MARK: - Setup 
+// MARK: - Subviews setup
 
 extension CVCalendarDayView {
     func labelSetup() {
@@ -186,7 +151,8 @@ extension CVCalendarDayView {
         } else if isCurrentDay {
             let coordinator = CVCalendarDayViewControlCoordinator.sharedControlCoordinator
             if coordinator.selectedDayView == nil {
-                monthView.receiveDayViewTouch(self, withSelectionType: .Single)
+                let touchController = CVCalendarTouchController.sharedTouchController
+                touchController.receiveTouchOnDayView(self)
             } else {
                 color = appearance.dayLabelPresentWeekdayTextColor
                 if appearance.dayLabelPresentWeekdayInitallyBold! {
@@ -239,7 +205,7 @@ extension CVCalendarDayView {
                     createMarker()
                 }
             }
-            }, collapsingOnNil: false, withObjects: weekView, weekView?.monthView, weekView?.monthView?.calendarView)
+        }, collapsingOnNil: false, withObjects: weekView, weekView?.monthView, weekView?.monthView)
     }
     
     func setupDotMarker() {
@@ -436,6 +402,31 @@ extension CVCalendarDayView {
         setDayLabelUnhighlightedDismissingState(removeViews)
     }
 
+}
+
+// MARK: - Content reload
+
+extension CVCalendarDayView {
+    func reloadContent() {
+        setupDotMarker()
+        dayLabel?.frame = bounds
+        
+        var shouldShowDaysOut = calendarView.shouldShowWeekdaysOut!
+        if !shouldShowDaysOut {
+            if isOut {
+                hidden = true
+            }
+        } else {
+            if isOut {
+                hidden = false
+            }
+        }
+        
+        if circleView != nil {
+            setDayLabelDeselectedDismissingState(true)
+            setDayLabelSelected()
+        }
+    }
 }
 
 // MARK: - Safe execution

@@ -8,34 +8,46 @@
 
 import UIKit
 
-enum CVSelectionType {
-    case Single
-    case Range
-}
-
 class CVCalendarMonthView: UIView {
     
+    // MARK: - Non public properties
+    
+    private var interactiveView: UIView!
+    
+    override var frame: CGRect {
+        didSet {
+            if let calendarView = calendarView {
+                if calendarView.calendarMode == CVCalendarViewMode.MonthView {
+                    updateInteractiveView()
+                }
+            }
+        }
+    }
+    
+    private var touchController: CVCalendarTouchController {
+        return CVCalendarTouchController.sharedTouchController
+    }
+    
     // MARK: - Public properties
-
-    var calendarView: CVCalendarView?
-    var date: NSDate?
-    var numberOfWeeks: Int?
-    var weekViews: [CVCalendarWeekView]?
+    
+    weak var calendarView: CVCalendarView!
+    var date: NSDate!
+    var numberOfWeeks: Int!
+    var weekViews: [CVCalendarWeekView]!
     
     var weeksIn: [[Int : [Int]]]?
     var weeksOut: [[Int : [Int]]]?
-    
     var currentDay: Int?
+    
+    var ranged = false
     
     // MARK: - Initialization 
 
     init(calendarView: CVCalendarView, date: NSDate) {
         super.init()
-        
         self.calendarView = calendarView
         self.date = date
-        
-        self.commonInit()
+        commonInit()
     }
     
     override init(frame: CGRect) {
@@ -45,110 +57,70 @@ class CVCalendarMonthView: UIView {
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+}
+
+// MARK: - Creation and destruction 
+
+extension CVCalendarMonthView {
     func commonInit() {
         let calendarManager = CVCalendarManager.sharedManager
-        self.numberOfWeeks = calendarManager.monthDateRange(self.date!).countOfWeeks
-        self.weeksIn = calendarManager.weeksWithWeekdaysForMonthDate(self.date!).weeksIn
-        self.weeksOut = calendarManager.weeksWithWeekdaysForMonthDate(self.date!).weeksOut
-        
-        self.currentDay = calendarManager.dateRange(NSDate()).day
+        safeExecuteBlock({
+            self.numberOfWeeks = calendarManager.monthDateRange(self.date).countOfWeeks
+            self.weeksIn = calendarManager.weeksWithWeekdaysForMonthDate(self.date).weeksIn
+            self.weeksOut = calendarManager.weeksWithWeekdaysForMonthDate(self.date).weeksOut
+            self.currentDay = calendarManager.dateRange(NSDate()).day
+            }, collapsingOnNil: true, withObjects: date)
     }
-    
-    // MARK: - Content filling
-    
-    func updateAppearance(frame: CGRect) {
-        self.frame = frame
-        self.createWeekViews()
-    }
-    
-    func createWeekViews() {
-        let renderer = CVCalendarRenderer.sharedRenderer()
-        self.weekViews = [CVCalendarWeekView]()
-        
-        for i in 0..<self.numberOfWeeks! {
-            let frame = renderer.renderWeekFrameForMonthView(self, weekIndex: i)
-            let weekView = CVCalendarWeekView(monthView: self, frame: frame, index: i)
-            
-            safeExecuteBlock({
-                self.weekViews!.append(weekView)
-            }, collapsingOnNil: true, withObjects: weekViews)
-            
-            self.addSubview(weekView)
-        }
-    }
-    
-    
-    // MARK: - Events receiving
-    
-    lazy var coordinator: CVCalendarCoordinator = {
-        return CVCalendarDayViewControlCoordinator.sharedControlCoordinator
-    }()
-    
-    
-    var ranged = false
-    func receiveDayViewTouch(dayView: CVCalendarDayView, withSelectionType selectionType: CVSelectionType) {
-        switch selectionType {
-        case .Single:
-            coordinator.performDayViewSingleSelection(dayView)
-            calendarView!.didSelectDayView(dayView)
-        case .Range:
-            if !ranged {
-                dayView.setDayLabelHighlighted()
-                ranged = true
-            } else {
-                dayView.setDayLabelUnhighlightedDismissingState(true)
-                ranged = false
-            }
-            
-        default: break
-        }
-    }
-    
-    // MARK: - View Destruction
-    
-    func destroy() {
-        let coordinator = CVCalendarDayViewControlCoordinator.sharedControlCoordinator
-        if self.weekViews != nil {
-            for weekView in self.weekViews! {
-                for dayView in weekView.dayViews! {
-                    if dayView == coordinator.selectedDayView {
-                        coordinator.selectedDayView = nil
-                    }
-                }
-                
-                weekView.destroy()
-            }
-            
-            self.weekViews = nil
-        }
-    }
-    
-    // MARK: Content reload 
-    
+}
+
+// MARK: Content reload
+
+extension CVCalendarMonthView {
     func reloadWeekViewsWithMonthFrame(frame: CGRect) {
         self.frame = frame
         
         let renderer = CVCalendarRenderer.sharedRenderer()
         
         safeExecuteBlock({
-            for (index, weekView) in enumerate(self.weekViews!) {
+            for (index, weekView) in enumerate(self.weekViews) {
                 let frame = renderer.renderWeekFrameForMonthView(self, weekIndex: index)
                 weekView.frame = frame
                 weekView.reloadDayViews()
             }
         }, collapsingOnNil: true, withObjects: weekViews)
     }
-    
-    // MARK: - Interactive view update
-    
-    override var frame: CGRect {
-        didSet {
-            updateInteractiveView()
-        }
+}
+
+// MARK: - Content fill & update
+
+extension CVCalendarMonthView {
+    func updateAppearance(frame: CGRect) {
+        self.frame = frame
+        createWeekViews()
     }
     
-    private var interactiveView: UIView!
+    func createWeekViews() {
+        let renderer = CVCalendarRenderer.sharedRenderer()
+        weekViews = [CVCalendarWeekView]()
+        
+        safeExecuteBlock({
+            for i in 0..<self.numberOfWeeks! {
+                let frame = renderer.renderWeekFrameForMonthView(self, weekIndex: i)
+                let weekView = CVCalendarWeekView(monthView: self, frame: frame, index: i)
+                
+                self.safeExecuteBlock({
+                    self.weekViews!.append(weekView)
+                    }, collapsingOnNil: true, withObjects: self.weekViews)
+                
+                self.addSubview(weekView)
+            }
+        }, collapsingOnNil: true, withObjects: numberOfWeeks)
+    }
+}
+
+// MARK: - Interactive view management & update
+
+extension CVCalendarMonthView {
     func updateInteractiveView() {
         safeExecuteBlock({
             let mode = self.calendarView!.calendarMode!
@@ -172,79 +144,32 @@ class CVCalendarMonthView: UIView {
                 }
             }
             
-        }, collapsingOnNil: false, withObjects: calendarView)
+            }, collapsingOnNil: false, withObjects: calendarView)
     }
-    
-    // MARK: - Interaction with embedded views
     
     func didPressInteractiveView(recognizer: UILongPressGestureRecognizer) {
         let location = recognizer.locationInView(self.interactiveView)
         let state: UIGestureRecognizerState = recognizer.state
         
         switch state {
-            case .Began, .Ended:
-                //println("Found TAP gesture, location = \(location)")
+        case .Began:
+            touchController.receiveTouchLocation(location, inMonthView: self, withSelectionType: .Range(.Started))
+        case .Changed:
+            touchController.receiveTouchLocation(location, inMonthView: self, withSelectionType: .Range(.Changed))
+        case .Ended:
+            touchController.receiveTouchLocation(location, inMonthView: self, withSelectionType: .Range(.Ended))
             
-                if let selectedDayView = locationOwner(location) {
-                   receiveDayViewTouch(selectedDayView, withSelectionType: .Range)
-                }
-            
-            /*
-            case .Changed:
-                println("Changed!")
-            case .Ended:
-                println("End location: \(location)")
-            case .Cancelled:
-                println("Canceled!") */
-            default: break
+        default: break
         }
     }
     
     func didTouchInteractiveView(recognizer: UITapGestureRecognizer) {
         let location = recognizer.locationInView(self.interactiveView)
-        if let selectedDayView = locationOwner(location) {
-            receiveDayViewTouch(selectedDayView, withSelectionType: .Single)
-        }
-    }
-    
-    func doesBelongToDayView(dayView: DayView, withLocation location: CGPoint) -> Bool {
-        var dayViewFrame = dayView.frame
-        let weekIndex = dayView.weekView!.index!
-        let appearance = dayView.weekView!.monthView!.calendarView!.appearanceDelegate!
-
-        if weekIndex > 0 {
-            dayViewFrame.origin.y += dayViewFrame.height
-            dayViewFrame.origin.y *= CGFloat(dayView.weekView!.index!)
-        }
-        
-        if dayView != dayView.weekView!.dayViews!.first! {
-            dayViewFrame.origin.y += appearance.spaceBetweenWeekViews! * CGFloat(weekIndex)
-        }
-        
-        if location.x >= dayViewFrame.origin.x && location.x <= CGRectGetMaxX(dayViewFrame) && location.y >= dayViewFrame.origin.y && location.y <= CGRectGetMaxY(dayViewFrame) {
-            return true
-        } else {
-            return false
-        }
-    }
-    
-    // TODO: Come up with a more efficient algorithm!
-    func locationOwner(location: CGPoint) -> DayView? {
-        var owner: DayView?
-        safeExecuteBlock({
-            for weekView in self.weekViews! {
-                for dayView in weekView.dayViews! {
-                    if self.doesBelongToDayView(dayView, withLocation: location) {
-                        owner = dayView
-                        return
-                    }
-                }
-            }
-        }, collapsingOnNil: true, withObjects: weekViews)
-
-        return owner
+        touchController.receiveTouchLocation(location, inMonthView: self, withSelectionType: .Single)
     }
 }
+
+// MARK: - Safe execution
 
 extension CVCalendarMonthView {
     func safeExecuteBlock(block: Void -> Void, collapsingOnNil collapsing: Bool, withObjects objects: AnyObject?...) {

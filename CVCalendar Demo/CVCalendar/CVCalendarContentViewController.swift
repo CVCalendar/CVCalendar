@@ -84,22 +84,20 @@ class CVCalendarContentViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Scroll View Delegate 
     
-    var i = 0
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        delegate.scrollViewDidScroll(scrollView)
+        delegate.scrollViewDidScroll!(scrollView)
     }
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        delegate.scrollViewWillBeginDragging(scrollView)
+        delegate.scrollViewWillBeginDragging!(scrollView)
     }
 
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        delegate.scrollViewDidEndDecelerating(scrollView)
-        scrollView.userInteractionEnabled = true
+        delegate.scrollViewDidEndDecelerating!(scrollView)
     }
     
-    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        scrollView.userInteractionEnabled = false
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        delegate.scrollViewDidEndDragging!(scrollView, willDecelerate: decelerate)
     }
     
     // MARK: - Day View Selection
