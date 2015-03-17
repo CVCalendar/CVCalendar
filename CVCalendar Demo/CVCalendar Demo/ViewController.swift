@@ -144,6 +144,6 @@ class ViewController: UIViewController, CVCalendarViewDelegate, CVCalendarViewAp
     }
     
     func spaceBetweenDayViews() -> CGFloat {
-        return 5
+        return 2
     }
 }

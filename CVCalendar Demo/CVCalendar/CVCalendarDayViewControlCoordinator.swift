@@ -24,40 +24,46 @@ protocol CVCalendarCoordinator {
 }
 
 class CVCalendarDayViewControlCoordinator: NSObject {
-    var inOrderNumber = 0
+    // MARK: - Non public properties
+    private var selectionSet = CVSet<DayView>()
     
+    lazy var appearance: Appearance = {
+        return Appearance.sharedCalendarViewAppearance
+    }()
+    
+    // MARK: - Public properties
+    var selectedDayView: CVCalendarDayView?
+    var animator: CVCalendarViewAnimatorDelegate?
     class var sharedControlCoordinator: CVCalendarDayViewControlCoordinator {
         return instance
     }
-   
-    var selectedDayView: CVCalendarDayView?
-    var animator: CVCalendarViewAnimatorDelegate?
-    
-    lazy var appearance: Appearance = {
-       return Appearance.sharedCalendarViewAppearance
-    }()
-    
-    private override init() {
-        super.init()
-    }
-    
-    private func presentSelectionOnDayView(dayView: DayView) {
-        animator?.animateSelection(dayView, withControlCoordinator: self)
-    }
-    
-    private func presentDeselectionOnDayView(dayView: DayView) {
-        animator?.animateDeselection(dayView, withControlCoordinator: self)
-    }
-    
+
+    // MARK: - Private initialization
+    private override init() { }
+}
+
+// MARK: - Animator side callback
+
+extension CVCalendarDayViewControlCoordinator {
     func selectionPerformedOnDayView() {
-        
+        // TODO:
     }
     
     func deselectionPerformedOnDayView(dayView: DayView) {
         selectionSet.removeObject(dayView)
     }
+}
+
+// MARK: - Animator reference 
+
+private extension CVCalendarDayViewControlCoordinator {
+    func presentSelectionOnDayView(dayView: DayView) {
+        animator?.animateSelection(dayView, withControlCoordinator: self)
+    }
     
-    var selectionSet = Set<DayView>()
+    func presentDeselectionOnDayView(dayView: DayView) {
+        animator?.animateDeselection(dayView, withControlCoordinator: self)
+    }
 }
 
 // MARK: - CVCalendarCoordinator
@@ -93,71 +99,6 @@ extension CVCalendarDayViewControlCoordinator: Coordinator {
     }
 }
 
-struct Set<T: AnyObject>: SequenceType, NilLiteralConvertible {
-    private var storage = [T]()
-    
-    subscript(index: Int) -> T? {
-        get {
-            if index < storage.count {
-                return storage[index]
-            } else {
-                return nil
-            }
-        }
-        
-        set {
-            if let value = newValue {
-                addObject(value)
-            }
-        }
-    }
-    
-    mutating func addObject(object: T) {
-        if indexObject(object) == nil {
-            storage.append(object)
-        }
-    }
-    
-    mutating func removeObject(object: T) {
-        if let index = indexObject(object) {
-            storage.removeAtIndex(index)
-        }
-    }
-    
-    var count: Int {
-        return storage.count
-    }
-    
-    var last: T? {
-        return storage.last
-    }
-    
-    private func indexObject(object: T) -> Int? {
-        for (index, storageObj) in enumerate(storage) {
-            if storageObj === object {
-                return index
-            }
-        }
-        
-        return nil
-    }
-    
-    
-    func generate() -> GeneratorOf<T> {
-        var power = 0
-        var nextClosure : () -> T? = {
-            (power < self.count) ? self.storage[power++] : nil
-        }
-        return GeneratorOf<T>(nextClosure)
-    }
-    
-    init(nilLiteral: ()) {
-        
-    }
-    
-    init() {
-        
-    }
-}
+
 
 

@@ -36,6 +36,7 @@
 		8F1080B61AB89B9700D9FAC6 /* CVCalendarTouchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1080B51AB89B9700D9FAC6 /* CVCalendarTouchController.swift */; };
 		8F1080B81AB89CCB00D9FAC6 /* CVSelectionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1080B71AB89CCB00D9FAC6 /* CVSelectionType.swift */; };
 		8F1080BA1AB89CD400D9FAC6 /* CVRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1080B91AB89CD400D9FAC6 /* CVRange.swift */; };
+		8F1080D31AB8C84600D9FAC6 /* CVSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1080D21AB8C84600D9FAC6 /* CVSet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +83,7 @@
 		8F1080B51AB89B9700D9FAC6 /* CVCalendarTouchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVCalendarTouchController.swift; sourceTree = "<group>"; };
 		8F1080B71AB89CCB00D9FAC6 /* CVSelectionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVSelectionType.swift; sourceTree = "<group>"; };
 		8F1080B91AB89CD400D9FAC6 /* CVRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVRange.swift; sourceTree = "<group>"; };
+		8F1080D21AB8C84600D9FAC6 /* CVSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVSet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,6 +200,7 @@
 				8F1080B51AB89B9700D9FAC6 /* CVCalendarTouchController.swift */,
 				8F1080B71AB89CCB00D9FAC6 /* CVSelectionType.swift */,
 				8F1080B91AB89CD400D9FAC6 /* CVRange.swift */,
+				8F1080D21AB8C84600D9FAC6 /* CVSet.swift */,
 			);
 			name = New;
 			sourceTree = "<group>";
@@ -332,6 +335,7 @@
 				553319271A7294AF004DF673 /* CVCalendarWeekContentView.swift in Sources */,
 				5534574E1A75114B00370955 /* CVCalendarWeekContentRecovery.swift in Sources */,
 				55E122561A588CC50013B002 /* CVCalendarViewAnimator.swift in Sources */,
+				8F1080D31AB8C84600D9FAC6 /* CVSet.swift in Sources */,
 				55E122501A588CC50013B002 /* CVCalendarDayViewControlCoordinator.swift in Sources */,
 				55E1225B1A588CC50013B002 /* CVCalendarWeekView.swift in Sources */,
 				8F1080BA1AB89CD400D9FAC6 /* CVRange.swift in Sources */,

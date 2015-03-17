@@ -9,9 +9,7 @@
 import UIKit
 
 class CVCalendarDayView: UIView {
-    
     // MARK: - Public properties
-    
     let weekdayIndex: Int?
     let date: CVDate?
     
@@ -25,23 +23,23 @@ class CVCalendarDayView: UIView {
     var isOut = false
     var isCurrentDay = false
     
-    unowned var monthView: CVCalendarMonthView {
+    weak var monthView: CVCalendarMonthView! {
         get {
             var monthView: CVCalendarMonthView!
             safeExecuteBlock({
                 monthView = self.weekView!.monthView!
-            }, collapsingOnNil: true, withObjects: weekView, weekView?.monthView)
+            }, collapsingOnNil: false, withObjects: weekView, weekView?.monthView)
             
             return monthView
         }
     }
     
-    unowned var calendarView: CVCalendarView {
+    weak var calendarView: CVCalendarView! {
         get {
             var calendarView: CVCalendarView!
             safeExecuteBlock({
                 calendarView = self.weekView!.monthView!.calendarView!
-            }, collapsingOnNil: true, withObjects: weekView, weekView?.monthView, weekView?.monthView?.calendarView)
+            }, collapsingOnNil: false, withObjects: weekView, weekView?.monthView, weekView?.monthView?.calendarView)
             
             return calendarView
         }
@@ -245,55 +243,57 @@ extension CVCalendarDayView {
 
 extension CVCalendarDayView {
     func moveDotMarkerBack(unwinded: Bool) {
-        if let dotMarker = dotMarker {
-            var shouldMove = true
-            var diff: CGFloat = 0
-            
-            if let delegate = calendarView.delegate {
-                shouldMove = delegate.dotMarker(shouldMoveOnHighlightingOnDayView: self)
-            }
-            
-            func moveMarker() {
-                UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
-                    dotMarker.transform = unwinded ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, diff)
-                }, completion: nil)
-            }
-            
-            func colorMarker() {
+        if let calendarView = calendarView {
+            if let dotMarker = dotMarker {
+                var shouldMove = true
+                var diff: CGFloat = 0
+                
                 if let delegate = calendarView.delegate {
-                    let frame = dotMarker.frame
-                    var color: UIColor?
-                    if unwinded {
-                        if let appearance = calendarView.appearanceDelegate  {
-                            color = (isOut) ? appearance.dayLabelWeekdayOutTextColor : delegate.dotMarker(colorOnDayView: self)
+                    shouldMove = delegate.dotMarker(shouldMoveOnHighlightingOnDayView: self)
+                }
+                
+                func moveMarker() {
+                    UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+                        dotMarker.transform = unwinded ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, diff)
+                        }, completion: nil)
+                }
+                
+                func colorMarker() {
+                    if let delegate = calendarView.delegate {
+                        let frame = dotMarker.frame
+                        var color: UIColor?
+                        if unwinded {
+                            if let appearance = calendarView.appearanceDelegate  {
+                                color = (isOut) ? appearance.dayLabelWeekdayOutTextColor : delegate.dotMarker(colorOnDayView: self)
+                            }
+                        } else {
+                            if let appearance = calendarView.appearanceDelegate  {
+                                color = appearance.dotMarkerColor!
+                            }
                         }
-                    } else {
-                        if let appearance = calendarView.appearanceDelegate  {
-                            color = appearance.dotMarkerColor!
-                        }
+                        
+                        dotMarker.color = color
+                        dotMarker.setNeedsDisplay()
                     }
                     
-                    dotMarker.color = color
-                    dotMarker.setNeedsDisplay()
                 }
                 
-            }
-            
-            if shouldMove {
-                if !unwinded {
-                    let radius = (min(frame.height, frame.width) - 10) / 2
-                    let center = CGPointMake(CGRectGetMidX(circleView!.frame), CGRectGetMidY(circleView!.frame))
-                    let maxArcPointY = center.y + radius
-                    diff = maxArcPointY - dotMarker.frame.origin.y/0.95
-                }
-                
-                if (diff > 0 && !unwinded) || unwinded {
-                    moveMarker()
+                if shouldMove {
+                    if !unwinded {
+                        let radius = (min(frame.height, frame.width) - 10) / 2
+                        let center = CGPointMake(CGRectGetMidX(circleView!.frame), CGRectGetMidY(circleView!.frame))
+                        let maxArcPointY = center.y + radius
+                        diff = maxArcPointY - dotMarker.frame.origin.y/0.95
+                    }
+                    
+                    if (diff > 0 && !unwinded) || unwinded {
+                        moveMarker()
+                    } else {
+                        colorMarker()
+                    }
                 } else {
                     colorMarker()
                 }
-            } else {
-                colorMarker()
             }
         }
     }

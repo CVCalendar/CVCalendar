@@ -9,9 +9,7 @@
 import UIKit
 
 class CVCalendarMonthView: UIView {
-    
     // MARK: - Non public properties
-    
     private var interactiveView: UIView!
     
     override var frame: CGRect {
