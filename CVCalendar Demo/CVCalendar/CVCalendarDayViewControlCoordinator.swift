@@ -45,12 +45,15 @@ class CVCalendarDayViewControlCoordinator: NSObject {
 // MARK: - Animator side callback
 
 extension CVCalendarDayViewControlCoordinator {
-    func selectionPerformedOnDayView() {
+    func selectionPerformedOnDayView(dayView: DayView) {
         // TODO:
     }
     
     func deselectionPerformedOnDayView(dayView: DayView) {
-        selectionSet.removeObject(dayView)
+        if dayView != selectedDayView {
+            selectionSet.removeObject(dayView)
+            dayView.setDayLabelDeselectedDismissingState(true)
+        }
     }
 }
 
@@ -78,7 +81,6 @@ extension CVCalendarDayViewControlCoordinator: Coordinator {
             for dayViewInQueue in selectionSet {
                 if dayView != dayViewInQueue {
                     presentDeselectionOnDayView(dayViewInQueue)
-                    
                 }
                 
             }

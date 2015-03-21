@@ -307,16 +307,11 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
         self.pageLoadingEnabled = true
         self.direction = .None
         
-        self.prepareTopMarkersOnDayViews(self.weekViews[0]!, hidden: false)
-        self.prepareTopMarkersOnDayViews(self.weekViews[1]!, hidden: false)
-        self.prepareTopMarkersOnDayViews(self.weekViews[2]!, hidden: false)
-        
         let presentedWeekView = weekViews[1]!
         let presentedMonthView = presentedWeekView.monthView?
         if presentedMonthView != nil {
             self.calendarView.presentedDate = CVDate(date: presentedMonthView!.date!)
         }
-        
     }
     
     // MARK: - Day View Selection
@@ -625,6 +620,10 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
                 self.direction = .Left
             }
         }
+        
+        self.prepareTopMarkersOnDayViews(self.weekViews[0]!, hidden: false)
+        self.prepareTopMarkersOnDayViews(self.weekViews[1]!, hidden: false)
+        self.prepareTopMarkersOnDayViews(self.weekViews[2]!, hidden: false)
     }
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {

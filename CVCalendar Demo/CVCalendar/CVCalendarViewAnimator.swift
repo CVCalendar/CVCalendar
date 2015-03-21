@@ -16,65 +16,43 @@ class CVCalendarViewAnimator: NSObject, CVCalendarViewAnimatorDelegate {
     
     func animateSelectionWithBounceEffect(dayView: CVCalendarDayView, withControlCooordinator coordinator: CVCalendarDayViewControlCoordinator) {
         dayView.setDayLabelSelected()
-        
         dayView.dayLabel?.transform = CGAffineTransformMakeScale(0.5, 0.5)
         dayView.circleView?.transform = CGAffineTransformMakeScale(0.5, 0.5)
         
-        UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.3, initialSpringVelocity: 0.1, options: UIViewAnimationOptions.BeginFromCurrentState, animations: { () -> Void in
-            //coordinator.animationStarted()
-            
+        UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.3, initialSpringVelocity: 0.1, options: UIViewAnimationOptions.BeginFromCurrentState, animations: {
             dayView.circleView?.transform = CGAffineTransformMakeScale(1, 1)
             dayView.dayLabel?.transform = CGAffineTransformMakeScale(1, 1)
-            
         }) { _ in
-            //coordinator.animationEnded()
+            
         }
     }
     
     func animateDeselectionWithRollingEffect(dayView: CVCalendarDayView, withControlCooordinator coordinator: CVCalendarDayViewControlCoordinator) {
         UIView.animateWithDuration(0.25, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
-            //coordinator.animationStarted()
             dayView.circleView?.transform = CGAffineTransformMakeScale(0.1, 0.1)
             dayView.circleView?.alpha = 0.0
-            
-            }) { (Bool) -> Void in
-                dayView.setDayLabelUnhighlightedDismissingState(true)
-                //coordinator.animationEnded()
+        }) { _ in
+            coordinator.deselectionPerformedOnDayView(dayView)
         }
     }
     
     func animateDeselectionWithBubbleEffect(dayView: CVCalendarDayView, withControlCooordinator coordinator: CVCalendarDayViewControlCoordinator) {
-        UIView.animateWithDuration(0.15, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.8, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
-            
-            //coordinator.animationStarted()
-            
+        UIView.animateWithDuration(0.15, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.8, options: UIViewAnimationOptions.CurveEaseOut, animations: {
             dayView.circleView!.transform = CGAffineTransformMakeScale(1.3, 1.3)
-            
-            }) { (Bool) -> Void in
-                UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
-                    
-                    dayView.circleView!.transform = CGAffineTransformMakeScale(0.1, 0.1)
-                    
-                    }) { (Bool) -> Void in
-                        dayView.setDayLabelUnhighlightedDismissingState(true)
-                        //coordinator.animationEnded()
-                }
+        }) { _ in
+            UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+                dayView.circleView!.transform = CGAffineTransformMakeScale(0.1, 0.1)
+            }) { _ in
+                coordinator.deselectionPerformedOnDayView(dayView)
+            }
         }
     }
     
     func animateDeselectionWithFadeOutEffect(dayView: CVCalendarDayView, withControlCoordinator coordinator: CVCalendarDayViewControlCoordinator) {
         UIView.animateWithDuration(0.6, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: nil, animations: {
-            
-
             dayView.setDayLabelUnhighlightedDismissingState(false)
             dayView.circleView?.alpha = 0
-            
-
-            
-        }) {
-            _ in
-            
-            dayView.setDayLabelUnhighlightedDismissingState(true)
+        }) { _ in
             coordinator.deselectionPerformedOnDayView(dayView)
         }
     }

@@ -34,12 +34,6 @@ struct CVSet<T: AnyObject>: NilLiteralConvertible {
                 return nil
             }
         }
-        
-        set {
-            if let value = newValue {
-                addObject(value)
-            }
-        }
     }
 }
 

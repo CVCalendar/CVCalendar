@@ -125,10 +125,6 @@ class CVCalendarMonthContentView: NSObject, CVCalendarContentDelegate {
         self.pageLoadingEnabled = true
         self.direction = .None
         
-        self.prepareTopMarkersOnDayViews(self.monthViews![0]!, hidden: false)
-        self.prepareTopMarkersOnDayViews(self.monthViews![1]!, hidden: false)
-        self.prepareTopMarkersOnDayViews(self.monthViews![2]!, hidden: false)
-        
         self.calendarView!.presentedDate = CVDate(date: self.monthViews![1]!.date!)
     }
     
@@ -391,7 +387,7 @@ class CVCalendarMonthContentView: NSObject, CVCalendarContentDelegate {
             leftMonthView.frame.origin.x -= self.scrollView.frame.width
             presentedMonthView.frame.origin.x -= self.scrollView.frame.width
             
-            }, completion: { (finished) -> Void in
+        }, completion: { _ in
                 extraMonthView!.removeFromSuperview()
                 //extraMonthView!.destroy()
                 extraMonthView = nil
@@ -550,6 +546,10 @@ class CVCalendarMonthContentView: NSObject, CVCalendarContentDelegate {
                 self.direction = .Left
             }
         }
+        
+        self.prepareTopMarkersOnDayViews(self.monthViews![0]!, hidden: false)
+        self.prepareTopMarkersOnDayViews(self.monthViews![1]!, hidden: false)
+        self.prepareTopMarkersOnDayViews(self.monthViews![2]!, hidden: false)
     }
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {

@@ -334,6 +334,8 @@ extension CVCalendarDayView {
     }
     
     func setDayLabelUnhighlightedDismissingState(removeViews: Bool) {
+        println("Deselected")
+
         let appearance = CVCalendarViewAppearance.sharedCalendarViewAppearance
         
         var color: UIColor?
@@ -369,6 +371,7 @@ extension CVCalendarDayView {
     
     func setDayLabelSelected() {
         println("Selected")
+
         let appearance = CVCalendarViewAppearance.sharedCalendarViewAppearance
         
         var backgroundColor: UIColor!
