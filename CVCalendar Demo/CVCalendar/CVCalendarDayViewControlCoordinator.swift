@@ -33,7 +33,7 @@ class CVCalendarDayViewControlCoordinator: NSObject {
     
     // MARK: - Public properties
     var selectedDayView: CVCalendarDayView?
-    var animator: CVCalendarViewAnimatorDelegate?
+    var animator: CVCalendarViewAnimator!
     class var sharedControlCoordinator: CVCalendarDayViewControlCoordinator {
         return instance
     }
@@ -61,11 +61,13 @@ extension CVCalendarDayViewControlCoordinator {
 
 private extension CVCalendarDayViewControlCoordinator {
     func presentSelectionOnDayView(dayView: DayView) {
-        animator?.animateSelection(dayView, withControlCoordinator: self)
+        animator.animateSelectionOnDayView(dayView)
+        //animator?.animateSelection(dayView, withControlCoordinator: self)
     }
     
     func presentDeselectionOnDayView(dayView: DayView) {
-        animator?.animateDeselection(dayView, withControlCoordinator: self)
+        animator.animateDeselectionOnDayView(dayView)
+        //animator?.animateDeselection(dayView, withControlCoordinator: self)
     }
 }
 
@@ -92,7 +94,7 @@ extension CVCalendarDayViewControlCoordinator: Coordinator {
                 presentSelectionOnDayView(dayView)
             }
         } else {
-            animator = dayView.calendarView.animator!
+            animator = dayView.calendarView.animator
         }
     }
     

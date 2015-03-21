@@ -93,7 +93,7 @@ class CVCalendarView: UIView {
         set {
             if let animatorDelegate: AnyObject = newValue {
                 if animatorDelegate.conformsToProtocol(CVCalendarViewAnimatorDelegate.self) {
-                    self.animator = animatorDelegate as? CVCalendarViewAnimatorDelegate
+                    self.animator.delegate = animatorDelegate as? CVCalendarViewAnimatorDelegate
                 }
             }
         }
@@ -103,7 +103,7 @@ class CVCalendarView: UIView {
         }
     }
     
-    var animator: CVCalendarViewAnimatorDelegate? = CVCalendarViewAnimator()
+    var animator = CVCalendarViewAnimator.sharedAnimator
     
     // MARK: - Initialization
     
