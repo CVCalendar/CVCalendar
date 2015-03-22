@@ -70,7 +70,7 @@ private extension CVCalendarTouchController {
     func monthViewLocation(location: CGPoint, doesBelongToDayView dayView: CVCalendarDayView) -> Bool {
         var dayViewFrame = dayView.frame
         let weekIndex = dayView.weekView!.index!
-        let appearance = dayView.weekView!.monthView!.calendarView!.appearanceDelegate!
+        let appearance = Appearance.sharedCalendarViewAppearance
         
         if weekIndex > 0 {
             dayViewFrame.origin.y += dayViewFrame.height

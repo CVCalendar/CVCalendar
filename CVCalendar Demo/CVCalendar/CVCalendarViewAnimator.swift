@@ -49,15 +49,7 @@ extension CVCalendarViewAnimator {
 
 extension CVCalendarViewAnimator: CVCalendarViewAnimatorDelegate {
     func selectionAnimation() -> ((DayView, ((Bool) -> ())) -> ()) {
-        return {
-            dayView, completion in
-            dayView.dayLabel?.transform = CGAffineTransformMakeScale(0.5, 0.5)
-            dayView.circleView?.transform = CGAffineTransformMakeScale(0.5, 0.5)
-            UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.3, initialSpringVelocity: 0.1, options: UIViewAnimationOptions.BeginFromCurrentState, animations: {
-                dayView.circleView?.transform = CGAffineTransformMakeScale(1, 1)
-                dayView.dayLabel?.transform = CGAffineTransformMakeScale(1, 1)
-            }, completion: completion)
-        }
+        return selectionWithBounceEffect()
     }
     
     func deselectionAnimation() -> ((DayView, ((Bool) -> ())) -> ()) {

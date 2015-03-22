@@ -24,6 +24,9 @@ class CVCalendarContentViewController: UIViewController, UIScrollViewDelegate {
     
     let calendarView: CalendarView!
     var presentedMonthView: MonthView!
+    var bounds: CGRect {
+        return scrollView.bounds
+    }
     
     private let scrollView: UIScrollView!
     private let delegate: ContentDelegate!
@@ -49,6 +52,8 @@ class CVCalendarContentViewController: UIViewController, UIScrollViewDelegate {
         } else {
             delegate = WeekContent(contentController: self)
         }
+        
+        
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {

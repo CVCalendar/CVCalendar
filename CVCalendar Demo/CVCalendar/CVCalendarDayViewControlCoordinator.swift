@@ -33,7 +33,10 @@ class CVCalendarDayViewControlCoordinator: NSObject {
     
     // MARK: - Public properties
     var selectedDayView: CVCalendarDayView?
-    var animator: CVCalendarViewAnimator!
+    var animator: CVCalendarViewAnimator! {
+        return CVCalendarViewAnimator.sharedAnimator
+    }
+    
     class var sharedControlCoordinator: CVCalendarDayViewControlCoordinator {
         return instance
     }
@@ -93,9 +96,7 @@ extension CVCalendarDayViewControlCoordinator: Coordinator {
                 selectedDayView = dayView
                 presentSelectionOnDayView(dayView)
             }
-        } else {
-            animator = dayView.calendarView.animator
-        }
+        } 
     }
     
     func performDayViewRangeSelection(dayView: DayView) {

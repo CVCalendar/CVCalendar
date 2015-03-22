@@ -47,7 +47,9 @@ class CVCalendarDayView: UIView {
     
     override var frame: CGRect {
         didSet {
-            topMarkerSetup()
+            if oldValue != frame {
+                topMarkerSetup()
+            }
         }
     }
     
@@ -260,16 +262,13 @@ extension CVCalendarDayView {
                 
                 func colorMarker() {
                     if let delegate = calendarView.delegate {
+                        let appearance = Appearance.sharedCalendarViewAppearance
                         let frame = dotMarker.frame
                         var color: UIColor?
                         if unwinded {
-                            if let appearance = calendarView.appearanceDelegate  {
-                                color = (isOut) ? appearance.dayLabelWeekdayOutTextColor : delegate.dotMarker(colorOnDayView: self)
-                            }
+                            color = (isOut) ? appearance.dayLabelWeekdayOutTextColor : delegate.dotMarker(colorOnDayView: self)
                         } else {
-                            if let appearance = calendarView.appearanceDelegate  {
-                                color = appearance.dotMarkerColor!
-                            }
+                            color = appearance.dotMarkerColor
                         }
                         
                         dotMarker.color = color

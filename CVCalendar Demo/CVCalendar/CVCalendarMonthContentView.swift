@@ -364,9 +364,7 @@ class CVCalendarMonthContentView: NSObject, CVCalendarContentDelegate {
             if dayView.date?.day > 20 {
                 let presentedDate = dayView.weekView!.monthView!.date!
                 self.calendarView!.presentedDate = CVDate(date: self.dateBeforeDate(presentedDate))
-                
                 self.presentPreviousMonthView(dayView)
-                
             } else {
                 let presentedDate = dayView.weekView!.monthView!.date!
                 self.calendarView!.presentedDate = CVDate(date: self.dateAfterDate(presentedDate))
