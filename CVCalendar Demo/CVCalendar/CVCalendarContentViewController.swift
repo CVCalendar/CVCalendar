@@ -9,25 +9,14 @@
 import UIKit
 
 class CVCalendarContentViewController: UIViewController, UIScrollViewDelegate {
-    
-    // MARK: - Type Work 
-    
-    typealias CalendarView = CVCalendarView
-    typealias ContentDelegate = CVCalendarContentDelegate
-    typealias CalendarMode = CVCalendarViewMode
-    typealias MonthContent = CVCalendarMonthContentView
-    typealias WeekContent = CVCalendarWeekContentView
-    typealias MonthView = CVCalendarMonthView
-    typealias DayView = CVCalendarDayView
-    
-    // MARK: - Private Properties
-    
+    // MARK: - Public Properties
     let calendarView: CalendarView!
     var presentedMonthView: MonthView!
     var bounds: CGRect {
         return scrollView.bounds
     }
     
+    // MARK: - Private Properties
     private let scrollView: UIScrollView!
     private let delegate: ContentDelegate!
 
@@ -48,9 +37,9 @@ class CVCalendarContentViewController: UIViewController, UIScrollViewDelegate {
         presentedMonthView = MonthView(calendarView: calendarView, date: NSDate())
         
         if calendarView.calendarMode == CalendarMode.MonthView {
-            delegate = MonthContent(contentController: self)
+            delegate = MonthContentView(contentController: self)
         } else {
-            delegate = WeekContent(contentController: self)
+            delegate = WeekContentView(contentController: self)
         }
         
         

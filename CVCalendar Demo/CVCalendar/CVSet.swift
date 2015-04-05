@@ -51,6 +51,10 @@ extension CVSet {
             storage.removeAtIndex(index)
         }
     }
+    
+    mutating func removeAll(keepCapacity: Bool) {
+        storage.removeAll(keepCapacity: keepCapacity)
+    }
 }
 
 // MARK: - Util 

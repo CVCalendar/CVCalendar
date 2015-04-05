@@ -12,7 +12,7 @@ private let singleton = CVCalendarTouchController()
 
 class CVCalendarTouchController {
     // MARK: - Properties
-    lazy var coordinator: CVCalendarCoordinator = {
+    lazy var coordinator: Coordinator = {
         return CVCalendarDayViewControlCoordinator.sharedControlCoordinator
     }()
     
@@ -53,31 +53,33 @@ extension CVCalendarTouchController {
 
 private extension CVCalendarTouchController {
     func receiveTouchOnDayView(dayView: CVCalendarDayView, withSelectionType selectionType: CVSelectionType) {
-        let calendarView = dayView.calendarView
-        
-        switch selectionType {
-        case .Single:
-            coordinator.performDayViewSingleSelection(dayView)
-            calendarView.didSelectDayView(dayView)
-        case let .Range(.Started):
-            dayView.setDayLabelHighlighted()
-        case let .Range(.Ended):
-            dayView.setDayLabelUnhighlightedDismissingState(true)
-        default: break
+        if let calendarView = dayView.weekView.monthView.calendarView {
+            switch selectionType {
+            case .Single:
+                coordinator.performDayViewSingleSelection(dayView)
+                calendarView.didSelectDayView(dayView)
+            case let .Range(.Started):
+                dayView.setDayLabelHighlighted()
+            case let .Range(.Ended):
+                dayView.setDayLabelUnhighlightedDismissingState(true)
+            default: break
+            }
         }
+        
+
     }
 
     func monthViewLocation(location: CGPoint, doesBelongToDayView dayView: CVCalendarDayView) -> Bool {
         var dayViewFrame = dayView.frame
-        let weekIndex = dayView.weekView!.index!
+        let weekIndex = dayView.weekView.index
         let appearance = Appearance.sharedCalendarViewAppearance
         
         if weekIndex > 0 {
             dayViewFrame.origin.y += dayViewFrame.height
-            dayViewFrame.origin.y *= CGFloat(dayView.weekView!.index!)
+            dayViewFrame.origin.y *= CGFloat(dayView.weekView.index)
         }
         
-        if dayView != dayView.weekView!.dayViews!.first! {
+        if dayView != dayView.weekView.dayViews!.first! {
             dayViewFrame.origin.y += appearance.spaceBetweenWeekViews! * CGFloat(weekIndex)
         }
         

@@ -9,16 +9,10 @@
 import UIKit
 
 class CVCalendarWeekContentRecovery: NSObject {
-   
-    // MARK: - Types work
+    // MARK: - Public properties
+    var weekContentView: WeekContentView!
     
-    typealias MonthView = CVCalendarMonthView
-    //typealias WeekContentView = CVCalendarWeekContentView
-    
-    // MARK: - Properties
-    
-    var weekContentView: CVCalendarWeekContentView!
-    
+    // MARK: - Private properties
     private var monthViews: [MonthView]!
     private var presentedMonthView: MonthView!
     

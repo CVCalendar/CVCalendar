@@ -48,9 +48,11 @@
                                 </connections>
                             </switch>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T1w-UY-QHC" customClass="CVCalendarView" customModule="CVCalendar_Demo" customModuleProvider="target">
-                                <rect key="frame" x="16" y="103" width="568" height="335"/>
+                                <rect key="frame" x="16" y="103" width="568" height="350"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="335" id="3oZ-He-brt"/>
+                                    <constraint firstAttribute="height" constant="350" id="3oZ-He-brt">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="480"/>
+                                    </constraint>
                                 </constraints>
                                 <connections>
                                     <outlet property="calendarAppearanceDelegate" destination="vXZ-lx-hvc" id="R5d-UB-jms"/>
@@ -86,7 +88,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="808" y="547"/>
+            <point key="canvasLocation" x="807.75" y="546.75"/>
         </scene>
     </scenes>
     <resources>

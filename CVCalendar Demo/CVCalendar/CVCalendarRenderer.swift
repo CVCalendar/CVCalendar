@@ -8,6 +8,8 @@
 
 import UIKit
 
+private let singleton = CVCalendarRenderer()
+
 class CVCalendarRenderer: NSObject {
     
     // MARK: Initialization 
@@ -18,24 +20,17 @@ class CVCalendarRenderer: NSObject {
     
     // MARK: - Public properties
     
-    lazy var appearance: CVCalendarViewAppearance = {
-        return CVCalendarViewAppearance.sharedCalendarViewAppearance
+    lazy var appearance: Appearance = {
+        return Appearance.sharedCalendarViewAppearance
         }()
     
     class func sharedRenderer() -> CVCalendarRenderer {
-        var _self: CVCalendarRenderer?
-        
-        var t: dispatch_once_t = 0
-        dispatch_once(&t, { () -> Void in
-            _self = CVCalendarRenderer()
-        })
-        
-        return _self!
+        return singleton
     }
     
     // MARK: - Rendering 
     
-    func renderWeekFrameForMonthView(monthView: CVCalendarMonthView, weekIndex: Int) -> CGRect {
+    func renderWeekFrameForMonthView(monthView: MonthView, weekIndex: Int) -> CGRect {
         let width = monthView.frame.width
         let space = self.appearance.spaceBetweenWeekViews!
         var height = CGFloat((monthView.frame.height / CGFloat(monthView.numberOfWeeks!)) - space) + space / 0.5
@@ -46,7 +41,7 @@ class CVCalendarRenderer: NSObject {
         return CGRectMake(x, y, width, height)
     }
     
-    func renderDayFrameForMonthView(weekView: CVCalendarWeekView, dayIndex: Int) -> CGRect {
+    func renderDayFrameForMonthView(weekView: WeekView, dayIndex: Int) -> CGRect {
         let space = self.appearance.spaceBetweenDayViews!
         let width = CGFloat((weekView.frame.width / 7) - space)
         let height = weekView.frame.height

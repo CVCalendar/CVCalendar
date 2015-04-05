@@ -11,7 +11,6 @@ import UIKit
 class CVCalendarMenuView: UIView {
     
     var starterWeekday = 1
-    
     var symbols = [String]()
     var symbolViews: [UILabel]?
 

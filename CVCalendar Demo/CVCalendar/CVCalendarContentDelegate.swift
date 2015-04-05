@@ -10,9 +10,9 @@ import UIKit
 
 protocol CVCalendarContentDelegate: UIScrollViewDelegate {
     func updateFrames()
-    func performedDayViewSelection(dayView: CVCalendarDayView)
-    func presentNextView(dayView: CVCalendarDayView?)
-    func presentPreviousView(dayView: CVCalendarDayView?)
+    func performedDayViewSelection(dayView: DayView)
+    func presentNextView(dayView: DayView?)
+    func presentPreviousView(dayView: DayView?)
     func updateDayViews(hidden: Bool)
     func togglePresentedDate(date: NSDate)
 }

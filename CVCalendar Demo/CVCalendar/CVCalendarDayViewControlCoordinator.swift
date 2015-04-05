@@ -11,18 +11,6 @@ import UIKit
 /// Singleton
 private let instance = CVCalendarDayViewControlCoordinator()
 
-// MARK: - Type work 
-
-typealias DayView = CVCalendarDayView
-typealias Appearance = CVCalendarViewAppearance
-typealias Coordinator = CVCalendarCoordinator
-
-/// Coordinator's control actions
-protocol CVCalendarCoordinator {
-    func performDayViewSingleSelection(dayView: DayView)
-    func performDayViewRangeSelection(dayView: DayView)
-}
-
 class CVCalendarDayViewControlCoordinator: NSObject {
     // MARK: - Non public properties
     private var selectionSet = CVSet<DayView>()
@@ -32,7 +20,7 @@ class CVCalendarDayViewControlCoordinator: NSObject {
     }()
     
     // MARK: - Public properties
-    var selectedDayView: CVCalendarDayView?
+    weak var selectedDayView: CVCalendarDayView?
     var animator: CVCalendarViewAnimator! {
         return CVCalendarViewAnimator.sharedAnimator
     }
@@ -58,6 +46,14 @@ extension CVCalendarDayViewControlCoordinator {
             dayView.setDayLabelDeselectedDismissingState(true)
         }
     }
+    
+    func dequeueDayView(dayView: DayView) {
+        selectionSet.removeObject(dayView)
+    }
+    
+    func flush() {
+       selectionSet.removeAll(false)
+    }
 }
 
 // MARK: - Animator reference 
@@ -74,9 +70,9 @@ private extension CVCalendarDayViewControlCoordinator {
     }
 }
 
-// MARK: - CVCalendarCoordinator
+// MARK: - Coordinator's control actions
 
-extension CVCalendarDayViewControlCoordinator: Coordinator {
+extension CVCalendarDayViewControlCoordinator {
     func performDayViewSingleSelection(dayView: DayView) {
         selectionSet.addObject(dayView)
         println(selectionSet.count)
@@ -85,7 +81,10 @@ extension CVCalendarDayViewControlCoordinator: Coordinator {
             let count = selectionSet.count-1
             for dayViewInQueue in selectionSet {
                 if dayView != dayViewInQueue {
-                    presentDeselectionOnDayView(dayViewInQueue)
+                    if dayView.calendarView != nil {
+                        presentDeselectionOnDayView(dayViewInQueue)
+                    }
+                    
                 }
                 
             }
@@ -103,7 +102,3 @@ extension CVCalendarDayViewControlCoordinator: Coordinator {
         println("Day view range selection found")
     }
 }
-
-
-
-

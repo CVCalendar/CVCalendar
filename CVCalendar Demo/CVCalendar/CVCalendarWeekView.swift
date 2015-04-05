@@ -41,14 +41,14 @@ class CVCalendarWeekView: UIView {
             var calendarView: CVCalendarView!
             safeExecuteBlock({
                 calendarView = self.monthView!.calendarView!
-            }, collapsingOnNil: false, withObjects: monthView)
+                }, collapsingOnNil: false, withObjects: monthView)
             
             return calendarView
         }
     }
     
     // MARK: - Initialization
-
+    
     init(monthView: CVCalendarMonthView, frame: CGRect, index: Int) {
         super.init()
         
@@ -95,14 +95,14 @@ class CVCalendarWeekView: UIView {
                 
             }
         }
-
+        
         self.createDayViews()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
-
+    
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -187,7 +187,7 @@ extension CVCalendarWeekView {
                 dayView.frame = frame
                 dayView.reloadContent()
             }
-        }, collapsingOnNil: true, withObjects: dayViews)
+            }, collapsingOnNil: true, withObjects: dayViews)
     }
 }
 

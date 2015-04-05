@@ -39,8 +39,8 @@ class CVCalendarMonthView: UIView {
     
     var ranged = false
     
-    // MARK: - Initialization 
-
+    // MARK: - Initialization
+    
     init(calendarView: CVCalendarView, date: NSDate) {
         super.init()
         self.calendarView = calendarView
@@ -55,9 +55,17 @@ class CVCalendarMonthView: UIView {
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func mapDayViews(body: (DayView) -> Void) {
+        for weekView in self.weekViews {
+            for dayView in weekView.dayViews {
+                body(dayView)
+            }
+        }
+    }
 }
 
-// MARK: - Creation and destruction 
+// MARK: - Creation and destruction
 
 extension CVCalendarMonthView {
     func commonInit() {
@@ -85,7 +93,7 @@ extension CVCalendarMonthView {
                 weekView.frame = frame
                 weekView.reloadDayViews()
             }
-        }, collapsingOnNil: true, withObjects: weekViews)
+            }, collapsingOnNil: true, withObjects: weekViews)
     }
 }
 
@@ -112,7 +120,7 @@ extension CVCalendarMonthView {
                 
                 self.addSubview(weekView)
             }
-        }, collapsingOnNil: true, withObjects: numberOfWeeks)
+            }, collapsingOnNil: true, withObjects: numberOfWeeks)
     }
 }
 
@@ -184,4 +192,3 @@ extension CVCalendarMonthView {
         block()
     }
 }
-

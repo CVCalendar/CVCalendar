@@ -13,18 +13,27 @@ enum CVCalendarViewMode {
     case WeekView
 }
 
+typealias WeekView = CVCalendarWeekView
+typealias CalendarView = CVCalendarView
+typealias MonthView = CVCalendarMonthView
+typealias Manager = CVCalendarManager
+typealias Recovery = CVCalendarWeekContentRecovery
+typealias WeekContentView = CVCalendarWeekContentView
+typealias DayView = CVCalendarDayView
+typealias ContentController = CVCalendarContentViewController
+typealias Appearance = CVCalendarViewAppearance
+typealias Coordinator = CVCalendarDayViewControlCoordinator
+typealias Date = CVDate
+typealias CalendarMode = CVCalendarViewMode
+typealias Animator = CVCalendarViewAnimator
+typealias Delegate = CVCalendarViewDelegate
+typealias AppearanceDelegate = CVCalendarViewAppearanceDelegate
+typealias AnimatorDelegate = CVCalendarViewAnimatorDelegate
+typealias MonthContentView = CVCalendarMonthContentView
+typealias ContentDelegate = CVCalendarContentDelegate
+
 class CVCalendarView: UIView {
-    
-    typealias CalendarMode = CVCalendarViewMode
-    typealias Animator = CVCalendarViewAnimator
-    typealias Delegate = CVCalendarViewDelegate
-    typealias AppearanceDelegate = CVCalendarViewAppearanceDelegate
-    typealias Appearance = CVCalendarViewAppearance
-    typealias AnimatorDelegate = CVCalendarViewAnimatorDelegate
-    typealias Date = CVDate
-    
     // MARK: - Public properties
-    
     var contentController: CVCalendarContentViewController!
     var calendarMode: CalendarMode! = .MonthView
     

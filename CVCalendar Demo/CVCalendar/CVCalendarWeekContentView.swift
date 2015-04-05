@@ -9,18 +9,6 @@
 import UIKit
 
 class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
-
-    // MARK: - Types work 
-    
-    typealias WeekView = CVCalendarWeekView
-    typealias CalendarView = CVCalendarView
-    typealias MonthView = CVCalendarMonthView
-    typealias Manager = CVCalendarManager
-    typealias Recovery = CVCalendarWeekContentRecovery
-    typealias WeekContentView = CVCalendarWeekContentView
-    typealias DayView = CVCalendarDayView
-    typealias ContentController = CVCalendarContentViewController
-    
     // MARK: Public properties
     
     // Contains 3 loaded weekViews & monthViews { Previous | Current | Next }.
@@ -47,7 +35,7 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
         // Properties init.
         self.calendarView = contentController.calendarView
         self.presentedMonthView = contentController.presentedMonthView
-        self.presentedDate = presentedMonthView.date!
+        self.presentedDate = presentedMonthView.date
         
         weekViews = [Int : WeekView]()
         
@@ -139,13 +127,13 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
     }
     
     func nextWeekView(weekView: WeekView) -> WeekView {
-        let index = weekView.index! + 1
-        let date = weekView.monthView!.date!
+        let index = weekView.index + 1
+        let date = weekView.monthView.date
         let countOfWeeks = manager.monthDateRange(date).countOfWeeks
         
         var nextWeekView: WeekView!
         if index < countOfWeeks {
-            let monthView = weekView.monthView!
+            let monthView = weekView.monthView
             nextWeekView = monthView.weekViews![index]
         } else {
             let nextMonthView = self.nextMonthView(date)
@@ -156,13 +144,13 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
     }
     
     func previousWeekView(weekView: WeekView) -> WeekView {
-        let index = weekView.index! - 1
-        let date = weekView.monthView!.date!
+        let index = weekView.index - 1
+        let date = weekView.monthView.date
         let countOfWeeks = manager.monthDateRange(date).countOfWeeks
         
         var previousWeekView: WeekView!
         if index >= 0 {
-            let monthView = weekView.monthView!
+            let monthView = weekView.monthView
             previousWeekView = monthView.weekViews![index]
         } else {
             let previousMonthView = self.previousMonthView(date)
@@ -218,14 +206,14 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
             let rightWeekView = self.nextWeekView(presentedWeekView)
             
             // Update presented month view.
-            presentedMonthView = presentedWeekView.monthView!
-            presentedDate = presentedMonthView.date!
+            presentedMonthView = presentedWeekView.monthView
+            presentedDate = presentedMonthView.date
             
             let extraWeekView = weekViews.removeValueForKey(0)!
             extraWeekView.removeFromSuperview()
             
             presentedWeekView.utilizable = true
-            recovery.recoverMonthView(presentedWeekView.monthView!)
+            recovery.recoverMonthView(presentedWeekView.monthView)
             
             replaceWeekView(leftWeekView, toPage: 0, animatable: false)
             replaceWeekView(presentedWeekView, toPage: 1, animatable: true)
@@ -243,14 +231,14 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
             let leftWeekView = self.previousWeekView(presentedWeekView)
             
             // Update presented month view.
-            presentedMonthView = presentedWeekView.monthView!
-            presentedDate = presentedMonthView.date!
+            presentedMonthView = presentedWeekView.monthView
+            presentedDate = presentedMonthView.date
             
             let extraWeekView = weekViews.removeValueForKey(2)!
             extraWeekView.removeFromSuperview()
             
             presentedWeekView.utilizable = true
-            recovery.recoverMonthView(presentedWeekView.monthView!)
+            recovery.recoverMonthView(presentedWeekView.monthView)
             
             replaceWeekView(rightWeekView, toPage: 2, animatable: false)
             replaceWeekView(presentedWeekView, toPage: 1, animatable: true)
@@ -308,22 +296,24 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
         self.direction = .None
         
         let presentedWeekView = weekViews[1]!
-        let presentedMonthView = presentedWeekView.monthView?
-        if presentedMonthView != nil {
-            self.calendarView.presentedDate = CVDate(date: presentedMonthView!.date!)
-        }
+        let presentedMonthView = presentedWeekView.monthView
+        self.calendarView.presentedDate = CVDate(date: presentedMonthView.date)
+        
+        contentController.presentedMonthView = presentedMonthView
+        let day = presentedWeekView.weekdaysIn![0]!.first!
+        selectDayViewWithDay(day, inMonthView: presentedMonthView)
     }
     
     // MARK: - Day View Selection
     
     func _performedDayViewSelection(dayView: CVCalendarDayView) {
         if dayView.isOut {
-            if dayView.date?.day > 20 {
-                let presentedDate = dayView.weekView!.monthView!.date!
+            if dayView.date.day > 20 {
+                let presentedDate = dayView.weekView.monthView.date
                 self.calendarView!.presentedDate = CVDate(date: self.dateBeforeDate(presentedDate))
                 self.presentPreviousWeekView(dayView)
             } else {
-                let presentedDate = dayView.weekView!.monthView!.date!
+                let presentedDate = dayView.weekView.monthView.date
                 self.calendarView!.presentedDate = CVDate(date: self.dateAfterDate(presentedDate))
                 self.presentNextWeekView(dayView)
             }
@@ -334,7 +324,7 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
         let coordinator = CVCalendarDayViewControlCoordinator.sharedControlCoordinator
         for weekView in monthView.weekViews! {
             for dayView in weekView.dayViews! {
-                if dayView.date?.day == day && !dayView.isOut {
+                if dayView.date.day == day && !dayView.isOut {
                     coordinator.performDayViewSingleSelection(dayView)
                 }
             }
@@ -359,7 +349,7 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
                 
                 extraWeekView.removeFromSuperview()
                 presentWeekView.utilizable = true
-                self.recovery.recoverMonthView(presentWeekView.monthView!)
+                self.recovery.recoverMonthView(presentWeekView.monthView)
                 
                 let rightWeekView = self.nextWeekView(presentWeekView)
                 
@@ -371,10 +361,10 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
                 
                 var day = 1
                 if dayView != nil {
-                    day = dayView!.date!.day!
+                    day = dayView!.date.day
                 }
                 
-                self.selectDayViewWithDay(day, inMonthView: presentWeekView.monthView!)
+                self.selectDayViewWithDay(day, inMonthView: presentWeekView.monthView)
                 
                 self.prepareTopMarkersOnDayViews(self.weekViews[0]!, hidden: false)
                 self.prepareTopMarkersOnDayViews(self.weekViews[1]!, hidden: false)
@@ -400,7 +390,7 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
             }, completion: { (finished) -> Void in
 
                 extraWeekView.removeFromSuperview()
-                self.recovery.recoverMonthView(presentedWeekView.monthView!)
+                self.recovery.recoverMonthView(presentedWeekView.monthView)
                 
                 let leftWeekView = self.previousWeekView(presentedWeekView)
                 
@@ -412,10 +402,10 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
                 
                 var day = 1
                 if dayView != nil {
-                    day = dayView!.date!.day!
+                    day = dayView!.date.day
                 }
                 
-                self.selectDayViewWithDay(day, inMonthView: presentedWeekView.monthView!)
+                self.selectDayViewWithDay(day, inMonthView: presentedWeekView.monthView)
                 
                 self.prepareTopMarkersOnDayViews(self.weekViews[0]!, hidden: false)
                 self.prepareTopMarkersOnDayViews(self.weekViews[1]!, hidden: false)
@@ -477,10 +467,9 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
             }
             
             for weekView in weekViews.values {
-                if let monthView = weekView.monthView {
-                    if !hasDuplicate(monthView) {
-                        monthViews.append(monthView)
-                    }
+                let monthView = weekView.monthView
+                if !hasDuplicate(monthView) {
+                    monthViews.append(monthView)
                 }
             }
             
@@ -526,15 +515,13 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
     private var togglingBlocked = false
     func _togglePresentedDate(date: NSDate) {
         let currentWeekView = weekViews[1]!
-        let currentDate = currentWeekView.monthView!.date!
+        let currentDate = currentWeekView.monthView.date
         
         // Check if we should toggle. 
         if dateTogglingAllowed(date) {
             // Prepare cache data.
             for weekView in weekViews.values {
-                if let monthView = weekView.monthView {
-                    recovery.recoverMonthView(monthView)
-                }
+                recovery.recoverMonthView(weekView.monthView)
             }
             
             for key in weekViews.keys {
@@ -571,7 +558,7 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
                     self.calendarView!.presentedDate = presentedDate
                     
                     if !self.dateTogglingAllowed(date) {
-                        self.selectDayViewWithDay(presentedDate.day!, inMonthView: self.presentedMonthView)
+                        self.selectDayViewWithDay(presentedDate.day, inMonthView: self.presentedMonthView)
                     } else {
                         let day = CVCalendarManager.sharedManager.dateRange(date).day
                         self.selectDayViewWithDay(day, inMonthView: self.presentedMonthView)
@@ -584,11 +571,11 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
     
     func dateTogglingAllowed(date: NSDate) -> Bool {
         let presentedWeekView = weekViews[1]!
-        let presentedIndex = presentedWeekView.index!
+        let presentedIndex = presentedWeekView.index
         let components = manager.componentsForDate(date)
         let currentIndex = components.weekOfMonth - 1
         
-        let currentDate = presentedWeekView.monthView!.date!
+        let currentDate = presentedWeekView.monthView.date
         
         let currentDateMonthStartDate = manager.monthDateRange(currentDate).monthStartDate
         let presentedDateMonthStartDate = manager.monthDateRange(date).monthStartDate

@@ -9,39 +9,49 @@
 import UIKit
 
 class CVDate: NSObject {
-    private let date: NSDate?
-    let year: Int?
-    let month: Int?
-    let week: Int?
-    let day: Int?
+    private let date: NSDate
+    
+    let year: Int
+    let month: Int
+    let week: Int
+    let day: Int
     
     init(date: NSDate) {
-        super.init()
-        
         let calendarManager = CVCalendarManager.sharedManager
+        let dateRange = calendarManager.dateRange(date)
         
         self.date = date
+        self.year = dateRange.year
+        self.month = dateRange.month
+        self.week = dateRange.weekOfMonth
+        self.day = dateRange.day
         
-        self.year = calendarManager.dateRange(date).year
-        self.month = calendarManager.dateRange(date).month
-        self.day = calendarManager.dateRange(date).day
+        super.init()
     }
     
     init(day: Int, month: Int, week: Int, year: Int) {
-        super.init()
+        let calendarManager = CVCalendarManager.sharedManager
+        
+        if let date = calendarManager.dateFromYear(year, month: month, week: week, day: day) {
+            self.date = date
+        } else {
+            self.date = NSDate()
+        }
         
         self.year = year
         self.month = month
         self.week = week
         self.day = day
+        
+        super.init()
     }
     
     func description() -> String {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "MMMM"
         
-        let month = dateFormatter.stringFromDate(self.date!)
+        let month = dateFormatter.stringFromDate(date)
         
-        return "\(month), \(self.year!)"
+        return "\(month), \(year)"
     }
 }
