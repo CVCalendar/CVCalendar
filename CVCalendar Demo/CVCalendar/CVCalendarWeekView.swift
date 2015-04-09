@@ -39,9 +39,9 @@ class CVCalendarWeekView: UIView {
     weak var calendarView: CVCalendarView! {
         get {
             var calendarView: CVCalendarView!
-            safeExecuteBlock({
-                calendarView = self.monthView!.calendarView!
-                }, collapsingOnNil: false, withObjects: monthView)
+            if let monthView = monthView, let activeCalendarView = monthView.calendarView {
+                calendarView = activeCalendarView
+            }
             
             return calendarView
         }

@@ -23,7 +23,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        monthLabel.text = CVDate(date: NSDate()).description
+        monthLabel.text = CVDate(date: NSDate()).globalDescription
     }
 
     override func viewDidLayoutSubviews() {
@@ -42,16 +42,17 @@ extension ViewController: CVCalendarViewDelegate {
     }
     
     func didSelectDayView(dayView: CVCalendarDayView) {
-        // TODO:
+        let date = dayView.date
+        println("\(date.commonDescription) is selected!")
     }
     
     func presentedDateUpdated(date: CVDate) {
-        if self.monthLabel.text != date.description && self.animationFinished {
+        if self.monthLabel.text != date.globalDescription && self.animationFinished {
             let updatedMonthLabel = UILabel()
             updatedMonthLabel.textColor = monthLabel.textColor
             updatedMonthLabel.font = monthLabel.font
             updatedMonthLabel.textAlignment = .Center
-            updatedMonthLabel.text = date.description
+            updatedMonthLabel.text = date.globalDescription
             updatedMonthLabel.sizeToFit()
             updatedMonthLabel.alpha = 0
             updatedMonthLabel.center = self.monthLabel.center

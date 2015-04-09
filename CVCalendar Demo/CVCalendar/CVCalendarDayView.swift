@@ -25,14 +25,19 @@ class CVCalendarDayView: UIView {
     
     weak var monthView: CVCalendarMonthView! {
         get {
-            return weekView.monthView
+            var monthView: MonthView!
+            if let weekView = weekView, let activeMonthView = weekView.monthView {
+                monthView = activeMonthView
+            }
+            
+            return monthView
         }
     }
     
     weak var calendarView: CVCalendarView! {
         get {
             var calendarView: CVCalendarView!
-            if let activeCalendarView = weekView!.monthView!.calendarView {
+            if let weekView = weekView, let activeCalendarView = weekView.calendarView {
                 calendarView = activeCalendarView
             }
             

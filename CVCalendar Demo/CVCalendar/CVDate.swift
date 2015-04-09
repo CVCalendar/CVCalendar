@@ -45,15 +45,28 @@ class CVDate: NSObject {
         
         super.init()
     }
-    
-    override var description: String {
+}
+
+extension CVDate {
+    var globalDescription: String {
         get {
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "MMMM"
-            
-            let month = dateFormatter.stringFromDate(date)
-            
+            let month = dateFormattedStringWithFormat("MMMM", fromDate: date)
             return "\(month), \(year)"
         }
+    }
+    
+    var commonDescription: String {
+        get {
+            let month = dateFormattedStringWithFormat("MMMM", fromDate: date)
+            return "\(day) \(month), \(year)"
+        }
+    }
+}
+
+private extension CVDate {
+    func dateFormattedStringWithFormat(format: String, fromDate date: NSDate) -> String {
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = format
+        return formatter.stringFromDate(date)
     }
 }
