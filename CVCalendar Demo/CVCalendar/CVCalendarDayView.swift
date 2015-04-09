@@ -13,7 +13,7 @@ class CVCalendarDayView: UIView {
     let weekdayIndex: Int!
     weak var weekView: CVCalendarWeekView!
     
-    let date: CVDate!
+    var date: CVDate!
     var dayLabel: UILabel!
     
     var circleView: CVAuxiliaryView?
@@ -53,10 +53,11 @@ class CVCalendarDayView: UIView {
     init(weekView: CVCalendarWeekView, frame: CGRect, weekdayIndex: Int) {
         self.weekView = weekView
         self.weekdayIndex = weekdayIndex
+        
         super.init(frame: frame)
         
         date = dateWithWeekView(weekView, andWeekIndex: weekdayIndex)
-
+        
         labelSetup()
         setupDotMarker()
         topMarkerSetup()
@@ -173,7 +174,7 @@ extension CVCalendarDayView {
                 let layer = CALayer()
                 layer.borderColor = UIColor.grayColor().CGColor
                 layer.borderWidth = height
-                layer.frame = CGRectMake(0, 1, CGRectGetWidth(frame), height)
+                layer.frame = CGRectMake(0, 1, CGRectGetWidth(self.frame), height)
                 
                 self.topMarker = layer
                 self.layer.addSublayer(self.topMarker!)
@@ -189,6 +190,7 @@ extension CVCalendarDayView {
                     createMarker()
                 }
             } else {
+                println("Setting up here")
                 if self.topMarker == nil {
                     createMarker()
                 } else {
@@ -315,11 +317,11 @@ extension CGFloat {
 extension CVCalendarDayView {
     func pointAtAngle(angle: CGFloat, withinCircleView circleView: UIView) -> CGPoint {
         let radius = circleView.bounds.width / 2
-        let xDistanse = sqrt(pow(radius, 2) * pow(cos(angle), 2))
+        let xDistance = radius * cos(angle)
         let yDistance = radius * sin(angle)
         
         let center = circleView.center
-        var x = floor(cos(angle)) < 0 ? center.x - xDistanse : center.x + xDistanse
+        var x = floor(cos(angle)) < 0 ? center.x - xDistance : center.x + xDistance
         var y = center.y - yDistance
         
         let result = CGPointMake(x, y)

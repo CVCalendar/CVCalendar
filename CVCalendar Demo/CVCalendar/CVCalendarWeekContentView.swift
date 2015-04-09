@@ -27,15 +27,14 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
     // MARK: Initialization
     
     init(contentController: ContentController) {
-        super.init()
-        
+        // Properties init.
         self.contentController = contentController
         self.scrollView = contentController.preparedScrollView()
-        
-        // Properties init.
         self.calendarView = contentController.calendarView
         self.presentedMonthView = contentController.presentedMonthView
         self.presentedDate = presentedMonthView.date
+        
+        super.init()
         
         weekViews = [Int : WeekView]()
         

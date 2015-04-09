@@ -46,12 +46,14 @@ class CVDate: NSObject {
         super.init()
     }
     
-    func description() -> String {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "MMMM"
-        
-        let month = dateFormatter.stringFromDate(date)
-        
-        return "\(month), \(year)"
+    override var description: String {
+        get {
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "MMMM"
+            
+            let month = dateFormatter.stringFromDate(date)
+            
+            return "\(month), \(year)"
+        }
     }
 }

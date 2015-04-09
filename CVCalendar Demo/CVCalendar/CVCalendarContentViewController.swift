@@ -10,23 +10,24 @@ import UIKit
 
 class CVCalendarContentViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Public Properties
-    let calendarView: CalendarView!
-    var presentedMonthView: MonthView!
+    let calendarView: CalendarView
+    var presentedMonthView: MonthView
     var bounds: CGRect {
         return scrollView.bounds
     }
     
     // MARK: - Private Properties
-    private let scrollView: UIScrollView!
-    private let delegate: ContentDelegate!
+    private let scrollView: UIScrollView
+    private var delegate: ContentDelegate!
 
     // MARK: - Initialization 
     
     init(calendarView: CalendarView, frame: CGRect) {
-        super.init()
-        
         self.calendarView = calendarView
-        self.scrollView = UIScrollView(frame: frame)
+        scrollView = UIScrollView(frame: frame)
+        presentedMonthView = MonthView(calendarView: calendarView, date: NSDate())
+        
+        super.init(nibName: nil, bundle: nil)
         
         // Setup Scroll View. 
         scrollView.contentSize = CGSizeMake(frame.width * 3, frame.height)
@@ -34,19 +35,12 @@ class CVCalendarContentViewController: UIViewController, UIScrollViewDelegate {
         scrollView.pagingEnabled = true
         scrollView.delegate = self
         
-        presentedMonthView = MonthView(calendarView: calendarView, date: NSDate())
         
         if calendarView.calendarMode == CalendarMode.MonthView {
             delegate = MonthContentView(contentController: self)
         } else {
             delegate = WeekContentView(contentController: self)
         }
-        
-        
-    }
-    
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -56,11 +50,7 @@ class CVCalendarContentViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - View Control 
     
     func preparedScrollView() -> UIScrollView {
-        if let scrollView = self.scrollView {
-            return scrollView
-        } else {
-            return UIScrollView()
-        }
+        return scrollView
     }
     
     // MARK: - Appearance Update 

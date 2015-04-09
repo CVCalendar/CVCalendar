@@ -48,11 +48,11 @@ extension CVCalendarViewAnimator {
 // MARK: - CVCalendarViewAnimatorDelegate
 
 extension CVCalendarViewAnimator: CVCalendarViewAnimatorDelegate {
-    func selectionAnimation() -> ((DayView, ((Bool) -> ())) -> ()) {
+    @objc func selectionAnimation() -> ((DayView, ((Bool) -> ())) -> ()) {
         return selectionWithBounceEffect()
     }
     
-    func deselectionAnimation() -> ((DayView, ((Bool) -> ())) -> ()) {
+    @objc func deselectionAnimation() -> ((DayView, ((Bool) -> ())) -> ()) {
         return deselectionWithFadeOutEffect()
     }
 }

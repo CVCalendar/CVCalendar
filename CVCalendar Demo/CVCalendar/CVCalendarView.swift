@@ -103,8 +103,8 @@ class CVCalendarView: UIView {
     
     // MARK: - Initialization
     
-    override init() {
-        super.init()
+    init() {
+        super.init(frame: CGRectZero)
         hidden = true
         loadCalendarMode()
         contentController = CVCalendarContentViewController(calendarView: self, frame: bounds)
@@ -147,8 +147,8 @@ extension CVCalendarView {
 extension CVCalendarView {
     func didSelectDayView(dayView: CVCalendarDayView) {
         delegate?.didSelectDayView(dayView)
-        if contentController != nil {
-            contentController.performedDayViewSelection(dayView)
+        if let controller = contentController {
+            controller.performedDayViewSelection(dayView) // TODO: Update to range selection
         }
     }
 }
@@ -185,10 +185,10 @@ private extension CVCalendarView {
         let calendarMode = NSBundle.mainBundle().objectForInfoDictionaryKey(calendarModeKey) as? String
         
         if let calendarMode = calendarMode {
-            if calendarMode == "MonthView" {
-                self.calendarMode = .MonthView
-            } else {
-                self.calendarMode = .WeekView
+            switch calendarMode {
+                case "MonthView": self.calendarMode = .MonthView
+                case "WeekView": self.calendarMode = .WeekView
+            default: break
             }
         }
     }

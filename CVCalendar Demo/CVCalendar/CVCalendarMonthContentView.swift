@@ -35,11 +35,11 @@ class CVCalendarMonthContentView: NSObject, CVCalendarContentDelegate {
     
     init(contentController: ContentController) {
         self.monthViews = [Int : CVCalendarMonthView]()
-        super.init()
-        
         self.contentController = contentController
         self.calendarView = contentController.calendarView
         self.scrollView = contentController.preparedScrollView()
+        
+        super.init()
         
         self.initialLoad(contentController.presentedMonthView)
         

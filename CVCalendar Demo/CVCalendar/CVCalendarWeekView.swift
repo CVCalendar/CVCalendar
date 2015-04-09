@@ -50,10 +50,9 @@ class CVCalendarWeekView: UIView {
     // MARK: - Initialization
     
     init(monthView: CVCalendarMonthView, frame: CGRect, index: Int) {
-        super.init()
+        super.init(frame: frame)
         
         self.monthView = monthView
-        self.frame = frame
         self.index = index
         
         // Get weekdays in.

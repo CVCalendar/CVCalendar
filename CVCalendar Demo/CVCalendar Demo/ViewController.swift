@@ -22,8 +22,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        monthLabel.text = CVDate(date: NSDate()).description()
+
+        monthLabel.text = CVDate(date: NSDate()).description
     }
 
     override func viewDidLayoutSubviews() {
@@ -46,7 +46,7 @@ extension ViewController: CVCalendarViewDelegate {
     }
     
     func presentedDateUpdated(date: CVDate) {
-        if self.monthLabel.text != date.description() && self.animationFinished {
+        if self.monthLabel.text != date.description && self.animationFinished {
             let updatedMonthLabel = UILabel()
             updatedMonthLabel.textColor = monthLabel.textColor
             updatedMonthLabel.font = monthLabel.font
