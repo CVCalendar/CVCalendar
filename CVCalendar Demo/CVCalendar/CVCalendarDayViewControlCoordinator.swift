@@ -13,7 +13,7 @@ private let instance = CVCalendarDayViewControlCoordinator()
 
 class CVCalendarDayViewControlCoordinator: NSObject {
     // MARK: - Non public properties
-    private var selectionSet = CVSet<DayView>()
+    private var selectionSet = Set<DayView>()
     
     lazy var appearance: Appearance = {
         return Appearance.sharedCalendarViewAppearance
@@ -42,17 +42,17 @@ extension CVCalendarDayViewControlCoordinator {
     
     func deselectionPerformedOnDayView(dayView: DayView) {
         if dayView != selectedDayView {
-            selectionSet.removeObject(dayView)
+            selectionSet.remove(dayView)
             dayView.setDayLabelDeselectedDismissingState(true)
         }
     }
     
     func dequeueDayView(dayView: DayView) {
-        selectionSet.removeObject(dayView)
+        selectionSet.remove(dayView)
     }
     
     func flush() {
-       selectionSet.removeAll(false)
+       selectionSet.removeAll()
     }
 }
 
@@ -74,7 +74,7 @@ private extension CVCalendarDayViewControlCoordinator {
 
 extension CVCalendarDayViewControlCoordinator {
     func performDayViewSingleSelection(dayView: DayView) {
-        selectionSet.addObject(dayView)
+        selectionSet.insert(dayView)
         println(selectionSet.count)
         
         if selectionSet.count > 1 {

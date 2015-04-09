@@ -8,6 +8,11 @@
 
 import UIKit
 
+/**
+  *  Deprecated since Swift 1.2.
+  *  Instead use native Swift Set<T> collection.
+*/
+
 struct CVSet<T: AnyObject>: NilLiteralConvertible {
     // MARK: - Private properties
     private var storage = [T]()
