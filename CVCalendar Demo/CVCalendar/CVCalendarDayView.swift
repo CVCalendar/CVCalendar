@@ -48,7 +48,13 @@ class CVCalendarDayView: UIView {
     override var frame: CGRect {
         didSet {
             if oldValue != frame {
+                circleView?.setNeedsDisplay()
                 topMarkerSetup()
+                
+                if !calendarView.shouldShowWeekdaysOut && isOut {
+                    hidden = true
+                    userInteractionEnabled = false
+                }
             }
         }
     }
@@ -111,14 +117,8 @@ class CVCalendarDayView: UIView {
         let week = dateRange.weekOfMonth
         var month = dateRange.month
         
-        // TODO: Fix math part
         if isOut {
             day > 20 ? month-- : month++
-            
-            let shouldShowDaysOut = calendarView.shouldShowWeekdaysOut
-            if !shouldShowDaysOut {
-                hidden = true
-            }
         }
         
         return CVDate(day: day, month: month, week: week, year: year)
@@ -150,6 +150,7 @@ extension CVCalendarDayView {
             if coordinator.selectedDayView == nil {
                 let touchController = CVCalendarTouchController.sharedTouchController
                 touchController.receiveTouchOnDayView(self)
+                calendarView.didSelectDayView(self)
             } else {
                 color = appearance.dayLabelPresentWeekdayTextColor
                 if appearance.dayLabelPresentWeekdayInitallyBold! {
@@ -247,67 +248,67 @@ extension CVCalendarDayView {
 
 extension CVCalendarDayView {
     func moveDotMarkerBack(unwinded: Bool, var coloring: Bool) {
-        if let calendarView = calendarView {
-            if let dotMarker = dotMarker {
-                var shouldMove = true
+        if let calendarView = calendarView, let dotMarker = dotMarker {
+            var shouldMove = true
+            if let delegate = calendarView.delegate {
+                shouldMove = delegate.dotMarker(shouldMoveOnHighlightingOnDayView: self)
+            }
+            
+            func colorMarker() {
                 if let delegate = calendarView.delegate {
-                    shouldMove = delegate.dotMarker(shouldMoveOnHighlightingOnDayView: self)
-                }
-                
-                func colorMarker() {
-                    if let delegate = calendarView.delegate {
-                        let appearance = Appearance.sharedCalendarViewAppearance
-                        let frame = dotMarker.frame
-                        var color: UIColor?
-                        if unwinded {
-                            color = (isOut) ? appearance.dayLabelWeekdayOutTextColor : delegate.dotMarker(colorOnDayView: self)
-                        } else {
-                            color = appearance.dotMarkerColor
-                        }
-                        
-                        dotMarker.fillColor = color
-                        dotMarker.setNeedsDisplay()
+                    let appearance = Appearance.sharedCalendarViewAppearance
+                    let frame = dotMarker.frame
+                    var color: UIColor?
+                    if unwinded {
+                        color = (isOut) ? appearance.dayLabelWeekdayOutTextColor : delegate.dotMarker(colorOnDayView: self)
+                    } else {
+                        color = appearance.dotMarkerColor
                     }
                     
+                    dotMarker.fillColor = color
+                    dotMarker.setNeedsDisplay()
                 }
                 
-                func moveMarker() {
-                    var transform: CGAffineTransform!
-                    if let circleView = circleView {
-                        let point = pointAtAngle(CGFloat(-90).toRadians(), withinCircleView: circleView)
-                        let spaceBetweenDotAndCircle = CGFloat(1)
-                        let offset = point.y - dotMarker.frame.origin.y - dotMarker.bounds.height/2 + spaceBetweenDotAndCircle
-                        transform = unwinded ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, offset)
-                        
-                        if dotMarker.center.y + offset > CGRectGetMaxY(frame) {
-                            coloring = true
-                        }
-                    } else {
-                        transform = CGAffineTransformIdentity
+            }
+            
+            func moveMarker() {
+                var transform: CGAffineTransform!
+                if let circleView = circleView {
+                    let point = pointAtAngle(CGFloat(-90).toRadians(), withinCircleView: circleView)
+                    let spaceBetweenDotAndCircle = CGFloat(1)
+                    let offset = point.y - dotMarker.frame.origin.y - dotMarker.bounds.height/2 + spaceBetweenDotAndCircle
+                    transform = unwinded ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, offset)
+                    
+                    if dotMarker.center.y + offset > CGRectGetMaxY(frame) {
+                        coloring = true
                     }
-
-                    if !coloring {
-                        UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
-                            dotMarker.transform = transform
+                } else {
+                    transform = CGAffineTransformIdentity
+                }
+                
+                if !coloring {
+                    UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
+                        dotMarker.transform = transform
                         }, completion: { _ in
                             
-                        })
-                    } else {
-                        moveDotMarkerBack(unwinded, coloring: coloring)
-                    }
-                }
-                
-                if shouldMove && !coloring {
-                    moveMarker()
+                    })
                 } else {
-                    colorMarker()
+                    moveDotMarkerBack(unwinded, coloring: coloring)
                 }
             }
+            
+            if shouldMove && !coloring {
+                moveMarker()
+            } else {
+                colorMarker()
+            }
         }
+        
     }
 }
 
-// MARK: - Circle geometry 
+
+// MARK: - Circle geometry
 
 extension CGFloat {
     func toRadians() -> CGFloat {

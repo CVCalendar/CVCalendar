@@ -297,10 +297,68 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
         let presentedWeekView = weekViews[1]!
         let presentedMonthView = presentedWeekView.monthView
         self.calendarView.presentedDate = CVDate(date: presentedMonthView.date)
-        
+        self.presentedMonthView = presentedMonthView
         contentController.presentedMonthView = presentedMonthView
-        let day = presentedWeekView.weekdaysIn![0]!.first!
-        selectDayViewWithDay(day, inMonthView: presentedMonthView)
+        
+        if let day = presentedWeekView.weekdaysIn?[0]?.first {
+            selectDayViewWithDay(day, inMonthView: presentedMonthView)
+        }
+        
+    }
+    
+    func updateSelection() {
+        let coordinator = CVCalendarDayViewControlCoordinator.sharedControlCoordinator
+        if let selected = coordinator.selectedDayView {
+            for (index, weekView) in weekViews {
+                if index != 1 {
+                    for dayView in weekView.dayViews {
+                        if dayView == selected {
+                            dayView.setDayLabelDeselectedDismissingState(true)
+                            coordinator.dequeueDayView(dayView)
+                        }
+                    }
+                }
+            }
+        }
+        
+        let presentedWeekView = weekViews[1]!
+        presentedMonthView = presentedWeekView.monthView
+        contentController.presentedMonthView = presentedMonthView
+        calendarView.presentedDate = CVDate(date: presentedMonthView.date)
+        
+        let manager = Manager.sharedManager
+        let currentDateRange = manager.dateRange(NSDate())
+        let presentedDateRange = manager.dateRange(presentedMonthView.date)
+        
+        let weekIndex = presentedWeekView.index
+        
+        if let selected = coordinator.selectedDayView, let weekView = selected.weekView, let monthView = selected.monthView where selected.weekView.index != weekIndex {
+            println("HERE")
+            if currentDateRange.month == presentedDateRange.month && currentDateRange.year == presentedDateRange.year {
+                for dayView in weekView.dayViews {
+                    if dayView.isCurrentDay {
+                        selectDayViewWithDay(dayView.date.day, inMonthView: monthView)
+                    }
+                }
+            } else {
+                if let firstWeekday = presentedWeekView.weekdaysIn?[0]?.first {
+                    selectDayViewWithDay(firstWeekday, inMonthView: presentedMonthView)
+                }
+                
+                
+            }
+        }
+        
+        // TODO: Fix selection of a new week
+        
+//        if let selected = coordinator.selectedDayView where selected.date != presentedMonthView.date {
+//            if currentDateRange.month == presentedDateRange.month && currentDateRange.year == presentedDateRange.year {
+//                selectDayViewWithDay(currentDateRange.day, inMonthView: presentedMonthView)
+//            } else {
+//                selectDayViewWithDay(1, inMonthView: presentedMonthView)
+//            }
+//        }
+        
     }
     
     // MARK: - Day View Selection
@@ -324,6 +382,10 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
         for weekView in monthView.weekViews! {
             for dayView in weekView.dayViews! {
                 if dayView.date.day == day && !dayView.isOut {
+                    if let selected = Coordinator.sharedControlCoordinator.selectedDayView where selected != dayView {
+                        calendarView.didSelectDayView(dayView)
+                    }
+                    
                     coordinator.performDayViewSingleSelection(dayView)
                 }
             }
@@ -496,8 +558,11 @@ class CVCalendarWeekContentView: NSObject, CVCalendarContentDelegate {
                                     
                                     }, completion: { (finished) -> Void in
                                         if hidden {
-                                            dayView.hidden = true
                                             dayView.alpha = 1
+                                            dayView.hidden = true
+                                            dayView.userInteractionEnabled = false
+                                        } else {
+                                            dayView.userInteractionEnabled = true
                                         }
                                 })
                             }

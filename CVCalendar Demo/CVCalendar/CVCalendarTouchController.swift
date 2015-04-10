@@ -29,7 +29,7 @@ class CVCalendarTouchController {
 extension CVCalendarTouchController {
     func receiveTouchLocation(location: CGPoint, inMonthView monthView: CVCalendarMonthView, withSelectionType selectionType: CVSelectionType) {
         let weekViews = monthView.weekViews
-        if let dayView = ownerTouchLocation(location, onMonthView: monthView) {
+        if let dayView = ownerTouchLocation(location, onMonthView: monthView) where dayView.userInteractionEnabled {
             receiveTouchOnDayView(dayView, withSelectionType: selectionType)
         }
     }
@@ -39,7 +39,7 @@ extension CVCalendarTouchController {
         let index = weekView.index
         let weekViews = monthView.weekViews
         
-        if let dayView = ownerTouchLocation(location, onWeekView: weekView) {
+        if let dayView = ownerTouchLocation(location, onWeekView: weekView) where dayView.userInteractionEnabled {
             receiveTouchOnDayView(dayView, withSelectionType: selectionType)
         }
     }

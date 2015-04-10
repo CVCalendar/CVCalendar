@@ -134,15 +134,27 @@ class CVCalendarMonthContentView: NSObject, CVCalendarContentDelegate {
         contentController.presentedMonthView = presentedMonthView
         calendarView.presentedDate = CVDate(date: presentedMonthView.date)
         
-        
         let manager = Manager.sharedManager
         let currentDateRange = manager.dateRange(NSDate())
         let presentedDateRange = manager.dateRange(presentedMonthView.date)
+
+        func match(lhs: NSDate, rhs: NSDate) -> Bool {
+            let lhsRange = manager.dateRange(lhs)
+            let rhsRange = manager.dateRange(rhs)
+            
+            if lhsRange.year == rhsRange.year && lhsRange.month == rhsRange.month {
+                return true
+            }
+            
+            return false
+        }
         
-        if currentDateRange.month == presentedDateRange.month && currentDateRange.year == presentedDateRange.year {
-            selectDayViewWithDay(currentDateRange.day, inMonthView: presentedMonthView)
-        } else {
-            selectDayViewWithDay(1, inMonthView: presentedMonthView)
+        if let selected = coordinator.selectedDayView where !match(selected.monthView.date, presentedMonthView.date) {
+            if currentDateRange.month == presentedDateRange.month && currentDateRange.year == presentedDateRange.year {
+                selectDayViewWithDay(currentDateRange.day, inMonthView: presentedMonthView)
+            } else {
+                selectDayViewWithDay(1, inMonthView: presentedMonthView)
+            }
         }
     }
     
@@ -302,8 +314,11 @@ class CVCalendarMonthContentView: NSObject, CVCalendarContentDelegate {
                             
                             }, completion: { (finished) -> Void in
                                 if hidden {
-                                    dayView.hidden = true
                                     dayView.alpha = 1
+                                    dayView.hidden = true
+                                    dayView.userInteractionEnabled = false
+                                } else {
+                                    dayView.userInteractionEnabled = true
                                 }
                         })
                     }
@@ -371,6 +386,10 @@ class CVCalendarMonthContentView: NSObject, CVCalendarContentDelegate {
         for weekView in monthView.weekViews! {
             for dayView in weekView.dayViews! {
                 if dayView.date.day == day && !dayView.isOut {
+                    if let selected = Coordinator.sharedControlCoordinator.selectedDayView where selected != dayView {
+                        calendarView.didSelectDayView(dayView)
+                    }
+                    
                     coordinator.performDayViewSingleSelection(dayView)
                 }
             }
