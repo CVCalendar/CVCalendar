@@ -2,113 +2,169 @@
 //  CVCalendarContentViewController.swift
 //  CVCalendar Demo
 //
-//  Created by E. Mozharovsky on 1/28/15.
+//  Created by Eugene Mozharovsky on 12/04/15.
 //  Copyright (c) 2015 GameApp. All rights reserved.
 //
 
 import UIKit
 
-class CVCalendarContentViewController: UIViewController, UIScrollViewDelegate {
+typealias Identifier = String
+class CVCalendarContentViewController: UIViewController {
+    // MARK: - Constants
+    let Previous = "Previous"
+    let Presented = "Presented"
+    let Following = "Following"
+    
     // MARK: - Public Properties
     let calendarView: CalendarView
+    let scrollView: UIScrollView
+    
     var presentedMonthView: MonthView
+    
     var bounds: CGRect {
         return scrollView.bounds
     }
     
-    // MARK: - Private Properties
-    private let scrollView: UIScrollView
-    private var delegate: ContentDelegate!
-
-    // MARK: - Initialization 
+    var page = 0
+    var pageChanged = false
+    var pageLoadingEnabled = true
+    var lastContentOffset: CGFloat = 0
+    var direction: CVScrollDirection = .None
     
     init(calendarView: CalendarView, frame: CGRect) {
         self.calendarView = calendarView
         scrollView = UIScrollView(frame: frame)
         presentedMonthView = MonthView(calendarView: calendarView, date: NSDate())
+        presentedMonthView.updateAppearance(frame)
         
         super.init(nibName: nil, bundle: nil)
         
-        // Setup Scroll View. 
         scrollView.contentSize = CGSizeMake(frame.width * 3, frame.height)
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.pagingEnabled = true
         scrollView.delegate = self
         
-        
-        if calendarView.calendarMode == CalendarMode.MonthView {
-            delegate = MonthContentView(contentController: self)
-        } else {
-            delegate = WeekContentView(contentController: self)
-        }
+        calendarView.addSubview(scrollView)
     }
-
+    
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+// MARK: - UIScrollViewDelegate
+
+extension CVCalendarContentViewController: UIScrollViewDelegate {
     
-    // MARK: - View Control 
-    
-    func preparedScrollView() -> UIScrollView {
-        return scrollView
-    }
-    
-    // MARK: - Appearance Update 
-    
+}
+
+// MARK: - UI Refresh
+
+extension CVCalendarContentViewController {
     func updateFrames(frame: CGRect) {
-        presentedMonthView.updateAppearance(frame)
-        
         scrollView.frame = frame
+        scrollView.removeAllSubviews()
         scrollView.contentSize = CGSizeMake(frame.size.width * 3, frame.size.height)
-        
-        delegate.updateFrames()
-        
         calendarView.hidden = false
     }
-    
-    // MARK: - Scroll View Delegate 
-    
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        delegate.scrollViewDidScroll!(scrollView)
-    }
-    
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        delegate.scrollViewWillBeginDragging!(scrollView)
-    }
+}
 
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        delegate.scrollViewDidEndDecelerating!(scrollView)
-    }
-    
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        delegate.scrollViewDidEndDragging!(scrollView, willDecelerate: decelerate)
-    }
-    
-    // MARK: - Day View Selection
-    
+// MARK: - Convenience API
+
+extension CVCalendarContentViewController {
     func performedDayViewSelection(dayView: DayView) {
-        delegate.performedDayViewSelection(dayView)
+        //delegate.performedDayViewSelection(dayView)
     }
-    
-    // MARK: - Toggle Date
     
     func togglePresentedDate(date: NSDate) {
-        delegate.togglePresentedDate(date)
+        //delegate.togglePresentedDate(date)
     }
     
-    // MARK: - Paging 
-    
-    func presentNextView(dayView: DayView?) {
-        delegate.presentNextView(dayView)
+    func presentNextView(view: UIView?) {
+        //delegate.presentNextView(dayView)
     }
     
-    func presentPreviousView(dayView: DayView?) {
-        delegate.presentPreviousView(dayView)
+    func presentPreviousView(view: UIView?) {
+        //delegate.presentPreviousView(dayView)
     }
-    
-    // MARK: - Days Out Showing
     
     func updateDayViews(hidden: Bool) {
-        delegate.updateDayViews(hidden)
+        //delegate.updateDayViews(hidden)
+    }
+}
+
+// MARK: - Contsant conversion
+
+extension CVCalendarContentViewController {
+    func indexOfIdentifier(identifier: Identifier) -> Int {
+        let index: Int
+        switch identifier {
+        case Previous: index = 0
+        case Presented: index = 1
+        case Following: index = 2
+        default: index = -1
+        }
+        
+        return index
+    }
+}
+
+// MARK: - Date management
+
+extension CVCalendarContentViewController {
+    func dateBeforeDate(date: NSDate) -> NSDate {
+        let components = CVCalendarManager.sharedManager.componentsForDate(date)
+        let calendar = NSCalendar.currentCalendar()
+        
+        components.month -= 1
+        
+        let dateBefore = calendar.dateFromComponents(components)!
+        
+        return dateBefore
+    }
+    
+    func dateAfterDate(date: NSDate) -> NSDate {
+        let components = CVCalendarManager.sharedManager.componentsForDate(date)
+        let calendar = NSCalendar.currentCalendar()
+        
+        components.month += 1
+        
+        let dateAfter = calendar.dateFromComponents(components)!
+        
+        return dateAfter
+    }
+    
+    func match(lhs: NSDate, _ rhs: NSDate) -> Bool {
+        let lhsRange = Manager.sharedManager.dateRange(lhs)
+        let rhsRange = Manager.sharedManager.dateRange(rhs)
+        
+        if lhsRange.year == rhsRange.year && lhsRange.month == rhsRange.month {
+            return true
+        }
+        
+        return false
+    }
+    
+    func selectDayViewWithDay(day: Int, inMonthView monthView: CVCalendarMonthView) {
+        let coordinator = CVCalendarDayViewControlCoordinator.sharedControlCoordinator
+        monthView.mapDayViews { dayView in
+            if dayView.date.day == day && !dayView.isOut {
+                if let selected = coordinator.selectedDayView where selected != dayView {
+                    self.calendarView.didSelectDayView(dayView)
+                }
+                
+                coordinator.performDayViewSingleSelection(dayView)
+            }
+        }
+    }
+}
+
+extension UIView {
+    func removeAllSubviews() {
+        for subview in subviews {
+            if let view = subview as? UIView {
+                view.removeFromSuperview()
+            }
+        }
     }
 }

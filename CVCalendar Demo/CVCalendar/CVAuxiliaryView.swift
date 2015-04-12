@@ -73,7 +73,7 @@ class CVAuxiliaryView: UIView {
     }
     
     deinit {
-        println("Deinited")
+        //println("[CVCalendar Recovery]: AuxiliaryView is deinited.")
     }
 }
 

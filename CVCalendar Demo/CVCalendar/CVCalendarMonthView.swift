@@ -82,7 +82,7 @@ extension CVCalendarMonthView {
 // MARK: Content reload
 
 extension CVCalendarMonthView {
-    func reloadWeekViewsWithMonthFrame(frame: CGRect) {
+    func reloadViewsWithRect(frame: CGRect) {
         self.frame = frame
         
         let renderer = CVCalendarRenderer.sharedRenderer()

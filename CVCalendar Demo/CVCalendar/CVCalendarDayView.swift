@@ -54,6 +54,12 @@ class CVCalendarDayView: UIView {
         }
     }
     
+    override var hidden: Bool {
+        didSet {
+            userInteractionEnabled = hidden ? false : true
+        }
+    }
+    
     // MARK: - Initialization
     
     init(weekView: CVCalendarWeekView, frame: CGRect, weekdayIndex: Int) {
@@ -70,7 +76,6 @@ class CVCalendarDayView: UIView {
         
         if !calendarView.shouldShowWeekdaysOut && isOut {
             hidden = true
-            userInteractionEnabled = false
         }
     }
     
@@ -196,7 +201,6 @@ extension CVCalendarDayView {
                     createMarker()
                 }
             } else {
-                println("Setting up here")
                 if self.topMarker == nil {
                     createMarker()
                 } else {
@@ -354,7 +358,6 @@ extension CVCalendarDayView {
 
 extension CVCalendarDayView {
     func setDayLabelHighlighted() {
-        println("Highlighted")
         let appearance = CVCalendarViewAppearance.sharedCalendarViewAppearance
         
         var backgroundColor: UIColor!
@@ -388,8 +391,6 @@ extension CVCalendarDayView {
     }
     
     func setDayLabelUnhighlightedDismissingState(removeViews: Bool) {
-        println("Deselected")
-
         let appearance = CVCalendarViewAppearance.sharedCalendarViewAppearance
         
         var color: UIColor?
@@ -424,8 +425,6 @@ extension CVCalendarDayView {
     }
     
     func setDayLabelSelected() {
-        println("Selected")
-
         let appearance = CVCalendarViewAppearance.sharedCalendarViewAppearance
         
         var backgroundColor: UIColor!

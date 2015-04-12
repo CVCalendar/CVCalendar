@@ -29,12 +29,13 @@ typealias Animator = CVCalendarViewAnimator
 typealias Delegate = CVCalendarViewDelegate
 typealias AppearanceDelegate = CVCalendarViewAppearanceDelegate
 typealias AnimatorDelegate = CVCalendarViewAnimatorDelegate
-typealias MonthContentView = CVCalendarMonthContentView
+typealias ContentViewController = CVCalendarContentViewController
+typealias MonthContentViewController = CVCalendarMonthContentViewController
 typealias ContentDelegate = CVCalendarContentDelegate
 
 class CVCalendarView: UIView {
     // MARK: - Public properties
-    var contentController: CVCalendarContentViewController!
+    var contentController: ContentViewController!
     var calendarMode: CalendarMode! = .MonthView
     
     var shouldShowWeekdaysOut: Bool! {
@@ -107,14 +108,12 @@ class CVCalendarView: UIView {
         super.init(frame: CGRectZero)
         hidden = true
         loadCalendarMode()
-        contentController = CVCalendarContentViewController(calendarView: self, frame: bounds)
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         hidden = true
         loadCalendarMode()
-        contentController = CVCalendarContentViewController(calendarView: self, frame: bounds)
     }
 
     /// IB Initialization
@@ -122,7 +121,6 @@ class CVCalendarView: UIView {
         super.init(coder: aDecoder)
         hidden = true
         loadCalendarMode()
-        contentController = CVCalendarContentViewController(calendarView: self, frame: bounds)
     }
 }
 
@@ -146,8 +144,8 @@ extension CVCalendarView {
 
 extension CVCalendarView {
     func didSelectDayView(dayView: CVCalendarDayView) {
-        delegate?.didSelectDayView(dayView)
         if let controller = contentController {
+            delegate?.didSelectDayView(dayView)
             controller.performedDayViewSelection(dayView) // TODO: Update to range selection
         }
     }
@@ -186,8 +184,12 @@ private extension CVCalendarView {
         
         if let calendarMode = calendarMode {
             switch calendarMode {
-                case "MonthView": self.calendarMode = .MonthView
-                case "WeekView": self.calendarMode = .WeekView
+                case "MonthView":
+                    contentController = MonthContentViewController(calendarView: self, frame: bounds)
+                    self.calendarMode = .MonthView
+                case "WeekView":
+                println("[CVCalendar Warning]: WeekView mode is being under maintenance!")
+                    //self.calendarMode = .WeekView
             default: break
             }
         }

@@ -75,7 +75,6 @@ private extension CVCalendarDayViewControlCoordinator {
 extension CVCalendarDayViewControlCoordinator {
     func performDayViewSingleSelection(dayView: DayView) {
         selectionSet.insert(dayView)
-        println(selectionSet.count)
         
         if selectionSet.count > 1 {
             let count = selectionSet.count-1
