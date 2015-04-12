@@ -90,32 +90,28 @@ extension ViewController: CVCalendarViewDelegate {
     
     func dotMarker(shouldShowOnDayView dayView: CVCalendarDayView) -> Bool {
         let day = dayView.date.day
-        if day == 3 || day == 5 || day == 2 {
+        let randomDay = Int(arc4random_uniform(31))
+        if day == randomDay {
             return true
-        } else {
-            return false
         }
+        
+        return false
     }
     
     func dotMarker(colorOnDayView dayView: CVCalendarDayView) -> UIColor {
         let day = dayView.date.day
-        if day == 3 {
-            return .redColor()
-        } else if day == 5 {
-            return .blackColor()
-        } else if day == 2 {
-            return .blueColor()
-        }
         
-        return .greenColor()
+        let red = CGFloat(arc4random_uniform(600) / 255)
+        let green = CGFloat(arc4random_uniform(600) / 255)
+        let blue = CGFloat(arc4random_uniform(600) / 255)
+        
+        let color = UIColor(red: red, green: green, blue: blue, alpha: 1)
+
+        return color
     }
     
     func dotMarker(shouldMoveOnHighlightingOnDayView dayView: CVCalendarDayView) -> Bool {
         return true
-    }
-    
-    func dotMarker(moveOffsetOnDayView dayView: DayView) -> CGFloat {
-        return 12
     }
 }
 

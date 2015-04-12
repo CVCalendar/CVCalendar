@@ -50,11 +50,6 @@ class CVCalendarDayView: UIView {
             if oldValue != frame {
                 circleView?.setNeedsDisplay()
                 topMarkerSetup()
-                
-                if !calendarView.shouldShowWeekdaysOut && isOut {
-                    hidden = true
-                    userInteractionEnabled = false
-                }
             }
         }
     }
@@ -72,6 +67,11 @@ class CVCalendarDayView: UIView {
         labelSetup()
         setupDotMarker()
         topMarkerSetup()
+        
+        if !calendarView.shouldShowWeekdaysOut && isOut {
+            hidden = true
+            userInteractionEnabled = false
+        }
     }
     
     func dateWithWeekView(weekView: CVCalendarWeekView, andWeekIndex index: Int) -> CVDate {
@@ -219,7 +219,7 @@ extension CVCalendarDayView {
                 let color = isOut ? .grayColor() : delegate.dotMarker(colorOnDayView: self)
                 let (width: CGFloat, height: CGFloat) = (13, 13)
                 
-                var yOffset: CGFloat = 5
+                var yOffset = bounds.height / 5
                 if let y = delegate.dotMarker?(moveOffsetOnDayView: self) {
                     yOffset = y
                 }
