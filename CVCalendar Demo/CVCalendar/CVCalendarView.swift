@@ -17,8 +17,6 @@ typealias WeekView = CVCalendarWeekView
 typealias CalendarView = CVCalendarView
 typealias MonthView = CVCalendarMonthView
 typealias Manager = CVCalendarManager
-typealias Recovery = CVCalendarWeekContentRecovery
-typealias WeekContentView = CVCalendarWeekContentView
 typealias DayView = CVCalendarDayView
 typealias ContentController = CVCalendarContentViewController
 typealias Appearance = CVCalendarViewAppearance
@@ -31,6 +29,7 @@ typealias AppearanceDelegate = CVCalendarViewAppearanceDelegate
 typealias AnimatorDelegate = CVCalendarViewAnimatorDelegate
 typealias ContentViewController = CVCalendarContentViewController
 typealias MonthContentViewController = CVCalendarMonthContentViewController
+typealias WeekContentViewController = CVCalendarWeekContentViewController
 typealias ContentDelegate = CVCalendarContentDelegate
 
 class CVCalendarView: UIView {
@@ -188,9 +187,15 @@ private extension CVCalendarView {
                     contentController = MonthContentViewController(calendarView: self, frame: bounds)
                     self.calendarMode = .MonthView
                 case "WeekView":
-                println("[CVCalendar Warning]: WeekView mode is being under maintenance!")
-                    //self.calendarMode = .WeekView
-            default: break
+                    contentController = WeekContentViewController(calendarView: self, frame: bounds)
+                    self.calendarMode = .WeekView
+                default: break
+            }
+        } else {
+            switch self.calendarMode! {
+                case .MonthView: contentController = MonthContentViewController(calendarView: self, frame: bounds)
+                case .WeekView: contentController = WeekContentViewController(calendarView: self, frame: bounds)
+                default: break
             }
         }
     }

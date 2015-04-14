@@ -105,6 +105,14 @@ class CVCalendarWeekView: UIView {
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func mapDayViews(body: (DayView) -> ()) {
+        if let dayViews = dayViews {
+            for dayView in dayViews {
+                body(dayView)
+            }
+        }
+    }
 }
 
 // MARK: - Interactive view setup & management

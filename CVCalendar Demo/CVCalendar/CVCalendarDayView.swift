@@ -119,7 +119,7 @@ class CVCalendarDayView: UIView {
         
         let dateRange = CVCalendarManager.sharedManager.dateRange(monthView.date)
         let year = dateRange.year
-        let week = dateRange.weekOfMonth
+        let week = weekView.index + 1
         var month = dateRange.month
         
         if isOut {

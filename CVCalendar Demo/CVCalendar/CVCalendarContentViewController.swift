@@ -25,8 +25,13 @@ class CVCalendarContentViewController: UIViewController {
         return scrollView.bounds
     }
     
-    var page = 0
-    var pageChanged = false
+    var currentPage = 1
+    var pageChanged: Bool {
+        get {
+            return currentPage == 1 ? false : true
+        }
+    }
+    
     var pageLoadingEnabled = true
     var lastContentOffset: CGFloat = 0
     var direction: CVScrollDirection = .None
@@ -52,12 +57,6 @@ class CVCalendarContentViewController: UIViewController {
     }
 }
 
-// MARK: - UIScrollViewDelegate
-
-extension CVCalendarContentViewController: UIScrollViewDelegate {
-    
-}
-
 // MARK: - UI Refresh
 
 extension CVCalendarContentViewController {
@@ -69,28 +68,22 @@ extension CVCalendarContentViewController {
     }
 }
 
-// MARK: - Convenience API
+// MARK: - Abstract methods
 
+/// UIScrollViewDelegate
+extension CVCalendarContentViewController: UIScrollViewDelegate { }
+
+/// Convenience API.
 extension CVCalendarContentViewController {
-    func performedDayViewSelection(dayView: DayView) {
-        //delegate.performedDayViewSelection(dayView)
-    }
+    func performedDayViewSelection(dayView: DayView) { }
     
-    func togglePresentedDate(date: NSDate) {
-        //delegate.togglePresentedDate(date)
-    }
+    func togglePresentedDate(date: NSDate) { }
     
-    func presentNextView(view: UIView?) {
-        //delegate.presentNextView(dayView)
-    }
+    func presentNextView(view: UIView?) { }
     
-    func presentPreviousView(view: UIView?) {
-        //delegate.presentPreviousView(dayView)
-    }
+    func presentPreviousView(view: UIView?) { }
     
-    func updateDayViews(hidden: Bool) {
-        //delegate.updateDayViews(hidden)
-    }
+    func updateDayViews(hidden: Bool) { }
 }
 
 // MARK: - Contsant conversion
@@ -134,28 +127,16 @@ extension CVCalendarContentViewController {
         return dateAfter
     }
     
-    func match(lhs: NSDate, _ rhs: NSDate) -> Bool {
-        let lhsRange = Manager.sharedManager.dateRange(lhs)
-        let rhsRange = Manager.sharedManager.dateRange(rhs)
-        
-        if lhsRange.year == rhsRange.year && lhsRange.month == rhsRange.month {
-            return true
-        }
-        
-        return false
+    func matchedMonths(lhs: Date, _ rhs: Date) -> Bool {
+        return lhs.year == rhs.year && lhs.month == rhs.month
     }
     
-    func selectDayViewWithDay(day: Int, inMonthView monthView: CVCalendarMonthView) {
-        let coordinator = CVCalendarDayViewControlCoordinator.sharedControlCoordinator
-        monthView.mapDayViews { dayView in
-            if dayView.date.day == day && !dayView.isOut {
-                if let selected = coordinator.selectedDayView where selected != dayView {
-                    self.calendarView.didSelectDayView(dayView)
-                }
-                
-                coordinator.performDayViewSingleSelection(dayView)
-            }
-        }
+    func matchedWeeks(lhs: Date, _ rhs: Date) -> Bool {
+        return (lhs.year == rhs.year && lhs.month == rhs.month && lhs.week == rhs.week)
+    }
+    
+    func matchedDays(lhs: Date, _ rhs: Date) -> Bool {
+        return (lhs.year == rhs.year && lhs.month == rhs.month && lhs.day == rhs.day)
     }
 }
 
