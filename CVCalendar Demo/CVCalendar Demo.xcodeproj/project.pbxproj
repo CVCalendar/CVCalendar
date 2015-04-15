@@ -196,9 +196,9 @@
 		8F61EDD31AD1A5CD00F7F8B6 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				55E122461A588CC50013B002 /* CVCalendarViewAnimator.swift */,
 				8F1080B51AB89B9700D9FAC6 /* CVCalendarTouchController.swift */,
 				55E122401A588CC50013B002 /* CVCalendarDayViewControlCoordinator.swift */,
-				55E122461A588CC50013B002 /* CVCalendarViewAnimator.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";

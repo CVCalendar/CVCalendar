@@ -174,6 +174,8 @@ extension CVCalendarView {
             
             if selfSize != contentViewSize {
                 contentController.updateFrames(bounds)
+            } else {
+                contentController.updateFrames(CGRectZero)
             }
         }
     }
