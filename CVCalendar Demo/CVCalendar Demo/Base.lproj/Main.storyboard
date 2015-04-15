@@ -26,7 +26,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZPD-eB-kRA" customClass="CVCalendarMenuView" customModule="CVCalendar_Demo" customModuleProvider="target">
                                 <rect key="frame" x="16" y="71" width="568" height="24"/>
                                 <connections>
-                                    <outlet property="menuViewDelegate" destination="vXZ-lx-hvc" id="LTz-R5-Tsf"/>
+                                    <outlet property="menuViewDelegate" destination="vXZ-lx-hvc" id="S19-Z5-mn8"/>
                                 </connections>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HF3-fY-vSc">
@@ -58,8 +58,8 @@
                                     </constraint>
                                 </constraints>
                                 <connections>
-                                    <outlet property="calendarAppearanceDelegate" destination="vXZ-lx-hvc" id="lHB-qC-80j"/>
-                                    <outlet property="calendarDelegate" destination="vXZ-lx-hvc" id="9ah-Z8-qtm"/>
+                                    <outlet property="calendarAppearanceDelegate" destination="vXZ-lx-hvc" id="esW-84-Ric"/>
+                                    <outlet property="calendarDelegate" destination="vXZ-lx-hvc" id="BGr-mw-JIs"/>
                                 </connections>
                             </view>
                         </subviews>
@@ -91,7 +91,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="807.75" y="546.75"/>
+            <point key="canvasLocation" x="18" y="293"/>
         </scene>
     </scenes>
     <resources>

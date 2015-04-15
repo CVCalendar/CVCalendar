@@ -8,25 +8,23 @@
 
 import UIKit
 
-/// Singleton
-private let instance = CVCalendarDayViewControlCoordinator()
-
-class CVCalendarDayViewControlCoordinator: NSObject {
+class CVCalendarDayViewControlCoordinator {
     // MARK: - Non public properties
     private var selectionSet = Set<DayView>()
+    private unowned let calendarView: CalendarView
     
     // MARK: - Public properties
     weak var selectedDayView: CVCalendarDayView?
     var animator: CVCalendarViewAnimator! {
-        return CVCalendarViewAnimator.sharedAnimator
-    }
-    
-    class var sharedControlCoordinator: CVCalendarDayViewControlCoordinator {
-        return instance
+        get {
+            return calendarView.animator
+        }
     }
 
-    // MARK: - Private initialization
-    private override init() { }
+    // MARK: - initialization
+    init(calendarView: CalendarView) {
+        self.calendarView = calendarView
+    }
 }
 
 // MARK: - Animator side callback

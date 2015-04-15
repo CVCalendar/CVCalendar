@@ -202,7 +202,7 @@ class CVCalendarWeekContentViewController: CVCalendarContentViewController {
     private var togglingBlocked = false
     override func togglePresentedDate(date: NSDate) {
         let presentedDate = Date(date: date)
-        if let presentedMonthView = monthViews[Presented], let presentedWeekView = weekViews[Presented], let selectedDate = Coordinator.sharedControlCoordinator.selectedDayView?.date {
+        if let presentedMonthView = monthViews[Presented], let presentedWeekView = weekViews[Presented], let selectedDate = calendarView.coordinator.selectedDayView?.date {
             if !matchedDays(selectedDate, Date(date: date)) && !togglingBlocked {
                 if !matchedWeeks(presentedDate, selectedDate) {
                     togglingBlocked = true
@@ -374,7 +374,7 @@ extension CVCalendarWeekContentViewController {
     }
     
     func updateSelection() {
-        let coordinator = Coordinator.sharedControlCoordinator
+        let coordinator = calendarView.coordinator
         if let selected = coordinator.selectedDayView {
             for (index, monthView) in monthViews {
                 if indexOfIdentifier(index) != 1 {
@@ -407,7 +407,7 @@ extension CVCalendarWeekContentViewController {
     }
     
     func selectDayViewWithDay(day: Int, inWeekView weekView: WeekView) {
-        let coordinator = CVCalendarDayViewControlCoordinator.sharedControlCoordinator
+        let coordinator = calendarView.coordinator
         weekView.mapDayViews { dayView in
             if dayView.date.day == day && !dayView.isOut {
                 if let selected = coordinator.selectedDayView where selected != dayView {

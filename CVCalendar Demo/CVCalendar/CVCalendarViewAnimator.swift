@@ -8,20 +8,20 @@
 
 import UIKit
 
-private let singleton = CVCalendarViewAnimator()
 class CVCalendarViewAnimator {
+    private unowned let calendarView: CalendarView
+    
     // MARK: - Public properties
     var delegate: CVCalendarViewAnimatorDelegate!
     var coordinator: CVCalendarDayViewControlCoordinator {
-        return CVCalendarDayViewControlCoordinator.sharedControlCoordinator
+        get {
+            return calendarView.coordinator
+        }
     }
     
-    class var sharedAnimator: CVCalendarViewAnimator {
-        return singleton
-    }
-    
-    // MARK: - Private init
-    private init() {
+    // MARK: - Init
+    init(calendarView: CalendarView) {
+        self.calendarView = calendarView
         delegate = self
     }
 }

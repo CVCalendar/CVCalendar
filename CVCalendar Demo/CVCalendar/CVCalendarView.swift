@@ -28,12 +28,16 @@ typealias MonthContentViewController = CVCalendarMonthContentViewController
 typealias WeekContentViewController = CVCalendarWeekContentViewController
 typealias MenuViewDelegate = CVCalendarMenuViewDelegate
 typealias Renderer = CVCalendarRenderer
+typealias TouchController = CVCalendarTouchController
 
 class CVCalendarView: UIView {
     // MARK: - Public properties
     var manager: Manager!
     var appearance: Appearance!
     var renderer: Renderer!
+    var touchController: TouchController!
+    var coordinator: Coordinator!
+    var animator: Animator!
     var contentController: ContentViewController!
     var calendarMode: CalendarMode!
     
@@ -63,10 +67,6 @@ class CVCalendarView: UIView {
         }
     }
     
-    var animator: Animator {
-        return Animator.sharedAnimator
-    }
-    
     // MARK: - Calendar View Delegate
     
     @IBOutlet weak var calendarDelegate: AnyObject? {
@@ -87,8 +87,24 @@ class CVCalendarView: UIView {
                 manager = Manager(calendarView: self)
             }
             
+            if appearance == nil {
+                appearance = Appearance()
+            }
+            
             if renderer == nil {
                 renderer = Renderer(calendarView: self)
+            }
+            
+            if touchController == nil {
+                touchController = TouchController(calendarView: self)
+            }
+            
+            if coordinator == nil {
+                coordinator = Coordinator(calendarView: self)
+            }
+            
+            if animator == nil {
+                animator = Animator(calendarView: self)
             }
             
             if calendarMode == nil {
@@ -152,7 +168,7 @@ class CVCalendarView: UIView {
 
 extension CVCalendarView {
     func commitCalendarViewUpdate() {
-        if let contentController = contentController {
+        if let delegate = delegate, let contentController = contentController {
             let contentViewSize = contentController.bounds.size
             let selfSize = bounds.size
             

@@ -23,7 +23,7 @@ class CVCalendarMonthView: UIView {
     }
     
     private var touchController: CVCalendarTouchController {
-        return CVCalendarTouchController.sharedTouchController
+        return calendarView.touchController
     }
     
     // MARK: - Public properties

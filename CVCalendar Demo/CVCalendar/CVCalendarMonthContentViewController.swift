@@ -192,7 +192,7 @@ class CVCalendarMonthContentViewController: CVCalendarContentViewController {
     private var togglingBlocked = false
     override func togglePresentedDate(date: NSDate) {
         let presentedDate = Date(date: date)
-        if let presented = monthViews[Presented], let selectedDate = Coordinator.sharedControlCoordinator.selectedDayView?.date {
+        if let presented = monthViews[Presented], let selectedDate = calendarView.coordinator.selectedDayView?.date {
             if !matchedDays(selectedDate, presentedDate) && !togglingBlocked {
                 if !matchedMonths(presentedDate, selectedDate) {
                     togglingBlocked = true
@@ -297,7 +297,7 @@ extension CVCalendarMonthContentViewController {
     }
     
     func updateSelection() {
-        let coordinator = Coordinator.sharedControlCoordinator
+        let coordinator = calendarView.coordinator
         if let selected = coordinator.selectedDayView {
             for (index, monthView) in monthViews {
                 if indexOfIdentifier(index) != 1 {
@@ -317,18 +317,14 @@ extension CVCalendarMonthContentViewController {
             self.presentedMonthView = presentedMonthView
             calendarView.presentedDate = Date(date: presentedMonthView.date)
             
-            let manager = calendarView.manager
-            let currentDateRange = Manager.dateRange(NSDate())
-            let presentedDateRange = Manager.dateRange(presentedMonthView.date)
-            
             if let selected = coordinator.selectedDayView, let selectedMonthView = selected.monthView where !matchedMonths(Date(date: selectedMonthView.date), Date(date: presentedMonthView.date)) {
-                selectDayViewWithDay(presentedDateRange.day, inMonthView: presentedMonthView)
+                selectDayViewWithDay(Date(date: calendarView.manager.monthDateRange(presentedMonthView.date).monthStartDate).day, inMonthView: presentedMonthView)
             }
         }
     }
     
     func selectDayViewWithDay(day: Int, inMonthView monthView: CVCalendarMonthView) {
-        let coordinator = CVCalendarDayViewControlCoordinator.sharedControlCoordinator
+        let coordinator = calendarView.coordinator
         monthView.mapDayViews { dayView in
             if dayView.date.day == day && !dayView.isOut {
                 if let selected = coordinator.selectedDayView where selected != dayView {

@@ -149,9 +149,9 @@ extension CVCalendarDayView {
         if isOut {
             color = appearance.dayLabelWeekdayOutTextColor
         } else if isCurrentDay {
-            let coordinator = CVCalendarDayViewControlCoordinator.sharedControlCoordinator
+            let coordinator = calendarView.coordinator
             if coordinator.selectedDayView == nil {
-                let touchController = CVCalendarTouchController.sharedTouchController
+                let touchController = calendarView.touchController
                 touchController.receiveTouchOnDayView(self)
                 calendarView.didSelectDayView(self)
             } else {
@@ -235,7 +235,7 @@ extension CVCalendarDayView {
                 dotMarker!.center = CGPointMake(x, y)
                 insertSubview(dotMarker!, atIndex: 0)
                 
-                let coordinator = CVCalendarDayViewControlCoordinator.sharedControlCoordinator
+                let coordinator = calendarView.coordinator
                 if self == coordinator.selectedDayView {
                     moveDotMarkerBack(false, coloring: false)
                 }

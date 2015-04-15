@@ -8,20 +8,20 @@
 
 import UIKit
 
-private let singleton = CVCalendarTouchController()
-
 class CVCalendarTouchController {
-    // MARK: - Properties
-    lazy var coordinator: Coordinator = {
-        return CVCalendarDayViewControlCoordinator.sharedControlCoordinator
-    }()
+    private unowned let calendarView: CalendarView
     
-    class var sharedTouchController: CVCalendarTouchController {
-        return singleton
+    // MARK: - Properties
+    var coordinator: Coordinator {
+        get {
+            return calendarView.coordinator
+        }
     }
     
-    /// Private init.
-    private init() { }
+    /// Init.
+    init(calendarView: CalendarView) {
+        self.calendarView = calendarView
+    }
 }
 
 // MARK: - Events receive 
