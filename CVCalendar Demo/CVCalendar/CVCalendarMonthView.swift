@@ -15,7 +15,7 @@ class CVCalendarMonthView: UIView {
     override var frame: CGRect {
         didSet {
             if let calendarView = calendarView {
-                if calendarView.calendarMode == CVCalendarViewMode.MonthView {
+                if calendarView.calendarMode == CalendarMode.MonthView {
                     updateInteractiveView()
                 }
             }
@@ -69,12 +69,12 @@ class CVCalendarMonthView: UIView {
 
 extension CVCalendarMonthView {
     func commonInit() {
-        let calendarManager = CVCalendarManager.sharedManager
+        let calendarManager = calendarView.manager
         safeExecuteBlock({
             self.numberOfWeeks = calendarManager.monthDateRange(self.date).countOfWeeks
             self.weeksIn = calendarManager.weeksWithWeekdaysForMonthDate(self.date).weeksIn
             self.weeksOut = calendarManager.weeksWithWeekdaysForMonthDate(self.date).weeksOut
-            self.currentDay = calendarManager.dateRange(NSDate()).day
+            self.currentDay = Manager.dateRange(NSDate()).day
             }, collapsingOnNil: true, withObjects: date)
     }
 }
@@ -85,7 +85,7 @@ extension CVCalendarMonthView {
     func reloadViewsWithRect(frame: CGRect) {
         self.frame = frame
         
-        let renderer = CVCalendarRenderer.sharedRenderer()
+        let renderer = calendarView.renderer
         
         safeExecuteBlock({
             for (index, weekView) in enumerate(self.weekViews) {
@@ -106,7 +106,7 @@ extension CVCalendarMonthView {
     }
     
     func createWeekViews() {
-        let renderer = CVCalendarRenderer.sharedRenderer()
+        let renderer = calendarView.renderer
         weekViews = [CVCalendarWeekView]()
         
         safeExecuteBlock({

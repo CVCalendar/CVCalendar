@@ -15,10 +15,6 @@ class CVCalendarDayViewControlCoordinator: NSObject {
     // MARK: - Non public properties
     private var selectionSet = Set<DayView>()
     
-    lazy var appearance: Appearance = {
-        return Appearance.sharedCalendarViewAppearance
-    }()
-    
     // MARK: - Public properties
     weak var selectedDayView: CVCalendarDayView?
     var animator: CVCalendarViewAnimator! {

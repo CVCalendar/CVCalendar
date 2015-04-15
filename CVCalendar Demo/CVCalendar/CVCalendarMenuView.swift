@@ -9,47 +9,54 @@
 import UIKit
 
 class CVCalendarMenuView: UIView {
-    
-    var starterWeekday = 1
     var symbols = [String]()
     var symbolViews: [UILabel]?
+    
+    var firstWeekday: Weekday {
+        get {
+            if let delegate = delegate {
+                return delegate.firstWeekday()
+            } else {
+                return .Sunday
+            }
+        }
+    }
+    
+    @IBOutlet weak var menuViewDelegate: AnyObject? {
+        set {
+            if let delegate = newValue as? MenuViewDelegate {
+                self.delegate = delegate
+            }
+        }
+        
+        get {
+            return delegate as? AnyObject
+        }
+    }
+    
+    var delegate: MenuViewDelegate? {
+        didSet {
+            setupWeekdaySymbols()
+            createDaySymbols()
+        }
+    }
 
     init() {
         super.init(frame: CGRectZero)
-        self.setupWeekdaySymbols()
-        self.createDaySymbols()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        self.setupWeekdaySymbols()
-        self.createDaySymbols()
     }
 
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
-
-        self.setupWeekdaySymbols()
-        self.createDaySymbols()
     }
     
     func setupWeekdaySymbols() {
-        let propertyName = "CVCalendarStarterWeekday"
-        let firstWeekday = NSBundle.mainBundle().objectForInfoDictionaryKey(propertyName) as? Int
-        if firstWeekday != nil {
-            self.starterWeekday = firstWeekday!
-        } else {
-            let currentCalendar = NSCalendar.currentCalendar()
-            let firstWeekday = currentCalendar.firstWeekday
-            self.starterWeekday = firstWeekday
-        }
-        
-        
         let calendar = NSCalendar(identifier: NSCalendarIdentifierGregorian)!
         calendar.components(NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitDay, fromDate: NSDate())
-        calendar.firstWeekday = self.starterWeekday
+        calendar.firstWeekday = firstWeekday.rawValue
         
         symbols = calendar.weekdaySymbols as! [String]
     }
@@ -59,7 +66,7 @@ class CVCalendarMenuView: UIView {
         let dateFormatter = NSDateFormatter()
         var weekdays = dateFormatter.shortWeekdaySymbols as NSArray
         
-        let firstWeekdayIndex = starterWeekday - 1
+        let firstWeekdayIndex = firstWeekday.rawValue - 1
         if (firstWeekdayIndex > 0) {
             let copy = weekdays
             weekdays = (weekdays.subarrayWithRange(NSMakeRange(firstWeekdayIndex, 7 - firstWeekdayIndex)))

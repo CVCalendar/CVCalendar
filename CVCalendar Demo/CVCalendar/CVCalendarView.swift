@@ -8,11 +8,6 @@
 
 import UIKit
 
-enum CVCalendarViewMode {
-    case MonthView
-    case WeekView
-}
-
 typealias WeekView = CVCalendarWeekView
 typealias CalendarView = CVCalendarView
 typealias MonthView = CVCalendarMonthView
@@ -22,7 +17,8 @@ typealias ContentController = CVCalendarContentViewController
 typealias Appearance = CVCalendarViewAppearance
 typealias Coordinator = CVCalendarDayViewControlCoordinator
 typealias Date = CVDate
-typealias CalendarMode = CVCalendarViewMode
+typealias CalendarMode = CVCalendarViewPresentationMode
+typealias Weekday = CVCalendarWeekday
 typealias Animator = CVCalendarViewAnimator
 typealias Delegate = CVCalendarViewDelegate
 typealias AppearanceDelegate = CVCalendarViewAppearanceDelegate
@@ -30,16 +26,30 @@ typealias AnimatorDelegate = CVCalendarViewAnimatorDelegate
 typealias ContentViewController = CVCalendarContentViewController
 typealias MonthContentViewController = CVCalendarMonthContentViewController
 typealias WeekContentViewController = CVCalendarWeekContentViewController
-typealias ContentDelegate = CVCalendarContentDelegate
+typealias MenuViewDelegate = CVCalendarMenuViewDelegate
+typealias Renderer = CVCalendarRenderer
 
 class CVCalendarView: UIView {
     // MARK: - Public properties
+    var manager: Manager!
+    var appearance: Appearance!
+    var renderer: Renderer!
     var contentController: ContentViewController!
-    var calendarMode: CalendarMode! = .MonthView
+    var calendarMode: CalendarMode!
+    
+    var firstWeekday: Weekday {
+        get {
+            if let delegate = delegate {
+                return delegate.firstWeekday()
+            } else {
+                return .Sunday
+            }
+        }
+    }
     
     var shouldShowWeekdaysOut: Bool! {
-        if let delegate = delegate {
-            return delegate.shouldShowWeekdaysOut()
+        if let delegate = delegate, let shouldShow = delegate.shouldShowWeekdaysOut?() {
+            return shouldShow
         } else {
             return false
         }
@@ -47,7 +57,9 @@ class CVCalendarView: UIView {
     
     var presentedDate: Date! {
         didSet {
-            delegate?.presentedDateUpdated(presentedDate)
+            if let oldValue = oldValue {
+                delegate?.presentedDateUpdated?(presentedDate)
+            }
         }
     }
     
@@ -57,7 +69,7 @@ class CVCalendarView: UIView {
     
     // MARK: - Calendar View Delegate
     
-    @IBOutlet var calendarDelegate: AnyObject? {
+    @IBOutlet weak var calendarDelegate: AnyObject? {
         set {
             if let calendarDelegate = newValue as? Delegate {
                 delegate = calendarDelegate
@@ -69,13 +81,31 @@ class CVCalendarView: UIView {
         }
     }
     
-    var delegate: CVCalendarViewDelegate?
+    var delegate: CVCalendarViewDelegate? {
+        didSet {
+            if manager == nil {
+                manager = Manager(calendarView: self)
+            }
+            
+            if renderer == nil {
+                renderer = Renderer(calendarView: self)
+            }
+            
+            if calendarMode == nil {
+                loadCalendarMode()
+            }
+        }
+    }
     
     // MARK: - Calendar Appearance Delegate
     
-    @IBOutlet var calendarAppearanceDelegate: AnyObject? {
+    @IBOutlet weak var calendarAppearanceDelegate: AnyObject? {
         set {
             if let calendarAppearanceDelegate = newValue as? AppearanceDelegate {
+                if appearance == nil {
+                    appearance = Appearance()
+                }
+                
                 appearance.delegate = calendarAppearanceDelegate
             }
         }
@@ -85,11 +115,9 @@ class CVCalendarView: UIView {
         }
     }
     
-    var appearance = Appearance.sharedCalendarViewAppearance
-    
     // MARK: - Calendar Animator Delegate
     
-    @IBOutlet var animatorDelegate: AnyObject? {
+    @IBOutlet weak var animatorDelegate: AnyObject? {
         set {
             if let animatorDelegate = newValue as? AnimatorDelegate {
                 animator.delegate = animatorDelegate
@@ -106,20 +134,17 @@ class CVCalendarView: UIView {
     init() {
         super.init(frame: CGRectZero)
         hidden = true
-        loadCalendarMode()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         hidden = true
-        loadCalendarMode()
     }
 
     /// IB Initialization
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         hidden = true
-        loadCalendarMode()
     }
 }
 
@@ -135,7 +160,6 @@ extension CVCalendarView {
                 contentController.updateFrames(bounds)
             }
         }
-        
     }
 }
 
@@ -144,7 +168,7 @@ extension CVCalendarView {
 extension CVCalendarView {
     func didSelectDayView(dayView: CVCalendarDayView) {
         if let controller = contentController {
-            delegate?.didSelectDayView(dayView)
+            delegate?.didSelectDayView?(dayView)
             controller.performedDayViewSelection(dayView) // TODO: Update to range selection
         }
     }
@@ -178,21 +202,9 @@ extension CVCalendarView {
 
 private extension CVCalendarView {
     func loadCalendarMode() {
-        let calendarModeKey = "CVCalendarViewMode"
-        let calendarMode = NSBundle.mainBundle().objectForInfoDictionaryKey(calendarModeKey) as? String
-        
-        if let calendarMode = calendarMode {
-            switch calendarMode {
-                case "MonthView":
-                    contentController = MonthContentViewController(calendarView: self, frame: bounds)
-                    self.calendarMode = .MonthView
-                case "WeekView":
-                    contentController = WeekContentViewController(calendarView: self, frame: bounds)
-                    self.calendarMode = .WeekView
-                default: break
-            }
-        } else {
-            switch self.calendarMode! {
+        if let delegate = delegate {
+            calendarMode = delegate.presentationMode()
+            switch delegate.presentationMode() {
                 case .MonthView: contentController = MonthContentViewController(calendarView: self, frame: bounds)
                 case .WeekView: contentController = WeekContentViewController(calendarView: self, frame: bounds)
                 default: break

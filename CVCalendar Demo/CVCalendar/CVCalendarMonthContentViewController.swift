@@ -232,9 +232,8 @@ class CVCalendarMonthContentViewController: CVCalendarContentViewController {
 
 extension CVCalendarMonthContentViewController {
     func getFollowingMonth(date: NSDate) -> MonthView {
-        let calendarManager = Manager.sharedManager
-        let firstDate = calendarManager.monthDateRange(date).monthStartDate
-        let components = calendarManager.componentsForDate(firstDate)
+        let firstDate = calendarView.manager.monthDateRange(date).monthStartDate
+        let components = Manager.componentsForDate(firstDate)
         
         components.month += 1
         
@@ -248,9 +247,8 @@ extension CVCalendarMonthContentViewController {
     }
     
     func getPreviousMonth(date: NSDate) -> MonthView {
-        let calendarManager = Manager.sharedManager
-        let firstDate = calendarManager.monthDateRange(date).monthStartDate
-        let components = calendarManager.componentsForDate(firstDate)
+        let firstDate = calendarView.manager.monthDateRange(date).monthStartDate
+        let components = Manager.componentsForDate(firstDate)
         
         components.month -= 1
         
@@ -319,16 +317,12 @@ extension CVCalendarMonthContentViewController {
             self.presentedMonthView = presentedMonthView
             calendarView.presentedDate = Date(date: presentedMonthView.date)
             
-            let manager = Manager.sharedManager
-            let currentDateRange = manager.dateRange(NSDate())
-            let presentedDateRange = manager.dateRange(presentedMonthView.date)
+            let manager = calendarView.manager
+            let currentDateRange = Manager.dateRange(NSDate())
+            let presentedDateRange = Manager.dateRange(presentedMonthView.date)
             
             if let selected = coordinator.selectedDayView, let selectedMonthView = selected.monthView where !matchedMonths(Date(date: selectedMonthView.date), Date(date: presentedMonthView.date)) {
-                if currentDateRange.month == presentedDateRange.month && currentDateRange.year == presentedDateRange.year {
-                    selectDayViewWithDay(currentDateRange.day, inMonthView: presentedMonthView)
-                } else {
-                    selectDayViewWithDay(1, inMonthView: presentedMonthView)
-                }
+                selectDayViewWithDay(presentedDateRange.day, inMonthView: presentedMonthView)
             }
         }
     }

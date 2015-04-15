@@ -37,6 +37,14 @@ class ViewController: UIViewController {
 // MARK: - CVCalendarViewDelegate
 
 extension ViewController: CVCalendarViewDelegate {
+    func presentationMode() -> CalendarMode {
+        return .MonthView
+    }
+    
+    func firstWeekday() -> Weekday {
+        return .Sunday
+    }
+    
     func shouldShowWeekdaysOut() -> Bool {
         return shouldShowDaysOut
     }
@@ -47,7 +55,7 @@ extension ViewController: CVCalendarViewDelegate {
     }
     
     func presentedDateUpdated(date: CVDate) {
-        if self.monthLabel.text != date.globalDescription && self.animationFinished {
+        if monthLabel.text != date.globalDescription && self.animationFinished {
             let updatedMonthLabel = UILabel()
             updatedMonthLabel.textColor = monthLabel.textColor
             updatedMonthLabel.font = monthLabel.font
@@ -127,6 +135,12 @@ extension ViewController: CVCalendarViewAppearanceDelegate {
     }
 }
 
+// MARK: - CVCalendarMenuViewDelegate
+
+extension ViewController: CVCalendarMenuViewDelegate {
+    // firstWeekday() has been already implemented.
+}
+
 // MARK: - IB Actions
 
 extension ViewController {
@@ -150,8 +164,8 @@ extension ViewController {
 extension ViewController {
     func toggleMonthViewWithMonthOffset(offset: Int) {
         let calendar = NSCalendar.currentCalendar()
-        let calendarManager = CVCalendarManager.sharedManager
-        let components = calendarManager.componentsForDate(NSDate()) // from today
+        let calendarManager = calendarView.manager
+        let components = Manager.componentsForDate(NSDate()) // from today
         
         components.month += offset
         

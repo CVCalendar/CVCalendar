@@ -8,12 +8,10 @@
 
 import UIKit
 
-private let sharedInstance = CVCalendarViewAppearance()
-
 class CVCalendarViewAppearance: NSObject {
     
-    class var sharedCalendarViewAppearance: CVCalendarViewAppearance {
-        return sharedInstance
+    override init() {
+        super.init()
     }
     
     /// Default rendering options.
@@ -110,11 +108,6 @@ class CVCalendarViewAppearance: NSObject {
             
             dotMarkerColor~>delegate.dotMarkerColor?()
         }
-    }
-    
-    
-    private override init() {
-        super.init()
     }
 }
 

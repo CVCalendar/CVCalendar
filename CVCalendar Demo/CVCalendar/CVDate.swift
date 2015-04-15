@@ -17,8 +17,7 @@ class CVDate: NSObject {
     let day: Int
     
     init(date: NSDate) {
-        let calendarManager = CVCalendarManager.sharedManager
-        let dateRange = calendarManager.dateRange(date)
+        let dateRange = Manager.dateRange(date)
         
         self.date = date
         self.year = dateRange.year
@@ -30,9 +29,7 @@ class CVDate: NSObject {
     }
     
     init(day: Int, month: Int, week: Int, year: Int) {
-        let calendarManager = CVCalendarManager.sharedManager
-        
-        if let date = calendarManager.dateFromYear(year, month: month, week: week, day: day) {
+        if let date = Manager.dateFromYear(year, month: month, week: week, day: day) {
             self.date = date
         } else {
             self.date = NSDate()

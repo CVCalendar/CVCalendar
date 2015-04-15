@@ -31,7 +31,7 @@ class CVCalendarWeekContentViewController: CVCalendarContentViewController {
         monthViews[Following] = getFollowingMonth(presentedMonthView.date)
         
         presentedMonthView.mapDayViews { dayView in
-            if dayView.date.day == Manager.sharedManager.dateRange(NSDate()).day {
+            if dayView.date.day == Manager.dateRange(NSDate()).day {
                 self.insertWeekView(dayView.weekView, withIdentifier: self.Presented)
             }
         }
@@ -44,7 +44,7 @@ class CVCalendarWeekContentViewController: CVCalendarContentViewController {
     
     func reloadWeekViews() {
         for (identifier, weekView) in weekViews {
-            weekView.frame.size = CVCalendarRenderer.sharedRenderer().renderWeekFrameForRect(scrollView.bounds).size
+            weekView.frame.size = calendarView.renderer.renderWeekFrameForRect(scrollView.bounds).size
             weekView.frame.origin = CGPointMake(CGFloat(indexOfIdentifier(identifier)) * scrollView.frame.width, scrollView.bounds.height / 2)
             weekView.removeFromSuperview()
             scrollView.addSubview(weekView)
@@ -56,7 +56,7 @@ class CVCalendarWeekContentViewController: CVCalendarContentViewController {
     func insertWeekView(weekView: WeekView, withIdentifier identifier: Identifier) {
         let index = CGFloat(indexOfIdentifier(identifier))
         
-        weekView.frame.size = CVCalendarRenderer.sharedRenderer().renderWeekFrameForRect(scrollView.bounds).size
+        weekView.frame.size = calendarView.renderer.renderWeekFrameForRect(scrollView.bounds).size
         weekView.frame.origin = CGPointMake(scrollView.bounds.width * index, scrollView.bounds.height / 2)
         weekViews[identifier] = weekView
         scrollView.addSubview(weekView)
@@ -307,9 +307,9 @@ extension CVCalendarWeekContentViewController {
 
 extension CVCalendarWeekContentViewController {
     func getFollowingMonth(date: NSDate) -> MonthView {
-        let calendarManager = Manager.sharedManager
+        let calendarManager = calendarView.manager
         let firstDate = calendarManager.monthDateRange(date).monthStartDate
-        let components = calendarManager.componentsForDate(firstDate)
+        let components = Manager.componentsForDate(firstDate)
         
         components.month += 1
         
@@ -323,9 +323,8 @@ extension CVCalendarWeekContentViewController {
     }
     
     func getPreviousMonth(date: NSDate) -> MonthView {
-        let calendarManager = Manager.sharedManager
-        let firstDate = calendarManager.monthDateRange(date).monthStartDate
-        let components = calendarManager.componentsForDate(firstDate)
+        let firstDate = calendarView.manager.monthDateRange(date).monthStartDate
+        let components = Manager.componentsForDate(firstDate)
         
         components.month -= 1
         

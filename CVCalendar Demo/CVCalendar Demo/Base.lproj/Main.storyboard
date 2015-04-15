@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -25,6 +25,9 @@
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZPD-eB-kRA" customClass="CVCalendarMenuView" customModule="CVCalendar_Demo" customModuleProvider="target">
                                 <rect key="frame" x="16" y="71" width="568" height="24"/>
+                                <connections>
+                                    <outlet property="menuViewDelegate" destination="vXZ-lx-hvc" id="LTz-R5-Tsf"/>
+                                </connections>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HF3-fY-vSc">
                                 <rect key="frame" x="551" y="23" width="33" height="33"/>
@@ -55,8 +58,8 @@
                                     </constraint>
                                 </constraints>
                                 <connections>
-                                    <outlet property="calendarAppearanceDelegate" destination="vXZ-lx-hvc" id="R5d-UB-jms"/>
-                                    <outlet property="calendarDelegate" destination="vXZ-lx-hvc" id="2DW-PO-jTH"/>
+                                    <outlet property="calendarAppearanceDelegate" destination="vXZ-lx-hvc" id="lHB-qC-80j"/>
+                                    <outlet property="calendarDelegate" destination="vXZ-lx-hvc" id="9ah-Z8-qtm"/>
                                 </connections>
                             </view>
                         </subviews>

@@ -8,24 +8,17 @@
 
 import UIKit
 
-private let singleton = CVCalendarRenderer()
-
-class CVCalendarRenderer: NSObject {
+class CVCalendarRenderer {
+    private unowned let calendarView: CalendarView
     
-    // MARK: Initialization 
-    
-    private override init() {
-        super.init()
+    private var appearance: Appearance {
+        get {
+            return calendarView.appearance
+        }
     }
     
-    // MARK: - Public properties
-    
-    lazy var appearance: Appearance = {
-        return Appearance.sharedCalendarViewAppearance
-        }()
-    
-    class func sharedRenderer() -> CVCalendarRenderer {
-        return singleton
+    init(calendarView: CalendarView) {
+        self.calendarView = calendarView
     }
     
     // MARK: - Rendering 

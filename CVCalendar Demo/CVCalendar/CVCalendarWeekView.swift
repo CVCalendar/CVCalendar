@@ -15,7 +15,7 @@ class CVCalendarWeekView: UIView {
     override var frame: CGRect {
         didSet {
             if let calendarView = calendarView {
-                if calendarView.calendarMode == CVCalendarViewMode.WeekView {
+                if calendarView.calendarMode == CalendarMode.WeekView {
                     updateInteractiveView()
                 }
             }
@@ -68,7 +68,7 @@ class CVCalendarWeekView: UIView {
                     var result: [Int : [Int]]?
                     for weekdaysOut in weeksOut {
                         if weekdaysOut.count == daysOut {
-                            let manager = CVCalendarManager.sharedManager
+                            let manager = calendarView.manager
                             
                             
                             let key = weekdaysOut.keys.first!
@@ -172,7 +172,7 @@ extension CVCalendarWeekView {
 extension CVCalendarWeekView {
     func createDayViews() {
         dayViews = [CVCalendarDayView]()
-        let renderer = CVCalendarRenderer.sharedRenderer()
+        let renderer = calendarView.renderer
         for i in 1...7 {
             let frame = renderer.renderDayFrameForMonthView(self, dayIndex: i-1)
             let dayView = CVCalendarDayView(weekView: self, frame: frame, weekdayIndex: i)
@@ -186,7 +186,7 @@ extension CVCalendarWeekView {
     }
     
     func reloadDayViews() {
-        let renderer = CVCalendarRenderer.sharedRenderer()
+        let renderer = calendarView.renderer
         
         safeExecuteBlock({
             for (index, dayView) in enumerate(self.dayViews!) {

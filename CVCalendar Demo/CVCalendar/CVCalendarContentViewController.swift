@@ -106,7 +106,7 @@ extension CVCalendarContentViewController {
 
 extension CVCalendarContentViewController {
     func dateBeforeDate(date: NSDate) -> NSDate {
-        let components = CVCalendarManager.sharedManager.componentsForDate(date)
+        let components = Manager.componentsForDate(date)
         let calendar = NSCalendar.currentCalendar()
         
         components.month -= 1
@@ -117,7 +117,7 @@ extension CVCalendarContentViewController {
     }
     
     func dateAfterDate(date: NSDate) -> NSDate {
-        let components = CVCalendarManager.sharedManager.componentsForDate(date)
+        let components = Manager.componentsForDate(date)
         let calendar = NSCalendar.currentCalendar()
         
         components.month += 1

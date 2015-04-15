@@ -30,10 +30,12 @@ class CVAuxiliaryView: UIView {
         }
     }
     
-    init(frame: CGRect, shape: CVShape) {
-        super.init(frame: frame)
+    unowned let dayView: DayView
+    
+    init(dayView: DayView, rect: CGRect, shape: CVShape) {
+        self.dayView = dayView
         self.shape = shape
-        
+        super.init(frame: rect)
         strokeColor = UIColor.clearColor()
         fillColor = UIColor.colorFromCode(0xe74c3c)
         
@@ -91,7 +93,7 @@ extension CVAuxiliaryView {
     }
     
     func rightFlagPath() -> UIBezierPath {
-        let appearance = Appearance.sharedCalendarViewAppearance
+        let appearance = dayView.calendarView.appearance
         let offset = appearance.spaceBetweenDayViews!
         
         let flag = UIBezierPath()
@@ -125,7 +127,7 @@ extension CVAuxiliaryView {
         let midX = bounds.width / 2
         let midY = bounds.height / 2
         
-        let appearance = Appearance.sharedCalendarViewAppearance
+        let appearance = dayView.calendarView.appearance
         let offset = appearance.spaceBetweenDayViews!
         
         println("offset = \(offset)")
