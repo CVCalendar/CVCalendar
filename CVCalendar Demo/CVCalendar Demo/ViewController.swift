@@ -51,7 +51,7 @@ extension ViewController: CVCalendarViewDelegate {
     
     func didSelectDayView(dayView: CVCalendarDayView) {
         let date = dayView.date
-        println("\(date.commonDescription) is selected!")
+        println("\(calendarView.presentedDate.commonDescription) is selected!")
     }
     
     func presentedDateUpdated(date: CVDate) {
