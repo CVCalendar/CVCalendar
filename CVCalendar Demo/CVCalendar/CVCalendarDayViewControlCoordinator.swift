@@ -37,7 +37,7 @@ extension CVCalendarDayViewControlCoordinator {
     func deselectionPerformedOnDayView(dayView: DayView) {
         if dayView != selectedDayView {
             selectionSet.remove(dayView)
-            dayView.setDayLabelDeselectedDismissingState(true)
+            dayView.setDeselectedWithClearing(true)
         }
     }
     

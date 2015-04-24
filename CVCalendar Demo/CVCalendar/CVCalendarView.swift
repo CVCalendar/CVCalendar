@@ -29,6 +29,7 @@ typealias WeekContentViewController = CVCalendarWeekContentViewController
 typealias MenuViewDelegate = CVCalendarMenuViewDelegate
 typealias Renderer = CVCalendarRenderer
 typealias TouchController = CVCalendarTouchController
+typealias SelectionType = CVSelectionType
 
 class CVCalendarView: UIView {
     // MARK: - Public properties

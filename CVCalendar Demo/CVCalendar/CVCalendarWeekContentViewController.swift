@@ -144,11 +144,12 @@ class CVCalendarWeekContentViewController: CVCalendarContentViewController {
                 extra.frame.origin.x += self.scrollView.frame.width
                 presented.frame.origin.x += self.scrollView.frame.width
                 previous.frame.origin.x += self.scrollView.frame.width
-                }) { _ in
+                
+                self.replaceWeekView(presented, withIdentifier: self.Following, animatable: false)
+                self.replaceWeekView(previous, withIdentifier: self.Presented, animatable: false)
+            }) { _ in
                     extra.removeFromSuperview()
                     
-                    self.replaceWeekView(presented, withIdentifier: self.Following, animatable: false)
-                    self.replaceWeekView(previous, withIdentifier: self.Presented, animatable: false)
                     self.insertWeekView(self.getPreviousWeek(previous), withIdentifier: self.Previous)
                     
                     let selectionDay: Int
@@ -175,11 +176,12 @@ class CVCalendarWeekContentViewController: CVCalendarContentViewController {
                 extra.frame.origin.x -= self.scrollView.frame.width
                 presented.frame.origin.x -= self.scrollView.frame.width
                 following.frame.origin.x -= self.scrollView.frame.width
-                }) { _ in
+                
+                self.replaceWeekView(presented, withIdentifier: self.Previous, animatable: false)
+                self.replaceWeekView(following, withIdentifier: self.Presented, animatable: false)
+            }) { _ in
                     extra.removeFromSuperview()
-                    
-                    self.replaceWeekView(presented, withIdentifier: self.Previous, animatable: false)
-                    self.replaceWeekView(following, withIdentifier: self.Presented, animatable: false)
+                
                     self.insertWeekView(self.getFollowingWeek(following), withIdentifier: self.Following)
                     
                     let selectionDay: Int
@@ -237,10 +239,10 @@ class CVCalendarWeekContentViewController: CVCalendarContentViewController {
                     insertWeekView(currentWeekView, withIdentifier: Presented)
                     insertWeekView(getFollowingWeek(currentWeekView), withIdentifier: Following)
                     
-                    UIView.animateWithDuration(0.8, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+                    UIView.animateWithDuration(0.8, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { 
                         presentedWeekView.alpha = 0
                         currentWeekView.alpha = 1
-                    }) { _ in
+                    }) {  _ in
                         presentedWeekView.removeFromSuperview()
                         self.selectDayViewWithDay(currentDate.day, inWeekView: currentWeekView)
                         self.togglingBlocked = false
@@ -383,7 +385,7 @@ extension CVCalendarWeekContentViewController {
                 if indexOfIdentifier(index) != 1 {
                     monthView.mapDayViews { dayView in
                         if dayView == selected {
-                            dayView.setDayLabelDeselectedDismissingState(true)
+                            dayView.setDeselectedWithClearing(true)
                             coordinator.dequeueDayView(dayView)
                         }
                     }
@@ -404,7 +406,14 @@ extension CVCalendarWeekContentViewController {
             }
             
             if let selected = coordinator.selectedDayView where !matchedWeeks(selected.date, presentedDate) {
-                selectDayViewWithDay(presentedDate.day, inWeekView: presentedWeekView)
+                let current = Date(date: NSDate())
+                
+                if matchedWeeks(current, presentedDate) {
+                    selectDayViewWithDay(current.day, inWeekView: presentedWeekView)
+                } else {
+                    selectDayViewWithDay(presentedDate.day, inWeekView: presentedWeekView)
+                }
+                
             }
         }
     }

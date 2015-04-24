@@ -58,10 +58,13 @@ private extension CVCalendarTouchController {
             case .Single:
                 coordinator.performDayViewSingleSelection(dayView)
                 calendarView.didSelectDayView(dayView)
+                
             case let .Range(.Started):
-                dayView.setDayLabelHighlighted()
+                println("Received start of range selection.")
+            case let .Range(.Changed):
+                println("Received change of range selection.")
             case let .Range(.Ended):
-                dayView.setDayLabelUnhighlightedDismissingState(true)
+                println("Received end of range selection.")
             default: break
             }
         }

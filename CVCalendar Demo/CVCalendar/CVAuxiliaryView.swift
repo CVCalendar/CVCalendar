@@ -80,6 +80,13 @@ class CVAuxiliaryView: UIView {
 }
 
 extension CVAuxiliaryView {
+    func updateFrame(frame: CGRect) {
+        self.frame = frame
+        setNeedsDisplay()
+    }
+}
+
+extension CVAuxiliaryView {
     func circlePath() -> UIBezierPath {
         let arcCenter = CGPointMake(frame.width / 2, frame.height / 2)
         let startAngle = CGFloat(0)

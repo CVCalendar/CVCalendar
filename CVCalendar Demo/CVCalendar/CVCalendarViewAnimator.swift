@@ -31,15 +31,15 @@ class CVCalendarViewAnimator {
 extension CVCalendarViewAnimator {
     func animateSelectionOnDayView(dayView: DayView) {
         let selectionAnimation = delegate.selectionAnimation()
-        dayView.setDayLabelSelected()
-        selectionAnimation(dayView) { _ in
+        dayView.setSelectedWithType(.Single)
+        selectionAnimation(dayView) { [unowned dayView] _ in
             // Something...
         }
     }
     
     func animateDeselectionOnDayView(dayView: DayView) {
         let deselectionAnimation = delegate.deselectionAnimation()
-        deselectionAnimation(dayView) { _ in
+        deselectionAnimation(dayView) { [unowned dayView] _ in
             self.coordinator.deselectionPerformedOnDayView(dayView)
         }
     }
@@ -92,7 +92,7 @@ private extension CVCalendarViewAnimator {
         return {
             dayView, completion in
             UIView.animateWithDuration(0.6, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: nil, animations: {
-                dayView.setDayLabelUnhighlightedDismissingState(false) // return labels' defaults while circle view disappearing
+                dayView.setDeselectedWithClearing(false) // return labels' defaults while circle view disappearing
                 if let circleView = dayView.circleView {
                     circleView.alpha = 0
                 }

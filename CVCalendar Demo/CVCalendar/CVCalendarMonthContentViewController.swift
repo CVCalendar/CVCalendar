@@ -114,6 +114,7 @@ class CVCalendarMonthContentViewController: CVCalendarContentViewController {
     
     override func performedDayViewSelection(dayView: DayView) {
         if dayView.isOut {
+            println("Day out")
             if dayView.date.day > 20 {
                 let presentedDate = dayView.monthView.date
                 calendarView.presentedDate = Date(date: self.dateBeforeDate(presentedDate))
@@ -134,25 +135,26 @@ class CVCalendarMonthContentViewController: CVCalendarContentViewController {
                 extra.frame.origin.x += self.scrollView.frame.width
                 presented.frame.origin.x += self.scrollView.frame.width
                 previous.frame.origin.x += self.scrollView.frame.width
-                }) { _ in
-                    extra.removeFromSuperview()
-                    
-                    self.replaceMonthView(presented, withIdentifier: self.Following, animatable: false)
-                    self.replaceMonthView(previous, withIdentifier: self.Presented, animatable: false)
-                    self.insertMonthView(self.getPreviousMonth(previous.date), withIdentifier: self.Previous)
-                    
-                    let selectionDay: Int
-                    if let selectedDayView = view as? DayView {
-                        selectionDay = selectedDayView.date.day
-                    } else {
-                        selectionDay = 1
-                    }
-                    
-                    self.selectDayViewWithDay(selectionDay, inMonthView: previous)
-                    
-                    for monthView in self.monthViews.values {
-                        self.prepareTopMarkersOnMonthView(monthView, hidden: false)
-                    }
+                
+                self.replaceMonthView(presented, withIdentifier: self.Following, animatable: false)
+                self.replaceMonthView(previous, withIdentifier: self.Presented, animatable: false)
+            }) { _ in
+                extra.removeFromSuperview()
+            
+                self.insertMonthView(self.getPreviousMonth(previous.date), withIdentifier: self.Previous)
+                
+                let selectionDay: Int
+                if let selectedDayView = view as? DayView {
+                    selectionDay = selectedDayView.date.day
+                } else {
+                    selectionDay = 1
+                }
+                
+                self.selectDayViewWithDay(selectionDay, inMonthView: previous)
+                
+                for monthView in self.monthViews.values {
+                    self.prepareTopMarkersOnMonthView(monthView, hidden: false)
+                }
             }
         }
     }
@@ -165,25 +167,26 @@ class CVCalendarMonthContentViewController: CVCalendarContentViewController {
                 extra.frame.origin.x -= self.scrollView.frame.width
                 presented.frame.origin.x -= self.scrollView.frame.width
                 following.frame.origin.x -= self.scrollView.frame.width
-                }) { _ in
-                    extra.removeFromSuperview()
-                    
-                    self.replaceMonthView(presented, withIdentifier: self.Previous, animatable: false)
-                    self.replaceMonthView(following, withIdentifier: self.Presented, animatable: false)
-                    self.insertMonthView(self.getFollowingMonth(following.date), withIdentifier: self.Following)
-                    
-                    let selectionDay: Int
-                    if let selectedDayView = view as? DayView {
-                        selectionDay = selectedDayView.date.day
-                    } else {
-                        selectionDay = 1
-                    }
-                    
-                    self.selectDayViewWithDay(selectionDay, inMonthView: following)
-                    
-                    for monthView in self.monthViews.values {
-                        self.prepareTopMarkersOnMonthView(monthView, hidden: false)
-                    }
+                
+                self.replaceMonthView(presented, withIdentifier: self.Previous, animatable: false)
+                self.replaceMonthView(following, withIdentifier: self.Presented, animatable: false)
+            }) { _ in
+                extra.removeFromSuperview()
+                
+                self.insertMonthView(self.getFollowingMonth(following.date), withIdentifier: self.Following)
+                
+                let selectionDay: Int
+                if let selectedDayView = view as? DayView {
+                    selectionDay = selectedDayView.date.day
+                } else {
+                    selectionDay = 1
+                }
+                
+                self.selectDayViewWithDay(selectionDay, inMonthView: following)
+                
+                for monthView in self.monthViews.values {
+                    self.prepareTopMarkersOnMonthView(monthView, hidden: false)
+                }
             }
         }
     }
@@ -308,7 +311,7 @@ extension CVCalendarMonthContentViewController {
                         dayView in
                         
                         if dayView == selected {
-                            dayView.setDayLabelDeselectedDismissingState(true)
+                            dayView.setDeselectedWithClearing(true)
                             coordinator.dequeueDayView(dayView)
                         }
                     }
@@ -321,7 +324,15 @@ extension CVCalendarMonthContentViewController {
             calendarView.presentedDate = Date(date: presentedMonthView.date)
             
             if let selected = coordinator.selectedDayView, let selectedMonthView = selected.monthView where !matchedMonths(Date(date: selectedMonthView.date), Date(date: presentedMonthView.date)) {
-                selectDayViewWithDay(Date(date: calendarView.manager.monthDateRange(presentedMonthView.date).monthStartDate).day, inMonthView: presentedMonthView)
+                let current = Date(date: NSDate())
+                let presented = Date(date: presentedMonthView.date)
+                
+                if matchedMonths(current, presented) {
+                    selectDayViewWithDay(current.day, inMonthView: presentedMonthView)
+                } else {
+                    selectDayViewWithDay(Date(date: calendarView.manager.monthDateRange(presentedMonthView.date).monthStartDate).day, inMonthView: presentedMonthView)
+                }
+                
             }
         }
     }

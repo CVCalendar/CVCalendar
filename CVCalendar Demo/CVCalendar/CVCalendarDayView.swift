@@ -357,111 +357,92 @@ extension CVCalendarDayView {
 // MARK: - Day label state management
 
 extension CVCalendarDayView {
-    func setDayLabelHighlighted() {
+    func setSelectedWithType(type: SelectionType) {
         let appearance = calendarView.appearance
-        
         var backgroundColor: UIColor!
         var backgroundAlpha: CGFloat!
+        var shape: CVShape!
         
-        if isCurrentDay {
-            dayLabel?.textColor = appearance.dayLabelPresentWeekdayHighlightedTextColor!
-            dayLabel?.font = appearance.dayLabelPresentWeekdayHighlightedFont
-            backgroundColor = appearance.dayLabelPresentWeekdayHighlightedBackgroundColor
-            backgroundAlpha = appearance.dayLabelPresentWeekdayHighlightedBackgroundAlpha
-        } else {
-            dayLabel?.textColor = appearance.dayLabelWeekdayHighlightedTextColor
-            dayLabel?.font = appearance.dayLabelWeekdayHighlightedFont
-            backgroundColor = appearance.dayLabelWeekdayHighlightedBackgroundColor
-            backgroundAlpha = appearance.dayLabelWeekdayHighlightedBackgroundAlpha
+        switch type {
+        case let .Single:
+            shape = .Circle
+            if isCurrentDay {
+                dayLabel?.textColor = appearance.dayLabelPresentWeekdaySelectedTextColor!
+                dayLabel?.font = appearance.dayLabelPresentWeekdaySelectedFont
+                backgroundColor = appearance.dayLabelPresentWeekdaySelectedBackgroundColor
+                backgroundAlpha = appearance.dayLabelPresentWeekdaySelectedBackgroundAlpha
+            } else {
+                dayLabel?.textColor = appearance.dayLabelWeekdaySelectedTextColor
+                dayLabel?.font = appearance.dayLabelWeekdaySelectedFont
+                backgroundColor = appearance.dayLabelWeekdaySelectedBackgroundColor
+                backgroundAlpha = appearance.dayLabelWeekdaySelectedBackgroundAlpha
+            }
+            
+        case let .Range:
+            shape = .Rect
+            if isCurrentDay {
+                dayLabel?.textColor = appearance.dayLabelPresentWeekdayHighlightedTextColor!
+                dayLabel?.font = appearance.dayLabelPresentWeekdayHighlightedFont
+                backgroundColor = appearance.dayLabelPresentWeekdayHighlightedBackgroundColor
+                backgroundAlpha = appearance.dayLabelPresentWeekdayHighlightedBackgroundAlpha
+            } else {
+                dayLabel?.textColor = appearance.dayLabelWeekdayHighlightedTextColor
+                dayLabel?.font = appearance.dayLabelWeekdayHighlightedFont
+                backgroundColor = appearance.dayLabelWeekdayHighlightedBackgroundColor
+                backgroundAlpha = appearance.dayLabelWeekdayHighlightedBackgroundAlpha
+            }
+            
+        default: break
         }
         
-        if let circleView = circleView {
-            circleView.fillColor = backgroundColor
-            circleView.alpha = backgroundAlpha
-            circleView.setNeedsDisplay()
+        if let circleView = circleView where circleView.frame != dayLabel.bounds {
+            circleView.frame = dayLabel.bounds
         } else {
-            circleView = CVAuxiliaryView(dayView: self, rect: dayLabel.bounds, shape: .Rect)
-            circleView!.fillColor = circleView!.defaultFillColor
-            circleView!.alpha = backgroundAlpha
-            insertSubview(circleView!, atIndex: 0)
+            circleView = CVAuxiliaryView(dayView: self, rect: dayLabel.bounds, shape: shape)
         }
+        
+        circleView!.fillColor = backgroundColor
+        circleView!.alpha = backgroundAlpha
+        circleView!.setNeedsDisplay()
+        insertSubview(circleView!, atIndex: 0)
         
         moveDotMarkerBack(false, coloring: false)
-    
     }
     
-    func setDayLabelUnhighlightedDismissingState(removeViews: Bool) {
-        let appearance = calendarView.appearance
-        
-        var color: UIColor?
-        if isOut {
-            color = appearance.dayLabelWeekdayOutTextColor
-        } else if isCurrentDay {
-            color = appearance.dayLabelPresentWeekdayTextColor
-        } else {
-            color = appearance.dayLabelWeekdayInTextColor
-        }
-        
-        var font: UIFont?
-        if self.isCurrentDay {
-            if appearance.dayLabelPresentWeekdayInitallyBold! {
-                font = appearance.dayLabelPresentWeekdayBoldFont
+    func setDeselectedWithClearing(clearing: Bool) {
+        if let calendarView = calendarView, let appearance = calendarView.appearance {
+            var color: UIColor?
+            if isOut {
+                color = appearance.dayLabelWeekdayOutTextColor
+            } else if isCurrentDay {
+                color = appearance.dayLabelPresentWeekdayTextColor
+            } else {
+                color = appearance.dayLabelWeekdayInTextColor
+            }
+            
+            var font: UIFont?
+            if isCurrentDay {
+                if appearance.dayLabelPresentWeekdayInitallyBold! {
+                    font = appearance.dayLabelPresentWeekdayBoldFont
+                } else {
+                    font = appearance.dayLabelWeekdayFont
+                }
             } else {
                 font = appearance.dayLabelWeekdayFont
             }
-        } else {
-            font = appearance.dayLabelWeekdayFont
-        }
-        
-        dayLabel?.textColor = color
-        dayLabel?.font = font
-        
-        moveDotMarkerBack(true, coloring: false)
-        
-        if removeViews {
-            circleView?.removeFromSuperview()
-            circleView = nil
+            
+            dayLabel?.textColor = color
+            dayLabel?.font = font
+            
+            moveDotMarkerBack(true, coloring: false)
+            
+            if clearing {
+                circleView?.removeFromSuperview()
+            }
         }
     }
-    
-    func setDayLabelSelected() {
-        let appearance = calendarView.appearance
-        
-        var backgroundColor: UIColor!
-        var backgroundAlpha: CGFloat!
-        
-        if isCurrentDay {
-            dayLabel?.textColor = appearance.dayLabelPresentWeekdaySelectedTextColor!
-            dayLabel?.font = appearance.dayLabelPresentWeekdaySelectedFont
-            backgroundColor = appearance.dayLabelPresentWeekdaySelectedBackgroundColor
-            backgroundAlpha = appearance.dayLabelPresentWeekdaySelectedBackgroundAlpha
-        } else {
-            dayLabel?.textColor = appearance.dayLabelWeekdaySelectedTextColor
-            dayLabel?.font = appearance.dayLabelWeekdaySelectedFont
-            backgroundColor = appearance.dayLabelWeekdaySelectedBackgroundColor
-            backgroundAlpha = appearance.dayLabelWeekdaySelectedBackgroundAlpha
-        }
-        
-        if let circleView = circleView {
-            circleView.fillColor = backgroundColor
-            circleView.alpha = backgroundAlpha
-            circleView.setNeedsDisplay()
-        } else {
-            circleView = CVAuxiliaryView(dayView: self, rect: dayLabel.bounds, shape: .Circle)
-            circleView!.fillColor = backgroundColor
-            circleView!.alpha = backgroundAlpha
-            circleView?.setNeedsDisplay()
-            insertSubview(circleView!, atIndex: 0)
-        }
-        
-        moveDotMarkerBack(false, coloring: false)
-    }
-    
-    func setDayLabelDeselectedDismissingState(removeViews: Bool) {
-        setDayLabelUnhighlightedDismissingState(removeViews)
-    }
-
 }
+
 
 // MARK: - Content reload
 
@@ -482,8 +463,7 @@ extension CVCalendarDayView {
         }
         
         if circleView != nil {
-            setDayLabelDeselectedDismissingState(true)
-            setDayLabelSelected()
+            setSelectedWithType(.Single)
         }
     }
 }
