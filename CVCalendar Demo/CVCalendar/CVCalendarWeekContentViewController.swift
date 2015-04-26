@@ -146,67 +146,58 @@ class CVCalendarWeekContentViewController: CVCalendarContentViewController {
     }
     
     override func presentPreviousView(view: UIView?) {
-        if let extra = weekViews[Following], let presented = weekViews[Presented], let previous = weekViews[Previous] {
-            UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
-                self.prepareTopMarkersOnWeekView(presented, hidden: false)
-                
-                extra.frame.origin.x += self.scrollView.frame.width
-                presented.frame.origin.x += self.scrollView.frame.width
-                previous.frame.origin.x += self.scrollView.frame.width
-                
-                self.replaceWeekView(presented, withIdentifier: self.Following, animatable: false)
-                self.replaceWeekView(previous, withIdentifier: self.Presented, animatable: false)
-            }) { _ in
+        if presentationEnabled {
+            presentationEnabled = false
+            if let extra = weekViews[Following], let presented = weekViews[Presented], let previous = weekViews[Previous] {
+                UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+                    self.prepareTopMarkersOnWeekView(presented, hidden: false)
+                    
+                    extra.frame.origin.x += self.scrollView.frame.width
+                    presented.frame.origin.x += self.scrollView.frame.width
+                    previous.frame.origin.x += self.scrollView.frame.width
+                    
+                    self.replaceWeekView(presented, withIdentifier: self.Following, animatable: false)
+                    self.replaceWeekView(previous, withIdentifier: self.Presented, animatable: false)
+                }) { _ in
                     extra.removeFromSuperview()
-                    
                     self.insertWeekView(self.getPreviousWeek(previous), withIdentifier: self.Previous)
-                    
-                    let selectionDay: Int
-                    if let selectedDayView = view as? DayView {
-                        selectionDay = selectedDayView.date.day
-                    } else {
-                        selectionDay = 1
-                    }
-                    
-                    self.selectDayViewWithDay(selectionDay, inWeekView: previous)
+                    self.updateSelection()
+                    self.presentationEnabled = true
                     
                     for weekView in self.weekViews.values {
                         self.prepareTopMarkersOnWeekView(weekView, hidden: false)
                     }
+                }
             }
         }
     }
     
     override func presentNextView(view: UIView?) {
-        if let extra = weekViews[Previous], let presented = weekViews[Presented], let following = weekViews[Following] {
-            UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
-                self.prepareTopMarkersOnWeekView(presented, hidden: false)
-                
-                extra.frame.origin.x -= self.scrollView.frame.width
-                presented.frame.origin.x -= self.scrollView.frame.width
-                following.frame.origin.x -= self.scrollView.frame.width
-                
-                self.replaceWeekView(presented, withIdentifier: self.Previous, animatable: false)
-                self.replaceWeekView(following, withIdentifier: self.Presented, animatable: false)
-            }) { _ in
+        if presentationEnabled {
+            presentationEnabled = false
+            if let extra = weekViews[Previous], let presented = weekViews[Presented], let following = weekViews[Following] {
+                UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+                    self.prepareTopMarkersOnWeekView(presented, hidden: false)
+                    
+                    extra.frame.origin.x -= self.scrollView.frame.width
+                    presented.frame.origin.x -= self.scrollView.frame.width
+                    following.frame.origin.x -= self.scrollView.frame.width
+                    
+                    self.replaceWeekView(presented, withIdentifier: self.Previous, animatable: false)
+                    self.replaceWeekView(following, withIdentifier: self.Presented, animatable: false)
+                }) { _ in
                     extra.removeFromSuperview()
-                
                     self.insertWeekView(self.getFollowingWeek(following), withIdentifier: self.Following)
-                    
-                    let selectionDay: Int
-                    if let selectedDayView = view as? DayView {
-                        selectionDay = selectedDayView.date.day
-                    } else {
-                        selectionDay = 1
-                    }
-                    
-                    self.selectDayViewWithDay(selectionDay, inWeekView: following)
+                    self.updateSelection()
+                    self.presentationEnabled = true
                     
                     for weekView in self.weekViews.values {
                         self.prepareTopMarkersOnWeekView(weekView, hidden: false)
                     }
+                }
             }
         }
+
     }
     
     override func updateDayViews(hidden: Bool) {

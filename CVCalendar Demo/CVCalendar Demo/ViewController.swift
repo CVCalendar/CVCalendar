@@ -155,15 +155,26 @@ extension ViewController {
     }
     
     @IBAction func todayMonthView() {
-        calendarView.toggleTodayMonthView()
+        calendarView.toggleCurrentDayView()
     }
     
+    /// Switch to WeekView mode.
     @IBAction func toWeekView(sender: AnyObject) {
         calendarView.changeMode(.WeekView)
     }
     
+    /// Switch to MonthView mode.
     @IBAction func toMonthView(sender: AnyObject) {
         calendarView.changeMode(.MonthView)
+    }
+    
+    @IBAction func loadPrevious(sender: AnyObject) {
+        calendarView.loadPreviousView()
+    }
+    
+    
+    @IBAction func loadNext(sender: AnyObject) {
+        calendarView.loadNextView()
     }
 }
 
@@ -179,6 +190,6 @@ extension ViewController {
         
         let resultDate = calendar.dateFromComponents(components)!
         
-        self.calendarView.toggleMonthViewWithDate(resultDate)
+        self.calendarView.toggleViewWithDate(resultDate)
     }
 }

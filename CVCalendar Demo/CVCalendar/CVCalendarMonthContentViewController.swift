@@ -142,68 +142,58 @@ class CVCalendarMonthContentViewController: CVCalendarContentViewController {
     }
     
     override func presentPreviousView(view: UIView?) {
-        if let extra = monthViews[Following], let presented = monthViews[Presented], let previous = monthViews[Previous] {
-            UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
-                self.prepareTopMarkersOnMonthView(presented, hidden: true)
-                
-                extra.frame.origin.x += self.scrollView.frame.width
-                presented.frame.origin.x += self.scrollView.frame.width
-                previous.frame.origin.x += self.scrollView.frame.width
-                
-                self.replaceMonthView(presented, withIdentifier: self.Following, animatable: false)
-                self.replaceMonthView(previous, withIdentifier: self.Presented, animatable: false)
-                self.presentedMonthView = previous
-            }) { _ in
-                extra.removeFromSuperview()
-            
-                self.insertMonthView(self.getPreviousMonth(previous.date), withIdentifier: self.Previous)
-                
-                let selectionDay: Int
-                if let selectedDayView = view as? DayView {
-                    selectionDay = selectedDayView.date.day
-                } else {
-                    selectionDay = 1
-                }
-                
-                self.selectDayViewWithDay(selectionDay, inMonthView: previous)
-                self.updateLayoutIfNeeded()
-                
-                for monthView in self.monthViews.values {
-                    self.prepareTopMarkersOnMonthView(monthView, hidden: false)
+        if presentationEnabled {
+            presentationEnabled = false
+            if let extra = monthViews[Following], let presented = monthViews[Presented], let previous = monthViews[Previous] {
+                UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+                    self.prepareTopMarkersOnMonthView(presented, hidden: true)
+                    
+                    extra.frame.origin.x += self.scrollView.frame.width
+                    presented.frame.origin.x += self.scrollView.frame.width
+                    previous.frame.origin.x += self.scrollView.frame.width
+                    
+                    self.replaceMonthView(presented, withIdentifier: self.Following, animatable: false)
+                    self.replaceMonthView(previous, withIdentifier: self.Presented, animatable: false)
+                    self.presentedMonthView = previous
+                }) { _ in
+                    extra.removeFromSuperview()
+                    self.insertMonthView(self.getPreviousMonth(previous.date), withIdentifier: self.Previous)
+                    self.updateSelection()
+                    self.updateLayoutIfNeeded()
+                    self.presentationEnabled = true
+                    
+                    for monthView in self.monthViews.values {
+                        self.prepareTopMarkersOnMonthView(monthView, hidden: false)
+                    }
                 }
             }
         }
     }
     
     override func presentNextView(view: UIView?) {
-        if let extra = monthViews[Previous], let presented = monthViews[Presented], let following = monthViews[Following] {
-            UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
-                self.prepareTopMarkersOnMonthView(presented, hidden: true)
-                
-                extra.frame.origin.x -= self.scrollView.frame.width
-                presented.frame.origin.x -= self.scrollView.frame.width
-                following.frame.origin.x -= self.scrollView.frame.width
-                
-                self.replaceMonthView(presented, withIdentifier: self.Previous, animatable: false)
-                self.replaceMonthView(following, withIdentifier: self.Presented, animatable: false)
-                self.presentedMonthView = following
-            }) { _ in
-                extra.removeFromSuperview()
-                
-                self.insertMonthView(self.getFollowingMonth(following.date), withIdentifier: self.Following)
-                
-                let selectionDay: Int
-                if let selectedDayView = view as? DayView {
-                    selectionDay = selectedDayView.date.day
-                } else {
-                    selectionDay = 1
-                }
-                
-                self.selectDayViewWithDay(selectionDay, inMonthView: following)
-                self.updateLayoutIfNeeded()
-                
-                for monthView in self.monthViews.values {
-                    self.prepareTopMarkersOnMonthView(monthView, hidden: false)
+        if presentationEnabled {
+            presentationEnabled = false
+            if let extra = monthViews[Previous], let presented = monthViews[Presented], let following = monthViews[Following] {
+                UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+                    self.prepareTopMarkersOnMonthView(presented, hidden: true)
+                    
+                    extra.frame.origin.x -= self.scrollView.frame.width
+                    presented.frame.origin.x -= self.scrollView.frame.width
+                    following.frame.origin.x -= self.scrollView.frame.width
+                    
+                    self.replaceMonthView(presented, withIdentifier: self.Previous, animatable: false)
+                    self.replaceMonthView(following, withIdentifier: self.Presented, animatable: false)
+                    self.presentedMonthView = following
+                }) { _ in
+                    extra.removeFromSuperview()
+                    self.insertMonthView(self.getFollowingMonth(following.date), withIdentifier: self.Following)
+                    self.updateSelection()
+                    self.updateLayoutIfNeeded()
+                    self.presentationEnabled = true
+                    
+                    for monthView in self.monthViews.values {
+                        self.prepareTopMarkersOnMonthView(monthView, hidden: false)
+                    }
                 }
             }
         }

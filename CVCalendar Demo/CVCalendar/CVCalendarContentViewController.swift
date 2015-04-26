@@ -33,6 +33,7 @@ class CVCalendarContentViewController: UIViewController {
     }
     
     var pageLoadingEnabled = true
+    var presentationEnabled = true
     var lastContentOffset: CGFloat = 0
     var direction: CVScrollDirection = .None
     

@@ -221,19 +221,19 @@ extension CVCalendarView {
         contentController.updateDayViews(shouldShow)
     }
     
-    func toggleMonthViewWithDate(date: NSDate) {
+    func toggleViewWithDate(date: NSDate) {
         contentController.togglePresentedDate(date)
     }
     
-    func toggleTodayMonthView() {
+    func toggleCurrentDayView() {
         contentController.togglePresentedDate(NSDate())
     }
     
-    func loadNextMonthView() {
+    func loadNextView() {
         contentController.presentNextView(nil)
     }
     
-    func loadPreviousMonthView() {
+    func loadPreviousView() {
         contentController.presentPreviousView(nil)
     }
     
