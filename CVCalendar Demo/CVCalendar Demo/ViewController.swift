@@ -157,6 +157,14 @@ extension ViewController {
     @IBAction func todayMonthView() {
         calendarView.toggleTodayMonthView()
     }
+    
+    @IBAction func toWeekView(sender: AnyObject) {
+        calendarView.changeMode(.WeekView)
+    }
+    
+    @IBAction func toMonthView(sender: AnyObject) {
+        calendarView.changeMode(.MonthView)
+    }
 }
 
 // MARK: - Convenience API Demo

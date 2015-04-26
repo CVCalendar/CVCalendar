@@ -16,7 +16,16 @@ class CVCalendarWeekContentViewController: CVCalendarContentViewController {
         weekViews = [Identifier : WeekView]()
         monthViews = [Identifier : MonthView]()
         super.init(calendarView: calendarView, frame: frame)
-        initialLoad()
+        initialLoad(NSDate())
+    }
+    
+    init(calendarView: CalendarView, frame: CGRect, presentedDate: NSDate) {
+        weekViews = [Identifier : WeekView]()
+        monthViews = [Identifier : MonthView]()
+        super.init(calendarView: calendarView, frame: frame)
+        presentedMonthView = MonthView(calendarView: calendarView, date: presentedDate)
+        presentedMonthView.updateAppearance(bounds)
+        initialLoad(presentedDate)
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -25,14 +34,17 @@ class CVCalendarWeekContentViewController: CVCalendarContentViewController {
     
     // MARK: - Load & Reload
     
-    func initialLoad() {
+    func initialLoad(date: NSDate) {
         monthViews[Previous] = getPreviousMonth(presentedMonthView.date)
         monthViews[Presented] = presentedMonthView
         monthViews[Following] = getFollowingMonth(presentedMonthView.date)
         
         presentedMonthView.mapDayViews { dayView in
-            if dayView.date.day == Manager.dateRange(NSDate()).day {
+            if self.matchedDays(dayView.date, Date(date: date)) {
                 self.insertWeekView(dayView.weekView, withIdentifier: self.Presented)
+                self.calendarView.coordinator.flush()
+                self.calendarView.touchController.receiveTouchOnDayView(dayView)
+                dayView.circleView?.removeFromSuperview()
             }
         }
         

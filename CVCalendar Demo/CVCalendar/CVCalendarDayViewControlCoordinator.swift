@@ -46,7 +46,8 @@ extension CVCalendarDayViewControlCoordinator {
     }
     
     func flush() {
-       selectionSet.removeAll()
+        selectedDayView = nil
+        selectionSet.removeAll()
     }
 }
 

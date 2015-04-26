@@ -236,6 +236,36 @@ extension CVCalendarView {
     func loadPreviousMonthView() {
         contentController.presentPreviousView(nil)
     }
+    
+    func changeMode(mode: CalendarMode) {
+        if let selectedDate = coordinator.selectedDayView?.date.convertedDate() where calendarMode != mode {
+            calendarMode = mode
+            
+            let newController: ContentController
+            switch mode {
+            case .WeekView:
+                contentController.updateHeight(dayViewSize!.height, animated: true)
+                newController = WeekContentViewController(calendarView: self, frame: bounds, presentedDate: selectedDate)
+            case .MonthView:
+                contentController.updateHeight(contentController.presentedMonthView.potentialSize.height, animated: true)
+                newController = MonthContentViewController(calendarView: self, frame: bounds, presentedDate: selectedDate)
+            }
+            
+            
+            newController.updateFrames(bounds)
+            newController.scrollView.alpha = 0
+            addSubview(newController.scrollView)
+            
+            UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+                self.contentController.scrollView.alpha = 0
+                newController.scrollView.alpha = 1
+            }) { _ in
+                self.contentController.scrollView.removeAllSubviews()
+                self.contentController.scrollView.removeFromSuperview()
+                self.contentController = newController
+            }
+        }
+    }
 }
 
 // MARK: - Mode load 
@@ -249,6 +279,8 @@ private extension CVCalendarView {
                 case .WeekView: contentController = WeekContentViewController(calendarView: self, frame: bounds)
                 default: break
             }
+            
+            addSubview(contentController.scrollView)
         }
     }
 }

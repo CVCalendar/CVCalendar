@@ -46,11 +46,10 @@ class CVCalendarContentViewController: UIViewController {
         
         scrollView.contentSize = CGSizeMake(frame.width * 3, frame.height)
         scrollView.showsHorizontalScrollIndicator = false
+        scrollView.showsVerticalScrollIndicator = false 
         scrollView.layer.masksToBounds = true
         scrollView.pagingEnabled = true
         scrollView.delegate = self
-        
-        calendarView.addSubview(scrollView)
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -141,6 +140,55 @@ extension CVCalendarContentViewController {
     
     func matchedDays(lhs: Date, _ rhs: Date) -> Bool {
         return (lhs.year == rhs.year && lhs.month == rhs.month && lhs.day == rhs.day)
+    }
+}
+
+// MARK: - AutoLayout Management
+
+extension CVCalendarContentViewController {
+    func updateHeight(height: CGFloat, animated: Bool) {
+        var viewsToLayout = [UIView]()
+        if let calendarSuperview = calendarView.superview {
+            for constraintIn in calendarSuperview.constraints() {
+                if let constraint = constraintIn as? NSLayoutConstraint {
+                    if let firstItem = constraint.firstItem as? UIView, let secondItem = constraint.secondItem as? CalendarView {
+                        viewsToLayout.append(firstItem)
+                    }
+                }
+            }
+        }
+        
+        
+        for constraintIn in calendarView.constraints() {
+            if let constraint = constraintIn as? NSLayoutConstraint where constraint.firstAttribute == NSLayoutAttribute.Height {
+                calendarView.layoutIfNeeded()
+                constraint.constant = height
+                if animated {
+                    UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: {
+                        self.scrollView.frame.size.height = height
+                        self.calendarView.layoutIfNeeded()
+                        
+                        for view in viewsToLayout {
+                            view.layoutIfNeeded()
+                        }
+                        }) { _ in
+                            self.presentedMonthView.frame.size = self.presentedMonthView.potentialSize
+                            self.presentedMonthView.updateInteractiveView()
+                    }
+                }
+                
+                break
+            }
+        }
+    }
+    
+    func updateLayoutIfNeeded() {
+        if presentedMonthView.potentialSize.height != scrollView.bounds.height {
+            updateHeight(presentedMonthView.potentialSize.height, animated: true)
+        } else if presentedMonthView.frame.size != scrollView.frame.size {
+            presentedMonthView.frame.size = presentedMonthView.potentialSize
+            presentedMonthView.updateInteractiveView()
+        }
     }
 }
 
