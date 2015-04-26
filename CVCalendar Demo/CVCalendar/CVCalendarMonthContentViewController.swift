@@ -138,6 +138,7 @@ class CVCalendarMonthContentViewController: CVCalendarContentViewController {
                 
                 self.replaceMonthView(presented, withIdentifier: self.Following, animatable: false)
                 self.replaceMonthView(previous, withIdentifier: self.Presented, animatable: false)
+                self.presentedMonthView = previous
             }) { _ in
                 extra.removeFromSuperview()
             
@@ -155,6 +156,10 @@ class CVCalendarMonthContentViewController: CVCalendarContentViewController {
                 for monthView in self.monthViews.values {
                     self.prepareTopMarkersOnMonthView(monthView, hidden: false)
                 }
+                
+                if self.presentedMonthView.potentialSize.height != self.scrollView.bounds.height {
+                    self.updateHeight(self.presentedMonthView.potentialSize.height, animated: true)
+                }
             }
         }
     }
@@ -170,6 +175,7 @@ class CVCalendarMonthContentViewController: CVCalendarContentViewController {
                 
                 self.replaceMonthView(presented, withIdentifier: self.Previous, animatable: false)
                 self.replaceMonthView(following, withIdentifier: self.Presented, animatable: false)
+                self.presentedMonthView = following
             }) { _ in
                 extra.removeFromSuperview()
                 
@@ -186,6 +192,11 @@ class CVCalendarMonthContentViewController: CVCalendarContentViewController {
                 
                 for monthView in self.monthViews.values {
                     self.prepareTopMarkersOnMonthView(monthView, hidden: false)
+                }
+                
+                
+                if self.presentedMonthView.potentialSize.height != self.scrollView.bounds.height {
+                    self.updateHeight(self.presentedMonthView.potentialSize.height, animated: true)
                 }
             }
         }
@@ -213,6 +224,7 @@ class CVCalendarMonthContentViewController: CVCalendarContentViewController {
                     currentMonthView.alpha = 0
                     
                     insertMonthView(currentMonthView, withIdentifier: Presented)
+                    presentedMonthView = currentMonthView
                     
                     calendarView.presentedDate = Date(date: date)
                     
@@ -223,6 +235,10 @@ class CVCalendarMonthContentViewController: CVCalendarContentViewController {
                         presented.removeFromSuperview()
                         self.selectDayViewWithDay(presentedDate.day, inMonthView: currentMonthView)
                         self.togglingBlocked = false
+                        
+                        if self.presentedMonthView.potentialSize.height != self.scrollView.bounds.height {
+                            self.updateHeight(self.presentedMonthView.potentialSize.height, animated: true)
+                        }
                     }
                 } else {
                     if let currentMonthView = monthViews[Presented] {
@@ -332,9 +348,9 @@ extension CVCalendarMonthContentViewController {
                 } else {
                     selectDayViewWithDay(Date(date: calendarView.manager.monthDateRange(presentedMonthView.date).monthStartDate).day, inMonthView: presentedMonthView)
                 }
-                
             }
         }
+        
     }
     
     func selectDayViewWithDay(day: Int, inMonthView monthView: CVCalendarMonthView) {
@@ -385,6 +401,10 @@ extension CVCalendarMonthContentViewController {
         updateSelection()
         pageLoadingEnabled = true
         direction = .None
+        
+        if presentedMonthView.potentialSize.height != scrollView.bounds.height {
+            updateHeight(presentedMonthView.potentialSize.height, animated: true)
+        }
     }
     
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
@@ -399,6 +419,46 @@ extension CVCalendarMonthContentViewController {
         
         for monthView in monthViews.values {
             prepareTopMarkersOnMonthView(monthView, hidden: false)
+        }
+    }
+}
+
+// MARK: - AutoLayout Management
+
+private extension CVCalendarMonthContentViewController {
+    func updateHeight(height: CGFloat, animated: Bool) {
+        var viewsToLayout = [UIView]()
+        if let calendarSuperview = calendarView.superview {
+            for constraintIn in calendarSuperview.constraints() {
+                if let constraint = constraintIn as? NSLayoutConstraint {
+                    if let firstItem = constraint.firstItem as? UIView, let secondItem = constraint.secondItem as? CalendarView {
+                        viewsToLayout.append(firstItem)
+                    }
+                }
+            }
+        }
+        
+        
+        for constraintIn in calendarView.constraints() {
+            if let constraint = constraintIn as? NSLayoutConstraint where constraint.firstAttribute == NSLayoutAttribute.Height {
+                calendarView.layoutIfNeeded()
+                constraint.constant = height
+                if animated {
+                    UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: {
+                        self.scrollView.frame.size.height = height
+                        self.calendarView.layoutIfNeeded()
+                        
+                        for view in viewsToLayout {
+                            view.layoutIfNeeded()
+                        }
+                    }) { _ in
+                        self.presentedMonthView.frame.size = self.presentedMonthView.potentialSize
+                        self.presentedMonthView.updateInteractiveView()
+                    }
+                }
+                
+                break
+            }
         }
     }
 }

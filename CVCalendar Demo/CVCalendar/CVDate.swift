@@ -45,6 +45,20 @@ class CVDate: NSObject {
 }
 
 extension CVDate {
+    func convertedDate() -> NSDate? {
+        let calendar = NSCalendar.currentCalendar()
+        let comps = Manager.componentsForDate(NSDate())
+        
+        comps.year = year
+        comps.month = month
+        comps.weekOfMonth = week
+        comps.day = day
+        
+        return calendar.dateFromComponents(comps)
+    }
+}
+
+extension CVDate {
     var globalDescription: String {
         get {
             let month = dateFormattedStringWithFormat("MMMM", fromDate: date)

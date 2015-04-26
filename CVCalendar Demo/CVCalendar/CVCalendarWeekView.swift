@@ -49,11 +49,17 @@ class CVCalendarWeekView: UIView {
     
     // MARK: - Initialization
     
-    init(monthView: CVCalendarMonthView, frame: CGRect, index: Int) {
-        super.init(frame: frame)
+    init(monthView: CVCalendarMonthView, index: Int) {
+        
         
         self.monthView = monthView
         self.index = index
+        
+        if let size = monthView.calendarView.weekViewSize {
+            super.init(frame: CGRectMake(0, CGFloat(index) * size.height, size.width, size.height))
+        } else {
+            super.init(frame: CGRectZero)
+        }
         
         // Get weekdays in.
         let weeksIn = self.monthView!.weeksIn!
@@ -172,10 +178,8 @@ extension CVCalendarWeekView {
 extension CVCalendarWeekView {
     func createDayViews() {
         dayViews = [CVCalendarDayView]()
-        let renderer = calendarView.renderer
         for i in 1...7 {
-            let frame = renderer.renderDayFrameForMonthView(self, dayIndex: i-1)
-            let dayView = CVCalendarDayView(weekView: self, frame: frame, weekdayIndex: i)
+            let dayView = CVCalendarDayView(weekView: self, weekdayIndex: i)
             
             safeExecuteBlock({
                 self.dayViews!.append(dayView)
@@ -186,15 +190,17 @@ extension CVCalendarWeekView {
     }
     
     func reloadDayViews() {
-        let renderer = calendarView.renderer
         
-        safeExecuteBlock({
-            for (index, dayView) in enumerate(self.dayViews!) {
-                let frame = renderer.renderDayFrameForMonthView(self, dayIndex: index)
-                dayView.frame = frame
+        if let size = calendarView.dayViewSize, let dayViews = dayViews {
+            let hSpace = calendarView.appearance.spaceBetweenDayViews!
+            
+            for (index, dayView) in enumerate(dayViews) {
+                let hSpace = calendarView.appearance.spaceBetweenDayViews!
+                let x = CGFloat(index) * CGFloat(size.width + hSpace) + hSpace/2
+                dayView.frame = CGRectMake(x, 0, size.width, size.height)
                 dayView.reloadContent()
             }
-            }, collapsingOnNil: true, withObjects: dayViews)
+        }
     }
 }
 

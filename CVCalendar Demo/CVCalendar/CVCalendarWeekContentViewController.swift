@@ -44,8 +44,7 @@ class CVCalendarWeekContentViewController: CVCalendarContentViewController {
     
     func reloadWeekViews() {
         for (identifier, weekView) in weekViews {
-            weekView.frame.size = calendarView.renderer.renderWeekFrameForRect(scrollView.bounds).size
-            weekView.frame.origin = CGPointMake(CGFloat(indexOfIdentifier(identifier)) * scrollView.frame.width, scrollView.bounds.height / 2)
+            weekView.frame.origin = CGPointMake(CGFloat(indexOfIdentifier(identifier)) * scrollView.frame.width, 0)
             weekView.removeFromSuperview()
             scrollView.addSubview(weekView)
         }
@@ -55,9 +54,7 @@ class CVCalendarWeekContentViewController: CVCalendarContentViewController {
     
     func insertWeekView(weekView: WeekView, withIdentifier identifier: Identifier) {
         let index = CGFloat(indexOfIdentifier(identifier))
-        
-        weekView.frame.size = calendarView.renderer.renderWeekFrameForRect(scrollView.bounds).size
-        weekView.frame.origin = CGPointMake(scrollView.bounds.width * index, scrollView.bounds.height / 2)
+        weekView.frame.origin = CGPointMake(scrollView.bounds.width * index, 0)
         weekViews[identifier] = weekView
         scrollView.addSubview(weekView)
     }
@@ -277,6 +274,8 @@ extension CVCalendarWeekContentViewController {
             monthViews[Following] = monthViews[Presented]
             monthViews[Presented] = monthViews[Previous]
             monthViews[Previous] = getPreviousMonth(previousMonthView.date)
+            
+            presentedMonthView = monthViews[Previous]!
         }
         
         return getPreviousWeek(presentedWeekView)
@@ -302,6 +301,8 @@ extension CVCalendarWeekContentViewController {
             monthViews[Previous] = monthViews[Presented]
             monthViews[Presented] = monthViews[Following]
             monthViews[Following] = getFollowingMonth(followingMonthView.date)
+            
+            presentedMonthView = monthViews[Following]!
         }
         
         return getFollowingWeek(presentedWeekView)

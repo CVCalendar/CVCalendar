@@ -62,11 +62,17 @@ class CVCalendarDayView: UIView {
     
     // MARK: - Initialization
     
-    init(weekView: CVCalendarWeekView, frame: CGRect, weekdayIndex: Int) {
+    init(weekView: CVCalendarWeekView, weekdayIndex: Int) {
         self.weekView = weekView
         self.weekdayIndex = weekdayIndex
         
-        super.init(frame: frame)
+        if let size = weekView.calendarView.dayViewSize {
+            let hSpace = weekView.calendarView.appearance.spaceBetweenDayViews!
+            let x = (CGFloat(weekdayIndex - 1) * (size.width + hSpace)) + (hSpace/2)
+            super.init(frame: CGRectMake(x, 0, size.width, size.height))
+        } else {
+            super.init(frame: CGRectZero)
+        }
         
         date = dateWithWeekView(weekView, andWeekIndex: weekdayIndex)
         

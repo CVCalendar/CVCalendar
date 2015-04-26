@@ -18,7 +18,6 @@
 		55E122511A588CC50013B002 /* CVCalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E122411A588CC50013B002 /* CVCalendarManager.swift */; };
 		55E122521A588CC50013B002 /* CVCalendarMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E122421A588CC50013B002 /* CVCalendarMenuView.swift */; };
 		55E122531A588CC50013B002 /* CVCalendarMonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E122431A588CC50013B002 /* CVCalendarMonthView.swift */; };
-		55E122541A588CC50013B002 /* CVCalendarRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E122441A588CC50013B002 /* CVCalendarRenderer.swift */; };
 		55E122551A588CC50013B002 /* CVCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E122451A588CC50013B002 /* CVCalendarView.swift */; };
 		55E122561A588CC50013B002 /* CVCalendarViewAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E122461A588CC50013B002 /* CVCalendarViewAnimator.swift */; };
 		55E122571A588CC50013B002 /* CVCalendarViewAnimatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E122471A588CC50013B002 /* CVCalendarViewAnimatorDelegate.swift */; };
@@ -68,7 +67,6 @@
 		55E122411A588CC50013B002 /* CVCalendarManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVCalendarManager.swift; sourceTree = "<group>"; };
 		55E122421A588CC50013B002 /* CVCalendarMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVCalendarMenuView.swift; sourceTree = "<group>"; };
 		55E122431A588CC50013B002 /* CVCalendarMonthView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVCalendarMonthView.swift; sourceTree = "<group>"; };
-		55E122441A588CC50013B002 /* CVCalendarRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVCalendarRenderer.swift; sourceTree = "<group>"; };
 		55E122451A588CC50013B002 /* CVCalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVCalendarView.swift; sourceTree = "<group>"; };
 		55E122461A588CC50013B002 /* CVCalendarViewAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVCalendarViewAnimator.swift; sourceTree = "<group>"; };
 		55E122471A588CC50013B002 /* CVCalendarViewAnimatorDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVCalendarViewAnimatorDelegate.swift; sourceTree = "<group>"; };
@@ -185,7 +183,6 @@
 			isa = PBXGroup;
 			children = (
 				55E122481A588CC50013B002 /* CVCalendarViewAppearance.swift */,
-				55E122441A588CC50013B002 /* CVCalendarRenderer.swift */,
 				55E122411A588CC50013B002 /* CVCalendarManager.swift */,
 				55E1224D1A588CC50013B002 /* CVDate.swift */,
 				8F1080D21AB8C84600D9FAC6 /* CVSet.swift */,
@@ -362,7 +359,6 @@
 				55E1225A1A588CC50013B002 /* CVCalendarViewDelegate.swift in Sources */,
 				8FDB51EF1AC09E0200F7F7AC /* CVShape.swift in Sources */,
 				55E122511A588CC50013B002 /* CVCalendarManager.swift in Sources */,
-				55E122541A588CC50013B002 /* CVCalendarRenderer.swift in Sources */,
 				55E122571A588CC50013B002 /* CVCalendarViewAnimatorDelegate.swift in Sources */,
 				55E122551A588CC50013B002 /* CVCalendarView.swift in Sources */,
 				8F827D071ABF682B005294B1 /* CVAuxiliaryView.swift in Sources */,

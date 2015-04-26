@@ -37,7 +37,11 @@ class CVCalendarMonthView: UIView {
     var weeksOut: [[Int : [Int]]]?
     var currentDay: Int?
     
-    var ranged = false
+    var potentialSize: CGSize {
+        get {
+            return CGSizeMake(bounds.width, CGFloat(weekViews.count) * weekViews[0].bounds.height + calendarView.appearance.spaceBetweenWeekViews! * CGFloat(weekViews.count))
+        }
+    }
     
     // MARK: - Initialization
     
@@ -85,15 +89,14 @@ extension CVCalendarMonthView {
     func reloadViewsWithRect(frame: CGRect) {
         self.frame = frame
         
-        let renderer = calendarView.renderer
-        
         safeExecuteBlock({
             for (index, weekView) in enumerate(self.weekViews) {
-                let frame = renderer.renderWeekFrameForMonthView(self, weekIndex: index)
-                weekView.frame = frame
-                weekView.reloadDayViews()
+                if let size = self.calendarView.weekViewSize {
+                    weekView.frame = CGRectMake(0, size.height * CGFloat(index), size.width, size.height)
+                    weekView.reloadDayViews()
+                }
             }
-            }, collapsingOnNil: true, withObjects: weekViews)
+        }, collapsingOnNil: true, withObjects: weekViews)
     }
 }
 
@@ -106,13 +109,11 @@ extension CVCalendarMonthView {
     }
     
     func createWeekViews() {
-        let renderer = calendarView.renderer
         weekViews = [CVCalendarWeekView]()
         
         safeExecuteBlock({
             for i in 0..<self.numberOfWeeks! {
-                let frame = renderer.renderWeekFrameForMonthView(self, weekIndex: i)
-                let weekView = CVCalendarWeekView(monthView: self, frame: frame, index: i)
+                let weekView = CVCalendarWeekView(monthView: self, index: i)
                 
                 self.safeExecuteBlock({
                     self.weekViews!.append(weekView)

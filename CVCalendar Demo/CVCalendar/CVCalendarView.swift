@@ -27,7 +27,6 @@ typealias ContentViewController = CVCalendarContentViewController
 typealias MonthContentViewController = CVCalendarMonthContentViewController
 typealias WeekContentViewController = CVCalendarWeekContentViewController
 typealias MenuViewDelegate = CVCalendarMenuViewDelegate
-typealias Renderer = CVCalendarRenderer
 typealias TouchController = CVCalendarTouchController
 typealias SelectionType = CVSelectionType
 
@@ -35,12 +34,15 @@ class CVCalendarView: UIView {
     // MARK: - Public properties
     var manager: Manager!
     var appearance: Appearance!
-    var renderer: Renderer!
     var touchController: TouchController!
     var coordinator: Coordinator!
     var animator: Animator!
     var contentController: ContentViewController!
     var calendarMode: CalendarMode!
+    
+    var (weekViewSize: CGSize?, dayViewSize: CGSize?)
+    
+    private var validated = false
     
     var firstWeekday: Weekday {
         get {
@@ -90,10 +92,6 @@ class CVCalendarView: UIView {
             
             if appearance == nil {
                 appearance = Appearance()
-            }
-            
-            if renderer == nil {
-                renderer = Renderer(calendarView: self)
             }
             
             if touchController == nil {
@@ -174,7 +172,29 @@ extension CVCalendarView {
             let selfSize = bounds.size
             
             if selfSize != contentViewSize {
-                contentController.updateFrames(bounds)
+                if !validated {
+                    let width = selfSize.width
+                    let height: CGFloat
+                    let countOfWeeks = CGFloat(5)
+                    
+                    let vSpace = appearance.spaceBetweenWeekViews!
+                    let hSpace = appearance.spaceBetweenDayViews!
+                    
+                    if let mode = calendarMode {
+                        switch mode {
+                        case .WeekView:
+                            height = selfSize.height
+                        case .MonthView :
+                            height = (selfSize.height / countOfWeeks) - (vSpace * countOfWeeks)
+                        }
+                        
+                        weekViewSize = CGSizeMake(width, height)
+                        dayViewSize = CGSizeMake((width / 7.0) - hSpace, height)
+                        validated = true
+                        
+                        contentController.updateFrames(bounds)
+                    }
+                }
             } else {
                 contentController.updateFrames(CGRectZero)
             }
