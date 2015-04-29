@@ -3,6 +3,11 @@ CVCalendar
 
 A custom visual calendar for iOS 8 written in Swift.
 
+<h3>GLOBAL CHANGES</h3>
+
+The project is currently being under an active maintenance. We're going to bring a lot of new features as well as fix all bugs and optimize the library to make it incredibly efficient and fast ([see the full list](https://github.com/Mozharovsky/CVCalendar/issues/28)). API isn't changed so you don't pay anything for the update. The code can be found in [this branch](https://github.com/Mozharovsky/CVCalendar/tree/develop). It supports Swift 1.2. 
+
+
 Screenshots
 ==========
 
