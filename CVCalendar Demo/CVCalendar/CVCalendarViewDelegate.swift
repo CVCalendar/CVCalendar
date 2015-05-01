@@ -10,14 +10,18 @@ import UIKit
 
 @objc
 protocol CVCalendarViewDelegate {
-    func shouldShowWeekdaysOut() -> Bool
+    func presentationMode() -> CalendarMode
+    func firstWeekday() -> Weekday
     
-    func didSelectDayView(dayView: CVCalendarDayView)
-    func presentedDateUpdated(date: CVDate)
+    optional func shouldShowWeekdaysOut() -> Bool
+    optional func didSelectDayView(dayView: DayView)
+    optional func presentedDateUpdated(date: Date)
+    optional func topMarker(shouldDisplayOnDayView dayView: DayView) -> Bool
+    optional func dotMarker(shouldMoveOnHighlightingOnDayView dayView: DayView) -> Bool
+    optional func dotMarker(shouldShowOnDayView dayView: DayView) -> Bool
+    optional func dotMarker(colorOnDayView dayView: DayView) -> UIColor
+    optional func dotMarker(moveOffsetOnDayView dayView: DayView) -> CGFloat
     
-    func topMarker(shouldDisplayOnDayView dayView: CVCalendarDayView) -> Bool
-    
-    func dotMarker(shouldMoveOnHighlightingOnDayView dayView: CVCalendarDayView) -> Bool
-    func dotMarker(shouldShowOnDayView dayView: CVCalendarDayView) -> Bool
-    func dotMarker(colorOnDayView dayView: CVCalendarDayView) -> UIColor
+    optional func supplementaryView(viewOnDayView dayView: DayView) -> UIView
+    optional func supplementaryView(shouldDisplayOnDayView dayView: DayView) -> Bool
 }

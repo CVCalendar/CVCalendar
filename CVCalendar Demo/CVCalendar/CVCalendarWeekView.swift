@@ -9,34 +9,63 @@
 import UIKit
 
 class CVCalendarWeekView: UIView {
+    // MARK: - Non public properties
+    private var interactiveView: UIView!
+    
+    override var frame: CGRect {
+        didSet {
+            if let calendarView = calendarView {
+                if calendarView.calendarMode == CalendarMode.WeekView {
+                    updateInteractiveView()
+                }
+            }
+        }
+    }
+    
+    private var touchController: CVCalendarTouchController {
+        return calendarView.touchController
+    }
     
     // MARK: - Public properties
     
-    var monthView: CVCalendarMonthView?
-    let index: Int?
-    let weekdaysIn: [Int : [Int]]?
-    let weekdaysOut: [Int : [Int]]?
+    weak var monthView: CVCalendarMonthView!
+    var dayViews: [CVCalendarDayView]!
+    var index: Int!
     
-    var dayViews: [CVCalendarDayView]?
+    var weekdaysIn: [Int : [Int]]?
+    var weekdaysOut: [Int : [Int]]?
+    var utilizable = false /// Recovery service.
     
-    // For Recovery service.
-    var utilizable = false
+    weak var calendarView: CVCalendarView! {
+        get {
+            var calendarView: CVCalendarView!
+            if let monthView = monthView, let activeCalendarView = monthView.calendarView {
+                calendarView = activeCalendarView
+            }
+            
+            return calendarView
+        }
+    }
     
     // MARK: - Initialization
-
-    init(monthView: CVCalendarMonthView, frame: CGRect, index: Int) {
-        super.init()
+    
+    init(monthView: CVCalendarMonthView, index: Int) {
+        
         
         self.monthView = monthView
-        self.frame = frame
         self.index = index
+        
+        if let size = monthView.calendarView.weekViewSize {
+            super.init(frame: CGRectMake(0, CGFloat(index) * size.height, size.width, size.height))
+        } else {
+            super.init(frame: CGRectZero)
+        }
         
         // Get weekdays in.
         let weeksIn = self.monthView!.weeksIn!
         self.weekdaysIn = weeksIn[self.index!]
         
         // Get weekdays out.
-        
         if let weeksOut = self.monthView!.weeksOut {
             if self.weekdaysIn?.count < 7 {
                 if weeksOut.count > 1 {
@@ -45,10 +74,10 @@ class CVCalendarWeekView: UIView {
                     var result: [Int : [Int]]?
                     for weekdaysOut in weeksOut {
                         if weekdaysOut.count == daysOut {
-                            let manager = CVCalendarManager.sharedManager
+                            let manager = calendarView.manager
                             
                             
-                            let key = weekdaysOut.keys.array[0]
+                            let key = weekdaysOut.keys.first!
                             let value = weekdaysOut[key]![0]
                             if value > 20 {
                                 if self.index == 0 {
@@ -71,7 +100,6 @@ class CVCalendarWeekView: UIView {
                 
             }
         }
-
         
         self.createDayViews()
     }
@@ -79,51 +107,117 @@ class CVCalendarWeekView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
-
+    
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Content filling 
-
-    func createDayViews() {
-        self.dayViews = [CVCalendarDayView]()
-        for i in 1...7 {
-            let renderer = CVCalendarRenderer.sharedRenderer()
-            let frame = renderer.renderDayFrameForMonthView(self, dayIndex: i-1)
-            
-            let dayView = CVCalendarDayView(weekView: self, frame: frame, weekdayIndex: i)
-            self.dayViews?.append(dayView)
-            self.addSubview(dayView)
+    func mapDayViews(body: (DayView) -> ()) {
+        if let dayViews = dayViews {
+            for dayView in dayViews {
+                body(dayView)
+            }
         }
     }
-    
-    // MARK: - View Destruction
-    
-    func destroy() {
-        self.monthView = nil
-        
-        if dayViews != nil {
-            for dayView in dayViews! {
-                dayView.removeFromSuperview()
-                dayView.destroy()
+}
+
+// MARK: - Interactive view setup & management
+
+extension CVCalendarWeekView {
+    func updateInteractiveView() {
+        safeExecuteBlock({
+            
+            let mode = self.monthView!.calendarView!.calendarMode!
+            if mode == .WeekView {
+                if let interactiveView = self.interactiveView {
+                    interactiveView.frame = self.bounds
+                    interactiveView.removeFromSuperview()
+                    self.addSubview(interactiveView)
+                } else {
+                    self.interactiveView = UIView(frame: self.bounds)
+                    self.interactiveView.backgroundColor = .clearColor()
+                    
+                    let tapRecognizer = UITapGestureRecognizer(target: self, action: "didTouchInteractiveView:")
+                    let pressRecognizer = UILongPressGestureRecognizer(target: self, action: "didPressInteractiveView:")
+                    pressRecognizer.minimumPressDuration = 0.3
+                    
+                    self.interactiveView.addGestureRecognizer(pressRecognizer)
+                    self.interactiveView.addGestureRecognizer(tapRecognizer)
+                    
+                    self.addSubview(self.interactiveView)
+                }
             }
             
-            dayViews = nil
-        }
-
+            }, collapsingOnNil: false, withObjects: monthView, monthView?.calendarView)
     }
     
-     // MARK: - Content reload
+    func didPressInteractiveView(recognizer: UILongPressGestureRecognizer) {
+        let location = recognizer.locationInView(self.interactiveView)
+        let state: UIGestureRecognizerState = recognizer.state
+        
+        switch state {
+        case .Began:
+            touchController.receiveTouchLocation(location, inWeekView: self, withSelectionType: .Range(.Started))
+        case .Changed:
+            touchController.receiveTouchLocation(location, inWeekView: self, withSelectionType: .Range(.Changed))
+        case .Ended:
+            touchController.receiveTouchLocation(location, inWeekView: self, withSelectionType: .Range(.Ended))
+            
+        default: break
+        }
+    }
+    
+    func didTouchInteractiveView(recognizer: UITapGestureRecognizer) {
+        let location = recognizer.locationInView(self.interactiveView)
+        touchController.receiveTouchLocation(location, inWeekView: self, withSelectionType: .Single)
+    }
+}
+
+// MARK: - Content fill & reload
+
+extension CVCalendarWeekView {
+    func createDayViews() {
+        dayViews = [CVCalendarDayView]()
+        for i in 1...7 {
+            let dayView = CVCalendarDayView(weekView: self, weekdayIndex: i)
+            
+            safeExecuteBlock({
+                self.dayViews!.append(dayView)
+                }, collapsingOnNil: true, withObjects: dayViews)
+            
+            addSubview(dayView)
+        }
+    }
     
     func reloadDayViews() {
-        for i in 0..<self.dayViews!.count {
-            let frame = CVCalendarRenderer.sharedRenderer().renderDayFrameForMonthView(self, dayIndex: i)
+        
+        if let size = calendarView.dayViewSize, let dayViews = dayViews {
+            let hSpace = calendarView.appearance.spaceBetweenDayViews!
             
-            let dayView = self.dayViews![i]
-            dayView.frame = frame
-            dayView.reloadContent()
+            for (index, dayView) in enumerate(dayViews) {
+                let hSpace = calendarView.appearance.spaceBetweenDayViews!
+                let x = CGFloat(index) * CGFloat(size.width + hSpace) + hSpace/2
+                dayView.frame = CGRectMake(x, 0, size.width, size.height)
+                dayView.reloadContent()
+            }
         }
     }
-    
+}
+
+// MARK: - Safe execution
+
+extension CVCalendarWeekView {
+    func safeExecuteBlock(block: Void -> Void, collapsingOnNil collapsing: Bool, withObjects objects: AnyObject?...) {
+        for object in objects {
+            if object == nil {
+                if collapsing {
+                    fatalError("Object { \(object) } must not be nil!")
+                } else {
+                    return
+                }
+            }
+        }
+        
+        block()
+    }
 }
