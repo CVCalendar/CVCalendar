@@ -50,6 +50,7 @@ class CVCalendarDayView: UIView {
             if oldValue != frame {
                 circleView?.setNeedsDisplay()
                 topMarkerSetup()
+                supplementarySetup()
             }
         }
     }
@@ -79,6 +80,10 @@ class CVCalendarDayView: UIView {
         labelSetup()
         setupDotMarker()
         topMarkerSetup()
+        if (frame.width > 0)
+        {
+            supplementarySetup()
+        }
         
         if !calendarView.shouldShowWeekdaysOut && isOut {
             hidden = true
@@ -179,6 +184,23 @@ extension CVCalendarDayView {
         }
         
         addSubview(dayLabel!)
+    }
+    
+    func supplementarySetup()
+    {
+        if let delegate = self.calendarView.delegate
+        {
+            if let shouldShow = delegate.supplementaryView?(shouldDisplayOnDayView: self)
+            {
+                if (shouldShow)
+                {
+                    if let supView = delegate.supplementaryView?(viewOnDayView: self)
+                    {
+                        insertSubview(supView, atIndex: 0)
+                    }
+                }
+            }
+        }
     }
     
     // TODO: Make this widget customizable

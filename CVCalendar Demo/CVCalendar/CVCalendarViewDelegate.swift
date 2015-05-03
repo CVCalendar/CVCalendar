@@ -21,4 +21,7 @@ protocol CVCalendarViewDelegate {
     optional func dotMarker(shouldShowOnDayView dayView: DayView) -> Bool
     optional func dotMarker(colorOnDayView dayView: DayView) -> UIColor
     optional func dotMarker(moveOffsetOnDayView dayView: DayView) -> CGFloat
+    
+    optional func supplementaryView(viewOnDayView dayView: DayView) -> UIView
+    optional func supplementaryView(shouldDisplayOnDayView dayView: DayView) -> Bool
 }
