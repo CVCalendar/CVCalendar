@@ -47,7 +47,7 @@ class CVCalendarContentViewController: UIViewController {
         
         scrollView.contentSize = CGSizeMake(frame.width * 3, frame.height)
         scrollView.showsHorizontalScrollIndicator = false
-        scrollView.showsVerticalScrollIndicator = false 
+        scrollView.showsVerticalScrollIndicator = false
         scrollView.layer.masksToBounds = true
         scrollView.pagingEnabled = true
         scrollView.delegate = self
@@ -67,7 +67,7 @@ extension CVCalendarContentViewController {
             scrollView.removeAllSubviews()
             scrollView.contentSize = CGSizeMake(frame.size.width * 3, frame.size.height)
         }
-
+        
         calendarView.hidden = false
     }
 }
@@ -147,6 +147,15 @@ extension CVCalendarContentViewController {
 // MARK: - AutoLayout Management
 
 extension CVCalendarContentViewController {
+    private func layoutViews(views: [UIView], toHeight height: CGFloat) {
+        self.scrollView.frame.size.height = height
+        self.calendarView.layoutIfNeeded()
+        
+        for view in views {
+            view.layoutIfNeeded()
+        }
+    }
+    
     func updateHeight(height: CGFloat, animated: Bool) {
         var viewsToLayout = [UIView]()
         if let calendarSuperview = calendarView.superview {
@@ -160,22 +169,23 @@ extension CVCalendarContentViewController {
         }
         
         
+        
         for constraintIn in calendarView.constraints() {
             if let constraint = constraintIn as? NSLayoutConstraint where constraint.firstAttribute == NSLayoutAttribute.Height {
                 calendarView.layoutIfNeeded()
                 constraint.constant = height
                 if animated {
                     UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: {
-                        self.scrollView.frame.size.height = height
-                        self.calendarView.layoutIfNeeded()
-                        
-                        for view in viewsToLayout {
-                            view.layoutIfNeeded()
-                        }
+                        self.layoutViews(viewsToLayout, toHeight: height)
                         }) { _ in
                             self.presentedMonthView.frame.size = self.presentedMonthView.potentialSize
                             self.presentedMonthView.updateInteractiveView()
                     }
+                } else {
+                    layoutViews(viewsToLayout, toHeight: height)
+                    presentedMonthView.updateInteractiveView()
+                    presentedMonthView.frame.size = presentedMonthView.potentialSize
+                    presentedMonthView.updateInteractiveView()
                 }
                 
                 break

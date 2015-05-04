@@ -80,8 +80,8 @@ class CVCalendarDayView: UIView {
         labelSetup()
         setupDotMarker()
         topMarkerSetup()
-        if (frame.width > 0)
-        {
+        
+        if (frame.width > 0) {
             supplementarySetup()
         }
         
@@ -137,7 +137,7 @@ class CVCalendarDayView: UIView {
         
         return CVDate(day: day, month: month, week: week, year: year)
     }
-
+    
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -186,19 +186,10 @@ extension CVCalendarDayView {
         addSubview(dayLabel!)
     }
     
-    func supplementarySetup()
-    {
-        if let delegate = self.calendarView.delegate
-        {
-            if let shouldShow = delegate.supplementaryView?(shouldDisplayOnDayView: self)
-            {
-                if (shouldShow)
-                {
-                    if let supView = delegate.supplementaryView?(viewOnDayView: self)
-                    {
-                        insertSubview(supView, atIndex: 0)
-                    }
-                }
+    func supplementarySetup() {
+        if let delegate = calendarView.delegate, shouldShow = delegate.supplementaryView?(shouldDisplayOnDayView: self) where shouldShow {
+            if let supView = delegate.supplementaryView?(viewOnDayView: self) {
+                insertSubview(supView, atIndex: 0)
             }
         }
     }
@@ -235,7 +226,7 @@ extension CVCalendarDayView {
                     createMarker()
                 }
             }
-        }, collapsingOnNil: false, withObjects: weekView, weekView.monthView, weekView.monthView)
+            }, collapsingOnNil: false, withObjects: weekView, weekView.monthView, weekView.monthView)
     }
     
     func setupDotMarker() {
@@ -373,10 +364,10 @@ extension CVCalendarDayView {
             UIView.animateWithDuration(pow(10, -1000), delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 10, options: UIViewAnimationOptions.CurveEaseIn, animations: {
                 let angle = angle.toRadians()
                 view.center = self.pointAtAngle(angle, withinCircleView: circleView)
-            }) { _ in
-                let speed = CGFloat(750).toRadians()
-                let newAngle = straight ? angle + speed : angle - speed
-                self.moveView(view, onCircleView: circleView, fromAngle: newAngle, toAngle: endAngle, straight: straight)
+                }) { _ in
+                    let speed = CGFloat(750).toRadians()
+                    let newAngle = straight ? angle + speed : angle - speed
+                    self.moveView(view, onCircleView: circleView, fromAngle: newAngle, toAngle: endAngle, straight: straight)
             }
         }
     }
