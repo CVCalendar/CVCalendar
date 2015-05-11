@@ -118,13 +118,11 @@ class CVCalendarWeekContentViewController: CVCalendarContentViewController {
     override func updateFrames(rect: CGRect) {
         super.updateFrames(rect)
         
-        if rect != CGRectZero {
-            for monthView in monthViews.values {
-                monthView.reloadViewsWithRect(rect)
-            }
-            
-            reloadWeekViews()
+        for monthView in monthViews.values {
+            monthView.reloadViewsWithRect(rect != CGRectZero ? rect : scrollView.bounds)
         }
+        
+        reloadWeekViews()
         
         if let presented = weekViews[Presented] {
             scrollView.scrollRectToVisible(presented.frame, animated: false)

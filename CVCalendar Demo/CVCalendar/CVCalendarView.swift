@@ -171,32 +171,28 @@ extension CVCalendarView {
             let contentViewSize = contentController.bounds.size
             let selfSize = bounds.size
             
-            if selfSize != contentViewSize {
-                if !validated {
-                    let width = selfSize.width
-                    let height: CGFloat
-                    let countOfWeeks = CGFloat(5)
-                    
-                    let vSpace = appearance.spaceBetweenWeekViews!
-                    let hSpace = appearance.spaceBetweenDayViews!
-                    
-                    if let mode = calendarMode {
-                        switch mode {
-                        case .WeekView:
-                            height = selfSize.height
-                        case .MonthView :
-                            height = (selfSize.height / countOfWeeks) - (vSpace * countOfWeeks)
-                        }
-                        
-                        weekViewSize = CGSizeMake(width, height)
-                        dayViewSize = CGSizeMake((width / 7.0) - hSpace, height)
-                        validated = true
-                        
-                        contentController.updateFrames(bounds)
+            if !validated {
+                let width = selfSize.width
+                let height: CGFloat
+                let countOfWeeks = CGFloat(5)
+                
+                let vSpace = appearance.spaceBetweenWeekViews!
+                let hSpace = appearance.spaceBetweenDayViews!
+                
+                if let mode = calendarMode {
+                    switch mode {
+                    case .WeekView:
+                        height = selfSize.height
+                    case .MonthView :
+                        height = (selfSize.height / countOfWeeks) - (vSpace * countOfWeeks)
                     }
+                    
+                    weekViewSize = CGSizeMake(width, height)
+                    dayViewSize = CGSizeMake((width / 7.0) - hSpace, height)
+                    validated = true
+                    
+                    contentController.updateFrames(selfSize != contentViewSize ? bounds : CGRectZero)
                 }
-            } else {
-                contentController.updateFrames(CGRectZero)
             }
         }
     }

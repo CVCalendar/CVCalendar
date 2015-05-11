@@ -113,14 +113,12 @@ class CVCalendarMonthContentViewController: CVCalendarContentViewController {
     override func updateFrames(rect: CGRect) {
         super.updateFrames(rect)
         
-        if rect != CGRectZero {
-            for monthView in monthViews.values {
-                monthView.reloadViewsWithRect(rect)
-            }
-            
-            reloadMonthViews()
+        for monthView in monthViews.values {
+            monthView.reloadViewsWithRect(rect != CGRectZero ? rect : scrollView.bounds)
         }
         
+        reloadMonthViews()
+
         if let presented = monthViews[Presented] {
             if scrollView.frame.height != presented.potentialSize.height {
                 updateHeight(presented.potentialSize.height, animated: false)
@@ -160,15 +158,15 @@ class CVCalendarMonthContentViewController: CVCalendarContentViewController {
                     self.presentedMonthView = previous
                     
                     self.updateLayoutIfNeeded()
-                    }) { _ in
-                        extra.removeFromSuperview()
-                        self.insertMonthView(self.getPreviousMonth(previous.date), withIdentifier: self.Previous)
-                        self.updateSelection()
-                        self.presentationEnabled = true
-                        
-                        for monthView in self.monthViews.values {
-                            self.prepareTopMarkersOnMonthView(monthView, hidden: false)
-                        }
+                }) { _ in
+                    extra.removeFromSuperview()
+                    self.insertMonthView(self.getPreviousMonth(previous.date), withIdentifier: self.Previous)
+                    self.updateSelection()
+                    self.presentationEnabled = true
+                    
+                    for monthView in self.monthViews.values {
+                        self.prepareTopMarkersOnMonthView(monthView, hidden: false)
+                    }
                 }
             }
         }
@@ -190,15 +188,15 @@ class CVCalendarMonthContentViewController: CVCalendarContentViewController {
                     self.presentedMonthView = following
                     
                     self.updateLayoutIfNeeded()
-                    }) { _ in
-                        extra.removeFromSuperview()
-                        self.insertMonthView(self.getFollowingMonth(following.date), withIdentifier: self.Following)
-                        self.updateSelection()
-                        self.presentationEnabled = true
-                        
-                        for monthView in self.monthViews.values {
-                            self.prepareTopMarkersOnMonthView(monthView, hidden: false)
-                        }
+                }) { _ in
+                    extra.removeFromSuperview()
+                    self.insertMonthView(self.getFollowingMonth(following.date), withIdentifier: self.Following)
+                    self.updateSelection()
+                    self.presentationEnabled = true
+                    
+                    for monthView in self.monthViews.values {
+                        self.prepareTopMarkersOnMonthView(monthView, hidden: false)
+                    }
                 }
             }
         }
@@ -233,11 +231,11 @@ class CVCalendarMonthContentViewController: CVCalendarContentViewController {
                     UIView.animateWithDuration(0.8, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
                         presented.alpha = 0
                         currentMonthView.alpha = 1
-                        }) { _ in
-                            presented.removeFromSuperview()
-                            self.selectDayViewWithDay(presentedDate.day, inMonthView: currentMonthView)
-                            self.togglingBlocked = false
-                            self.updateLayoutIfNeeded()
+                    }) { _ in
+                        presented.removeFromSuperview()
+                        self.selectDayViewWithDay(presentedDate.day, inMonthView: currentMonthView)
+                        self.togglingBlocked = false
+                        self.updateLayoutIfNeeded()
                     }
                 } else {
                     if let currentMonthView = monthViews[Presented] {
