@@ -2,13 +2,83 @@
 
 ## [Unreleased](https://github.com/Mozharovsky/CVCalendar/tree/HEAD)
 
-[Full Changelog](https://github.com/Mozharovsky/CVCalendar/compare/1.0.8...HEAD)
+[Full Changelog](https://github.com/Mozharovsky/CVCalendar/compare/1.1.0...HEAD)
+
+**Implemented enhancements:**
+
+- Calendar Graphing [\#61](https://github.com/Mozharovsky/CVCalendar/issues/61)
+
+- Selected date gone after swiping two months forwards  and back. [\#37](https://github.com/Mozharovsky/CVCalendar/issues/37)
+
+- Init CVCalendar with a specific day in current month [\#30](https://github.com/Mozharovsky/CVCalendar/issues/30)
+
+**Fixed bugs:**
+
+- Latest version not working without autolayout? [\#72](https://github.com/Mozharovsky/CVCalendar/issues/72)
+
+- Navigating between months quickly causes program to crash [\#57](https://github.com/Mozharovsky/CVCalendar/issues/57)
+
+- Current calendar date does not update when date changes.  [\#51](https://github.com/Mozharovsky/CVCalendar/issues/51)
+
+- Current day highlighted text overlay bug.  [\#48](https://github.com/Mozharovsky/CVCalendar/issues/48)
+
+- CVCalendarView doesn't load on when Simulated Metric == iPhone 4-inch [\#46](https://github.com/Mozharovsky/CVCalendar/issues/46)
+
+- Cannot get date on didSelectDayView [\#41](https://github.com/Mozharovsky/CVCalendar/issues/41)
+
+- Appearance Doesn't update for the next and previous months [\#34](https://github.com/Mozharovsky/CVCalendar/issues/34)
+
+- Labels for all the dates repeatedly getting darker with each frame update on viewDidAppear on projects with uitabbarcontrollers [\#31](https://github.com/Mozharovsky/CVCalendar/issues/31)
+
+- Returning to CVCalendar with a selected date renders day label incorrectly [\#22](https://github.com/Mozharovsky/CVCalendar/issues/22)
+
+- Calling didSelectDayView immediately on load [\#18](https://github.com/Mozharovsky/CVCalendar/issues/18)
+
+**Closed issues:**
+
+- Make calendar resize without using a height constraint [\#76](https://github.com/Mozharovsky/CVCalendar/issues/76)
+
+- How do I pre-select a date in the calendar? [\#73](https://github.com/Mozharovsky/CVCalendar/issues/73)
+
+- Not displaying all dates for month [\#65](https://github.com/Mozharovsky/CVCalendar/issues/65)
+
+- Changing Month Label [\#60](https://github.com/Mozharovsky/CVCalendar/issues/60)
+
+- Dotmarker pops on top of day when switching to another month when the standard selected day has a dot programmed on it [\#59](https://github.com/Mozharovsky/CVCalendar/issues/59)
+
+- nil data for calendarDayViews once the month is scrolled past the buffer. [\#58](https://github.com/Mozharovsky/CVCalendar/issues/58)
+
+- Ability to jump to any month [\#56](https://github.com/Mozharovsky/CVCalendar/issues/56)
+
+- Must call a designated initializer of the superclass 'UIViewController' [\#53](https://github.com/Mozharovsky/CVCalendar/issues/53)
+
+- Initializer does not override a designated initializer from its superclass [\#52](https://github.com/Mozharovsky/CVCalendar/issues/52)
+
+- Scrolling into the past [\#39](https://github.com/Mozharovsky/CVCalendar/issues/39)
+
+- Can not view MonthView mode [\#38](https://github.com/Mozharovsky/CVCalendar/issues/38)
+
+- i want to add some event for dates ?  [\#26](https://github.com/Mozharovsky/CVCalendar/issues/26)
+
+**Merged pull requests:**
+
+- Added Sup delegate methods [\#64](https://github.com/Mozharovsky/CVCalendar/pull/64) ([Trifusion](https://github.com/Trifusion))
+
+## [1.1.0](https://github.com/Mozharovsky/CVCalendar/tree/1.1.0) (2015-04-15)
+
+[Full Changelog](https://github.com/Mozharovsky/CVCalendar/compare/1.0.8...1.1.0)
 
 **Implemented enhancements:**
 
 - Showing 1 week [\#13](https://github.com/Mozharovsky/CVCalendar/issues/13)
 
+**Fixed bugs:**
+
+- Calendar not working properly [\#45](https://github.com/Mozharovsky/CVCalendar/issues/45)
+
 **Closed issues:**
+
+- iOS 8.3  [\#40](https://github.com/Mozharovsky/CVCalendar/issues/40)
 
 - CocoaPods integration [\#25](https://github.com/Mozharovsky/CVCalendar/issues/25)
 
