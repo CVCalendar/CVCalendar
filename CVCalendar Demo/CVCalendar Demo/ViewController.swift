@@ -38,6 +38,21 @@ class ViewController: UIViewController {
 
 extension ViewController: CVCalendarViewDelegate
 {
+    func preliminaryView(viewOnDayView dayView: DayView) -> UIView
+    {
+        let circleView = CVAuxiliaryView(dayView: dayView, rect: dayView.bounds, shape: CVShape.Circle)
+        circleView.fillColor = .colorFromCode(0xCCCCCC)
+        return circleView
+    }
+    
+    func preliminaryView(shouldDisplayOnDayView dayView: DayView) -> Bool
+    {
+        if (dayView.isCurrentDay) {
+            return true
+        }
+        return false
+    }
+    
     func supplementaryView(viewOnDayView dayView: DayView) -> UIView
     {
         let π = M_PI

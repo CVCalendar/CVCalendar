@@ -50,6 +50,7 @@ class CVCalendarDayView: UIView {
             if oldValue != frame {
                 circleView?.setNeedsDisplay()
                 topMarkerSetup()
+                preliminarySetup()
                 supplementarySetup()
             }
         }
@@ -82,6 +83,7 @@ class CVCalendarDayView: UIView {
         topMarkerSetup()
         
         if (frame.width > 0) {
+            preliminarySetup()
             supplementarySetup()
         }
         
@@ -184,6 +186,15 @@ extension CVCalendarDayView {
         }
         
         addSubview(dayLabel!)
+    }
+
+    func preliminarySetup() {
+        if let delegate = calendarView.delegate, shouldShow = delegate.preliminaryView?(shouldDisplayOnDayView: self) where shouldShow {
+            if let preView = delegate.preliminaryView?(viewOnDayView: self) {
+                insertSubview(preView, atIndex: 0)
+                preView.layer.zPosition = CGFloat(-MAXFLOAT)
+            }
+        }
     }
     
     func supplementarySetup() {
