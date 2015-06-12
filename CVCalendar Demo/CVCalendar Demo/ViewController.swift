@@ -172,7 +172,7 @@ extension ViewController: CVCalendarViewDelegate {
         return false
     }
     
-    func dotMarker(colorOnDayView dayView: CVCalendarDayView) -> UIColor {
+    func dotMarker(colorOnDayView dayView: CVCalendarDayView) -> [UIColor] {
         let day = dayView.date.day
         
         let red = CGFloat(arc4random_uniform(600) / 255)
@@ -181,7 +181,15 @@ extension ViewController: CVCalendarViewDelegate {
         
         let color = UIColor(red: red, green: green, blue: blue, alpha: 1)
 
-        return color
+        let numberOfDots = Int(arc4random_uniform(3) + 1)
+        switch(numberOfDots) {
+        case 2:
+            return [color, color]
+        case 3:
+            return [color, color, color]
+        default:
+            return [color] // return 1 dot
+        }
     }
     
     func dotMarker(shouldMoveOnHighlightingOnDayView dayView: CVCalendarDayView) -> Bool {
