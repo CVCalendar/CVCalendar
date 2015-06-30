@@ -8,37 +8,58 @@
 
 import UIKit
 
-private let sharedInstance = CVCalendarViewAppearance()
-
 class CVCalendarViewAppearance: NSObject {
     
-    class var sharedCalendarViewAppearance: CVCalendarViewAppearance {
-        return sharedInstance
+    override init() {
+        super.init()
     }
-
+    
+    /// Default rendering options.
     var spaceBetweenWeekViews: CGFloat? = 0
     var spaceBetweenDayViews: CGFloat? = 0
     
-    var dayLabelWeekdayTextSize: CGFloat? = 18
-    var dayLabelPresentWeekdayTextSize: CGFloat? = 18
-    var dayLabelWeekdayHighlightedTextSize: CGFloat? = 20
-    var dayLabelPresentWeekdayHighlightedTextSize: CGFloat? = 20
+    /// Default text options.
+    var dayLabelPresentWeekdayInitallyBold: Bool? = true
+    var dayLabelWeekdayFont: UIFont? = UIFont(name: "Avenir", size: 18)
+    var dayLabelPresentWeekdayFont: UIFont? = UIFont(name: "Avenir", size: 18)
+    var dayLabelPresentWeekdayBoldFont: UIFont? = UIFont(name: "Avenir-Heavy", size: 18)
+    var dayLabelPresentWeekdayHighlightedFont: UIFont? = UIFont(name: "Avenir-Heavy", size: 18)
+    var dayLabelPresentWeekdaySelectedFont: UIFont? = UIFont(name: "Avenir-Heavy", size: 18)
+    var dayLabelWeekdayHighlightedFont: UIFont? = UIFont(name: "Avenir-Heavy", size: 18)
+    var dayLabelWeekdaySelectedFont: UIFont? = UIFont(name: "Avenir-Heavy", size: 18)
     
-    var dayLabelPresentWeekdayInitallyBold: Bool = true
-    
+    /// Default text color.
     var dayLabelWeekdayInTextColor: UIColor? = .blackColor()
     var dayLabelWeekdayOutTextColor: UIColor? = .grayColor()
-    var dayLabelWeekdayHighlightedBackgroundColor: UIColor? = .blueColor()
-    var dayLabelWeekdayHighlightedBackgroundAlpha: CGFloat? = 0.6
-    var dayLabelPresentWeekdayTextColor: UIColor? = .redColor()
-    var dayLabelPresentWeekdayHighlightedBackgroundColor: UIColor? = .redColor()
-    var dayLabelPresentWeekdayHighlightedBackgroundAlpha: CGFloat? = 0.6
-    
     var dayLabelWeekdayHighlightedTextColor: UIColor? = .whiteColor()
+    var dayLabelWeekdaySelectedTextColor: UIColor? = .whiteColor()
+    var dayLabelPresentWeekdayTextColor: UIColor? = .redColor()
     var dayLabelPresentWeekdayHighlightedTextColor: UIColor? = .whiteColor()
+    var dayLabelPresentWeekdaySelectedTextColor: UIColor? = .whiteColor()
     
+    /// Default text size.
+    var dayLabelWeekdayTextSize: CGFloat? = 18
+    var dayLabelWeekdayHighlightedTextSize: CGFloat? = 20
+    var dayLabelWeekdaySelectedTextSize: CGFloat? = 20
+    var dayLabelPresentWeekdayTextSize: CGFloat? = 18
+    var dayLabelPresentWeekdayHighlightedTextSize: CGFloat? = 20
+    var dayLabelPresentWeekdaySelectedTextSize: CGFloat? = 20
+    
+    /// Default highlighted state background & alpha.
+    var dayLabelWeekdayHighlightedBackgroundColor: UIColor? = .colorFromCode(0x34AADC)
+    var dayLabelWeekdayHighlightedBackgroundAlpha: CGFloat? = 0.8
+    var dayLabelPresentWeekdayHighlightedBackgroundColor: UIColor? = .colorFromCode(0xFF5E3A)
+    var dayLabelPresentWeekdayHighlightedBackgroundAlpha: CGFloat? = 0.8
+    
+    /// Default selected state background & alpha.
+    var dayLabelWeekdaySelectedBackgroundColor: UIColor? = .colorFromCode(0x1D62F0)
+    var dayLabelWeekdaySelectedBackgroundAlpha: CGFloat? = 0.8
+    var dayLabelPresentWeekdaySelectedBackgroundColor: UIColor? = .colorFromCode(0xFF3B30)
+    var dayLabelPresentWeekdaySelectedBackgroundAlpha: CGFloat? = 0.8
+    
+    
+    // Default dot marker color.
     var dotMarkerColor: UIColor? = .whiteColor()
-    var dotMarkerOffset: CGFloat? = 3.5
     
     var delegate: CVCalendarViewAppearanceDelegate? {
         didSet {
@@ -47,84 +68,64 @@ class CVCalendarViewAppearance: NSObject {
     }
     
     func setupAppearance() {
-        if let spaceBetweenWeekViews = self.delegate!.spaceBetweenWeekViews?() {
-            self.spaceBetweenWeekViews = spaceBetweenWeekViews
-        }
-        
-        if let spaceBetweenDayViews = self.delegate!.spaceBetweenDayViews?() {
-            self.spaceBetweenDayViews = spaceBetweenDayViews
-        }
-        
-        if let dayLabelWeekdayTextSize = self.delegate!.dayLabelWeekdayTextSize?() {
-            self.dayLabelWeekdayTextSize = dayLabelWeekdayTextSize
-        }
-        
-        if let dayLabelPresentWeekdayTextSize = self.delegate!.dayLabelPresentWeekdayTextSize?() {
-            self.dayLabelPresentWeekdayTextSize = dayLabelPresentWeekdayTextSize
-        }
-        
-        if let dayLabelWeekdayHighlightedTextSize = self.delegate!.dayLabelWeekdayHighlightedTextSize?() {
-            self.dayLabelWeekdayHighlightedTextSize = dayLabelWeekdayHighlightedTextSize
-        }
-        
-        if let dayLabelPresentWeekdayHighlightedTextSize = self.delegate!.dayLabelPresentWeekdayHighlightedTextSize?() {
-            self.dayLabelPresentWeekdayHighlightedTextSize = dayLabelPresentWeekdayHighlightedTextSize
-        }
-        
-        if let dayLabelPresentWeekdayInitallyBold = self.delegate!.dayLabelPresentWeekdayInitallyBold?() {
-            self.dayLabelPresentWeekdayInitallyBold = dayLabelPresentWeekdayInitallyBold
-        }
-        
-        if let dayLabelWeekdayTextSize = self.delegate!.dayLabelWeekdayTextSize?() {
-            self.dayLabelWeekdayTextSize = dayLabelWeekdayTextSize
-        }
-        
-        if let dayLabelWeekdayInTextColor = self.delegate!.dayLabelWeekdayInTextColor?() {
-            self.dayLabelWeekdayInTextColor = dayLabelWeekdayInTextColor
-        }
-        
-        if let dayLabelWeekdayOutTextColor = self.delegate!.dayLabelWeekdayOutTextColor?() {
-            self.dayLabelWeekdayOutTextColor = dayLabelWeekdayOutTextColor
-        }
-        
-        if let dayLabelWeekdayHighlightedBackgroundColor = self.delegate!.dayLabelWeekdayHighlightedBackgroundColor?() {
-            self.dayLabelWeekdayHighlightedBackgroundColor = dayLabelWeekdayHighlightedBackgroundColor
-        }
-        
-        if let dayLabelWeekdayHighlightedBackgroundAlpha = self.delegate!.dayLabelWeekdayHighlightedBackgroundAlpha?() {
-            self.dayLabelWeekdayHighlightedBackgroundAlpha = dayLabelWeekdayHighlightedBackgroundAlpha
-        }
-        
-        if let dayLabelPresentWeekdayTextColor = self.delegate!.dayLabelPresentWeekdayTextColor?() {
-            self.dayLabelPresentWeekdayTextColor = dayLabelPresentWeekdayTextColor
-        }
-        
-        if let dayLabelPresentWeekdayHighlightedBackgroundColor = self.delegate!.dayLabelPresentWeekdayHighlightedBackgroundColor?() {
-            self.dayLabelPresentWeekdayHighlightedBackgroundColor = dayLabelPresentWeekdayHighlightedBackgroundColor
-        }
-        
-        if let dayLabelPresentWeekdayHighlightedBackgroundAlpha = self.delegate!.dayLabelPresentWeekdayHighlightedBackgroundAlpha?() {
-            self.dayLabelPresentWeekdayHighlightedBackgroundAlpha = dayLabelPresentWeekdayHighlightedBackgroundAlpha
-        }
-        
-        if let dayLabelWeekdayHighlightedTextColor = self.delegate!.dayLabelWeekdayHighlightedTextColor?() {
-            self.dayLabelWeekdayHighlightedTextColor = dayLabelWeekdayHighlightedTextColor
-        }
-        
-        if let dayLabelPresentWeekdayHighlightedTextColor = self.delegate!.dayLabelPresentWeekdayHighlightedTextColor?() {
-            self.dayLabelPresentWeekdayHighlightedTextColor = dayLabelPresentWeekdayHighlightedTextColor
-        }
-        
-        if let dotMarkerColor = self.delegate!.dotMarkerColor?() {
-            self.dotMarkerColor = dotMarkerColor
-        }
-        
-        if let dotMarkerOffset = self.delegate!.dotMarkerOffset?() {
-            self.dotMarkerOffset = dotMarkerOffset
+        if let delegate = delegate {
+            spaceBetweenWeekViews~>delegate.spaceBetweenWeekViews?()
+            spaceBetweenDayViews~>delegate.spaceBetweenDayViews?()
+            
+            dayLabelPresentWeekdayInitallyBold~>delegate.dayLabelPresentWeekdayInitallyBold?()
+            dayLabelWeekdayFont~>delegate.dayLabelWeekdayFont?()
+            dayLabelPresentWeekdayFont~>delegate.dayLabelPresentWeekdayFont?()
+            dayLabelPresentWeekdayBoldFont~>delegate.dayLabelPresentWeekdayBoldFont?()
+            dayLabelPresentWeekdayHighlightedFont~>delegate.dayLabelPresentWeekdayHighlightedFont?()
+            dayLabelPresentWeekdaySelectedFont~>delegate.dayLabelPresentWeekdaySelectedFont?()
+            dayLabelWeekdayHighlightedFont~>delegate.dayLabelWeekdayHighlightedFont?()
+            dayLabelWeekdaySelectedFont~>delegate.dayLabelWeekdaySelectedFont?()
+            
+            dayLabelWeekdayInTextColor~>delegate.dayLabelWeekdayInTextColor?()
+            dayLabelWeekdayOutTextColor~>delegate.dayLabelWeekdayOutTextColor?()
+            dayLabelWeekdayHighlightedTextColor~>delegate.dayLabelWeekdayHighlightedTextColor?()
+            dayLabelWeekdaySelectedTextColor~>delegate.dayLabelWeekdaySelectedTextColor?()
+            dayLabelPresentWeekdayTextColor~>delegate.dayLabelPresentWeekdayTextColor?()
+            dayLabelPresentWeekdayHighlightedTextColor~>delegate.dayLabelPresentWeekdayHighlightedTextColor?()
+            dayLabelPresentWeekdaySelectedTextColor~>delegate.dayLabelPresentWeekdaySelectedTextColor?()
+            
+            dayLabelWeekdayTextSize~>delegate.dayLabelWeekdayTextSize?()
+            dayLabelWeekdayHighlightedTextSize~>delegate.dayLabelWeekdayHighlightedTextSize?()
+            dayLabelWeekdaySelectedTextSize~>delegate.dayLabelWeekdaySelectedTextSize?()
+            dayLabelPresentWeekdayTextSize~>delegate.dayLabelPresentWeekdayTextSize?()
+            dayLabelPresentWeekdayHighlightedTextSize~>delegate.dayLabelPresentWeekdayHighlightedTextSize?()
+            dayLabelPresentWeekdaySelectedTextSize~>delegate.dayLabelPresentWeekdaySelectedTextSize?()
+            
+            dayLabelWeekdayHighlightedBackgroundColor~>delegate.dayLabelWeekdayHighlightedBackgroundColor?()
+            dayLabelWeekdayHighlightedBackgroundAlpha~>delegate.dayLabelWeekdayHighlightedBackgroundAlpha?()
+            dayLabelPresentWeekdayHighlightedBackgroundColor~>delegate.dayLabelPresentWeekdayHighlightedBackgroundColor?()
+            dayLabelPresentWeekdayHighlightedBackgroundAlpha~>delegate.dayLabelPresentWeekdayHighlightedBackgroundAlpha?()
+            
+            dayLabelWeekdaySelectedBackgroundColor~>delegate.dayLabelWeekdaySelectedBackgroundColor?()
+            dayLabelWeekdaySelectedBackgroundAlpha~>delegate.dayLabelWeekdaySelectedBackgroundAlpha?()
+            dayLabelPresentWeekdaySelectedBackgroundColor~>delegate.dayLabelPresentWeekdaySelectedBackgroundColor?()
+            dayLabelPresentWeekdaySelectedBackgroundAlpha~>delegate.dayLabelPresentWeekdaySelectedBackgroundAlpha?()
+            
+            dotMarkerColor~>delegate.dotMarkerColor?()
         }
     }
-    
-    private override init() {
-        super.init()
+}
+
+infix operator ~> { }
+func ~><T: Any>(inout lhs: T?, rhs: T?) -> T? {
+    if lhs != nil && rhs != nil {
+        lhs = rhs
+    }
+
+    return lhs
+}
+
+extension UIColor {
+    class func colorFromCode(code: Int) -> UIColor {
+        let red = CGFloat(((code & 0xFF0000) >> 16)) / 255
+        let green = CGFloat(((code & 0xFF00) >> 8)) / 255
+        let blue = CGFloat((code & 0xFF)) / 255
+        
+        return UIColor(red: red, green: green, blue: blue, alpha: 1)
     }
 }
