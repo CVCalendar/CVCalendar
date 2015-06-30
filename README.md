@@ -16,7 +16,7 @@ Screenshots
 
 <center>![alt tag](https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/Demo.gif)</center>
 
-Arcitecture
+Architecture
 ==========
 
 This calendar is designed according to all object oriented patterns. There are a few types of objects where a particular instance does its specific stuff. I've tried to separate Views from all the stuff it shouldn't do itself (e.g. calculations, date management etc). 
@@ -123,7 +123,7 @@ Behaviour:
 * Presented date update 
 * Animations on (de)selecting day views
 
-Finally we're going to customize properties. To make this possible you have to implement approptiate protocols. (You can see presented protocols and short descriptions in the <b>Arcitecture Section</b>). Open your Storyboard and do a right-click on CVCalendarView, you'll see the window with outlets and there are a few ones we actually need. Take a look at the picture to make sure you're doing everything properly.
+Finally we're going to customize properties. To make this possible you have to implement approptiate protocols. (You can see presented protocols and short descriptions in the <b>Architecture Section</b>). Open your Storyboard and do a right-click on CVCalendarView, you'll see the window with outlets and there are a few ones we actually need. Take a look at the picture to make sure you're doing everything properly.
 
 ![alt tag](https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/Pic4.png)
 
