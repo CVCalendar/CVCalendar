@@ -93,11 +93,11 @@ class CVCalendarManager: NSObject {
     // MARK: - Analysis sorting
     
     func weeksWithWeekdaysForMonthDate(date: NSDate) -> (weeksIn: [[Int : [Int]]], weeksOut: [[Int : [Int]]]) {
-        
-        let countOfWeeks = self.monthDateRange(date).countOfWeeks
+        let monthDateRange = self.monthDateRange(date)
+        let countOfWeeks = monthDateRange.countOfWeeks
         let totalCountOfDays = countOfWeeks * 7
-        let firstMonthDateIn = self.monthDateRange(date).monthStartDate
-        let lastMonthDateIn = self.monthDateRange(date).monthEndDate
+        let firstMonthDateIn = monthDateRange.monthStartDate
+        let lastMonthDateIn = monthDateRange.monthEndDate
         let countOfDaysIn = self.dateRange(lastMonthDateIn).day
         let countOfDaysOut = totalCountOfDays - countOfDaysIn
         

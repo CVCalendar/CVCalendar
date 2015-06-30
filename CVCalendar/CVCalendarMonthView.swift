@@ -44,8 +44,9 @@ class CVCalendarMonthView: UIView {
     func commonInit() {
         let calendarManager = CVCalendarManager.sharedManager
         self.numberOfWeeks = calendarManager.monthDateRange(self.date!).countOfWeeks
-        self.weeksIn = calendarManager.weeksWithWeekdaysForMonthDate(self.date!).weeksIn
-        self.weeksOut = calendarManager.weeksWithWeekdaysForMonthDate(self.date!).weeksOut
+        let weeksInAndOut = calendarManager.weeksWithWeekdaysForMonthDate(self.date!)
+        self.weeksIn = weeksInAndOut.weeksIn
+        self.weeksOut = weeksInAndOut.weeksOut
         
         self.currentDay = calendarManager.dateRange(NSDate()).day
     }
