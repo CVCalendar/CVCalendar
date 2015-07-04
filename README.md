@@ -1,7 +1,6 @@
-CVCalendar
-==========
-
-A custom visual calendar for iOS 8 written in Swift.
+<p align="center">
+  <img src ="https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/CVCalendarIcon.png" />
+</p>
 
 <h3>GLOBAL CHANGES</h3>
 
