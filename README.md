@@ -11,7 +11,7 @@ Screenshots
 ==========
 
 <p align="center">
-  <img src ="https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/CVCalendarDemo.png" />
+  <img src ="https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/CVCalendar_White.png" />
 </p>
 
 <p align="center">
