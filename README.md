@@ -11,10 +11,14 @@ The project is currently being under an active maintenance. We're going to bring
 Screenshots
 ==========
 
-<center>![alt tag](https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/iPhone6_MonthView.png)</center>
-<center>![alt tag](https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/iPhone6_WeekView.png)</center>
+<p align="center">
+  <img src ="https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/CVCalendarDemo.png" />
+</p>
 
-<center>![alt tag](https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/Demo.gif)</center>
+<p align="center">
+  <img src ="https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/Demo.gif" />
+</p>
+
 
 Architecture
 ==========
