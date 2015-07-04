@@ -147,6 +147,8 @@ If for some reason you'd like to setup **CVCalendar** manually you have to do th
 
 Initialize **CVCalendarView** with either `init` or `init:frame` methods. I suggest to do it in `viewDidLoad` method. Do NOT put initialization in `viewDidAppear:` or `viewWillAppear:` methods! Then setup delegates if you're going to customize options. 
 
+> Note that <b>CVCalendarAppearanceDelegate</b> should be set before <b>CVCalendarViewDelegate</b> so your changes can be applied.
+
 For **CVCalendarMenuView** you simply initialize it as well as CVCalendarView and it requires to implement **CVCalendarMenuViewDelegate** protocol. 
 
 How it should look like. 
@@ -161,22 +163,17 @@ How it should look like.
         // CVCalendarMenuView initialization with frame 
         self.menuView = CVCalendarMenuView(frame: CGRectMake(0, 0, 300, 15))
         
-        
-        // Calendar delegate 
-        self.calendarView.calendarDelegate = self 
-        
-        // Menu delegate
-        self.menuView.menuViewDelegate = self
-        
-        /* 
-         *  Note that setting up delegates as showed below is not necessary. 
-         */
-        
-        // Appearance delegate 
+        // Appearance delegate [Unnecessary]
         self.calendarView.appearanceDelegate = self
         
-        // Animator delegate
+        // Animator delegate [Unnecessary]
         self.calendarView.animatorDelegate = self
+        
+        // Calendar delegate [Required]
+        self.calendarView.calendarDelegate = self 
+        
+        // Menu delegate [Required]
+        self.menuView.menuViewDelegate = self
     }
 ```
 
@@ -205,9 +202,13 @@ You might want to use a specific first weekday in CVCalendar. And it's possible 
 
 > <b>NOTE</b>: Initilially, CVCalendar's figuring out your system calendar's first weekday and sets it as its own.
 
-Open your Info.plist and add a new Number cell with name **CVCalendarStarterWeekday**. Then set the appropriate value. Note, that the minimal value is 1 and the maximal is 7. (Sunday ... Saturday).
+Simply implement a method named `func firstWeekday() -> Weekday` form <b>CVCalendarViewDelegate</b>. Then set the appropriate enum value. Look at <b>Weekday</b> enum values. 
 
-![alt tag](https://cloud.githubusercontent.com/assets/6762769/5789942/321b16d2-9e4f-11e4-954a-cd04d950ae10.png)
+```swift
+    func firstWeekday() -> Weekday {
+        return .Sunday
+    }
+```
 
 <h5>Toggling.</h5>
 
@@ -215,7 +216,7 @@ It's possible to toggle from any month view to any month view by calling a speci
 
 ```swift 
     @IBAction func todayMonthView() {
-        self.calendarView.toggleTodayMonthView()
+        self.calendarView.toggleCurrentDayView()
     }
 ```
 
@@ -266,4 +267,20 @@ Unhiding.
 ```swift
             self.calendarView!.changeDaysOutShowingState(false) // just unhide days out in loaded Month Views
             self.shouldShowDaysOut = true // passing value for 'shouldShowWeekdaysOut:'
+```
+
+<h5>Changing the presentation mode.</h5>
+
+If you want to animate the calendar from one presentation mode to another then simply call `func changeMode(mode: CalendarMode)` method from CVCalendarView instance passing an appropriate value. 
+
+```swift
+    /// Switch to WeekView mode.
+    @IBAction func toWeekView(sender: AnyObject) {
+        calendarView.changeMode(.WeekView)
+    }
+    
+    /// Switch to MonthView mode.
+    @IBAction func toMonthView(sender: AnyObject) {
+        calendarView.changeMode(.MonthView)
+    }
 ```
