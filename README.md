@@ -91,34 +91,38 @@ Two views are representing ultimately a MenuView and a CalendarView so they shou
 <h5> Important note. </h5>
 Before we move to setting up delegates for customization stuff, you should know that CalendarView's initialization is devided by 2 parts: 
 * On Init.
-* On Appearing. 
+* On Layout. 
 
-As well as most of the developers are using AutoLayout feature UIView's size in the initialization does not match the one on UIView's appearing. Thus we have either to initialize ContentView with MonthViews and all the appropriate stuff on UIView's appearing or initialize stuff as UIView's being initialized and then simply update frames. The first option doesn't work since there will be a flash effect (the initialization will be finished after your UIView appeared) according to what the CVCalendar has 2 parts of creating. 
+As well as most of the developers are using AutoLayout feature UIView's size in the beginning of initialization does not match the one on UIView's appearing. Thus we have either to initialize ContentView with MonthViews and all the appropriate stuff on UIView's appearing or initialize stuff as UIView's being initialized and then simply update frames. The first option doesn't work since there will be a flash effect (the initialization will be finished after your UIView appeared) according to what the CVCalendar has 2 parts of creating. 
 
 Since CVCalendarView and CVCalendarMenuView will be created automatically all you have to do is this (in the ViewController that contains CVCalendar).
 
 ````swift
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
-        self.calendarView.commitCalendarViewUpdate()
-        self.menuView.commitMenuViewUpdate()
+        calendarView.commitCalendarViewUpdate()
+        menuView.commitMenuViewUpdate()
     }
 ````
 
 <h4>Delegates Setup (Customization).</h4>
 
+CVCalendar requires to implement two protocols. They are <b>CVCalendarViewDelegate</b> and <b>CVCalendarMenuViewDelegate</b>. Note that the last one has exactly the same named method as the first one declares which means you have to implement only required methods in <b>CVCalendarViewDelegate</b> and set your controller as a delegate implementing both protocols. 
+
+These protocols stand for getting the data for building CVCalendarView and CVCalendarMenuView. So do not forget to implement them. 
+
 [<b>API Page</b>](https://github.com/Mozharovsky/CVCalendar/wiki)
 
 A long story in short or customizable properties: 
 * Showing weekdays out 
-* Moving a dot marker on highlighting
-* Showing a dot marker on a specific day view
+* Moving dot markers on highlighting
+* Showing dot markers on a specific day view
 * Dot marker's color
 * Space between week views and day views
 * Day view's label properties (color, background, alpha + different states (normal/highlighted))
 
-Behaviour: 
+Behavior: 
 * Day view selection 
 * Presented date update 
 * Animations on (de)selecting day views
@@ -140,7 +144,7 @@ If for some reason you'd like to setup **CVCalendar** manually you have to do th
 
 Initialize **CVCalendarView** with either `init` or `init:frame` methods. I suggest to do it in `viewDidLoad` method. Do NOT put initialization in `viewDidAppear:` or `viewWillAppear:` methods! Then setup delegates if you're going to customize options. 
 
-For **CVCalendarMenuView** you simply initialize it as well as CVCalendarView and no delegates are available. 
+For **CVCalendarMenuView** you simply initialize it as well as CVCalendarView and it requires to implement **CVCalendarMenuViewDelegate** protocol. 
 
 How it should look like. 
 
@@ -154,12 +158,16 @@ How it should look like.
         // CVCalendarMenuView initialization with frame 
         self.menuView = CVCalendarMenuView(frame: CGRectMake(0, 0, 300, 15))
         
-        /* 
-         *  Note that setting up delegates as showed below is not necessary. 
-         */
         
         // Calendar delegate 
         self.calendarView.calendarDelegate = self 
+        
+        // Menu delegate
+        self.menuView.menuViewDelegate = self
+        
+        /* 
+         *  Note that setting up delegates as showed below is not necessary. 
+         */
         
         // Appearance delegate 
         self.calendarView.appearanceDelegate = self
@@ -169,11 +177,11 @@ How it should look like.
     }
 ```
 
-And do not forget to commit updates on `viewDidAppear:` method. 
+And do not forget to commit updates on `viewDidLayoutSubviews` method. 
 
 ```swift
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
         // Commit frames' updates
         self.calendarView.commitCalendarViewUpdate()
