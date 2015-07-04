@@ -14,8 +14,11 @@ Screenshots
   <img src ="https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/CVCalendar_White.png" />
 </p>
 
+GIF Demo
+==========
+
 <p align="center">
-  <img src ="https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/Demo.gif" />
+  <img src ="https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/Demo_grey.gif" />
 </p>
 
 
