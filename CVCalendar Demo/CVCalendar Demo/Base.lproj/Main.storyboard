@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -23,12 +23,6 @@
                                 <color key="textColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZPD-eB-kRA" customClass="CVCalendarMenuView" customModule="CVCalendar_Demo" customModuleProvider="target">
-                                <rect key="frame" x="16" y="71" width="568" height="24"/>
-                                <connections>
-                                    <outlet property="menuViewDelegate" destination="vXZ-lx-hvc" id="S19-Z5-mn8"/>
-                                </connections>
-                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HF3-fY-vSc">
                                 <rect key="frame" x="551" y="23" width="33" height="33"/>
                                 <state key="normal" image="present-100">
@@ -50,24 +44,6 @@
                                     <action selector="switchChanged:" destination="vXZ-lx-hvc" eventType="valueChanged" id="4vA-FH-bX6"/>
                                 </connections>
                             </switch>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T1w-UY-QHC" customClass="CVCalendarView" customModule="CVCalendar_Demo" customModuleProvider="target">
-                                <rect key="frame" x="16" y="103" width="568" height="300"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="300" id="3oZ-He-brt">
-                                        <variation key="heightClass=regular-widthClass=regular" constant="480"/>
-                                    </constraint>
-                                </constraints>
-                                <connections>
-                                    <outlet property="calendarAppearanceDelegate" destination="vXZ-lx-hvc" id="esW-84-Ric"/>
-                                    <outlet property="calendarDelegate" destination="vXZ-lx-hvc" id="BGr-mw-JIs"/>
-                                </connections>
-                            </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Autolayout" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t2y-Uz-Mr2">
-                                <rect key="frame" x="259" y="411" width="83" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="izK-WF-YDE">
                                 <rect key="frame" x="16" y="25" width="38" height="30"/>
                                 <state key="normal" title="Week">
@@ -86,8 +62,54 @@
                                     <action selector="toMonthView:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="dG7-QP-sLC"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7XS-8v-25U">
+                                <rect key="frame" x="6" y="64" width="588" height="269"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZPD-eB-kRA" customClass="CVCalendarMenuView" customModule="CVCalendar_Demo" customModuleProvider="target">
+                                        <rect key="frame" x="10" y="8" width="568" height="24"/>
+                                        <color key="backgroundColor" red="0.80392156859999997" green="0.18039215689999999" blue="0.13725490200000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="24" id="z9P-B0-tmC"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="menuViewDelegate" destination="vXZ-lx-hvc" id="S19-Z5-mn8"/>
+                                        </connections>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T1w-UY-QHC" customClass="CVCalendarView" customModule="CVCalendar_Demo" customModuleProvider="target">
+                                        <rect key="frame" x="10" y="40" width="568" height="221"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="calendarAppearanceDelegate" destination="vXZ-lx-hvc" id="esW-84-Ric"/>
+                                            <outlet property="calendarDelegate" destination="vXZ-lx-hvc" id="BGr-mw-JIs"/>
+                                        </connections>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="T1w-UY-QHC" firstAttribute="leading" secondItem="7XS-8v-25U" secondAttribute="leading" constant="10" id="9Nm-RD-UgA"/>
+                                    <constraint firstItem="T1w-UY-QHC" firstAttribute="top" secondItem="7XS-8v-25U" secondAttribute="top" constant="40" id="Ea1-xO-62j"/>
+                                    <constraint firstItem="ZPD-eB-kRA" firstAttribute="leading" secondItem="7XS-8v-25U" secondAttribute="leading" constant="10" id="bfo-53-AS9"/>
+                                    <constraint firstAttribute="trailing" secondItem="T1w-UY-QHC" secondAttribute="trailing" constant="10" id="bub-vk-m66"/>
+                                    <constraint firstItem="T1w-UY-QHC" firstAttribute="top" secondItem="ZPD-eB-kRA" secondAttribute="bottom" constant="8" id="kXa-7s-NIP"/>
+                                    <constraint firstItem="ZPD-eB-kRA" firstAttribute="top" secondItem="7XS-8v-25U" secondAttribute="top" constant="8" id="pJ3-wx-Q9x"/>
+                                    <constraint firstAttribute="bottom" secondItem="T1w-UY-QHC" secondAttribute="bottom" constant="8" id="u7H-dA-dxS"/>
+                                    <constraint firstAttribute="trailing" secondItem="ZPD-eB-kRA" secondAttribute="trailing" constant="10" id="vgk-bd-kKz"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tricky label, make it hidden" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s89-bZ-c7E">
+                                <rect key="frame" x="196" y="408" width="209" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Autolayout" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t2y-Uz-Mr2">
+                                <rect key="frame" x="259" y="341" width="83" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ecA-uZ-EAG">
-                                <rect key="frame" x="312" y="440" width="30" height="30"/>
+                                <rect key="frame" x="312" y="370" width="30" height="30"/>
                                 <state key="normal" title="&gt;">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -96,7 +118,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oRb-Wa-JqA">
-                                <rect key="frame" x="259" y="440" width="30" height="30"/>
+                                <rect key="frame" x="259" y="370" width="30" height="30"/>
                                 <state key="normal" title="&lt;">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -107,33 +129,35 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="T1w-UY-QHC" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="1TS-li-VrB"/>
-                            <constraint firstItem="oRb-Wa-JqA" firstAttribute="top" secondItem="t2y-Uz-Mr2" secondAttribute="bottom" constant="8" id="2N9-Zw-NaR"/>
-                            <constraint firstItem="ZPD-eB-kRA" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="59J-xp-B4Q"/>
-                            <constraint firstItem="T1w-UY-QHC" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" constant="103" id="9hA-gc-8YQ"/>
-                            <constraint firstItem="oRb-Wa-JqA" firstAttribute="leading" secondItem="t2y-Uz-Mr2" secondAttribute="leading" id="Cnh-zh-egW"/>
-                            <constraint firstItem="ucX-go-wCw" firstAttribute="trailing" secondItem="T1w-UY-QHC" secondAttribute="trailing" id="GLH-be-aOi"/>
-                            <constraint firstItem="xf5-AN-qLk" firstAttribute="centerX" secondItem="ZPD-eB-kRA" secondAttribute="centerX" id="H78-2a-9fG"/>
-                            <constraint firstItem="Hz3-8S-aMR" firstAttribute="leading" secondItem="izK-WF-YDE" secondAttribute="trailing" constant="8" id="Hko-cs-dId"/>
-                            <constraint firstItem="T1w-UY-QHC" firstAttribute="top" secondItem="ZPD-eB-kRA" secondAttribute="bottom" constant="8" symbolic="YES" id="IfR-Rn-lpW"/>
-                            <constraint firstItem="oRb-Wa-JqA" firstAttribute="top" secondItem="T1w-UY-QHC" secondAttribute="bottom" constant="37" id="Inc-cL-c0K"/>
-                            <constraint firstItem="l1z-8G-fgL" firstAttribute="leading" secondItem="T1w-UY-QHC" secondAttribute="leading" id="JiT-jq-LeD"/>
-                            <constraint firstItem="T1w-UY-QHC" firstAttribute="leading" secondItem="ZPD-eB-kRA" secondAttribute="leading" id="Lhg-3p-WNM"/>
-                            <constraint firstItem="ecA-uZ-EAG" firstAttribute="trailing" secondItem="t2y-Uz-Mr2" secondAttribute="trailing" id="RKD-AT-yeW"/>
-                            <constraint firstItem="izK-WF-YDE" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="TxE-T0-Cja"/>
-                            <constraint firstItem="xf5-AN-qLk" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="8" symbolic="YES" id="XNU-W1-hVv"/>
-                            <constraint firstItem="t2y-Uz-Mr2" firstAttribute="top" secondItem="T1w-UY-QHC" secondAttribute="bottom" constant="8" id="cWn-ba-zni"/>
-                            <constraint firstItem="Hz3-8S-aMR" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="5" id="ef0-ac-Q7Y"/>
-                            <constraint firstItem="HF3-fY-vSc" firstAttribute="trailing" secondItem="ZPD-eB-kRA" secondAttribute="trailing" id="eh5-Dv-ORM"/>
-                            <constraint firstItem="HF3-fY-vSc" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="3" id="g3v-dm-1Jg"/>
-                            <constraint firstItem="izK-WF-YDE" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="5" id="noP-lz-cVf"/>
-                            <constraint firstItem="T1w-UY-QHC" firstAttribute="trailing" secondItem="ZPD-eB-kRA" secondAttribute="trailing" id="oay-Ad-lAp"/>
-                            <constraint firstAttribute="bottom" secondItem="l1z-8G-fgL" secondAttribute="bottom" constant="20" symbolic="YES" id="r7P-Sz-8Xp"/>
-                            <constraint firstAttribute="centerX" secondItem="t2y-Uz-Mr2" secondAttribute="centerX" constant="-0.5" id="tzu-uz-26Y"/>
-                            <constraint firstItem="ZPD-eB-kRA" firstAttribute="top" secondItem="HF3-fY-vSc" secondAttribute="bottom" constant="15" id="uiU-f1-3Z4"/>
-                            <constraint firstItem="ecA-uZ-EAG" firstAttribute="top" secondItem="T1w-UY-QHC" secondAttribute="bottom" constant="37" id="vgQ-ES-YAd"/>
-                            <constraint firstItem="ucX-go-wCw" firstAttribute="bottom" secondItem="l1z-8G-fgL" secondAttribute="bottom" id="zIk-C3-01y"/>
-                            <constraint firstItem="ecA-uZ-EAG" firstAttribute="top" secondItem="t2y-Uz-Mr2" secondAttribute="bottom" constant="8" id="zv4-8T-202"/>
+                            <constraint firstItem="7XS-8v-25U" firstAttribute="top" secondItem="xf5-AN-qLk" secondAttribute="bottom" constant="12" id="3uF-UE-vFF"/>
+                            <constraint firstItem="izK-WF-YDE" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="5" id="4LY-dl-0zW"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="l1z-8G-fgL" secondAttribute="bottom" constant="20" id="F8z-Jm-e6c"/>
+                            <constraint firstItem="7XS-8v-25U" firstAttribute="top" secondItem="HF3-fY-vSc" secondAttribute="bottom" constant="8" id="FKw-q0-gPa"/>
+                            <constraint firstItem="7XS-8v-25U" firstAttribute="top" secondItem="izK-WF-YDE" secondAttribute="bottom" constant="9" id="Ic4-AN-7IQ"/>
+                            <constraint firstItem="ucX-go-wCw" firstAttribute="centerY" secondItem="l1z-8G-fgL" secondAttribute="centerY" constant="-3.5" id="Ig5-O8-XB9"/>
+                            <constraint firstAttribute="centerX" secondItem="xf5-AN-qLk" secondAttribute="centerX" id="Qc5-DW-OnA"/>
+                            <constraint firstItem="l1z-8G-fgL" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="Scc-7L-V6d"/>
+                            <constraint firstItem="t2y-Uz-Mr2" firstAttribute="centerX" secondItem="7XS-8v-25U" secondAttribute="centerX" constant="0.5" id="U2a-09-RQ2"/>
+                            <constraint firstAttribute="trailing" secondItem="7XS-8v-25U" secondAttribute="trailing" constant="6" id="U7i-Gf-G7o"/>
+                            <constraint firstItem="ecA-uZ-EAG" firstAttribute="top" secondItem="t2y-Uz-Mr2" secondAttribute="bottom" constant="8" id="UW0-Cx-jh3"/>
+                            <constraint firstItem="ecA-uZ-EAG" firstAttribute="trailing" secondItem="t2y-Uz-Mr2" secondAttribute="trailing" id="Va5-Jz-PdP"/>
+                            <constraint firstItem="Hz3-8S-aMR" firstAttribute="leading" secondItem="izK-WF-YDE" secondAttribute="trailing" constant="8" id="VjO-u4-7bm"/>
+                            <constraint firstItem="oRb-Wa-JqA" firstAttribute="top" secondItem="t2y-Uz-Mr2" secondAttribute="bottom" constant="8" id="WZR-Dj-iMB"/>
+                            <constraint firstItem="oRb-Wa-JqA" firstAttribute="leading" secondItem="t2y-Uz-Mr2" secondAttribute="leading" id="awP-Zd-cXZ"/>
+                            <constraint firstItem="ucX-go-wCw" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="bOX-a1-hDl"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="s89-bZ-c7E" secondAttribute="bottom" constant="171" id="d1C-AW-q3F"/>
+                            <constraint firstItem="Hz3-8S-aMR" firstAttribute="leading" secondItem="izK-WF-YDE" secondAttribute="trailing" constant="8" id="ieY-ET-rP3"/>
+                            <constraint firstItem="s89-bZ-c7E" firstAttribute="centerX" secondItem="7XS-8v-25U" secondAttribute="centerX" constant="0.5" id="jNw-5t-y8X"/>
+                            <constraint firstItem="HF3-fY-vSc" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="koQ-tf-d5V"/>
+                            <constraint firstItem="t2y-Uz-Mr2" firstAttribute="top" secondItem="7XS-8v-25U" secondAttribute="bottom" constant="8" id="m6e-Ot-JvP"/>
+                            <constraint firstItem="HF3-fY-vSc" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="3" id="mKV-hi-0um"/>
+                            <constraint firstItem="7XS-8v-25U" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="6" id="mLB-Kw-Flo"/>
+                            <constraint firstItem="Hz3-8S-aMR" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="5" id="oNI-OP-sKv"/>
+                            <constraint firstItem="izK-WF-YDE" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="pYY-4d-Hby"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="ucX-go-wCw" secondAttribute="bottom" constant="20" id="sto-KT-Bn4"/>
+                            <constraint firstItem="s89-bZ-c7E" firstAttribute="top" secondItem="7XS-8v-25U" secondAttribute="bottom" constant="75" id="vaV-os-CM7"/>
+                            <constraint firstItem="7XS-8v-25U" firstAttribute="top" secondItem="Hz3-8S-aMR" secondAttribute="bottom" constant="9" id="zD9-cS-n1R"/>
+                            <constraint firstItem="xf5-AN-qLk" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="8" id="zGz-aI-qXo"/>
                         </constraints>
                     </view>
                     <connections>
@@ -146,6 +170,156 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="18" y="293"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="CkJ-v8-F7H">
+            <objects>
+                <viewController id="qC1-5v-Bit" customClass="ViewController" customModule="CVCalendar_Demo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="dRS-Mm-8Z4"/>
+                        <viewControllerLayoutGuide type="bottom" id="5r6-pG-2Ll"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="poM-nP-ayA">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="January, 2015" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iu0-cV-J7K">
+                                <rect key="frame" x="237" y="28" width="127" height="24"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <color key="textColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FYr-Ow-esW">
+                                <rect key="frame" x="551" y="23" width="33" height="33"/>
+                                <state key="normal" image="present-100">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="todayMonthView" destination="qC1-5v-Bit" eventType="touchUpInside" id="lI6-it-Y9s"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable showing days out" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tTe-73-oPO">
+                                <rect key="frame" x="16" y="556" width="221" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p94-T3-ZRj">
+                                <rect key="frame" x="535" y="549" width="51" height="31"/>
+                                <connections>
+                                    <action selector="switchChanged:" destination="qC1-5v-Bit" eventType="valueChanged" id="H9V-5h-uee"/>
+                                </connections>
+                            </switch>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qrd-0m-VTp">
+                                <rect key="frame" x="16" y="25" width="38" height="30"/>
+                                <state key="normal" title="Week">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="toWeekView:" destination="qC1-5v-Bit" eventType="touchUpInside" id="c7q-WD-GgK"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UaL-k7-KXD">
+                                <rect key="frame" x="62" y="25" width="44" height="30"/>
+                                <state key="normal" title="Month">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="toMonthView:" destination="qC1-5v-Bit" eventType="touchUpInside" id="n8I-4I-iwX"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uSj-d9-Geo" customClass="CVCalendarMenuView" customModule="CVCalendar_Demo" customModuleProvider="target">
+                                <rect key="frame" x="16" y="60" width="568" height="24"/>
+                                <color key="backgroundColor" red="0.80392156859999997" green="0.18039215689999999" blue="0.13725490200000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="l9t-FO-d0B"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="menuViewDelegate" destination="qC1-5v-Bit" id="kVN-f5-F2V"/>
+                                </connections>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mcD-Eh-2le" customClass="CVCalendarView" customModule="CVCalendar_Demo" customModuleProvider="target">
+                                <rect key="frame" x="16" y="92" width="568" height="229"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="calendarAppearanceDelegate" destination="qC1-5v-Bit" id="d2Z-kT-T8j"/>
+                                    <outlet property="calendarDelegate" destination="qC1-5v-Bit" id="4cC-5w-8yD"/>
+                                </connections>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Autolayout" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SFh-7t-ACr">
+                                <rect key="frame" x="259" y="329" width="83" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MA3-89-20x">
+                                <rect key="frame" x="259" y="356" width="30" height="30"/>
+                                <state key="normal" title="&lt;">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="loadPrevious:" destination="qC1-5v-Bit" eventType="touchUpInside" id="t1K-KM-UAp"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w80-bS-Eg6">
+                                <rect key="frame" x="312" y="356" width="30" height="30"/>
+                                <state key="normal" title="&gt;">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="loadNext:" destination="qC1-5v-Bit" eventType="touchUpInside" id="kCW-jX-Qov"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tricky label, make it hidden" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U6R-Fy-cXx">
+                                <rect key="frame" x="196" y="394" width="209" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="mcD-Eh-2le" firstAttribute="top" secondItem="dRS-Mm-8Z4" secondAttribute="bottom" constant="72" id="2DL-kN-acU"/>
+                            <constraint firstItem="Iu0-cV-J7K" firstAttribute="top" secondItem="dRS-Mm-8Z4" secondAttribute="bottom" constant="8" id="2Ic-XR-qdZ"/>
+                            <constraint firstItem="w80-bS-Eg6" firstAttribute="baseline" secondItem="MA3-89-20x" secondAttribute="baseline" id="2iQ-k5-abc"/>
+                            <constraint firstItem="5r6-pG-2Ll" firstAttribute="top" secondItem="tTe-73-oPO" secondAttribute="bottom" constant="20" id="4Q7-J2-1sd"/>
+                            <constraint firstItem="UaL-k7-KXD" firstAttribute="leading" secondItem="Qrd-0m-VTp" secondAttribute="trailing" constant="8" id="4Xe-W9-tuQ"/>
+                            <constraint firstItem="uSj-d9-Geo" firstAttribute="trailing" secondItem="poM-nP-ayA" secondAttribute="trailingMargin" id="4qS-Q9-ekg"/>
+                            <constraint firstItem="SFh-7t-ACr" firstAttribute="top" secondItem="mcD-Eh-2le" secondAttribute="bottom" constant="8" symbolic="YES" id="6Pa-tD-ycJ"/>
+                            <constraint firstItem="MA3-89-20x" firstAttribute="top" secondItem="SFh-7t-ACr" secondAttribute="bottom" constant="6" id="7Y2-m0-JNZ"/>
+                            <constraint firstItem="Qrd-0m-VTp" firstAttribute="leading" secondItem="poM-nP-ayA" secondAttribute="leadingMargin" id="AFC-9Y-kG1"/>
+                            <constraint firstItem="uSj-d9-Geo" firstAttribute="leading" secondItem="poM-nP-ayA" secondAttribute="leadingMargin" id="CtP-PQ-d5O"/>
+                            <constraint firstItem="FYr-Ow-esW" firstAttribute="top" secondItem="dRS-Mm-8Z4" secondAttribute="bottom" constant="3" id="Gaf-kY-1WR"/>
+                            <constraint firstItem="uSj-d9-Geo" firstAttribute="trailing" secondItem="mcD-Eh-2le" secondAttribute="trailing" id="HK4-1o-lcH"/>
+                            <constraint firstItem="UaL-k7-KXD" firstAttribute="top" secondItem="dRS-Mm-8Z4" secondAttribute="bottom" constant="5" id="LQk-fo-Ksf"/>
+                            <constraint firstItem="mcD-Eh-2le" firstAttribute="centerX" secondItem="U6R-Fy-cXx" secondAttribute="centerX" id="Nu4-VG-SzS"/>
+                            <constraint firstItem="uSj-d9-Geo" firstAttribute="leading" secondItem="mcD-Eh-2le" secondAttribute="leading" id="OIw-FL-h3b"/>
+                            <constraint firstItem="U6R-Fy-cXx" firstAttribute="top" secondItem="mcD-Eh-2le" secondAttribute="bottom" constant="73" id="Ogd-k9-WZd"/>
+                            <constraint firstItem="uSj-d9-Geo" firstAttribute="top" secondItem="Iu0-cV-J7K" secondAttribute="bottom" constant="8" id="Uht-xr-Gzr"/>
+                            <constraint firstItem="Qrd-0m-VTp" firstAttribute="top" secondItem="dRS-Mm-8Z4" secondAttribute="bottom" constant="5" id="X2J-jo-r3M"/>
+                            <constraint firstItem="p94-T3-ZRj" firstAttribute="trailing" secondItem="poM-nP-ayA" secondAttribute="trailingMargin" id="X8Y-WC-9pe"/>
+                            <constraint firstItem="FYr-Ow-esW" firstAttribute="trailing" secondItem="poM-nP-ayA" secondAttribute="trailingMargin" id="Ym0-D1-FAR"/>
+                            <constraint firstItem="5r6-pG-2Ll" firstAttribute="top" secondItem="U6R-Fy-cXx" secondAttribute="bottom" constant="185" id="a7Y-zL-Xlb"/>
+                            <constraint firstItem="MA3-89-20x" firstAttribute="leading" secondItem="SFh-7t-ACr" secondAttribute="leading" id="bCQ-D2-FCp"/>
+                            <constraint firstItem="5r6-pG-2Ll" firstAttribute="top" secondItem="p94-T3-ZRj" secondAttribute="bottom" constant="20" id="cJE-KY-M0H"/>
+                            <constraint firstItem="UaL-k7-KXD" firstAttribute="leading" secondItem="Qrd-0m-VTp" secondAttribute="trailing" constant="8" id="g4p-nu-tgW"/>
+                            <constraint firstAttribute="centerX" secondItem="Iu0-cV-J7K" secondAttribute="centerX" id="kYm-4d-pup"/>
+                            <constraint firstItem="SFh-7t-ACr" firstAttribute="trailing" secondItem="w80-bS-Eg6" secondAttribute="trailing" id="lTH-fI-eIs"/>
+                            <constraint firstItem="p94-T3-ZRj" firstAttribute="centerY" secondItem="tTe-73-oPO" secondAttribute="centerY" constant="-3.5" id="mbT-yi-mBh"/>
+                            <constraint firstItem="tTe-73-oPO" firstAttribute="leading" secondItem="poM-nP-ayA" secondAttribute="leadingMargin" id="q4D-wc-9qI"/>
+                            <constraint firstItem="mcD-Eh-2le" firstAttribute="centerX" secondItem="SFh-7t-ACr" secondAttribute="centerX" id="tBQ-Oc-d7S"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="calendarView" destination="mcD-Eh-2le" id="Ma3-lG-OUh"/>
+                        <outlet property="daysOutSwitch" destination="p94-T3-ZRj" id="x1S-df-JnE"/>
+                        <outlet property="menuView" destination="uSj-d9-Geo" id="Br7-ON-wUx"/>
+                        <outlet property="monthLabel" destination="Iu0-cV-J7K" id="e9e-2J-yMs"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DKf-f0-MO4" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="721" y="293"/>
         </scene>
     </scenes>
     <resources>

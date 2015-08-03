@@ -36,25 +36,21 @@ class ViewController: UIViewController {
 
 // MARK: - CVCalendarViewDelegate
 
-extension ViewController: CVCalendarViewDelegate
-{
-    func preliminaryView(viewOnDayView dayView: DayView) -> UIView
-    {
+extension ViewController: CVCalendarViewDelegate {
+    func preliminaryView(viewOnDayView dayView: DayView) -> UIView {
         let circleView = CVAuxiliaryView(dayView: dayView, rect: dayView.bounds, shape: CVShape.Circle)
         circleView.fillColor = .colorFromCode(0xCCCCCC)
         return circleView
     }
     
-    func preliminaryView(shouldDisplayOnDayView dayView: DayView) -> Bool
-    {
+    func preliminaryView(shouldDisplayOnDayView dayView: DayView) -> Bool {
         if (dayView.isCurrentDay) {
             return true
         }
         return false
     }
     
-    func supplementaryView(viewOnDayView dayView: DayView) -> UIView
-    {
+    func supplementaryView(viewOnDayView dayView: DayView) -> UIView {
         let π = M_PI
         
         let ringSpacing: CGFloat = 3.0
@@ -91,28 +87,47 @@ extension ViewController: CVCalendarViewDelegate
         return newView
     }
     
-    func supplementaryView(shouldDisplayOnDayView dayView: DayView) -> Bool
-    {
-        if (Int(arc4random_uniform(3)) == 1)
-        {
+    func supplementaryView(shouldDisplayOnDayView dayView: DayView) -> Bool {
+        if (Int(arc4random_uniform(3)) == 1) {
             return true
         }
+        
         return false
     }
 }
 
+// MARK: - CVCalendarMenuViewDelegate
+
+extension ViewController: CVCalendarMenuViewDelegate {
+    // firstWeekday() is implemented below.
+}
+
+// MARK: - CVCalendarViewDelegate
 
 extension ViewController: CVCalendarViewDelegate {
+    /**
+    Required!
+    */
     func presentationMode() -> CalendarMode {
         return .MonthView
     }
     
+    /**
+    Required!
+    */
     func firstWeekday() -> Weekday {
         return .Sunday
     }
     
+    /**
+    Required!
+    */
     func shouldShowWeekdaysOut() -> Bool {
         return shouldShowDaysOut
+    }
+    
+    func shouldAnimateResizing() -> Bool {
+        return true
     }
     
     func didSelectDayView(dayView: CVCalendarDayView) {
@@ -207,12 +222,6 @@ extension ViewController: CVCalendarViewAppearanceDelegate {
     func spaceBetweenDayViews() -> CGFloat {
         return 2
     }
-}
-
-// MARK: - CVCalendarMenuViewDelegate
-
-extension ViewController: CVCalendarMenuViewDelegate {
-    // firstWeekday() has been already implemented.
 }
 
 // MARK: - IB Actions

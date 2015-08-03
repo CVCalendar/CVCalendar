@@ -70,6 +70,16 @@ class CVCalendarView: UIView {
         }
     }
     
+    var shouldAnimateResizing: Bool {
+        get {
+            if let delegate = delegate, should = delegate.shouldAnimateResizing?() {
+                return should
+            }
+            
+            return true
+        }
+    }
+    
     // MARK: - Calendar View Delegate
     
     @IBOutlet weak var calendarDelegate: AnyObject? {
@@ -170,11 +180,14 @@ extension CVCalendarView {
         if let delegate = delegate, let contentController = contentController {
             let contentViewSize = contentController.bounds.size
             let selfSize = bounds.size
+            let screenSize = UIScreen.mainScreen().bounds.size
+    
+            let allowed = selfSize.width <= screenSize.width && selfSize.height <= screenSize.height
             
-            if !validated {
+            if !validated && allowed {
                 let width = selfSize.width
                 let height: CGFloat
-                let countOfWeeks = CGFloat(5)
+                let countOfWeeks = CGFloat(6)
                 
                 let vSpace = appearance.spaceBetweenWeekViews!
                 let hSpace = appearance.spaceBetweenDayViews!
@@ -185,6 +198,18 @@ extension CVCalendarView {
                         height = selfSize.height
                     case .MonthView :
                         height = (selfSize.height / countOfWeeks) - (vSpace * countOfWeeks)
+                    }
+                    
+                    // If no height constraint found we set it manually.
+                    var found = false
+                    for constraint in constraints() as! [NSLayoutConstraint] {
+                        if constraint.firstAttribute == .Height {
+                            found = true
+                        }
+                    }
+                    
+                    if !found {
+                        addConstraint(NSLayoutConstraint(item: self, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .Height, multiplier: 1, constant: frame.height))
                     }
                     
                     weekViewSize = CGSizeMake(width, height)

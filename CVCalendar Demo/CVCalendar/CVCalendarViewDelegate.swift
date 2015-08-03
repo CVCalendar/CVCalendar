@@ -13,6 +13,11 @@ protocol CVCalendarViewDelegate {
     func presentationMode() -> CalendarMode
     func firstWeekday() -> Weekday
     
+    /**
+    Determines whether resizing should cause related views' animation.
+    */
+    optional func shouldAnimateResizing() -> Bool
+    
     optional func shouldShowWeekdaysOut() -> Bool
     optional func didSelectDayView(dayView: DayView)
     optional func presentedDateUpdated(date: Date)
