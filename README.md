@@ -44,6 +44,8 @@ Using CVCalendar isn't difficult at all. There are two actual ways of implementi
 
 So let's get started.
 
+Warning! Since 1.1.1 version CVCalendar requires an implementation of two protocols **CVCalendarViewDelegate** and **CVCalendarMenuViewDelegate**, please implement both. Also note, they both have a method with the same signature which means you need to impement it only once. Take a look at the [Demo](https://github.com/Mozharovsky/CVCalendar/tree/master/CVCalendar) project for more info.
+
 <h3> Storyboard Setup </h3>
 
 <h4>Basic setup.</h4> 
