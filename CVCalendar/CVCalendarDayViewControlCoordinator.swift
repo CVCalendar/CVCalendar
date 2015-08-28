@@ -8,21 +8,21 @@
 
 import UIKit
 
-class CVCalendarDayViewControlCoordinator {
+public final class CVCalendarDayViewControlCoordinator {
     // MARK: - Non public properties
     private var selectionSet = Set<DayView>()
     private unowned let calendarView: CalendarView
     
     // MARK: - Public properties
-    weak var selectedDayView: CVCalendarDayView?
-    var animator: CVCalendarViewAnimator! {
+    public weak var selectedDayView: CVCalendarDayView?
+    public var animator: CVCalendarViewAnimator! {
         get {
             return calendarView.animator
         }
     }
 
     // MARK: - initialization
-    init(calendarView: CalendarView) {
+    public init(calendarView: CalendarView) {
         self.calendarView = calendarView
     }
 }
@@ -30,22 +30,22 @@ class CVCalendarDayViewControlCoordinator {
 // MARK: - Animator side callback
 
 extension CVCalendarDayViewControlCoordinator {
-    func selectionPerformedOnDayView(dayView: DayView) {
+    public func selectionPerformedOnDayView(dayView: DayView) {
         // TODO:
     }
     
-    func deselectionPerformedOnDayView(dayView: DayView) {
+    public func deselectionPerformedOnDayView(dayView: DayView) {
         if dayView != selectedDayView {
             selectionSet.remove(dayView)
             dayView.setDeselectedWithClearing(true)
         }
     }
     
-    func dequeueDayView(dayView: DayView) {
+    public func dequeueDayView(dayView: DayView) {
         selectionSet.remove(dayView)
     }
     
-    func flush() {
+    public func flush() {
         selectedDayView = nil
         selectionSet.removeAll()
     }
@@ -68,7 +68,7 @@ private extension CVCalendarDayViewControlCoordinator {
 // MARK: - Coordinator's control actions
 
 extension CVCalendarDayViewControlCoordinator {
-    func performDayViewSingleSelection(dayView: DayView) {
+    public func performDayViewSingleSelection(dayView: DayView) {
         selectionSet.insert(dayView)
         
         if selectionSet.count > 1 {
@@ -92,7 +92,7 @@ extension CVCalendarDayViewControlCoordinator {
         } 
     }
     
-    func performDayViewRangeSelection(dayView: DayView) {
+    public func performDayViewRangeSelection(dayView: DayView) {
         println("Day view range selection found")
     }
 }

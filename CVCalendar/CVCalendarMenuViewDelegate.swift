@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 @objc
-protocol CVCalendarMenuViewDelegate {
+public protocol CVCalendarMenuViewDelegate {
     optional func firstWeekday() -> Weekday
     optional func dayOfWeekTextColor() -> UIColor
     optional func dayOfWeekTextUppercase() -> Bool

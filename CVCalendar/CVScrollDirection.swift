@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum CVScrollDirection {
+public enum CVScrollDirection {
     case None
     case Right
     case Left

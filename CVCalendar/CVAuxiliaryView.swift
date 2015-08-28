@@ -8,21 +8,21 @@
 
 import UIKit
 
-class CVAuxiliaryView: UIView {
-    var shape: CVShape!
-    var strokeColor: UIColor! {
+public final class CVAuxiliaryView: UIView {
+    public var shape: CVShape!
+    public var strokeColor: UIColor! {
         didSet {
             setNeedsDisplay()
         }
     }
     
-    var fillColor: UIColor! {
+    public var fillColor: UIColor! {
         didSet {
             setNeedsDisplay()
         }
     }
     
-    let defaultFillColor = UIColor.colorFromCode(0xe74c3c)
+    public let defaultFillColor = UIColor.colorFromCode(0xe74c3c)
     
     private var radius: CGFloat {
         get {
@@ -30,9 +30,9 @@ class CVAuxiliaryView: UIView {
         }
     }
     
-    unowned let dayView: DayView
+    public unowned let dayView: DayView
     
-    init(dayView: DayView, rect: CGRect, shape: CVShape) {
+    public init(dayView: DayView, rect: CGRect, shape: CVShape) {
         self.dayView = dayView
         self.shape = shape
         super.init(frame: rect)
@@ -43,15 +43,15 @@ class CVAuxiliaryView: UIView {
         backgroundColor = .clearColor()
     }
     
-    override func didMoveToSuperview() {
+    public override func didMoveToSuperview() {
         setNeedsDisplay()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    public required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func drawRect(rect: CGRect) {
+    public override func drawRect(rect: CGRect) {
         let context = UIGraphicsGetCurrentContext()
         var path: UIBezierPath!
         
@@ -80,7 +80,7 @@ class CVAuxiliaryView: UIView {
 }
 
 extension CVAuxiliaryView {
-    func updateFrame(frame: CGRect) {
+    public func updateFrame(frame: CGRect) {
         self.frame = frame
         setNeedsDisplay()
     }

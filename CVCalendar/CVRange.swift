@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum CVRange {
+public enum CVRange {
     case Started
     case Changed
     case Ended

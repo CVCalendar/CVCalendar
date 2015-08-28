@@ -8,15 +8,15 @@
 
 import UIKit
 
-class CVDate: NSObject {
+public final class CVDate: NSObject {
     private let date: NSDate
     
-    let year: Int
-    let month: Int
-    let week: Int
-    let day: Int
+    public let year: Int
+    public let month: Int
+    public let week: Int
+    public let day: Int
     
-    init(date: NSDate) {
+   public init(date: NSDate) {
         let dateRange = Manager.dateRange(date)
         
         self.date = date
@@ -28,7 +28,7 @@ class CVDate: NSObject {
         super.init()
     }
     
-    init(day: Int, month: Int, week: Int, year: Int) {
+    public init(day: Int, month: Int, week: Int, year: Int) {
         if let date = Manager.dateFromYear(year, month: month, week: week, day: day) {
             self.date = date
         } else {
@@ -45,7 +45,7 @@ class CVDate: NSObject {
 }
 
 extension CVDate {
-    func convertedDate() -> NSDate? {
+    public func convertedDate() -> NSDate? {
         let calendar = NSCalendar.currentCalendar()
         let comps = Manager.componentsForDate(NSDate())
         
@@ -59,14 +59,14 @@ extension CVDate {
 }
 
 extension CVDate {
-    var globalDescription: String {
+    public var globalDescription: String {
         get {
             let month = dateFormattedStringWithFormat("MMMM", fromDate: date)
             return "\(month), \(year)"
         }
     }
     
-    var commonDescription: String {
+    public var commonDescription: String {
         get {
             let month = dateFormattedStringWithFormat("MMMM", fromDate: date)
             return "\(day) \(month), \(year)"

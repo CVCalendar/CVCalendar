@@ -8,7 +8,7 @@
 
 import Foundation
 
-@objc enum CVCalendarWeekday: Int {
+@objc public enum CVCalendarWeekday: Int {
     case Sunday = 1
     case Monday = 2
     case Tuesday = 3

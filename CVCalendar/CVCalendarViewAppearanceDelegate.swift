@@ -9,7 +9,7 @@
 import UIKit
 
 @objc
-protocol CVCalendarViewAppearanceDelegate {
+public protocol CVCalendarViewAppearanceDelegate {
     /// Rendering options.
     optional func spaceBetweenWeekViews() -> CGFloat
     optional func spaceBetweenDayViews() -> CGFloat

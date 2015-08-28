@@ -8,19 +8,19 @@
 
 import UIKit
 
-class CVCalendarViewAnimator {
+public final class CVCalendarViewAnimator {
     private unowned let calendarView: CalendarView
     
     // MARK: - Public properties
-    var delegate: CVCalendarViewAnimatorDelegate!
-    var coordinator: CVCalendarDayViewControlCoordinator {
+    public var delegate: CVCalendarViewAnimatorDelegate!
+    public var coordinator: CVCalendarDayViewControlCoordinator {
         get {
             return calendarView.coordinator
         }
     }
     
     // MARK: - Init
-    init(calendarView: CalendarView) {
+    public init(calendarView: CalendarView) {
         self.calendarView = calendarView
         delegate = self
     }
@@ -29,7 +29,7 @@ class CVCalendarViewAnimator {
 // MARK: - Public methods
 
 extension CVCalendarViewAnimator {
-    func animateSelectionOnDayView(dayView: DayView) {
+    public func animateSelectionOnDayView(dayView: DayView) {
         let selectionAnimation = delegate.selectionAnimation()
         dayView.setSelectedWithType(.Single)
         selectionAnimation(dayView) { [unowned dayView] _ in
@@ -37,7 +37,7 @@ extension CVCalendarViewAnimator {
         }
     }
     
-    func animateDeselectionOnDayView(dayView: DayView) {
+    public func animateDeselectionOnDayView(dayView: DayView) {
         let deselectionAnimation = delegate.deselectionAnimation()
         deselectionAnimation(dayView) { [weak dayView] _ in
             if let selectedDayView = dayView {
@@ -50,11 +50,11 @@ extension CVCalendarViewAnimator {
 // MARK: - CVCalendarViewAnimatorDelegate
 
 extension CVCalendarViewAnimator: CVCalendarViewAnimatorDelegate {
-    @objc func selectionAnimation() -> ((DayView, ((Bool) -> ())) -> ()) {
+    @objc public func selectionAnimation() -> ((DayView, ((Bool) -> ())) -> ()) {
         return selectionWithBounceEffect()
     }
     
-    @objc func deselectionAnimation() -> ((DayView, ((Bool) -> ())) -> ()) {
+    @objc public func deselectionAnimation() -> ((DayView, ((Bool) -> ())) -> ()) {
         return deselectionWithFadeOutEffect()
     }
 }

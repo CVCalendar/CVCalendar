@@ -9,7 +9,7 @@
 import UIKit
 
 @objc
-protocol CVCalendarViewAnimatorDelegate {    
+public protocol CVCalendarViewAnimatorDelegate {    
     func selectionAnimation() -> ((DayView, ((Bool) -> ())) -> ())
     func deselectionAnimation() -> ((DayView, ((Bool) -> ())) -> ())
 }
