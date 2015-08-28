@@ -8,66 +8,66 @@
 
 import UIKit
 
-class CVCalendarViewAppearance: NSObject {
+public final class CVCalendarViewAppearance: NSObject {
     
-    override init() {
+    public override init() {
         super.init()
     }
     
     /// Default rendering options.
-    var spaceBetweenWeekViews: CGFloat? = 0
-    var spaceBetweenDayViews: CGFloat? = 0
+    public var spaceBetweenWeekViews: CGFloat? = 0
+    public var spaceBetweenDayViews: CGFloat? = 0
     
     /// Default text options.
-    var dayLabelPresentWeekdayInitallyBold: Bool? = true
-    var dayLabelWeekdayFont: UIFont? = UIFont(name: "Avenir", size: 18)
-    var dayLabelPresentWeekdayFont: UIFont? = UIFont(name: "Avenir", size: 18)
-    var dayLabelPresentWeekdayBoldFont: UIFont? = UIFont(name: "Avenir-Heavy", size: 18)
-    var dayLabelPresentWeekdayHighlightedFont: UIFont? = UIFont(name: "Avenir-Heavy", size: 18)
-    var dayLabelPresentWeekdaySelectedFont: UIFont? = UIFont(name: "Avenir-Heavy", size: 18)
-    var dayLabelWeekdayHighlightedFont: UIFont? = UIFont(name: "Avenir-Heavy", size: 18)
-    var dayLabelWeekdaySelectedFont: UIFont? = UIFont(name: "Avenir-Heavy", size: 18)
+    public var dayLabelPresentWeekdayInitallyBold: Bool? = true
+    public var dayLabelWeekdayFont: UIFont? = UIFont(name: "Avenir", size: 18)
+    public var dayLabelPresentWeekdayFont: UIFont? = UIFont(name: "Avenir", size: 18)
+    public var dayLabelPresentWeekdayBoldFont: UIFont? = UIFont(name: "Avenir-Heavy", size: 18)
+    public var dayLabelPresentWeekdayHighlightedFont: UIFont? = UIFont(name: "Avenir-Heavy", size: 18)
+    public var dayLabelPresentWeekdaySelectedFont: UIFont? = UIFont(name: "Avenir-Heavy", size: 18)
+    public var dayLabelWeekdayHighlightedFont: UIFont? = UIFont(name: "Avenir-Heavy", size: 18)
+    public var dayLabelWeekdaySelectedFont: UIFont? = UIFont(name: "Avenir-Heavy", size: 18)
     
     /// Default text color.
-    var dayLabelWeekdayInTextColor: UIColor? = .blackColor()
-    var dayLabelWeekdayOutTextColor: UIColor? = .grayColor()
-    var dayLabelWeekdayHighlightedTextColor: UIColor? = .whiteColor()
-    var dayLabelWeekdaySelectedTextColor: UIColor? = .whiteColor()
-    var dayLabelPresentWeekdayTextColor: UIColor? = .redColor()
-    var dayLabelPresentWeekdayHighlightedTextColor: UIColor? = .whiteColor()
-    var dayLabelPresentWeekdaySelectedTextColor: UIColor? = .whiteColor()
+    public var dayLabelWeekdayInTextColor: UIColor? = .blackColor()
+    public var dayLabelWeekdayOutTextColor: UIColor? = .grayColor()
+    public var dayLabelWeekdayHighlightedTextColor: UIColor? = .whiteColor()
+    public var dayLabelWeekdaySelectedTextColor: UIColor? = .whiteColor()
+    public var dayLabelPresentWeekdayTextColor: UIColor? = .redColor()
+    public var dayLabelPresentWeekdayHighlightedTextColor: UIColor? = .whiteColor()
+    public var dayLabelPresentWeekdaySelectedTextColor: UIColor? = .whiteColor()
     
     /// Default text size.
-    var dayLabelWeekdayTextSize: CGFloat? = 18
-    var dayLabelWeekdayHighlightedTextSize: CGFloat? = 20
-    var dayLabelWeekdaySelectedTextSize: CGFloat? = 20
-    var dayLabelPresentWeekdayTextSize: CGFloat? = 18
-    var dayLabelPresentWeekdayHighlightedTextSize: CGFloat? = 20
-    var dayLabelPresentWeekdaySelectedTextSize: CGFloat? = 20
+    public var dayLabelWeekdayTextSize: CGFloat? = 18
+    public var dayLabelWeekdayHighlightedTextSize: CGFloat? = 20
+    public var dayLabelWeekdaySelectedTextSize: CGFloat? = 20
+    public var dayLabelPresentWeekdayTextSize: CGFloat? = 18
+    public var dayLabelPresentWeekdayHighlightedTextSize: CGFloat? = 20
+    public var dayLabelPresentWeekdaySelectedTextSize: CGFloat? = 20
     
     /// Default highlighted state background & alpha.
-    var dayLabelWeekdayHighlightedBackgroundColor: UIColor? = .colorFromCode(0x34AADC)
-    var dayLabelWeekdayHighlightedBackgroundAlpha: CGFloat? = 0.8
-    var dayLabelPresentWeekdayHighlightedBackgroundColor: UIColor? = .colorFromCode(0xFF5E3A)
-    var dayLabelPresentWeekdayHighlightedBackgroundAlpha: CGFloat? = 0.8
+    public var dayLabelWeekdayHighlightedBackgroundColor: UIColor? = .colorFromCode(0x34AADC)
+    public var dayLabelWeekdayHighlightedBackgroundAlpha: CGFloat? = 0.8
+    public var dayLabelPresentWeekdayHighlightedBackgroundColor: UIColor? = .colorFromCode(0xFF5E3A)
+    public var dayLabelPresentWeekdayHighlightedBackgroundAlpha: CGFloat? = 0.8
     
     /// Default selected state background & alpha.
-    var dayLabelWeekdaySelectedBackgroundColor: UIColor? = .colorFromCode(0x1D62F0)
-    var dayLabelWeekdaySelectedBackgroundAlpha: CGFloat? = 0.8
-    var dayLabelPresentWeekdaySelectedBackgroundColor: UIColor? = .colorFromCode(0xFF3B30)
-    var dayLabelPresentWeekdaySelectedBackgroundAlpha: CGFloat? = 0.8
+    public var dayLabelWeekdaySelectedBackgroundColor: UIColor? = .colorFromCode(0x1D62F0)
+    public var dayLabelWeekdaySelectedBackgroundAlpha: CGFloat? = 0.8
+    public var dayLabelPresentWeekdaySelectedBackgroundColor: UIColor? = .colorFromCode(0xFF3B30)
+    public var dayLabelPresentWeekdaySelectedBackgroundAlpha: CGFloat? = 0.8
     
     
     // Default dot marker color.
-    var dotMarkerColor: UIColor? = .whiteColor()
+    public var dotMarkerColor: UIColor? = .whiteColor()
     
-    var delegate: CVCalendarViewAppearanceDelegate? {
+    public var delegate: CVCalendarViewAppearanceDelegate? {
         didSet {
             self.setupAppearance()
         }
     }
     
-    func setupAppearance() {
+    public func setupAppearance() {
         if let delegate = delegate {
             spaceBetweenWeekViews~>delegate.spaceBetweenWeekViews?()
             spaceBetweenDayViews~>delegate.spaceBetweenDayViews?()
@@ -112,7 +112,7 @@ class CVCalendarViewAppearance: NSObject {
 }
 
 infix operator ~> { }
-func ~><T: Any>(inout lhs: T?, rhs: T?) -> T? {
+public func ~><T: Any>(inout lhs: T?, rhs: T?) -> T? {
     if lhs != nil && rhs != nil {
         lhs = rhs
     }
@@ -121,7 +121,7 @@ func ~><T: Any>(inout lhs: T?, rhs: T?) -> T? {
 }
 
 extension UIColor {
-    class func colorFromCode(code: Int) -> UIColor {
+    public static func colorFromCode(code: Int) -> UIColor {
         let red = CGFloat(((code & 0xFF0000) >> 16)) / 255
         let green = CGFloat(((code & 0xFF00) >> 8)) / 255
         let blue = CGFloat((code & 0xFF)) / 255

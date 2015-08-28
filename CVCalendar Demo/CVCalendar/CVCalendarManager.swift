@@ -15,21 +15,21 @@ private let WeekdayUnit = NSCalendarUnit.CalendarUnitWeekday
 private let DayUnit = NSCalendarUnit.CalendarUnitDay
 private let AllUnits = YearUnit | MonthUnit | WeekUnit | WeekdayUnit | DayUnit
 
-class CVCalendarManager {
+public final class CVCalendarManager {
     // MARK: - Private properties
     private var components: NSDateComponents
     private unowned let calendarView: CalendarView
     
-    var calendar: NSCalendar
+    public var calendar: NSCalendar
     
     // MARK: - Public properties
-    var currentDate: NSDate
+    public var currentDate: NSDate
     
     // MARK: - Private initialization
     
-    var starterWeekday: Int
+    public var starterWeekday: Int
     
-    init(calendarView: CalendarView) {
+    public init(calendarView: CalendarView) {
         self.calendarView = calendarView
         currentDate = NSDate()
         calendar = NSCalendar.currentCalendar()
@@ -41,7 +41,7 @@ class CVCalendarManager {
     
     // MARK: - Common date analysis
     
-    func monthDateRange(date: NSDate) -> (countOfWeeks: NSInteger, monthStartDate: NSDate, monthEndDate: NSDate) {
+    public func monthDateRange(date: NSDate) -> (countOfWeeks: NSInteger, monthStartDate: NSDate, monthEndDate: NSDate) {
         let units = (YearUnit | MonthUnit | WeekUnit)
         var components = calendar.components(units, fromDate: date)
         
@@ -61,7 +61,7 @@ class CVCalendarManager {
         return (countOfWeeks, monthStartDate, monthEndDate)
     }
     
-    class func dateRange(date: NSDate) -> (year: Int, month: Int, weekOfMonth: Int, day: Int) {
+    public static func dateRange(date: NSDate) -> (year: Int, month: Int, weekOfMonth: Int, day: Int) {
         let components = componentsForDate(date)
         
         let year = components.year
@@ -72,7 +72,7 @@ class CVCalendarManager {
         return (year, month, weekOfMonth, day)
     }
     
-    func weekdayForDate(date: NSDate) -> Int {
+    public func weekdayForDate(date: NSDate) -> Int {
         let units = WeekdayUnit
         
         let components = calendar.components(units, fromDate: date)
@@ -86,7 +86,7 @@ class CVCalendarManager {
     
     // MARK: - Analysis sorting
     
-    func weeksWithWeekdaysForMonthDate(date: NSDate) -> (weeksIn: [[Int : [Int]]], weeksOut: [[Int : [Int]]]) {
+    public func weeksWithWeekdaysForMonthDate(date: NSDate) -> (weeksIn: [[Int : [Int]]], weeksOut: [[Int : [Int]]]) {
         
         let countOfWeeks = self.monthDateRange(date).countOfWeeks
         let totalCountOfDays = countOfWeeks * 7
@@ -219,14 +219,14 @@ class CVCalendarManager {
     
     // MARK: - Util methods
     
-    class func componentsForDate(date: NSDate) -> NSDateComponents {
+    public static func componentsForDate(date: NSDate) -> NSDateComponents {
         let units = YearUnit | MonthUnit | WeekUnit | DayUnit
         let components = NSCalendar.currentCalendar().components(units, fromDate: date)
         
         return components
     }
     
-    class func dateFromYear(year: Int, month: Int, week: Int, day: Int) -> NSDate? {
+    public static func dateFromYear(year: Int, month: Int, week: Int, day: Int) -> NSDate? {
         let comps = Manager.componentsForDate(NSDate())
         comps.year = year
         comps.month = month

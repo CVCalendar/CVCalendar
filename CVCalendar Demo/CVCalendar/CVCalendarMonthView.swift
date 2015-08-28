@@ -8,11 +8,11 @@
 
 import UIKit
 
-class CVCalendarMonthView: UIView {
+public final class CVCalendarMonthView: UIView {
     // MARK: - Non public properties
     private var interactiveView: UIView!
     
-    override var frame: CGRect {
+    public override var frame: CGRect {
         didSet {
             if let calendarView = calendarView {
                 if calendarView.calendarMode == CalendarMode.MonthView {
@@ -28,16 +28,16 @@ class CVCalendarMonthView: UIView {
     
     // MARK: - Public properties
     
-    weak var calendarView: CVCalendarView!
-    var date: NSDate!
-    var numberOfWeeks: Int!
-    var weekViews: [CVCalendarWeekView]!
+    public weak var calendarView: CVCalendarView!
+    public var date: NSDate!
+    public var numberOfWeeks: Int!
+    public var weekViews: [CVCalendarWeekView]!
     
-    var weeksIn: [[Int : [Int]]]?
-    var weeksOut: [[Int : [Int]]]?
-    var currentDay: Int?
+    public var weeksIn: [[Int : [Int]]]?
+    public var weeksOut: [[Int : [Int]]]?
+    public var currentDay: Int?
     
-    var potentialSize: CGSize {
+    public var potentialSize: CGSize {
         get {
             return CGSizeMake(bounds.width, CGFloat(weekViews.count) * weekViews[0].bounds.height + calendarView.appearance.spaceBetweenWeekViews! * CGFloat(weekViews.count))
         }
@@ -45,22 +45,22 @@ class CVCalendarMonthView: UIView {
     
     // MARK: - Initialization
     
-    init(calendarView: CVCalendarView, date: NSDate) {
+    public init(calendarView: CVCalendarView, date: NSDate) {
         super.init(frame: CGRectZero)
         self.calendarView = calendarView
         self.date = date
         commonInit()
     }
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    public required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func mapDayViews(body: (DayView) -> Void) {
+    public func mapDayViews(body: (DayView) -> Void) {
         for weekView in self.weekViews {
             for dayView in weekView.dayViews {
                 body(dayView)
@@ -72,7 +72,7 @@ class CVCalendarMonthView: UIView {
 // MARK: - Creation and destruction
 
 extension CVCalendarMonthView {
-    func commonInit() {
+    public func commonInit() {
         let calendarManager = calendarView.manager
         safeExecuteBlock({
             self.numberOfWeeks = calendarManager.monthDateRange(self.date).countOfWeeks
@@ -86,7 +86,7 @@ extension CVCalendarMonthView {
 // MARK: Content reload
 
 extension CVCalendarMonthView {
-    func reloadViewsWithRect(frame: CGRect) {
+    public func reloadViewsWithRect(frame: CGRect) {
         self.frame = frame
         
         safeExecuteBlock({
@@ -103,12 +103,12 @@ extension CVCalendarMonthView {
 // MARK: - Content fill & update
 
 extension CVCalendarMonthView {
-    func updateAppearance(frame: CGRect) {
+    public func updateAppearance(frame: CGRect) {
         self.frame = frame
         createWeekViews()
     }
     
-    func createWeekViews() {
+    public func createWeekViews() {
         weekViews = [CVCalendarWeekView]()
         
         safeExecuteBlock({
@@ -128,7 +128,7 @@ extension CVCalendarMonthView {
 // MARK: - Interactive view management & update
 
 extension CVCalendarMonthView {
-    func updateInteractiveView() {
+    public func updateInteractiveView() {
         safeExecuteBlock({
             let mode = self.calendarView!.calendarMode!
             if mode == .MonthView {
@@ -154,7 +154,7 @@ extension CVCalendarMonthView {
             }, collapsingOnNil: false, withObjects: calendarView)
     }
     
-    func didPressInteractiveView(recognizer: UILongPressGestureRecognizer) {
+    public func didPressInteractiveView(recognizer: UILongPressGestureRecognizer) {
         let location = recognizer.locationInView(self.interactiveView)
         let state: UIGestureRecognizerState = recognizer.state
         
@@ -170,7 +170,7 @@ extension CVCalendarMonthView {
         }
     }
     
-    func didTouchInteractiveView(recognizer: UITapGestureRecognizer) {
+    public func didTouchInteractiveView(recognizer: UITapGestureRecognizer) {
         let location = recognizer.locationInView(self.interactiveView)
         touchController.receiveTouchLocation(location, inMonthView: self, withSelectionType: .Single)
     }
@@ -179,7 +179,7 @@ extension CVCalendarMonthView {
 // MARK: - Safe execution
 
 extension CVCalendarMonthView {
-    func safeExecuteBlock(block: Void -> Void, collapsingOnNil collapsing: Bool, withObjects objects: AnyObject?...) {
+    public func safeExecuteBlock(block: Void -> Void, collapsingOnNil collapsing: Bool, withObjects objects: AnyObject?...) {
         for object in objects {
             if object == nil {
                 if collapsing {

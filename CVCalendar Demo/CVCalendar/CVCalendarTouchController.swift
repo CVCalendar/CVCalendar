@@ -8,18 +8,18 @@
 
 import UIKit
 
-class CVCalendarTouchController {
+public final class CVCalendarTouchController {
     private unowned let calendarView: CalendarView
     
     // MARK: - Properties
-    var coordinator: Coordinator {
+    public var coordinator: Coordinator {
         get {
             return calendarView.coordinator
         }
     }
     
     /// Init.
-    init(calendarView: CalendarView) {
+    public init(calendarView: CalendarView) {
         self.calendarView = calendarView
     }
 }
@@ -27,14 +27,14 @@ class CVCalendarTouchController {
 // MARK: - Events receive 
 
 extension CVCalendarTouchController {
-    func receiveTouchLocation(location: CGPoint, inMonthView monthView: CVCalendarMonthView, withSelectionType selectionType: CVSelectionType) {
+    public func receiveTouchLocation(location: CGPoint, inMonthView monthView: CVCalendarMonthView, withSelectionType selectionType: CVSelectionType) {
         let weekViews = monthView.weekViews
         if let dayView = ownerTouchLocation(location, onMonthView: monthView) where dayView.userInteractionEnabled {
             receiveTouchOnDayView(dayView, withSelectionType: selectionType)
         }
     }
     
-    func receiveTouchLocation(location: CGPoint, inWeekView weekView: CVCalendarWeekView, withSelectionType selectionType: CVSelectionType) {
+    public func receiveTouchLocation(location: CGPoint, inWeekView weekView: CVCalendarWeekView, withSelectionType selectionType: CVSelectionType) {
         let monthView = weekView.monthView
         let index = weekView.index
         let weekViews = monthView.weekViews
@@ -44,7 +44,7 @@ extension CVCalendarTouchController {
         }
     }
     
-    func receiveTouchOnDayView(dayView: CVCalendarDayView) {
+    public func receiveTouchOnDayView(dayView: CVCalendarDayView) {
         coordinator.performDayViewSingleSelection(dayView)
     }
 }

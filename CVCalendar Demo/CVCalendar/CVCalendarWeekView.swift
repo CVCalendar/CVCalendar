@@ -8,11 +8,11 @@
 
 import UIKit
 
-class CVCalendarWeekView: UIView {
+public final class CVCalendarWeekView: UIView {
     // MARK: - Non public properties
     private var interactiveView: UIView!
     
-    override var frame: CGRect {
+    public override var frame: CGRect {
         didSet {
             if let calendarView = calendarView {
                 if calendarView.calendarMode == CalendarMode.WeekView {
@@ -28,15 +28,15 @@ class CVCalendarWeekView: UIView {
     
     // MARK: - Public properties
     
-    weak var monthView: CVCalendarMonthView!
-    var dayViews: [CVCalendarDayView]!
-    var index: Int!
+    public weak var monthView: CVCalendarMonthView!
+    public var dayViews: [CVCalendarDayView]!
+    public var index: Int!
     
-    var weekdaysIn: [Int : [Int]]?
-    var weekdaysOut: [Int : [Int]]?
-    var utilizable = false /// Recovery service.
+    public var weekdaysIn: [Int : [Int]]?
+    public var weekdaysOut: [Int : [Int]]?
+    public var utilizable = false /// Recovery service.
     
-    weak var calendarView: CVCalendarView! {
+    public weak var calendarView: CVCalendarView! {
         get {
             var calendarView: CVCalendarView!
             if let monthView = monthView, let activeCalendarView = monthView.calendarView {
@@ -49,7 +49,7 @@ class CVCalendarWeekView: UIView {
     
     // MARK: - Initialization
     
-    init(monthView: CVCalendarMonthView, index: Int) {
+    public init(monthView: CVCalendarMonthView, index: Int) {
         
         
         self.monthView = monthView
@@ -104,15 +104,15 @@ class CVCalendarWeekView: UIView {
         self.createDayViews()
     }
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    public required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func mapDayViews(body: (DayView) -> ()) {
+    public func mapDayViews(body: (DayView) -> ()) {
         if let dayViews = dayViews {
             for dayView in dayViews {
                 body(dayView)
@@ -124,7 +124,7 @@ class CVCalendarWeekView: UIView {
 // MARK: - Interactive view setup & management
 
 extension CVCalendarWeekView {
-    func updateInteractiveView() {
+    public func updateInteractiveView() {
         safeExecuteBlock({
             
             let mode = self.monthView!.calendarView!.calendarMode!
@@ -151,7 +151,7 @@ extension CVCalendarWeekView {
             }, collapsingOnNil: false, withObjects: monthView, monthView?.calendarView)
     }
     
-    func didPressInteractiveView(recognizer: UILongPressGestureRecognizer) {
+    public func didPressInteractiveView(recognizer: UILongPressGestureRecognizer) {
         let location = recognizer.locationInView(self.interactiveView)
         let state: UIGestureRecognizerState = recognizer.state
         
@@ -167,7 +167,7 @@ extension CVCalendarWeekView {
         }
     }
     
-    func didTouchInteractiveView(recognizer: UITapGestureRecognizer) {
+    public func didTouchInteractiveView(recognizer: UITapGestureRecognizer) {
         let location = recognizer.locationInView(self.interactiveView)
         touchController.receiveTouchLocation(location, inWeekView: self, withSelectionType: .Single)
     }
@@ -176,7 +176,7 @@ extension CVCalendarWeekView {
 // MARK: - Content fill & reload
 
 extension CVCalendarWeekView {
-    func createDayViews() {
+    public func createDayViews() {
         dayViews = [CVCalendarDayView]()
         for i in 1...7 {
             let dayView = CVCalendarDayView(weekView: self, weekdayIndex: i)
@@ -189,7 +189,7 @@ extension CVCalendarWeekView {
         }
     }
     
-    func reloadDayViews() {
+    public func reloadDayViews() {
         
         if let size = calendarView.dayViewSize, let dayViews = dayViews {
             let hSpace = calendarView.appearance.spaceBetweenDayViews!
@@ -207,7 +207,7 @@ extension CVCalendarWeekView {
 // MARK: - Safe execution
 
 extension CVCalendarWeekView {
-    func safeExecuteBlock(block: Void -> Void, collapsingOnNil collapsing: Bool, withObjects objects: AnyObject?...) {
+    public func safeExecuteBlock(block: Void -> Void, collapsingOnNil collapsing: Bool, withObjects objects: AnyObject?...) {
         for object in objects {
             if object == nil {
                 if collapsing {

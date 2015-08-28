@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum CVShape {
+public enum CVShape {
     case LeftFlag
     case RightFlag
     case Circle
