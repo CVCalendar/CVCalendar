@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
 s.name         = "CVCalendar"
-s.version      = "1.1.3"
+s.version      = "1.1.4"
 s.summary      = "A custom visual calendar for iOS 8 written in Swift."
 s.homepage     = "https://github.com/Mozharovsky/CVCalendar"
 s.screenshot  = "https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/CVCalendar_White.png"
