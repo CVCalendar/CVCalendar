@@ -63,6 +63,13 @@ And there is one more type that represents a custom date:
 
 * CVDate
 
+Installation
+==========
+<h3> Cocoa Pods </h3>
+
+```ruby
+pod 'CVCalendar', '~> 1.1.2'
+```
 
 Usage
 ==========
@@ -77,7 +84,7 @@ So let's get started.
 
 <h4>Basic setup.</h4> 
 
-First, you have to add <b>CVCalendar</b> folder into your own project. (TODO: CocoaPods installation)
+First, you have to integrate **CVCalendar** with your project through **CocoaPods**. 
 
 Now you're about to add 2 UIViews to your Storyboard as it shown in the picture below.  
 ![alt tag](https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/Pic2.png)
