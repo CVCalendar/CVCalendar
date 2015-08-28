@@ -2,6 +2,16 @@
   <img src ="https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/CVCalendarIcon.png" />
 </p>
 
+Overview
+==========
+* [Global changes](https://github.com/Mozharovsky/CVCalendar#global-changes)
+* [Screenshots](https://github.com/Mozharovsky/CVCalendar#screenshots)
+* [GIF Demo](https://github.com/Mozharovsky/CVCalendar#gif-demo)
+* [Architecture](https://github.com/Mozharovsky/CVCalendar#architecture)
+* [Installation](https://github.com/Mozharovsky/CVCalendar#installation)
+* [Usage](https://github.com/Mozharovsky/CVCalendar#usage)
+* [Advanced API](https://github.com/Mozharovsky/CVCalendar#advanced-api)
+
 <h3>GLOBAL CHANGES</h3>
 
 The project is currently being under an active maintenance. We're going to bring a lot of new features as well as fix all bugs and optimize the library to make it incredibly efficient and fast ([see the full list](https://github.com/Mozharovsky/CVCalendar/issues/28)). API isn't changed so you don't pay anything for the update. 
