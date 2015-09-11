@@ -81,9 +81,9 @@ private extension CVSet {
  extension CVSet: SequenceType {
     public func generate() -> AnyGenerator<T> {
         var power = 0
-        var nextClosure : () -> T? = {
+        let nextClosure : () -> T? = {
             (power < self.count) ? self.storage[power++] : nil
         }
-        return AnyGenerator<T>(nextClosure)
+        return anyGenerator(nextClosure)
     }
 }
