@@ -286,7 +286,7 @@ extension CVCalendarDayView {
 
                 let coordinator = calendarView.coordinator
                 if self == coordinator.selectedDayView {
-                    moveDotMarkerBack(false, coloring: false)
+                    moveDotMarkerBack(true, coloring: false)
                 }
             }
         }
