@@ -25,7 +25,7 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
         initialLoad(presentedDate)
     }
     
-    public required init(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

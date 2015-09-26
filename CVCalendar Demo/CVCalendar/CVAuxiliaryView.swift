@@ -47,7 +47,7 @@ public final class CVAuxiliaryView: UIView {
         setNeedsDisplay()
     }
     
-    public required init(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -109,7 +109,7 @@ extension CVAuxiliaryView {
         flag.addLineToPoint(CGPointMake(bounds.width, bounds.height / 2 + radius ))
         flag.addLineToPoint(CGPointMake(bounds.width / 2, bounds.height / 2 + radius))
         
-        var path = CGPathCreateMutable()
+        let path = CGPathCreateMutable()
         CGPathAddPath(path, nil, circlePath().CGPath)
         CGPathAddPath(path, nil, flag.CGPath)
         
@@ -123,7 +123,7 @@ extension CVAuxiliaryView {
         flag.addLineToPoint(CGPointMake(0, bounds.height / 2 - radius))
         flag.addLineToPoint(CGPointMake(bounds.width / 2, bounds.height / 2 - radius))
         
-        var path = CGPathCreateMutable()
+        let path = CGPathCreateMutable()
         CGPathAddPath(path, nil, circlePath().CGPath)
         CGPathAddPath(path, nil, flag.CGPath)
         
@@ -137,7 +137,7 @@ extension CVAuxiliaryView {
         let appearance = dayView.calendarView.appearance
         let offset = appearance.spaceBetweenDayViews!
         
-        println("offset = \(offset)")
+        print("offset = \(offset)")
         
         let path = UIBezierPath(rect: CGRectMake(0 - offset, midY - radius, bounds.width + offset / 2, radius * 2))
         

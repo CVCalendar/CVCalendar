@@ -40,7 +40,7 @@ public final class CVCalendarView: UIView {
     public var contentController: ContentViewController!
     public var calendarMode: CalendarMode!
     
-    public var (weekViewSize: CGSize?, dayViewSize: CGSize?)
+    public var (weekViewSize, dayViewSize): (CGSize?, CGSize?)
     
     private var validated = false
     
@@ -167,7 +167,7 @@ public final class CVCalendarView: UIView {
     }
 
     /// IB Initialization
-    public required init(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         hidden = true
     }
@@ -202,7 +202,7 @@ extension CVCalendarView {
                     
                     // If no height constraint found we set it manually.
                     var found = false
-                    for constraint in constraints() as! [NSLayoutConstraint] {
+                    for constraint in constraints {
                         if constraint.firstAttribute == .Height {
                             found = true
                         }

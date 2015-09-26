@@ -108,10 +108,10 @@ public final class CVCalendarDayView: UIView {
         let weekdaysIn = weekView.weekdaysIn
         
         if let weekdaysOut = weekView.weekdaysOut {
-            if hasDayAtWeekdayIndex(weekdayIndex, weekdaysOut) {
+            if hasDayAtWeekdayIndex(weekdayIndex, weekdaysDictionary: weekdaysOut) {
                 isOut = true
                 day = weekdaysOut[weekdayIndex]![0]
-            } else if hasDayAtWeekdayIndex(weekdayIndex, weekdaysIn!) {
+            } else if hasDayAtWeekdayIndex(weekdayIndex, weekdaysDictionary: weekdaysIn!) {
                 day = weekdaysIn![weekdayIndex]![0]
             }
         } else {
@@ -140,7 +140,7 @@ public final class CVCalendarDayView: UIView {
         return CVDate(day: day, month: month, week: week, year: year)
     }
     
-    public required init(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
@@ -241,7 +241,7 @@ extension CVCalendarDayView {
     }
     
     public func setupDotMarker() {
-        for (index, dotMarker) in enumerate(dotMarkers) {
+        for (index, dotMarker) in dotMarkers.enumerate() {
             dotMarkers[index]!.removeFromSuperview()
             dotMarkers[index] = nil
         }
@@ -249,7 +249,7 @@ extension CVCalendarDayView {
         if let delegate = calendarView.delegate {
             if let shouldShow = delegate.dotMarker?(shouldShowOnDayView: self) where shouldShow {
                 
-                let (width: CGFloat, height: CGFloat) = (13, 13)
+                let (width, height): (CGFloat, CGFloat) = (13, 13)
                 let colors = isOut ? [.grayColor()] : delegate.dotMarker?(colorOnDayView: self)
                 var yOffset = bounds.height / 5
                 if let y = delegate.dotMarker?(moveOffsetOnDayView: self) {
@@ -262,7 +262,7 @@ extension CVCalendarDayView {
                     assert(false, "Only 3 dot markers allowed per day")
                 }
                 
-                for (index, color) in enumerate(colors!) {
+                for (index, color) in (colors!).enumerate() {
                     var x: CGFloat = 0
                     switch(colors!.count) {
                     case 1:
@@ -380,8 +380,8 @@ extension CVCalendarDayView {
         let yDistance = radius * sin(angle)
         
         let center = circleView.center
-        var x = floor(cos(angle)) < 0 ? center.x - xDistance : center.x + xDistance
-        var y = center.y - yDistance
+        let x = floor(cos(angle)) < 0 ? center.x - xDistance : center.x + xDistance
+        let y = center.y - yDistance
         
         let result = CGPointMake(x, y)
         
@@ -500,7 +500,7 @@ extension CVCalendarDayView {
         setupDotMarker()
         dayLabel?.frame = bounds
         
-        var shouldShowDaysOut = calendarView.shouldShowWeekdaysOut!
+        let shouldShowDaysOut = calendarView.shouldShowWeekdaysOut!
         if !shouldShowDaysOut {
             if isOut {
                 hidden = true
