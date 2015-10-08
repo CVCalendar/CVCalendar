@@ -138,6 +138,10 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     func dotMarker(shouldMoveOnHighlightingOnDayView dayView: CVCalendarDayView) -> Bool {
         return true
     }
+    
+    func weekdaySymbolType() -> WeekdaySymbolType {
+        return .Short
+    }
 }
 
 // MARK: - CVCalendarViewDelegate
