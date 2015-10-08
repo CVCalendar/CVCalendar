@@ -15,4 +15,5 @@ public protocol CVCalendarMenuViewDelegate {
     optional func dayOfWeekTextColor() -> UIColor
     optional func dayOfWeekTextUppercase() -> Bool
     optional func dayOfWeekFont() -> UIFont
+    optional func weekdaySymbolType() -> WeekdaySymbolType
 }
