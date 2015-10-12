@@ -37,7 +37,7 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
         insertMonthView(getFollowingMonth(date), withIdentifier: Following)
         
         presentedMonthView.mapDayViews { dayView in
-            if self.matchedDays(dayView.date, Date(date: date)) {
+            if self.calendarView.shouldAutoSelectDayOnMonthChange && self.matchedDays(dayView.date, Date(date: date)) {
                 self.calendarView.coordinator.flush()
                 self.calendarView.touchController.receiveTouchOnDayView(dayView)
                 dayView.circleView?.removeFromSuperview()
@@ -336,7 +336,7 @@ extension CVCalendarMonthContentViewController {
             self.presentedMonthView = presentedMonthView
             calendarView.presentedDate = Date(date: presentedMonthView.date)
             
-            if let selected = coordinator.selectedDayView, let selectedMonthView = selected.monthView where !matchedMonths(Date(date: selectedMonthView.date), Date(date: presentedMonthView.date)) {
+            if let selected = coordinator.selectedDayView, let selectedMonthView = selected.monthView where !matchedMonths(Date(date: selectedMonthView.date), Date(date: presentedMonthView.date)) && calendarView.shouldAutoSelectDayOnMonthChange {
                 let current = Date(date: NSDate())
                 let presented = Date(date: presentedMonthView.date)
                 
