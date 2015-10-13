@@ -18,6 +18,8 @@ public protocol CVCalendarViewDelegate {
     */
     optional func shouldAnimateResizing() -> Bool
     
+    optional func shouldAutoSelectDayOnWeekChange() -> Bool
+    optional func shouldAutoSelectDayOnMonthChange() -> Bool
     optional func shouldShowWeekdaysOut() -> Bool
     optional func didSelectDayView(dayView: DayView)
     optional func presentedDateUpdated(date: Date)
@@ -27,7 +29,7 @@ public protocol CVCalendarViewDelegate {
     optional func dotMarker(colorOnDayView dayView: DayView) -> [UIColor]
     optional func dotMarker(moveOffsetOnDayView dayView: DayView) -> CGFloat
     optional func dotMarker(sizeOnDayView dayView: DayView) -> CGFloat
-    
+
     optional func preliminaryView(viewOnDayView dayView: DayView) -> UIView
     optional func preliminaryView(shouldDisplayOnDayView dayView: DayView) -> Bool
     

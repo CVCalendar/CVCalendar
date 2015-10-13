@@ -10,7 +10,7 @@ import UIKit
 
 public final class CVCalendarViewAnimator {
     private unowned let calendarView: CalendarView
-
+    
     // MARK: - Public properties
     public var delegate: CVCalendarViewAnimatorDelegate!
     public var coordinator: CVCalendarDayViewControlCoordinator {
@@ -18,7 +18,7 @@ public final class CVCalendarViewAnimator {
             return calendarView.coordinator
         }
     }
-
+    
     // MARK: - Init
     public init(calendarView: CalendarView) {
         self.calendarView = calendarView
@@ -36,7 +36,7 @@ extension CVCalendarViewAnimator {
             // Something...
         }
     }
-
+    
     public func animateDeselectionOnDayView(dayView: DayView) {
         let deselectionAnimation = delegate.deselectionAnimation()
         deselectionAnimation(dayView) { [weak dayView] _ in
@@ -53,7 +53,7 @@ extension CVCalendarViewAnimator: CVCalendarViewAnimatorDelegate {
     @objc public func selectionAnimation() -> ((DayView, ((Bool) -> ())) -> ()) {
         return selectionWithBounceEffect()
     }
-
+    
     @objc public func deselectionAnimation() -> ((DayView, ((Bool) -> ())) -> ()) {
         return deselectionWithFadeOutEffect()
     }
@@ -67,14 +67,14 @@ private extension CVCalendarViewAnimator {
             dayView, completion in
             dayView.dayLabel?.transform = CGAffineTransformMakeScale(0.5, 0.5)
             dayView.circleView?.transform = CGAffineTransformMakeScale(0.5, 0.5)
-
+            
             UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.3, initialSpringVelocity: 0.1, options: UIViewAnimationOptions.BeginFromCurrentState, animations: {
                 dayView.circleView?.transform = CGAffineTransformMakeScale(1, 1)
                 dayView.dayLabel?.transform = CGAffineTransformMakeScale(1, 1)
             }, completion: completion)
         }
     }
-
+    
     func deselectionWithBubbleEffect() -> ((DayView, ((Bool) -> ())) -> ()) {
         return {
             dayView, completion in
@@ -89,7 +89,7 @@ private extension CVCalendarViewAnimator {
             }
         }
     }
-
+    
     func deselectionWithFadeOutEffect() -> ((DayView, ((Bool) -> ())) -> ()) {
         return {
             dayView, completion in
@@ -101,7 +101,7 @@ private extension CVCalendarViewAnimator {
             }, completion: completion)
         }
     }
-
+    
     func deselectionWithRollingEffect() -> ((DayView, ((Bool) -> ())) -> ()) {
         return {
             dayView, completion in
@@ -112,3 +112,4 @@ private extension CVCalendarViewAnimator {
         }
     }
 }
+

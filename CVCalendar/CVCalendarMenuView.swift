@@ -26,12 +26,12 @@ public final class CVCalendarMenuView: UIView {
                 self.delegate = delegate
             }
         }
-
+        
         get {
             return delegate as? AnyObject
         }
     }
-
+    
     public var delegate: MenuViewDelegate? {
         didSet {
             setupAppearance()
@@ -43,7 +43,7 @@ public final class CVCalendarMenuView: UIView {
     public init() {
         super.init(frame: CGRectZero)
     }
-
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -67,9 +67,9 @@ public final class CVCalendarMenuView: UIView {
         calendar.components([NSCalendarUnit.Month, NSCalendarUnit.Day], fromDate: NSDate())
         calendar.firstWeekday = firstWeekday!.rawValue
 
-        symbols = calendar.weekdaySymbols
+        symbols = calendar.weekdaySymbols 
     }
-
+    
     public func createDaySymbols() {
         // Change symbols with their places if needed.
         let dateFormatter = NSDateFormatter()
@@ -83,28 +83,28 @@ public final class CVCalendarMenuView: UIView {
         case .VeryShort:
             weekdays = dateFormatter.veryShortWeekdaySymbols as NSArray
         }
-        
+
         let firstWeekdayIndex = firstWeekday!.rawValue - 1
         if (firstWeekdayIndex > 0) {
             let copy = weekdays
             weekdays = (weekdays.subarrayWithRange(NSMakeRange(firstWeekdayIndex, 7 - firstWeekdayIndex)))
             weekdays = weekdays.arrayByAddingObjectsFromArray(copy.subarrayWithRange(NSMakeRange(0, firstWeekdayIndex)))
         }
-
+        
         self.symbols = weekdays as! [String]
-
+        
         // Add symbols.
         self.symbolViews = [UILabel]()
         let space = 0 as CGFloat
         let width = self.frame.width / 7 - space
         let height = self.frame.height
-
+        
         var x: CGFloat = 0
         let y: CGFloat = 0
-
+        
         for i in 0..<7 {
             x = CGFloat(i) * width + space
-
+            
             let symbol = UILabel(frame: CGRectMake(x, y, width, height))
             symbol.textAlignment = .Center
             symbol.text = self.symbols[i]
@@ -120,19 +120,19 @@ public final class CVCalendarMenuView: UIView {
             self.addSubview(symbol)
         }
     }
-
+    
     public func commitMenuViewUpdate() {
         if let delegate = delegate {
             let space = 0 as CGFloat
             let width = self.frame.width / 7 - space
             let height = self.frame.height
-
+            
             var x: CGFloat = 0
             let y: CGFloat = 0
-
+            
             for i in 0..<self.symbolViews!.count {
                 x = CGFloat(i) * width + space
-
+                
                 let frame = CGRectMake(x, y, width, height)
                 let symbol = self.symbolViews![i]
                 symbol.frame = frame
