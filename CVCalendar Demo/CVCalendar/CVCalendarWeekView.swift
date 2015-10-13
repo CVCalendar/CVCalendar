@@ -108,7 +108,7 @@ public final class CVCalendarWeekView: UIView {
         super.init(frame: frame)
     }
     
-    public required init(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -194,7 +194,7 @@ extension CVCalendarWeekView {
         if let size = calendarView.dayViewSize, let dayViews = dayViews {
             let hSpace = calendarView.appearance.spaceBetweenDayViews!
             
-            for (index, dayView) in enumerate(dayViews) {
+            for (index, dayView) in dayViews.enumerate() {
                 let hSpace = calendarView.appearance.spaceBetweenDayViews!
                 let x = CGFloat(index) * CGFloat(size.width + hSpace) + hSpace/2
                 dayView.frame = CGRectMake(x, 0, size.width, size.height)

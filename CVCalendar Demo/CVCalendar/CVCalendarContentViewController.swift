@@ -53,7 +53,7 @@ public class CVCalendarContentViewController: UIViewController {
         scrollView.delegate = self
     }
     
-    public required init(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
@@ -166,7 +166,7 @@ extension CVCalendarContentViewController {
         if calendarView.shouldAnimateResizing {
             var viewsToLayout = [UIView]()
             if let calendarSuperview = calendarView.superview {
-                for constraintIn in calendarSuperview.constraints() {
+                for constraintIn in calendarSuperview.constraints {
                     if let constraint = constraintIn as? NSLayoutConstraint {
                         if let firstItem = constraint.firstItem as? UIView, let secondItem = constraint.secondItem as? CalendarView {
                             
@@ -177,7 +177,7 @@ extension CVCalendarContentViewController {
             }
             
             
-            for constraintIn in calendarView.constraints() {
+            for constraintIn in calendarView.constraints {
                 if let constraint = constraintIn as? NSLayoutConstraint where constraint.firstAttribute == NSLayoutAttribute.Height {
                     constraint.constant = height
                     

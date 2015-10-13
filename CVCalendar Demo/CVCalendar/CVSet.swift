@@ -66,7 +66,7 @@ public extension CVSet {
 
 private extension CVSet {
     func indexObject(object: T) -> Int? {
-        for (index, storageObj) in enumerate(storage) {
+        for (index, storageObj) in storage.enumerate() {
             if storageObj === object {
                 return index
             }
@@ -79,11 +79,11 @@ private extension CVSet {
 
 // MARK: - SequenceType
  extension CVSet: SequenceType {
-    public func generate() -> GeneratorOf<T> {
+    public func generate() -> AnyGenerator<T> {
         var power = 0
-        var nextClosure : () -> T? = {
+        let nextClosure : () -> T? = {
             (power < self.count) ? self.storage[power++] : nil
         }
-        return GeneratorOf<T>(nextClosure)
+        return anyGenerator(nextClosure)
     }
 }
