@@ -5,6 +5,7 @@
 Overview
 ==========
 * [Global changes](https://github.com/Mozharovsky/CVCalendar#global-changes)
+* [For contributors](https://github.com/Mozharovsky/CVCalendar#for-contributors)
 * [Screenshots](https://github.com/Mozharovsky/CVCalendar#screenshots)
 * [GIF Demo](https://github.com/Mozharovsky/CVCalendar#gif-demo)
 * [Architecture](https://github.com/Mozharovsky/CVCalendar#architecture)
@@ -18,6 +19,9 @@ The project is currently being under an active maintenance. We're going to bring
 
 **CVCalendar** DOES require Xcode 7 and Swift 2.0.
 
+For contributors
+==========
+Please, note that the Demo project is supposed to test the changes on CVCalendar. If you've commited any, do not forget to update the root folder (<b>CVCalendar/CVCalendar</b>). Feel free to add wiki pages and/or edits on Readme or existing docs. 
 
 Screenshots
 ==========
