@@ -143,6 +143,11 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
         return 13
     }
 
+    
+    func weekdaySymbolType() -> WeekdaySymbolType {
+        return .Short
+    }
+
 }
 
 // MARK: - CVCalendarViewDelegate
