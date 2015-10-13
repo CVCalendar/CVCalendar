@@ -107,7 +107,7 @@ A long story in short or customizable properties:
 * Showing weekdays out
 * Moving dot markers on highlighting
 * Showing dot markers on a specific day view
-* Dot marker's color
+* Dot marker's color, offset and size
 * Space between week views and day views
 * Day view's label properties (color, background, alpha + different states (normal/highlighted))
 
