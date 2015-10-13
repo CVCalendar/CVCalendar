@@ -43,8 +43,10 @@ public final class CVCalendarWeekContentViewController: CVCalendarContentViewCon
             if self.matchedDays(dayView.date, Date(date: date)) {
                 self.insertWeekView(dayView.weekView, withIdentifier: self.Presented)
                 self.calendarView.coordinator.flush()
-                self.calendarView.touchController.receiveTouchOnDayView(dayView)
-                dayView.circleView?.removeFromSuperview()
+                if self.calendarView.shouldAutoSelectDayOnWeekChange{
+                    self.calendarView.touchController.receiveTouchOnDayView(dayView)
+                    dayView.circleView?.removeFromSuperview()
+                }
             }
         }
         
@@ -407,7 +409,7 @@ extension CVCalendarWeekContentViewController {
                 }
             }
             
-            if let selected = coordinator.selectedDayView where !matchedWeeks(selected.date, presentedDate) {
+            if let selected = coordinator.selectedDayView where !matchedWeeks(selected.date, presentedDate) && calendarView.shouldAutoSelectDayOnWeekChange {
                 let current = Date(date: NSDate())
                 
                 if matchedWeeks(current, presentedDate) {

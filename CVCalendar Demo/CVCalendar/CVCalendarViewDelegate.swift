@@ -18,6 +18,8 @@ public protocol CVCalendarViewDelegate {
     */
     optional func shouldAnimateResizing() -> Bool
     
+    optional func shouldAutoSelectDayOnWeekChange() -> Bool
+    optional func shouldAutoSelectDayOnMonthChange() -> Bool
     optional func shouldShowWeekdaysOut() -> Bool
     optional func didSelectDayView(dayView: DayView)
     optional func presentedDateUpdated(date: Date)
