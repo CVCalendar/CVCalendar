@@ -98,6 +98,15 @@ public final class CVCalendarView: UIView {
         }
     }
     
+    public var shouldScrollOnOutDayViewSelection: Bool{
+        get {
+            if let delegate = delegate, should = delegate.shouldScrollOnOutDayViewSelection?() {
+                return should
+            }
+            return true
+        }
+    }
+    
     // MARK: - Calendar View Delegate
     
     @IBOutlet public weak var calendarDelegate: AnyObject? {
