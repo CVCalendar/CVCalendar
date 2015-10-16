@@ -12,12 +12,12 @@ import UIKit
 public protocol CVCalendarViewDelegate {
     func presentationMode() -> CalendarMode
     func firstWeekday() -> Weekday
-    
+
     /**
     Determines whether resizing should cause related views' animation.
     */
     optional func shouldAnimateResizing() -> Bool
-    
+
     optional func shouldAutoSelectDayOnWeekChange() -> Bool
     optional func shouldAutoSelectDayOnMonthChange() -> Bool
     optional func shouldShowWeekdaysOut() -> Bool
@@ -32,7 +32,10 @@ public protocol CVCalendarViewDelegate {
 
     optional func preliminaryView(viewOnDayView dayView: DayView) -> UIView
     optional func preliminaryView(shouldDisplayOnDayView dayView: DayView) -> Bool
-    
+
     optional func supplementaryView(viewOnDayView dayView: DayView) -> UIView
     optional func supplementaryView(shouldDisplayOnDayView dayView: DayView) -> Bool
+
+    optional func showNextMonthView(date: NSDate)
+    optional func showPreviousMonthView(date: NSDate)
 }
