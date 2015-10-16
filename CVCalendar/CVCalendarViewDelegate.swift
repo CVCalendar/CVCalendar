@@ -37,6 +37,6 @@ public protocol CVCalendarViewDelegate {
     optional func supplementaryView(viewOnDayView dayView: DayView) -> UIView
     optional func supplementaryView(shouldDisplayOnDayView dayView: DayView) -> Bool
 
-    optional func showNextMonthView(date: NSDate)
-    optional func showPreviousMonthView(date: NSDate)
+    optional func didShowNextMonthView(date: NSDate)
+    optional func didShowPreviousMonthView(date: NSDate)
 }

@@ -89,7 +89,7 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
                 replaceMonthView(following, withIdentifier: Presented, animatable: true)
                 
                 insertMonthView(getFollowingMonth(following.date), withIdentifier: Following)
-                self.calendarView.delegate?.showNextMonthView?(following.date)
+                self.calendarView.delegate?.didShowNextMonthView?(following.date)
             }
             
         }
@@ -105,7 +105,7 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
                 replaceMonthView(presented, withIdentifier: Following, animatable: false)
                 
                 insertMonthView(getPreviousMonth(previous.date), withIdentifier: Previous)
-                self.calendarView.delegate?.showPreviousMonthView?(previous.date)
+                self.calendarView.delegate?.didShowPreviousMonthView?(previous.date)
             }
         }
     }

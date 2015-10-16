@@ -277,7 +277,7 @@ extension ViewController {
         self.calendarView.toggleViewWithDate(resultDate)
     }
     
-    func showNextMonthView(date: NSDate)
+    func didShowNextMonthView(date: NSDate)
     {
         let calendar = NSCalendar.currentCalendar()
         let calendarManager = calendarView.manager
@@ -287,7 +287,7 @@ extension ViewController {
     }
     
     
-    func showPreviousMonthView(date: NSDate)
+    func didShowPreviousMonthView(date: NSDate)
     {
         let calendar = NSCalendar.currentCalendar()
         let calendarManager = calendarView.manager
