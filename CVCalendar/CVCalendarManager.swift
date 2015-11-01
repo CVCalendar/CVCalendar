@@ -79,7 +79,7 @@ public final class CVCalendarManager {
         
         //println("NSDate: \(date), Weekday: \(components.weekday)")
         
-        let weekday = calendar.ordinalityOfUnit(units, inUnit: WeekUnit, forDate: date)
+//        let weekday = calendar.ordinalityOfUnit(units, inUnit: WeekUnit, forDate: date)
         
         return Int(components.weekday)
     }

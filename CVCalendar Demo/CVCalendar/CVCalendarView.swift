@@ -64,7 +64,7 @@ public final class CVCalendarView: UIView {
     
     public var presentedDate: Date! {
         didSet {
-            if let oldValue = oldValue {
+            if let _ = oldValue {
                 delegate?.presentedDateUpdated?(presentedDate)
             }
         }
@@ -204,7 +204,7 @@ public final class CVCalendarView: UIView {
 
 extension CVCalendarView {
     public func commitCalendarViewUpdate() {
-        if let delegate = delegate, let contentController = contentController {
+        if let _ = delegate, let contentController = contentController {
             let contentViewSize = contentController.bounds.size
             let selfSize = bounds.size
             let screenSize = UIScreen.mainScreen().bounds.size
@@ -325,7 +325,6 @@ private extension CVCalendarView {
             switch delegate.presentationMode() {
                 case .MonthView: contentController = MonthContentViewController(calendarView: self, frame: bounds)
                 case .WeekView: contentController = WeekContentViewController(calendarView: self, frame: bounds)
-                default: break
             }
             
             addSubview(contentController.scrollView)

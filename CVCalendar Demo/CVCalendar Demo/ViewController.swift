@@ -59,8 +59,7 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     }
     
     func didSelectDayView(dayView: CVCalendarDayView, animationDidFinish: Bool) {
-        let date = dayView.date
-        print("\(calendarView.presentedDate.commonDescription) is selected!")
+        print("\(dayView.date.commonDescription) is selected!")
     }
     
     func presentedDateUpdated(date: CVDate) {
@@ -116,7 +115,6 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     }
     
     func dotMarker(colorOnDayView dayView: CVCalendarDayView) -> [UIColor] {
-        let day = dayView.date.day
         
         let red = CGFloat(arc4random_uniform(600) / 255)
         let green = CGFloat(arc4random_uniform(600) / 255)
@@ -267,7 +265,7 @@ extension ViewController {
 extension ViewController {
     func toggleMonthViewWithMonthOffset(offset: Int) {
         let calendar = NSCalendar.currentCalendar()
-        let calendarManager = calendarView.manager
+//        let calendarManager = calendarView.manager
         let components = Manager.componentsForDate(NSDate()) // from today
         
         components.month += offset
@@ -279,8 +277,8 @@ extension ViewController {
     
     func didShowNextMonthView(date: NSDate)
     {
-        let calendar = NSCalendar.currentCalendar()
-        let calendarManager = calendarView.manager
+//        let calendar = NSCalendar.currentCalendar()
+//        let calendarManager = calendarView.manager
         let components = Manager.componentsForDate(date) // from today
         
         print("Showing Month: \(components.month)")
@@ -289,8 +287,8 @@ extension ViewController {
     
     func didShowPreviousMonthView(date: NSDate)
     {
-        let calendar = NSCalendar.currentCalendar()
-        let calendarManager = calendarView.manager
+//        let calendar = NSCalendar.currentCalendar()
+//        let calendarManager = calendarView.manager
         let components = Manager.componentsForDate(date) // from today
         
         print("Showing Month: \(components.month)")

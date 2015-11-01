@@ -167,36 +167,32 @@ extension CVCalendarContentViewController {
             var viewsToLayout = [UIView]()
             if let calendarSuperview = calendarView.superview {
                 for constraintIn in calendarSuperview.constraints {
-                    if let constraint = constraintIn as? NSLayoutConstraint {
-                        if let firstItem = constraint.firstItem as? UIView, let secondItem = constraint.secondItem as? CalendarView {
-                            
-                            viewsToLayout.append(firstItem)
-                        }
+                    if let firstItem = constraintIn.firstItem as? UIView, let _ = constraintIn.secondItem as? CalendarView {
+                        
+                        viewsToLayout.append(firstItem)
                     }
                 }
             }
             
             
-            for constraintIn in calendarView.constraints {
-                if let constraint = constraintIn as? NSLayoutConstraint where constraint.firstAttribute == NSLayoutAttribute.Height {
-                    constraint.constant = height
-                    
-                    if animated {
-                        UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: {
-                            self.layoutViews(viewsToLayout, toHeight: height)
-                            }) { _ in
-                                self.presentedMonthView.frame.size = self.presentedMonthView.potentialSize
-                                self.presentedMonthView.updateInteractiveView()
-                        }
-                    } else {
-                        layoutViews(viewsToLayout, toHeight: height)
-                        presentedMonthView.updateInteractiveView()
-                        presentedMonthView.frame.size = presentedMonthView.potentialSize
-                        presentedMonthView.updateInteractiveView()
+            for constraintIn in calendarView.constraints where constraintIn.firstAttribute == NSLayoutAttribute.Height {
+                constraintIn.constant = height
+                
+                if animated {
+                    UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: {
+                        self.layoutViews(viewsToLayout, toHeight: height)
+                        }) { _ in
+                            self.presentedMonthView.frame.size = self.presentedMonthView.potentialSize
+                            self.presentedMonthView.updateInteractiveView()
                     }
-                    
-                    break
+                } else {
+                    layoutViews(viewsToLayout, toHeight: height)
+                    presentedMonthView.updateInteractiveView()
+                    presentedMonthView.frame.size = presentedMonthView.potentialSize
+                    presentedMonthView.updateInteractiveView()
                 }
+                
+                break
             }
         }
     }
@@ -214,9 +210,7 @@ extension CVCalendarContentViewController {
 extension UIView {
     public func removeAllSubviews() {
         for subview in subviews {
-            if let view = subview as? UIView {
-                view.removeFromSuperview()
-            }
+            subview.removeFromSuperview()
         }
     }
 }
