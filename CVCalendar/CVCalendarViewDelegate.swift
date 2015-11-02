@@ -17,12 +17,12 @@ public protocol CVCalendarViewDelegate {
     Determines whether resizing should cause related views' animation.
     */
     optional func shouldAnimateResizing() -> Bool
+    
     optional func shouldScrollOnOutDayViewSelection() -> Bool
-
     optional func shouldAutoSelectDayOnWeekChange() -> Bool
     optional func shouldAutoSelectDayOnMonthChange() -> Bool
     optional func shouldShowWeekdaysOut() -> Bool
-    optional func didSelectDayView(dayView: DayView)
+    optional func didSelectDayView(dayView: DayView, animationDidFinish: Bool)
     optional func presentedDateUpdated(date: Date)
     optional func topMarker(shouldDisplayOnDayView dayView: DayView) -> Bool
     optional func dotMarker(shouldMoveOnHighlightingOnDayView dayView: DayView) -> Bool
