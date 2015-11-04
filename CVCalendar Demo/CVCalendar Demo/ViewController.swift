@@ -62,6 +62,22 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
         print("\(dayView.date.commonDescription) is selected!")
     }
     
+    // MARK: Delete circle and dot views (in effect refreshing the dayView)
+    
+    func removeCircleLabel(dayView: CVCalendarDayView) {
+        for each in dayView.subviews {
+            if each is UILabel {
+                continue
+            }
+            else if each is CVAuxiliaryView {
+                continue
+            }
+            else {
+                each.removeFromSuperview()
+            }
+        }
+    }
+    
     func presentedDateUpdated(date: CVDate) {
         if monthLabel.text != date.globalDescription && self.animationFinished {
             let updatedMonthLabel = UILabel()
