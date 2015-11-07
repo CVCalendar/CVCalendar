@@ -285,7 +285,7 @@ extension CVCalendarView {
         contentController.presentPreviousView(nil)
     }
     
-    public func changeMode(mode: CalendarMode) {
+    public func changeMode(mode: CalendarMode, completion: () -> () = {}) {
         if let selectedDate = coordinator.selectedDayView?.date.convertedDate() where calendarMode != mode {
             calendarMode = mode
             
@@ -311,6 +311,7 @@ extension CVCalendarView {
                 self.contentController.scrollView.removeAllSubviews()
                 self.contentController.scrollView.removeFromSuperview()
                 self.contentController = newController
+                completion()
             }
         }
     }

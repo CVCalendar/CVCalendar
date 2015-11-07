@@ -260,6 +260,15 @@ public final class CVCalendarWeekContentViewController: CVCalendarContentViewCon
 // MARK: - WeekView management
 
 extension CVCalendarWeekContentViewController {
+    
+    public func getPresentedWeek() -> WeekView? {
+        guard let currentWeekView = weekViews[Presented] else {
+            return nil
+        }
+        
+        return currentWeekView
+    }
+    
     public func getPreviousWeek(presentedWeekView: WeekView) -> WeekView {
         if let presentedMonthView = monthViews[Presented], let previousMonthView = monthViews[Previous] where presentedWeekView.monthView == presentedMonthView {
             for weekView in presentedMonthView.weekViews {
