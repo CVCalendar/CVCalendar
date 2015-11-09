@@ -18,6 +18,8 @@ class ViewController: UIViewController {
     var shouldShowDaysOut = true
     var animationFinished = true
     
+    var selectedDay:DayView!
+    
     // MARK: - Life cycle
     
     override func viewDidLoad() {
@@ -26,6 +28,16 @@ class ViewController: UIViewController {
         monthLabel.text = CVDate(date: NSDate()).globalDescription
     }
 
+    @IBAction func removeCircleAndDot(sender: AnyObject) {
+        if let dayView = selectedDay {
+            calendarView.contentController.removeCircleLabel(dayView)
+        }
+    }
+    
+    @IBAction func refreshMonth(sender: AnyObject) {
+        calendarView.contentController.refreshPresentedMonth()
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -60,6 +72,7 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     
     func didSelectDayView(dayView: CVCalendarDayView, animationDidFinish: Bool) {
         print("\(dayView.date.commonDescription) is selected!")
+        selectedDay = dayView
     }
     
     func presentedDateUpdated(date: CVDate) {
@@ -146,11 +159,6 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
         return .Short
     }
 
-}
-
-// MARK: - CVCalendarViewDelegate
-/*
-extension ViewController: CVCalendarViewDelegate {
     func preliminaryView(viewOnDayView dayView: DayView) -> UIView {
         let circleView = CVAuxiliaryView(dayView: dayView, rect: dayView.bounds, shape: CVShape.Circle)
         circleView.fillColor = .colorFromCode(0xCCCCCC)
@@ -209,7 +217,7 @@ extension ViewController: CVCalendarViewDelegate {
         return false
     }
 }
-*/
+
 
 // MARK: - CVCalendarViewAppearanceDelegate
 

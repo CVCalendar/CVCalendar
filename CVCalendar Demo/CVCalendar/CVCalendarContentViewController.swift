@@ -72,6 +72,39 @@ extension CVCalendarContentViewController {
     }
 }
 
+//MARK: - Month Refresh
+
+extension CVCalendarContentViewController {
+    public func refreshPresentedMonth() {
+        for weekV in presentedMonthView.weekViews {
+            for dayView in weekV.dayViews {
+                removeCircleLabel(dayView)
+                dayView.preliminarySetup()
+                dayView.supplementarySetup()
+            }
+        }
+    }
+}
+
+
+// MARK: Delete circle views (in effect refreshing the dayView)
+
+extension CVCalendarContentViewController {
+    func removeCircleLabel(dayView: CVCalendarDayView) {
+        for each in dayView.subviews {
+            if each is UILabel {
+                continue
+            }
+            else if each is CVAuxiliaryView {
+                continue
+            }
+            else {
+                each.removeFromSuperview()
+            }
+        }
+    }
+}
+
 // MARK: - Abstract methods
 
 /// UIScrollViewDelegate
