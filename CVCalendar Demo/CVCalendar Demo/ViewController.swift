@@ -31,6 +31,7 @@ class ViewController: UIViewController {
     @IBAction func removeCircleAndDot(sender: AnyObject) {
         if let dayView = selectedDay {
             calendarView.contentController.removeCircleLabel(dayView)
+            calendarView.contentController.removeDotViews(dayView)
         }
     }
     
@@ -73,6 +74,9 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     func didSelectDayView(dayView: CVCalendarDayView, animationDidFinish: Bool) {
         print("\(dayView.date.commonDescription) is selected!")
         selectedDay = dayView
+        for each in dayView.subviews {
+            print(each)
+        }
     }
     
     func presentedDateUpdated(date: CVDate) {
