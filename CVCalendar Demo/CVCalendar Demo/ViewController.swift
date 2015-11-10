@@ -74,9 +74,6 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     func didSelectDayView(dayView: CVCalendarDayView, animationDidFinish: Bool) {
         print("\(dayView.date.commonDescription) is selected!")
         selectedDay = dayView
-        for each in dayView.subviews {
-            print(each)
-        }
     }
     
     func presentedDateUpdated(date: CVDate) {
