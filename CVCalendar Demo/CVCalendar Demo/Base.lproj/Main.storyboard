@@ -116,20 +116,20 @@
                                     <action selector="loadPrevious:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="fk9-gv-AsQ"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="naL-aC-YXb">
-                                <rect key="frame" x="20" y="486" width="99" height="30"/>
-                                <animations/>
-                                <state key="normal" title="Remove Circle"/>
-                                <connections>
-                                    <action selector="removeCircleAndDot:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="dB7-B4-xgU"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lzX-jt-Rop">
                                 <rect key="frame" x="479" y="486" width="101" height="30"/>
                                 <animations/>
                                 <state key="normal" title="Refresh Month"/>
                                 <connections>
                                     <action selector="refreshMonth:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Mbo-1A-LWP"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="naL-aC-YXb">
+                                <rect key="frame" x="20" y="486" width="164" height="30"/>
+                                <animations/>
+                                <state key="normal" title="Remove Circle and Dots"/>
+                                <connections>
+                                    <action selector="removeCircleAndDot:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="dB7-B4-xgU"/>
                                 </connections>
                             </button>
                         </subviews>

@@ -31,6 +31,7 @@ class ViewController: UIViewController {
     @IBAction func removeCircleAndDot(sender: AnyObject) {
         if let dayView = selectedDay {
             calendarView.contentController.removeCircleLabel(dayView)
+            calendarView.contentController.removeDotViews(dayView)
         }
     }
     
