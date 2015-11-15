@@ -82,6 +82,8 @@ extension CVCalendarContentViewController {
                 removeDotViews(dayView)
                 dayView.preliminarySetup()
                 dayView.supplementarySetup()
+                dayView.setupDotMarker()
+                dayView.topMarkerSetup()
             }
         }
     }
