@@ -159,6 +159,14 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     func weekdaySymbolType() -> WeekdaySymbolType {
         return .Short
     }
+    
+    func selectionViewPath(inDayView dayView: DayView) -> UIBezierPath {
+        return UIBezierPath(rect: CGRectMake(0, 0, dayView.bounds.width, dayView.bounds.height))
+    }
+    
+    func shouldShowCustomSingleSelection() -> Bool {
+        return false
+    }
 
     func preliminaryView(viewOnDayView dayView: DayView) -> UIView {
         let circleView = CVAuxiliaryView(dayView: dayView, rect: dayView.bounds, shape: CVShape.Circle)
