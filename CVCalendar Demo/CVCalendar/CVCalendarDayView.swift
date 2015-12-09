@@ -242,7 +242,7 @@ extension CVCalendarDayView {
     
     public func setupDotMarker() {
         for (index, dotMarker) in dotMarkers.enumerate() {
-            dotMarker!.removeFromSuperview()
+            dotMarker?.removeFromSuperview()
             dotMarkers[index] = nil
         }
         
