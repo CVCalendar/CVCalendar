@@ -60,7 +60,7 @@ public final class CVAuxiliaryView: UIView {
             case .LeftFlag: path = leftFlagPath()
             case .Circle: path = circlePath()
             case .Rect: path = rectPath()
-            case .Custom(let customPath): path = customPath
+            case .Custom(let customPathBlock): path = customPathBlock(rect)
             }
             
             switch shape {

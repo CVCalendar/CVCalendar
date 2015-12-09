@@ -160,8 +160,8 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
         return .Short
     }
     
-    func selectionViewPath(inDayView dayView: DayView) -> UIBezierPath {
-        return UIBezierPath(rect: CGRectMake(0, 0, dayView.bounds.width, dayView.bounds.height))
+    func selectionViewPath() -> ((CGRect) -> (UIBezierPath)) {
+        return { UIBezierPath(rect: CGRectMake(0, 0, $0.width, $0.height)) }
     }
     
     func shouldShowCustomSingleSelection() -> Bool {

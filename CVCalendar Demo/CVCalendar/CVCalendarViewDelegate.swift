@@ -31,7 +31,7 @@ public protocol CVCalendarViewDelegate {
     optional func dotMarker(moveOffsetOnDayView dayView: DayView) -> CGFloat
     optional func dotMarker(sizeOnDayView dayView: DayView) -> CGFloat
     
-    optional func selectionViewPath(inDayView dayView: DayView) -> UIBezierPath
+    optional func selectionViewPath() -> ((CGRect) -> (UIBezierPath))
     optional func shouldShowCustomSingleSelection() -> Bool
 
     optional func preliminaryView(viewOnDayView dayView: DayView) -> UIView

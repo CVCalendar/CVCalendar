@@ -419,8 +419,8 @@ extension CVCalendarDayView {
             shape = .Circle
             
             if let delegate = calendarView.delegate, shouldShowCustomSelection = delegate.shouldShowCustomSingleSelection?() where shouldShowCustomSelection {
-                if let path: UIBezierPath = delegate.selectionViewPath?(inDayView: self) {
-                    shape = .Custom(path)
+                if let block = delegate.selectionViewPath?() {
+                    shape = .Custom(block)
                 }
             }
             
