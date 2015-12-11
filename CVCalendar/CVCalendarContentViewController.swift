@@ -79,7 +79,7 @@ extension CVCalendarContentViewController {
         for weekV in presentedMonthView.weekViews {
             for dayView in weekV.dayViews {
                 removeCircleLabel(dayView)
-                removeDotViews(dayView)
+                dayView.setupDotMarker()
                 dayView.preliminarySetup()
                 dayView.supplementarySetup()
             }
