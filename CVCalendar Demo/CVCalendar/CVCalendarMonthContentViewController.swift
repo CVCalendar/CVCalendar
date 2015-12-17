@@ -40,7 +40,7 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
             if self.calendarView.shouldAutoSelectDayOnMonthChange && self.matchedDays(dayView.date, Date(date: date)) {
                 self.calendarView.coordinator.flush()
                 self.calendarView.touchController.receiveTouchOnDayView(dayView)
-                dayView.circleView?.removeFromSuperview()
+                dayView.selectionView?.removeFromSuperview()
             }
         }
         
