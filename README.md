@@ -21,7 +21,7 @@ The project is currently being under an active maintenance. We're going to bring
 
 For contributors
 ==========
-Please, note that the Demo project is supposed to test the changes on CVCalendar. If you've commited any, do not forget to update the root folder (<b>CVCalendar/CVCalendar</b>). Feel free to add wiki pages and/or edits on Readme or existing docs. 
+Please, note that the Demo project is supposed to test the changes on CVCalendar. If you've committed any, do not forget to update the root folder (<b>CVCalendar/CVCalendar</b>). Feel free to add wiki pages and/or edits on the README or existing docs.
 
 Screenshots
 ==========
@@ -46,7 +46,7 @@ Installation
 <h3> Cocoa Pods </h3>
 
 ```ruby
-pod 'CVCalendar', '~> 1.2.7'
+pod 'CVCalendar', '~> 1.2.8'
 ```
 
 Usage
