@@ -323,7 +323,7 @@ extension CVCalendarWeekContentViewController {
 extension CVCalendarWeekContentViewController {
     public func getFollowingMonth(date: NSDate) -> MonthView {
         let calendarManager = calendarView.manager
-        let firstDate = calendarManager.monthDateRange(date).monthStartDate
+        let firstDate = calendarManager.monthDateRange(date).monthStart
         let components = Manager.componentsForDate(firstDate)
         
         components.month += 1
@@ -338,7 +338,7 @@ extension CVCalendarWeekContentViewController {
     }
     
     public func getPreviousMonth(date: NSDate) -> MonthView {
-        let firstDate = calendarView.manager.monthDateRange(date).monthStartDate
+        let firstDate = calendarView.manager.monthDateRange(date).monthStart
         let components = Manager.componentsForDate(firstDate)
         
         components.month -= 1

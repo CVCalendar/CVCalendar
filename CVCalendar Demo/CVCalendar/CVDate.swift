@@ -17,13 +17,11 @@ public final class CVDate: NSObject {
     public let day: Int
     
    public init(date: NSDate) {
-        let dateRange = Manager.dateRange(date)
-        
         self.date = date
-        self.year = dateRange.year
-        self.month = dateRange.month
-        self.week = dateRange.weekOfMonth
-        self.day = dateRange.day
+        self.year = date.year.value()
+        self.month = date.month.value()
+        self.week = date.week.value()
+        self.day = date.day.value()
         
         super.init()
     }

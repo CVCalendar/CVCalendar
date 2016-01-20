@@ -23,6 +23,8 @@ public final class CVCalendarDayView: UIView {
     public var isOut = false
     public var isCurrentDay = false
     
+    private var weekday: Weekday
+    
     public weak var monthView: CVCalendarMonthView! {
         get {
             var monthView: MonthView!
@@ -64,9 +66,10 @@ public final class CVCalendarDayView: UIView {
     
     // MARK: - Initialization
     
-    public init(weekView: CVCalendarWeekView, weekdayIndex: Int) {
+    public init(weekView: CVCalendarWeekView, weekdayIndex: Int, weekday: Weekday) {
         self.weekView = weekView
         self.weekdayIndex = weekdayIndex
+        self.weekday = weekday
         
         if let size = weekView.calendarView.dayViewSize {
             let hSpace = weekView.calendarView.appearance.spaceBetweenDayViews!
@@ -93,51 +96,71 @@ public final class CVCalendarDayView: UIView {
     }
     
     public func dateWithWeekView(weekView: CVCalendarWeekView, andWeekIndex index: Int) -> CVDate {
-        func hasDayAtWeekdayIndex(weekdayIndex: Int, weekdaysDictionary: [Int : [Int]]) -> Bool {
-            for key in weekdaysDictionary.keys {
-                if key == weekdayIndex {
-                    return true
-                }
-            }
-            
-            return false
-        }
+//        func hasDayAtWeekdayIndex(weekdayIndex: Int, weekdaysDictionary: [Int : Int]) -> Bool {
+//            for key in weekdaysDictionary.keys {
+//                if key == weekdayIndex {
+//                    return true
+//                }
+//            }
+//            
+//            return false
+//        }
         
         
         var day: Int!
-        let weekdaysIn = weekView.weekdaysIn
+        let monthDate = monthView.date
         
-        if let weekdaysOut = weekView.weekdaysOut {
-            if hasDayAtWeekdayIndex(weekdayIndex, weekdaysDictionary: weekdaysOut) {
+        // TODO: FIX THIS ISSUE
+        
+        print("[DayView]: WeekdayIndex: \(weekdayIndex)")
+        print("[DayView]: Calculated WeekdayIndex: \(weekday)")
+        print("[DayView]: Weekdays \(weekView.weekdays.count)")
+        
+        if let date = weekView.weekdays[weekday] {
+            day = date.day.value()
+            print("IN::: \(day)")
+            if date.month.value() != monthDate.month.value() {
                 isOut = true
-                day = weekdaysOut[weekdayIndex]![0]
-            } else if hasDayAtWeekdayIndex(weekdayIndex, weekdaysDictionary: weekdaysIn!) {
-                day = weekdaysIn![weekdayIndex]![0]
             }
         } else {
-            day = weekdaysIn![weekdayIndex]![0]
-        }
-        
-        if day == monthView.currentDay && !isOut {
-            let dateRange = Manager.dateRange(monthView.date)
-            let currentDateRange = Manager.dateRange(NSDate())
             
-            if dateRange.month == currentDateRange.month && dateRange.year == currentDateRange.year {
-                isCurrentDay = true
+            print(calendarView.manager.monthDateRange(monthDate).monthEnd)
+            
+            for date in weekView.weekdays {
+                print("OUT DATES::: \(date)")
             }
+            
+            day = -1
         }
         
         
-        let dateRange = Manager.dateRange(monthView.date)
-        let year = dateRange.year
-        let week = weekView.index + 1
-        var month = dateRange.month
         
+//        if let weekdaysOut = weekView.weekdaysOut {
+//            if hasDayAtWeekdayIndex(weekdayIndex, weekdaysDictionary: weekdaysOut) {
+//                isOut = true
+//                day = weekdaysOut[weekdayIndex]!
+//            } else if hasDayAtWeekdayIndex(weekdayIndex, weekdaysDictionary: weekdaysIn!) {
+//                day = weekdaysIn![weekdayIndex]!
+//            }
+//        } else {
+//            day = weekdaysIn![weekdayIndex]!
+//        }
+//        
+//        if day == monthView.currentDay && !isOut {
+//            let today = NSDate()
+//            
+//            if monthDate.month.value() == today.month.value() && today.year.value() == monthDate.year.value() {
+//                isCurrentDay = true
+//            }
+//        }
+        
+        
+        var offset = 0
         if isOut {
-            day > 20 ? month-- : month++
+            offset = day > 20 ? -1 : 1
         }
         
-        return CVDate(day: day, month: month, week: week, year: year)
+        return CVDate(day: day, month: monthDate.month.value() + offset, week: weekView.index + 1, year: monthDate.year.value())
     }
     
     public required init?(coder aDecoder: NSCoder) {

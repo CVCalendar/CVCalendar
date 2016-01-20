@@ -120,6 +120,11 @@ public func ~><T: Any>(inout lhs: T?, rhs: T?) -> T? {
     return lhs
 }
 
+public func ~><T: Any>(inout lhs: T, rhs: T) -> T {
+    lhs = rhs
+    return lhs
+}
+
 extension UIColor {
     public static func colorFromCode(code: Int) -> UIColor {
         let red = CGFloat(((code & 0xFF0000) >> 16)) / 255

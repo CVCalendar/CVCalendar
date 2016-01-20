@@ -33,8 +33,18 @@ public final class CVCalendarMonthView: UIView {
     public var numberOfWeeks: Int!
     public var weekViews: [CVCalendarWeekView]!
     
-    public var weeksIn: [[Int : [Int]]]?
-    public var weeksOut: [[Int : [Int]]]?
+    /// -------–-------–-------–-------–-------–
+    /// Deprecated
+    /// -------–-------–-------–-------–-------–
+    
+//    public var weeksIn: [[Int : [Int]]]?
+//    public var weeksOut: [[Int : [Int]]]?
+    
+    /// -------–-------–-------–-------–-------–
+    
+    // Since v2.0.
+    public var weekdays: [[Weekday : NSDate]]!
+    
     public var currentDay: Int?
     
     public var potentialSize: CGSize {
@@ -74,12 +84,10 @@ public final class CVCalendarMonthView: UIView {
 extension CVCalendarMonthView {
     public func commonInit() {
         let calendarManager = calendarView.manager
-        safeExecuteBlock({
-            self.numberOfWeeks = calendarManager.monthDateRange(self.date).countOfWeeks
-            self.weeksIn = calendarManager.weeksWithWeekdaysForMonthDate(self.date).weeksIn
-            self.weeksOut = calendarManager.weeksWithWeekdaysForMonthDate(self.date).weeksOut
-            self.currentDay = Manager.dateRange(NSDate()).day
-            }, collapsingOnNil: true, withObjects: date)
+        let range = calendarManager.monthDateRange(date)
+        numberOfWeeks = range.numberOfWeeks
+        currentDay = NSDate().day.value()
+        weekdays = calendarManager.weekdaysForDate(date)
     }
 }
 

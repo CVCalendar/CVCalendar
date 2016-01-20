@@ -11,7 +11,7 @@ import UIKit
 @objc
 public protocol CVCalendarViewDelegate {
     func presentationMode() -> CalendarMode
-    func firstWeekday() -> Weekday
+    func firstWeekday() -> CVCalendarWeekday
     
     /**
     Determines whether resizing should cause related views' animation.

@@ -107,7 +107,9 @@ extension CVCalendarContentViewController {
     }
 }
 
-//MARK: Delete dot views (in effect refreshing the dayView dots)
+// MARK: Delete dot views (in effect refreshing the dayView dots)
+
+// FIXME: Dots height should not be hardcoded!
 
 extension CVCalendarContentViewController {
     func removeDotViews(dayView: CVCalendarDayView) {
@@ -157,25 +159,11 @@ extension CVCalendarContentViewController {
 
 extension CVCalendarContentViewController {
     public func dateBeforeDate(date: NSDate) -> NSDate {
-        let components = Manager.componentsForDate(date)
-        let calendar = NSCalendar.currentCalendar()
-
-        components.month -= 1
-
-        let dateBefore = calendar.dateFromComponents(components)!
-
-        return dateBefore
+        return date.month - 1
     }
 
     public func dateAfterDate(date: NSDate) -> NSDate {
-        let components = Manager.componentsForDate(date)
-        let calendar = NSCalendar.currentCalendar()
-
-        components.month += 1
-
-        let dateAfter = calendar.dateFromComponents(components)!
-
-        return dateAfter
+        return date.month + 1
     }
 
     public func matchedMonths(lhs: Date, _ rhs: Date) -> Bool {

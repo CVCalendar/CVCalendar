@@ -18,7 +18,7 @@ public typealias Appearance = CVCalendarViewAppearance
 public typealias Coordinator = CVCalendarDayViewControlCoordinator
 public typealias Date = CVDate
 public typealias CalendarMode = CVCalendarViewPresentationMode
-public typealias Weekday = CVCalendarWeekday
+//public typealias Weekday = CVCalendarWeekday /// Deprecated since 2.0 
 public typealias Animator = CVCalendarViewAnimator
 public typealias Delegate = CVCalendarViewDelegate
 public typealias AppearanceDelegate = CVCalendarViewAppearanceDelegate
@@ -44,7 +44,7 @@ public final class CVCalendarView: UIView {
     
     private var validated = false
     
-    public var firstWeekday: Weekday {
+    public var firstWeekday: CVCalendarWeekday {
         get {
             if let delegate = delegate {
                 return delegate.firstWeekday()
