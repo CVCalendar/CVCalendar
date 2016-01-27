@@ -12,7 +12,7 @@ public final class CVCalendarViewAnimator {
     private unowned let calendarView: CalendarView
     
     // MARK: - Public properties
-    public var delegate: CVCalendarViewAnimatorDelegate!
+    public weak var delegate: CVCalendarViewAnimatorDelegate!
     public var coordinator: CVCalendarDayViewControlCoordinator {
         get {
             return calendarView.coordinator
