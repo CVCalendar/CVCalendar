@@ -100,8 +100,7 @@ public final class CVCalendarDayView: UIView {
         let day: Int!
         let monthDate = monthView.date
         
-        // TODO: FIX THIS ISSUE
-        
+
         print("[DayView]: WeekdayIndex: \(weekdayIndex)")
         print("[DayView]: Calculated WeekdayIndex: \(weekday)")
         print("[DayView]: Weekdays \(weekView.weekdays.count)")
