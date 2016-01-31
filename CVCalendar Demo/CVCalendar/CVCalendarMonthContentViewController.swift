@@ -328,14 +328,14 @@ extension CVCalendarMonthContentViewController {
             self.presentedMonthView = presentedMonthView
             calendarView.presentedDate = Date(date: presentedMonthView.date)
             
-            if let selected = coordinator.selectedDayView, let selectedMonthView = selected.monthView where !matchedMonths(Date(date: selectedMonthView.date), Date(date: presentedMonthView.date)) && calendarView.shouldAutoSelectDayOnMonthChange {
+            if let selected = coordinator.selectedDayView, let selectedMonthView = selected.monthView where selectedMonthView.date.month.value() != presentedMonthView.date.month.value() && calendarView.shouldAutoSelectDayOnMonthChange {
                 let current = Date(date: NSDate())
                 let presented = Date(date: presentedMonthView.date)
                 
                 if matchedMonths(current, presented) {
                     selectDayViewWithDay(current.day, inMonthView: presentedMonthView)
                 } else {
-                    selectDayViewWithDay(Date(date: calendarView.manager.monthDateRange(presentedMonthView.date).monthStart).day, inMonthView: presentedMonthView)
+                    selectDayViewWithDay(presentedMonthView.date.day.value(), inMonthView: presentedMonthView)
                 }
             }
         }

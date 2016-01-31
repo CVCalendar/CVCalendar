@@ -79,3 +79,7 @@ private extension CVDate {
         return formatter.stringFromDate(date)
     }
 }
+
+public func ==(lhs: CVDate, rhs: CVDate) -> Bool {
+    return lhs.year == rhs.year && lhs.month == rhs.month && lhs.day == rhs.day
+}

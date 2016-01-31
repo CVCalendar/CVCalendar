@@ -80,7 +80,8 @@ public final class CVCalendarDayView: UIView {
         }
         
         date = dateWithWeekView(weekView, andWeekIndex: weekdayIndex)
-        
+        isCurrentDay = date == CVDate(date: NSDate())
+
         labelSetup()
         setupDotMarker()
         topMarkerSetup()
@@ -96,18 +97,7 @@ public final class CVCalendarDayView: UIView {
     }
     
     public func dateWithWeekView(weekView: CVCalendarWeekView, andWeekIndex index: Int) -> CVDate {
-//        func hasDayAtWeekdayIndex(weekdayIndex: Int, weekdaysDictionary: [Int : Int]) -> Bool {
-//            for key in weekdaysDictionary.keys {
-//                if key == weekdayIndex {
-//                    return true
-//                }
-//            }
-//            
-//            return false
-//        }
-        
-        
-        var day: Int!
+        let day: Int!
         let monthDate = monthView.date
         
         // TODO: FIX THIS ISSUE
@@ -132,28 +122,6 @@ public final class CVCalendarDayView: UIView {
             
             day = -1
         }
-        
-        
-        
-//        if let weekdaysOut = weekView.weekdaysOut {
-//            if hasDayAtWeekdayIndex(weekdayIndex, weekdaysDictionary: weekdaysOut) {
-//                isOut = true
-//                day = weekdaysOut[weekdayIndex]!
-//            } else if hasDayAtWeekdayIndex(weekdayIndex, weekdaysDictionary: weekdaysIn!) {
-//                day = weekdaysIn![weekdayIndex]!
-//            }
-//        } else {
-//            day = weekdaysIn![weekdayIndex]!
-//        }
-//        
-//        if day == monthView.currentDay && !isOut {
-//            let today = NSDate()
-//            
-//            if monthDate.month.value() == today.month.value() && today.year.value() == monthDate.year.value() {
-//                isCurrentDay = true
-//            }
-//        }
-        
         
         var offset = 0
         if isOut {
