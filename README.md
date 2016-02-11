@@ -43,7 +43,7 @@ GIF Demo
 
 Installation
 ==========
-<h3> Cocoa Pods </h3>
+<h3> CocoaPods </h3>
 
 ```ruby
 pod 'CVCalendar', '~> 1.2.8'
