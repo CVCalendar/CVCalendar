@@ -154,7 +154,7 @@ How it should look like.
         self.menuView = CVCalendarMenuView(frame: CGRectMake(0, 0, 300, 15))
 
         // Appearance delegate [Unnecessary]
-        self.calendarView.appearanceDelegate = self
+        self.calendarView.calendarAppearanceDelegate = self
 
         // Animator delegate [Unnecessary]
         self.calendarView.animatorDelegate = self
