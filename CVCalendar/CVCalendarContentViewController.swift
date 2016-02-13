@@ -141,10 +141,14 @@ extension CVCalendarContentViewController {
     public func indexOfIdentifier(identifier: Identifier) -> Int {
         let index: Int
         switch identifier {
-        case Previous: index = 0
-        case Presented: index = 1
-        case Following: index = 2
-        default: index = -1
+        case Previous:
+            index = 0
+        case Presented:
+            index = 1
+        case Following:
+            index = 2
+        default:
+            index = -1
         }
 
         return index
@@ -208,37 +212,39 @@ extension CVCalendarContentViewController {
     }
 
     public func updateHeight(height: CGFloat, animated: Bool) {
-        if calendarView.shouldAnimateResizing {
-            var viewsToLayout = [UIView]()
-            if let calendarSuperview = calendarView.superview {
-                for constraintIn in calendarSuperview.constraints {
-                    if let firstItem = constraintIn.firstItem as? UIView, let _ = constraintIn.secondItem as? CalendarView {
+        
+        guard calendarView.shouldAnimateResizing else {
+            return
+        }
+        
+        var viewsToLayout = [UIView]()
+        if let calendarSuperview = calendarView.superview {
+            for constraintIn in calendarSuperview.constraints {
+                if let firstItem = constraintIn.firstItem as? UIView, _ = constraintIn.secondItem as? CalendarView {
 
-                        viewsToLayout.append(firstItem)
-                    }
+                    viewsToLayout.append(firstItem)
                 }
             }
+        }
 
+        for constraintIn in calendarView.constraints where constraintIn.firstAttribute == NSLayoutAttribute.Height {
+            constraintIn.constant = height
 
-            for constraintIn in calendarView.constraints where constraintIn.firstAttribute == NSLayoutAttribute.Height {
-                constraintIn.constant = height
-
-                if animated {
-                    UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: {
-                        self.layoutViews(viewsToLayout, toHeight: height)
-                        }) { _ in
-                            self.presentedMonthView.frame.size = self.presentedMonthView.potentialSize
-                            self.presentedMonthView.updateInteractiveView()
-                    }
-                } else {
-                    layoutViews(viewsToLayout, toHeight: height)
-                    presentedMonthView.updateInteractiveView()
-                    presentedMonthView.frame.size = presentedMonthView.potentialSize
-                    presentedMonthView.updateInteractiveView()
+            if animated {
+                UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: {
+                    self.layoutViews(viewsToLayout, toHeight: height)
+                    }) { _ in
+                        self.presentedMonthView.frame.size = self.presentedMonthView.potentialSize
+                        self.presentedMonthView.updateInteractiveView()
                 }
-
-                break
+            } else {
+                layoutViews(viewsToLayout, toHeight: height)
+                presentedMonthView.updateInteractiveView()
+                presentedMonthView.frame.size = presentedMonthView.potentialSize
+                presentedMonthView.updateInteractiveView()
             }
+
+            break
         }
     }
 

@@ -467,9 +467,12 @@ extension CVCalendarWeekContentViewController {
     public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         if pageChanged {
             switch direction {
-            case .Left: scrolledLeft()
-            case .Right: scrolledRight()
-            default: break
+            case .Left:
+                scrolledLeft()
+            case .Right:
+                scrolledRight()
+            default:
+                break
             }
         }
         

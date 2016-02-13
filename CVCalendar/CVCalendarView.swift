@@ -197,7 +197,7 @@ public final class CVCalendarView: UIView {
 
 extension CVCalendarView {
     public func commitCalendarViewUpdate() {
-        if let _ = delegate, let contentController = contentController {
+        if let _ = delegate, contentController = contentController {
             let contentViewSize = contentController.bounds.size
             let selfSize = bounds.size
             let screenSize = UIScreen.mainScreen().bounds.size
@@ -278,7 +278,7 @@ extension CVCalendarView {
         contentController.presentPreviousView(nil)
     }
     
-    public func changeMode(mode: CalendarMode, completion: () -> () = {}) {
+    public func changeMode(mode: CalendarMode, completion: (() -> Void)? = nil) {
         if let selectedDate = coordinator.selectedDayView?.date.convertedDate() where calendarMode != mode {
             calendarMode = mode
             
@@ -304,7 +304,7 @@ extension CVCalendarView {
                 self.contentController.scrollView.removeAllSubviews()
                 self.contentController.scrollView.removeFromSuperview()
                 self.contentController = newController
-                completion()
+                completion?()
             }
         }
     }
@@ -317,8 +317,10 @@ private extension CVCalendarView {
         if let delegate = delegate {
             calendarMode = delegate.presentationMode()
             switch delegate.presentationMode() {
-                case .MonthView: contentController = MonthContentViewController(calendarView: self, frame: bounds)
-                case .WeekView: contentController = WeekContentViewController(calendarView: self, frame: bounds)
+            case .MonthView:
+                contentController = MonthContentViewController(calendarView: self, frame: bounds)
+            case .WeekView:
+                contentController = WeekContentViewController(calendarView: self, frame: bounds)
             }
             
             addSubview(contentController.scrollView)
