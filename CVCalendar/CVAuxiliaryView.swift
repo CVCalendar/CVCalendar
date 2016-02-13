@@ -25,9 +25,7 @@ public final class CVAuxiliaryView: UIView {
     public let defaultFillColor = UIColor.colorFromCode(0xe74c3c)
     
     private var radius: CGFloat {
-        get {
-            return (min(frame.height, frame.width) - 10) / 2
-        }
+        return (min(frame.height, frame.width) - 10) / 2
     }
     
     public unowned let dayView: DayView
@@ -56,16 +54,23 @@ public final class CVAuxiliaryView: UIView {
         
         if let shape = shape {
             switch shape {
-            case .RightFlag: path = rightFlagPath()
-            case .LeftFlag: path = leftFlagPath()
-            case .Circle: path = circlePath()
-            case .Rect: path = rectPath()
-            case .Custom(let customPathBlock): path = customPathBlock(rect)
+            case .RightFlag:
+                path = rightFlagPath()
+            case .LeftFlag:
+                path = leftFlagPath()
+            case .Circle:
+                path = circlePath()
+            case .Rect:
+                path = rectPath()
+            case .Custom(let customPathBlock):
+                path = customPathBlock(rect)
             }
             
             switch shape {
-            case .Custom: break
-            default: path.lineWidth = 1
+            case .Custom:
+                break
+            default:
+                path.lineWidth = 1
             }
         }
         

@@ -45,21 +45,19 @@ public final class CVCalendarView: UIView {
     private var validated = false
     
     public var firstWeekday: Weekday {
-        get {
-            if let delegate = delegate {
-                return delegate.firstWeekday()
-            } else {
-                return .Sunday
-            }
+        if let delegate = delegate {
+            return delegate.firstWeekday()
         }
+        
+        return .Sunday
     }
     
     public var shouldShowWeekdaysOut: Bool! {
-        if let delegate = delegate, let shouldShow = delegate.shouldShowWeekdaysOut?() {
+        if let delegate = delegate, shouldShow = delegate.shouldShowWeekdaysOut?() {
             return shouldShow
-        } else {
-            return false
         }
+        
+        return false
     }
     
     public var presentedDate: Date! {
@@ -71,40 +69,35 @@ public final class CVCalendarView: UIView {
     }
     
     public var shouldAnimateResizing: Bool {
-        get {
-            if let delegate = delegate, should = delegate.shouldAnimateResizing?() {
-                return should
-            }
-            
-            return true
+        if let delegate = delegate, should = delegate.shouldAnimateResizing?() {
+            return should
         }
+        
+        return true
     }
     
-    public var shouldAutoSelectDayOnMonthChange: Bool{
-        get {
-            if let delegate = delegate, should = delegate.shouldAutoSelectDayOnMonthChange?() {
-                return should
-            }
-            return true
+    public var shouldAutoSelectDayOnMonthChange: Bool {
+        if let delegate = delegate, should = delegate.shouldAutoSelectDayOnMonthChange?() {
+            return should
         }
+        
+        return true
     }
     
-    public var shouldAutoSelectDayOnWeekChange: Bool{
-        get {
-            if let delegate = delegate, should = delegate.shouldAutoSelectDayOnWeekChange?() {
-                return should
-            }
-            return true
+    public var shouldAutoSelectDayOnWeekChange: Bool {
+        if let delegate = delegate, should = delegate.shouldAutoSelectDayOnWeekChange?() {
+            return should
         }
+        
+        return true
     }
     
-    public var shouldScrollOnOutDayViewSelection: Bool{
-        get {
-            if let delegate = delegate, should = delegate.shouldScrollOnOutDayViewSelection?() {
-                return should
-            }
-            return true
+    public var shouldScrollOnOutDayViewSelection: Bool {
+        if let delegate = delegate, should = delegate.shouldScrollOnOutDayViewSelection?() {
+            return should
         }
+    
+        return true
     }
     
     // MARK: - Calendar View Delegate

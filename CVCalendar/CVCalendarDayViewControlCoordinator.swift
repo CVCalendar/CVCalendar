@@ -16,9 +16,7 @@ public final class CVCalendarDayViewControlCoordinator {
     // MARK: - Public properties
     public weak var selectedDayView: CVCalendarDayView?
     public var animator: CVCalendarViewAnimator! {
-        get {
-            return calendarView.animator
-        }
+        return calendarView.animator
     }
 
     // MARK: - initialization
