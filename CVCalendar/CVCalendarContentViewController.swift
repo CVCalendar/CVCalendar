@@ -60,7 +60,7 @@ public class CVCalendarContentViewController: UIViewController {
 
 extension CVCalendarContentViewController {
     public func updateFrames(frame: CGRect) {
-        if frame != CGRectZero {
+        if frame != .zero {
             scrollView.frame = frame
             scrollView.removeAllSubviews()
             scrollView.contentSize = CGSizeMake(frame.size.width * 3, frame.size.height)

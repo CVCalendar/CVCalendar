@@ -55,7 +55,7 @@ public final class CVCalendarWeekView: UIView {
         if let size = monthView.calendarView.weekViewSize {
             super.init(frame: CGRectMake(0, CGFloat(index) * size.height, size.width, size.height))
         } else {
-            super.init(frame: CGRectZero)
+            super.init(frame: .zero)
         }
         
         // Get weekdays in.

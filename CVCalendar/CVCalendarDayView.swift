@@ -69,7 +69,7 @@ public final class CVCalendarDayView: UIView {
             let x = (CGFloat(weekdayIndex - 1) * (size.width + hSpace)) + (hSpace/2)
             super.init(frame: CGRectMake(x, 0, size.width, size.height))
         } else {
-            super.init(frame: CGRectZero)
+            super.init(frame: .zero)
         }
         
         date = dateWithWeekView(weekView, andWeekIndex: weekdayIndex)

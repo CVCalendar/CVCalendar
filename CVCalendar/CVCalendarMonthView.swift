@@ -44,7 +44,7 @@ public final class CVCalendarMonthView: UIView {
     // MARK: - Initialization
     
     public init(calendarView: CVCalendarView, date: NSDate) {
-        super.init(frame: CGRectZero)
+        super.init(frame: .zero)
         self.calendarView = calendarView
         self.date = date
         commonInit()

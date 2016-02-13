@@ -177,7 +177,7 @@ public final class CVCalendarView: UIView {
     // MARK: - Initialization
     
     public init() {
-        super.init(frame: CGRectZero)
+        super.init(frame: .zero)
         hidden = true
     }
     
@@ -236,7 +236,7 @@ extension CVCalendarView {
                     dayViewSize = CGSizeMake((width / 7.0) - hSpace, height)
                     validated = true
                     
-                    contentController.updateFrames(selfSize != contentViewSize ? bounds : CGRectZero)
+                    contentController.updateFrames(selfSize != contentViewSize ? bounds : .zero)
                 }
             }
         }

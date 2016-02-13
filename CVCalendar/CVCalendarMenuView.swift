@@ -41,7 +41,7 @@ public final class CVCalendarMenuView: UIView {
     }
 
     public init() {
-        super.init(frame: CGRectZero)
+        super.init(frame: .zero)
     }
     
     public override init(frame: CGRect) {
