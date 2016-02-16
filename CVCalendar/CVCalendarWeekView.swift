@@ -37,20 +37,17 @@ public final class CVCalendarWeekView: UIView {
     public var utilizable = false /// Recovery service.
     
     public weak var calendarView: CVCalendarView! {
-        get {
-            var calendarView: CVCalendarView!
-            if let monthView = monthView, let activeCalendarView = monthView.calendarView {
-                calendarView = activeCalendarView
-            }
-            
-            return calendarView
+        var calendarView: CVCalendarView!
+        if let monthView = monthView, let activeCalendarView = monthView.calendarView {
+            calendarView = activeCalendarView
         }
+        
+        return calendarView
     }
     
     // MARK: - Initialization
     
     public init(monthView: CVCalendarMonthView, index: Int) {
-        
         
         self.monthView = monthView
         self.index = index
@@ -58,7 +55,7 @@ public final class CVCalendarWeekView: UIView {
         if let size = monthView.calendarView.weekViewSize {
             super.init(frame: CGRectMake(0, CGFloat(index) * size.height, size.width, size.height))
         } else {
-            super.init(frame: CGRectZero)
+            super.init(frame: .zero)
         }
         
         // Get weekdays in.

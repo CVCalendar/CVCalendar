@@ -121,7 +121,7 @@ public final class CVCalendarWeekContentViewController: CVCalendarContentViewCon
         super.updateFrames(rect)
         
         for monthView in monthViews.values {
-            monthView.reloadViewsWithRect(rect != CGRectZero ? rect : scrollView.bounds)
+            monthView.reloadViewsWithRect(rect != .zero ? rect : scrollView.bounds)
         }
         
         reloadWeekViews()
@@ -467,9 +467,12 @@ extension CVCalendarWeekContentViewController {
     public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         if pageChanged {
             switch direction {
-            case .Left: scrolledLeft()
-            case .Right: scrolledRight()
-            default: break
+            case .Left:
+                scrolledLeft()
+            case .Right:
+                scrolledRight()
+            default:
+                break
             }
         }
         

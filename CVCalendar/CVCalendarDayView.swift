@@ -24,25 +24,21 @@ public final class CVCalendarDayView: UIView {
     public var isCurrentDay = false
     
     public weak var monthView: CVCalendarMonthView! {
-        get {
-            var monthView: MonthView!
-            if let weekView = weekView, let activeMonthView = weekView.monthView {
-                monthView = activeMonthView
-            }
-            
-            return monthView
+        var monthView: MonthView!
+        if let weekView = weekView, let activeMonthView = weekView.monthView {
+            monthView = activeMonthView
         }
+        
+        return monthView
     }
     
     public weak var calendarView: CVCalendarView! {
-        get {
-            var calendarView: CVCalendarView!
-            if let weekView = weekView, let activeCalendarView = weekView.calendarView {
-                calendarView = activeCalendarView
-            }
-            
-            return calendarView
+        var calendarView: CVCalendarView!
+        if let weekView = weekView, let activeCalendarView = weekView.calendarView {
+            calendarView = activeCalendarView
         }
+        
+        return calendarView
     }
     
     public override var frame: CGRect {
@@ -73,7 +69,7 @@ public final class CVCalendarDayView: UIView {
             let x = (CGFloat(weekdayIndex - 1) * (size.width + hSpace)) + (hSpace/2)
             super.init(frame: CGRectMake(x, 0, size.width, size.height))
         } else {
-            super.init(frame: CGRectZero)
+            super.init(frame: .zero)
         }
         
         date = dateWithWeekView(weekView, andWeekIndex: weekdayIndex)

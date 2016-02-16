@@ -45,21 +45,19 @@ public final class CVCalendarView: UIView {
     private var validated = false
     
     public var firstWeekday: Weekday {
-        get {
-            if let delegate = delegate {
-                return delegate.firstWeekday()
-            } else {
-                return .Sunday
-            }
+        if let delegate = delegate {
+            return delegate.firstWeekday()
         }
+        
+        return .Sunday
     }
     
     public var shouldShowWeekdaysOut: Bool! {
-        if let delegate = delegate, let shouldShow = delegate.shouldShowWeekdaysOut?() {
+        if let delegate = delegate, shouldShow = delegate.shouldShowWeekdaysOut?() {
             return shouldShow
-        } else {
-            return false
         }
+        
+        return false
     }
     
     public var presentedDate: Date! {
@@ -71,40 +69,35 @@ public final class CVCalendarView: UIView {
     }
     
     public var shouldAnimateResizing: Bool {
-        get {
-            if let delegate = delegate, should = delegate.shouldAnimateResizing?() {
-                return should
-            }
-            
-            return true
+        if let delegate = delegate, should = delegate.shouldAnimateResizing?() {
+            return should
         }
+        
+        return true
     }
     
-    public var shouldAutoSelectDayOnMonthChange: Bool{
-        get {
-            if let delegate = delegate, should = delegate.shouldAutoSelectDayOnMonthChange?() {
-                return should
-            }
-            return true
+    public var shouldAutoSelectDayOnMonthChange: Bool {
+        if let delegate = delegate, should = delegate.shouldAutoSelectDayOnMonthChange?() {
+            return should
         }
+        
+        return true
     }
     
-    public var shouldAutoSelectDayOnWeekChange: Bool{
-        get {
-            if let delegate = delegate, should = delegate.shouldAutoSelectDayOnWeekChange?() {
-                return should
-            }
-            return true
+    public var shouldAutoSelectDayOnWeekChange: Bool {
+        if let delegate = delegate, should = delegate.shouldAutoSelectDayOnWeekChange?() {
+            return should
         }
+        
+        return true
     }
     
-    public var shouldScrollOnOutDayViewSelection: Bool{
-        get {
-            if let delegate = delegate, should = delegate.shouldScrollOnOutDayViewSelection?() {
-                return should
-            }
-            return true
+    public var shouldScrollOnOutDayViewSelection: Bool {
+        if let delegate = delegate, should = delegate.shouldScrollOnOutDayViewSelection?() {
+            return should
         }
+    
+        return true
     }
     
     // MARK: - Calendar View Delegate
@@ -184,7 +177,7 @@ public final class CVCalendarView: UIView {
     // MARK: - Initialization
     
     public init() {
-        super.init(frame: CGRectZero)
+        super.init(frame: .zero)
         hidden = true
     }
     
@@ -204,7 +197,7 @@ public final class CVCalendarView: UIView {
 
 extension CVCalendarView {
     public func commitCalendarViewUpdate() {
-        if let _ = delegate, let contentController = contentController {
+        if let _ = delegate, contentController = contentController {
             let contentViewSize = contentController.bounds.size
             let selfSize = bounds.size
             let screenSize = UIScreen.mainScreen().bounds.size
@@ -243,7 +236,7 @@ extension CVCalendarView {
                     dayViewSize = CGSizeMake((width / 7.0) - hSpace, height)
                     validated = true
                     
-                    contentController.updateFrames(selfSize != contentViewSize ? bounds : CGRectZero)
+                    contentController.updateFrames(selfSize != contentViewSize ? bounds : .zero)
                 }
             }
         }
@@ -285,7 +278,7 @@ extension CVCalendarView {
         contentController.presentPreviousView(nil)
     }
     
-    public func changeMode(mode: CalendarMode, completion: () -> () = {}) {
+    public func changeMode(mode: CalendarMode, completion: (() -> Void)? = nil) {
         if let selectedDate = coordinator.selectedDayView?.date.convertedDate() where calendarMode != mode {
             calendarMode = mode
             
@@ -311,7 +304,7 @@ extension CVCalendarView {
                 self.contentController.scrollView.removeAllSubviews()
                 self.contentController.scrollView.removeFromSuperview()
                 self.contentController = newController
-                completion()
+                completion?()
             }
         }
     }
@@ -324,8 +317,10 @@ private extension CVCalendarView {
         if let delegate = delegate {
             calendarMode = delegate.presentationMode()
             switch delegate.presentationMode() {
-                case .MonthView: contentController = MonthContentViewController(calendarView: self, frame: bounds)
-                case .WeekView: contentController = WeekContentViewController(calendarView: self, frame: bounds)
+            case .MonthView:
+                contentController = MonthContentViewController(calendarView: self, frame: bounds)
+            case .WeekView:
+                contentController = WeekContentViewController(calendarView: self, frame: bounds)
             }
             
             addSubview(contentController.scrollView)
