@@ -309,9 +309,14 @@ extension CVCalendarMonthContentViewController {
     
     public func updateSelection() {
         let coordinator = calendarView.coordinator
-        if let selected = coordinator.selectedDayView {
-            for (index, monthView) in monthViews {
-                if indexOfIdentifier(index) != 1 {
+        
+        if let presentedMonthView = monthViews[Presented] {
+            self.presentedMonthView = presentedMonthView
+            calendarView.presentedDate = Date(date: presentedMonthView.date)
+            
+            if let selected = coordinator.selectedDayView, selectedMonthView = selected.monthView {
+                // Clear...
+                for (_, monthView) in monthViews {
                     monthView.mapDayViews {
                         dayView in
                         
@@ -321,25 +326,24 @@ extension CVCalendarMonthContentViewController {
                         }
                     }
                 }
-            }
-        }
-        
-        if let presentedMonthView = monthViews[Presented] {
-            self.presentedMonthView = presentedMonthView
-            calendarView.presentedDate = Date(date: presentedMonthView.date)
-            
-            if let selected = coordinator.selectedDayView, let selectedMonthView = selected.monthView where selectedMonthView.date.month.value() != presentedMonthView.date.month.value() && calendarView.shouldAutoSelectDayOnMonthChange {
-                let current = Date(date: NSDate())
-                let presented = Date(date: presentedMonthView.date)
                 
-                if matchedMonths(current, presented) {
-                    selectDayViewWithDay(current.day, inMonthView: presentedMonthView)
-                } else {
-                    selectDayViewWithDay(presentedMonthView.date.day.value(), inMonthView: presentedMonthView)
+                if !matchedMonths(Date(date: selectedMonthView.date), Date(date: presentedMonthView.date)) && calendarView.shouldAutoSelectDayOnMonthChange {
+                    let current = Date(date: NSDate())
+                    let presented = Date(date: presentedMonthView.date)
+                    
+                    /// Priority: Selected > Current > First
+                    if selected.isOut {
+                        selectDayViewWithDay(selected.date.day, inMonthView: presentedMonthView)
+                    } else if matchedMonths(current, presented) {
+                        selectDayViewWithDay(current.day, inMonthView: presentedMonthView)
+                    } else {
+                        selectDayViewWithDay(presentedMonthView.date.firstMonthDate().day.value(), inMonthView: presentedMonthView)
+                    }
                 }
+            } else {
+                selectDayViewWithDay(presentedMonthView.date.firstMonthDate().day.value(), inMonthView: presentedMonthView)
             }
         }
-        
     }
     
     public func selectDayViewWithDay(day: Int, inMonthView monthView: CVCalendarMonthView) {

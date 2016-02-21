@@ -379,20 +379,8 @@ extension CVCalendarWeekContentViewController {
     
     public func updateSelection() {
         let coordinator = calendarView.coordinator
-        if let selected = coordinator.selectedDayView {
-            for (index, monthView) in monthViews {
-                if indexOfIdentifier(index) != 1 {
-                    monthView.mapDayViews { dayView in
-                        if dayView == selected {
-                            dayView.setDeselectedWithClearing(true)
-                            coordinator.dequeueDayView(dayView)
-                        }
-                    }
-                }
-            }
-        }
         
-        if let presentedWeekView = weekViews[Presented], let presentedMonthView = monthViews[Presented] {
+        if let presentedWeekView = weekViews[Presented], presentedMonthView = monthViews[Presented] {
             self.presentedMonthView = presentedMonthView
             calendarView.presentedDate = Date(date: presentedMonthView.date)
             
@@ -404,15 +392,30 @@ extension CVCalendarWeekContentViewController {
                 }
             }
             
-            if let selected = coordinator.selectedDayView where !matchedWeeks(selected.date, presentedDate) && calendarView.shouldAutoSelectDayOnWeekChange {
-                let current = Date(date: NSDate())
-                
-                if matchedWeeks(current, presentedDate) {
-                    selectDayViewWithDay(current.day, inWeekView: presentedWeekView)
-                } else {
-                    selectDayViewWithDay(presentedDate.day, inWeekView: presentedWeekView)
+            if let selected = coordinator.selectedDayView {
+                for (_, monthView) in monthViews {
+                    monthView.mapDayViews { dayView in
+                        if dayView == selected {
+                            dayView.setDeselectedWithClearing(true)
+                            coordinator.dequeueDayView(dayView)
+                        }
+                    }
                 }
                 
+                if !matchedWeeks(selected.date, presentedDate) && calendarView.shouldAutoSelectDayOnWeekChange {
+                    let current = Date(date: NSDate())
+                    
+                    /// Priority: Selected > Current > First
+                    if selected.isOut {
+                        selectDayViewWithDay(selected.date.day, inWeekView: presentedWeekView)
+                    } else if matchedWeeks(current, presentedDate) {
+                        selectDayViewWithDay(current.day, inWeekView: presentedWeekView)
+                    } else {
+                        selectDayViewWithDay(presentedDate.day, inWeekView: presentedWeekView)
+                    }
+                }
+            } else if calendarView.shouldAutoSelectDayOnWeekChange {
+                selectDayViewWithDay(presentedDate.day, inWeekView: presentedWeekView)
             }
         }
     }
