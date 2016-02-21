@@ -8,6 +8,20 @@
 
 import UIKit
 
+public extension UIFont {
+    func decreased() -> UIFont {
+        return UIFont(name: fontName, size: pointSize - 1)!
+    }
+    
+    func increased() -> UIFont {
+        return UIFont(name: fontName, size: pointSize + 1)!
+    }
+}
+
+postfix func --(inout lhs: UIFont) {
+    lhs = lhs.decreased()
+}
+
 public final class CVCalendarDayView: UIView {
     // MARK: - Public properties
     public let weekdayIndex: Int!
@@ -19,6 +33,8 @@ public final class CVCalendarDayView: UIView {
     public var selectionView: CVAuxiliaryView?
     public var topMarker: CALayer?
     public var dotMarkers = [CVAuxiliaryView?]()
+    
+    public var complementaryView: UIView?
     
     public var isOut = false
     public var isCurrentDay = false
@@ -90,6 +106,10 @@ public final class CVCalendarDayView: UIView {
         if !calendarView.shouldShowWeekdaysOut && isOut {
             hidden = true
         }
+        
+        adjustLabelFontSize()
+        
+        print("TextSize \(textSize), SelectionSize: \(CVAuxiliaryView(dayView: self, rect: dayLabel.frame, shape: .Circle).frame.size)")
     }
     
     public func dateWithWeekView(weekView: CVCalendarWeekView, andWeekIndex index: Int) -> CVDate {
@@ -131,6 +151,44 @@ public final class CVCalendarDayView: UIView {
     }
 }
 
+// MARK: - Private UILabel font adjustment
+
+extension CVCalendarDayView {
+    private var textSize: CGSize {
+        guard let label = dayLabel, text = label.text else {
+            return .zero
+        }
+        
+        return NSString(string: text).sizeWithAttributes([ NSFontAttributeName : label.font ])
+    }
+    
+    private var auxiliaryViewSize: CGSize {
+        if let selectionView = selectionView {
+            return selectionView.frame.size
+        } else {
+            return CVAuxiliaryView(dayView: self, rect: dayLabel.frame, shape: .Circle).frame.size
+        }
+    }
+    
+    public func adjustLabelFontSize() {
+        let size = auxiliaryViewSize
+        
+        if max(textSize.width, textSize.height) * 2.5 > max(size.width, size.height) {
+            dayLabel.font = dayLabel.font.decreased()
+            adjustLabelFontSize()
+        }
+    }
+    
+    public func increaseFontSize() {
+        let size = auxiliaryViewSize
+        
+        if max(textSize.width, textSize.height) * 2.5 <= max(size.width, size.height) {
+            dayLabel.font = dayLabel.font.increased()
+            increaseFontSize()
+        }
+    }
+}
+
 // MARK: - Subviews setup
 
 extension CVCalendarDayView {
@@ -140,7 +198,14 @@ extension CVCalendarDayView {
         dayLabel = UILabel()
         dayLabel!.text = String(date.day)
         dayLabel!.textAlignment = NSTextAlignment.Center
-        dayLabel!.frame = bounds
+        
+        if let complementaryView = calendarView.delegate?.complementaryView?(onDayView: self) {
+            print("Suplementary setup, \(complementaryView.frame)")
+            dayLabel!.frame = CGRect(x: 0, y: 0, width: bounds.width, height: bounds.height - complementaryView.bounds.height)
+            complementarySetup()
+        } else {
+            dayLabel!.frame = bounds
+        }
         
         var font = appearance.dayLabelWeekdayFont
         var color: UIColor?
@@ -172,6 +237,23 @@ extension CVCalendarDayView {
         }
         
         addSubview(dayLabel!)
+    }
+    
+    public func complementarySetup(complementaryView: UIView? = nil) {
+        let view = complementaryView ?? calendarView.delegate?.complementaryView?(onDayView: self)
+        guard let complementaryView = view else {
+            return
+        }
+        
+        self.complementaryView = complementaryView
+        
+        complementaryView.backgroundColor = UIColor.orangeColor()
+        complementaryView.frame.origin = CGPoint(x: 0, y: dayLabel.frame.height)
+        complementaryView.center.x = center.x
+        
+        if complementaryView.superview == nil {
+            addSubview(complementaryView)
+        }
     }
 
     public func preliminarySetup() {
@@ -449,6 +531,7 @@ extension CVCalendarDayView {
         insertSubview(selectionView!, atIndex: 0)
         
         moveDotMarkerBack(false, coloring: false)
+        adjustLabelFontSize()
     }
     
     public func setDeselectedWithClearing(clearing: Bool) {
@@ -477,6 +560,7 @@ extension CVCalendarDayView {
             dayLabel?.font = font
             
             moveDotMarkerBack(true, coloring: false)
+            adjustLabelFontSize()
             
             if clearing {
                 selectionView?.removeFromSuperview()
@@ -490,8 +574,14 @@ extension CVCalendarDayView {
 
 extension CVCalendarDayView {
     public func reloadContent() {
+        if let complementaryView = complementaryView {
+            dayLabel?.frame = CGRect(x: 0, y: 0, width: bounds.width, height: bounds.height - complementaryView.frame.height)
+        } else {
+            dayLabel?.frame = bounds
+        }
+        
         setupDotMarker()
-        dayLabel?.frame = bounds
+        complementarySetup(complementaryView)
         
         let shouldShowDaysOut = calendarView.shouldShowWeekdaysOut!
         if !shouldShowDaysOut {
@@ -507,6 +597,11 @@ extension CVCalendarDayView {
         if selectionView != nil {
             setSelectedWithType(.Single)
         }
+        
+        increaseFontSize()
+        
+        print("Text Size: \(textSize)")
+        print("Selection Size: \(selectionView?.frame)")
     }
 }
 

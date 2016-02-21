@@ -45,6 +45,10 @@ class ViewController: UIViewController {
         calendarView.commitCalendarViewUpdate()
         menuView.commitMenuViewUpdate()
     }
+    
+    func complementaryView(onDayView dayView: DayView) -> UIView {
+        return UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 20))
+    }
 }
 
 // MARK: - CVCalendarViewDelegate & CVCalendarMenuViewDelegate
