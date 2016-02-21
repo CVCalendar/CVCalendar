@@ -17,13 +17,11 @@ public final class CVDate: NSObject {
     public let day: Int
     
    public init(date: NSDate) {
-        let dateRange = Manager.dateRange(date)
-        
         self.date = date
-        self.year = dateRange.year
-        self.month = dateRange.month
-        self.week = dateRange.weekOfMonth
-        self.day = dateRange.day
+        self.year = date.year.value()
+        self.month = date.month.value()
+        self.week = date.week.value()
+        self.day = date.day.value()
         
         super.init()
     }
@@ -61,11 +59,13 @@ extension CVDate {
 extension CVDate {
     public var globalDescription: String {
         let month = dateFormattedStringWithFormat("MMMM", fromDate: date)
+        
         return "\(month), \(year)"
     }
     
     public var commonDescription: String {
         let month = dateFormattedStringWithFormat("MMMM", fromDate: date)
+        
         return "\(day) \(month), \(year)"
     }
 }
@@ -76,4 +76,8 @@ private extension CVDate {
         formatter.dateFormat = format
         return formatter.stringFromDate(date)
     }
+}
+
+public func ==(lhs: CVDate, rhs: CVDate) -> Bool {
+    return lhs.year == rhs.year && lhs.month == rhs.month && lhs.day == rhs.day
 }

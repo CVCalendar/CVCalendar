@@ -32,12 +32,16 @@ public final class CVCalendarWeekView: UIView {
     public var dayViews: [CVCalendarDayView]!
     public var index: Int!
     
-    public var weekdaysIn: [Int : [Int]]?
-    public var weekdaysOut: [Int : [Int]]?
+    public var weekdaysIn: [Int : Int]?
+    public var weekdaysOut: [Int : Int]?
+    
+    public var weekdays: [Weekday : NSDate]!
+    
     public var utilizable = false /// Recovery service.
     
     public weak var calendarView: CVCalendarView! {
         var calendarView: CVCalendarView!
+        
         if let monthView = monthView, let activeCalendarView = monthView.calendarView {
             calendarView = activeCalendarView
         }
@@ -48,7 +52,6 @@ public final class CVCalendarWeekView: UIView {
     // MARK: - Initialization
     
     public init(monthView: CVCalendarMonthView, index: Int) {
-        
         self.monthView = monthView
         self.index = index
         
@@ -58,47 +61,11 @@ public final class CVCalendarWeekView: UIView {
             super.init(frame: .zero)
         }
         
-        // Get weekdays in.
-        let weeksIn = self.monthView!.weeksIn!
-        self.weekdaysIn = weeksIn[self.index!]
+        print("[WeekView]: MonthView weekdays \(monthView.weekdays[index].count)")
         
-        // Get weekdays out.
-        if let weeksOut = self.monthView!.weeksOut {
-            if self.weekdaysIn?.count < 7 {
-                if weeksOut.count > 1 {
-                    let daysOut = 7 - self.weekdaysIn!.count
-                    
-                    var result: [Int : [Int]]?
-                    for weekdaysOut in weeksOut {
-                        if weekdaysOut.count == daysOut {
-                            let manager = calendarView.manager
-                            
-                            
-                            let key = weekdaysOut.keys.first!
-                            let value = weekdaysOut[key]![0]
-                            if value > 20 {
-                                if self.index == 0 {
-                                    result = weekdaysOut
-                                    break
-                                }
-                            } else if value < 10 {
-                                if self.index == manager.monthDateRange(self.monthView!.date!).countOfWeeks - 1 {
-                                    result = weekdaysOut
-                                    break
-                                }
-                            }
-                        }
-                    }
-                    
-                    self.weekdaysOut = result!
-                } else {
-                    self.weekdaysOut = weeksOut[0]
-                }
-                
-            }
-        }
+        weekdays = monthView.weekdays[index]
         
-        self.createDayViews()
+        createDayViews()
     }
     
     public override init(frame: CGRect) {
@@ -175,14 +142,13 @@ extension CVCalendarWeekView {
 extension CVCalendarWeekView {
     public func createDayViews() {
         dayViews = [CVCalendarDayView]()
+        var weekday = Weekday(rawValue: calendarView.firstWeekday.rawValue)!
         for i in 1...7 {
-            let dayView = CVCalendarDayView(weekView: self, weekdayIndex: i)
-            
-            safeExecuteBlock({
-                self.dayViews!.append(dayView)
-                }, collapsingOnNil: true, withObjects: dayViews)
-            
+            let dayView = CVCalendarDayView(weekView: self, weekdayIndex: i, weekday: weekday)
+            dayViews!.append(dayView)
             addSubview(dayView)
+            
+            weekday = weekday.next()
         }
     }
     

@@ -87,7 +87,7 @@ extension CVCalendarContentViewController {
 }
 
 
-// MARK: Delete circle views (in effect refreshing the dayView circle)
+// MARK: Delete circle and dot views (in effect refreshing the dayView circle)
 
 extension CVCalendarContentViewController {
     func removeCircleLabel(dayView: CVCalendarDayView) {
@@ -95,7 +95,7 @@ extension CVCalendarContentViewController {
             if each is UILabel {
                 continue
             }
-            else if each is CVAuxiliaryView {
+            else if each is CVAuxiliaryView  {
                 continue
             }
             else {
@@ -105,7 +105,9 @@ extension CVCalendarContentViewController {
     }
 }
 
-//MARK: Delete dot views (in effect refreshing the dayView dots)
+// MARK: Delete dot views (in effect refreshing the dayView dots)
+
+// FIXME: Dots height should not be hardcoded!
 
 extension CVCalendarContentViewController {
     func removeDotViews(dayView: CVCalendarDayView) {
@@ -141,14 +143,10 @@ extension CVCalendarContentViewController {
     public func indexOfIdentifier(identifier: Identifier) -> Int {
         let index: Int
         switch identifier {
-        case Previous:
-            index = 0
-        case Presented:
-            index = 1
-        case Following:
-            index = 2
-        default:
-            index = -1
+        case Previous: index = 0
+        case Presented: index = 1
+        case Following: index = 2
+        default: index = -1
         }
 
         return index
@@ -159,25 +157,11 @@ extension CVCalendarContentViewController {
 
 extension CVCalendarContentViewController {
     public func dateBeforeDate(date: NSDate) -> NSDate {
-        let components = Manager.componentsForDate(date)
-        let calendar = NSCalendar.currentCalendar()
-
-        components.month -= 1
-
-        let dateBefore = calendar.dateFromComponents(components)!
-
-        return dateBefore
+        return date.month - 1
     }
 
     public func dateAfterDate(date: NSDate) -> NSDate {
-        let components = Manager.componentsForDate(date)
-        let calendar = NSCalendar.currentCalendar()
-
-        components.month += 1
-
-        let dateAfter = calendar.dateFromComponents(components)!
-
-        return dateAfter
+        return date.month + 1
     }
 
     public func matchedMonths(lhs: Date, _ rhs: Date) -> Bool {
@@ -212,39 +196,37 @@ extension CVCalendarContentViewController {
     }
 
     public func updateHeight(height: CGFloat, animated: Bool) {
-        
-        guard calendarView.shouldAnimateResizing else {
-            return
-        }
-        
-        var viewsToLayout = [UIView]()
-        if let calendarSuperview = calendarView.superview {
-            for constraintIn in calendarSuperview.constraints {
-                if let firstItem = constraintIn.firstItem as? UIView, _ = constraintIn.secondItem as? CalendarView {
+        if calendarView.shouldAnimateResizing {
+            var viewsToLayout = [UIView]()
+            if let calendarSuperview = calendarView.superview {
+                for constraintIn in calendarSuperview.constraints {
+                    if let firstItem = constraintIn.firstItem as? UIView, let _ = constraintIn.secondItem as? CalendarView {
 
-                    viewsToLayout.append(firstItem)
+                        viewsToLayout.append(firstItem)
+                    }
                 }
             }
-        }
 
-        for constraintIn in calendarView.constraints where constraintIn.firstAttribute == NSLayoutAttribute.Height {
-            constraintIn.constant = height
 
-            if animated {
-                UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: {
-                    self.layoutViews(viewsToLayout, toHeight: height)
-                    }) { _ in
-                        self.presentedMonthView.frame.size = self.presentedMonthView.potentialSize
-                        self.presentedMonthView.updateInteractiveView()
+            for constraintIn in calendarView.constraints where constraintIn.firstAttribute == NSLayoutAttribute.Height {
+                constraintIn.constant = height
+
+                if animated {
+                    UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: {
+                        self.layoutViews(viewsToLayout, toHeight: height)
+                        }) { _ in
+                            self.presentedMonthView.frame.size = self.presentedMonthView.potentialSize
+                            self.presentedMonthView.updateInteractiveView()
+                    }
+                } else {
+                    layoutViews(viewsToLayout, toHeight: height)
+                    presentedMonthView.updateInteractiveView()
+                    presentedMonthView.frame.size = presentedMonthView.potentialSize
+                    presentedMonthView.updateInteractiveView()
                 }
-            } else {
-                layoutViews(viewsToLayout, toHeight: height)
-                presentedMonthView.updateInteractiveView()
-                presentedMonthView.frame.size = presentedMonthView.potentialSize
-                presentedMonthView.updateInteractiveView()
-            }
 
-            break
+                break
+            }
         }
     }
 

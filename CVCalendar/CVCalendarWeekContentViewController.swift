@@ -322,13 +322,7 @@ extension CVCalendarWeekContentViewController {
 
 extension CVCalendarWeekContentViewController {
     public func getFollowingMonth(date: NSDate) -> MonthView {
-        let calendarManager = calendarView.manager
-        let firstDate = calendarManager.monthDateRange(date).monthStartDate
-        let components = Manager.componentsForDate(firstDate)
-        
-        components.month += 1
-        
-        let newDate = NSCalendar.currentCalendar().dateFromComponents(components)!
+        let newDate = date.month + 1
         let monthView = MonthView(calendarView: calendarView, date: newDate)
         let frame = CGRectMake(0, 0, scrollView.bounds.width, scrollView.bounds.height)
         
@@ -338,12 +332,7 @@ extension CVCalendarWeekContentViewController {
     }
     
     public func getPreviousMonth(date: NSDate) -> MonthView {
-        let firstDate = calendarView.manager.monthDateRange(date).monthStartDate
-        let components = Manager.componentsForDate(firstDate)
-        
-        components.month -= 1
-        
-        let newDate = NSCalendar.currentCalendar().dateFromComponents(components)!
+        let newDate = date.month - 1
         let monthView = MonthView(calendarView: calendarView, date: newDate)
         let frame = CGRectMake(0, 0, scrollView.bounds.width, scrollView.bounds.height)
         
@@ -467,12 +456,9 @@ extension CVCalendarWeekContentViewController {
     public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         if pageChanged {
             switch direction {
-            case .Left:
-                scrolledLeft()
-            case .Right:
-                scrolledRight()
-            default:
-                break
+            case .Left: scrolledLeft()
+            case .Right: scrolledRight()
+            default: break
             }
         }
         
