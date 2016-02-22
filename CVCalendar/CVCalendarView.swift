@@ -225,6 +225,7 @@ extension CVCalendarView {
                     for constraint in constraints {
                         if constraint.firstAttribute == .Height {
                             found = true
+                            break
                         }
                     }
                     

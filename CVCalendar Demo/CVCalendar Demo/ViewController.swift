@@ -47,7 +47,7 @@ class ViewController: UIViewController {
     }
     
     func complementaryView(onDayView dayView: DayView) -> UIView {
-        return UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 20))
+        return UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 25))
     }
 }
 
@@ -72,7 +72,7 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     }
     
     func shouldAnimateResizing() -> Bool {
-        return true // Default value is true
+        return false // Default value is true
     }
     
     func didSelectDayView(dayView: CVCalendarDayView, animationDidFinish: Bool) {

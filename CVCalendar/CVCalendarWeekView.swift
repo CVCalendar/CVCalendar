@@ -61,8 +61,6 @@ public final class CVCalendarWeekView: UIView {
             super.init(frame: .zero)
         }
         
-        print("[WeekView]: MonthView weekdays \(monthView.weekdays[index].count)")
-        
         weekdays = monthView.weekdays[index]
         
         createDayViews()

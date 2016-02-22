@@ -96,10 +96,8 @@ public final class CVCalendarManager {
     private func weekdaysForDate() -> Weekdays {
         return { start, end, _ in
             var weekdays = [[Weekday : NSDate]]()
-            
-            print("Start = \(start), end = \(end)")
-            
             var date = start
+            
             for _ in 0...self.monthDateRange(start).numberOfWeeks {
                 var weekday = self.firstWeekday
                 var week: [Weekday : NSDate] = [:]
@@ -110,12 +108,8 @@ public final class CVCalendarManager {
                     weekday = weekday.next()
                 }
                 
-                print("Added week \(week)")
-                
                 weekdays += [week]
             }
-            
-            print("[FIRST]: \(weekdays[0])")
 
             
             assert(weekdays[0].count == 7)

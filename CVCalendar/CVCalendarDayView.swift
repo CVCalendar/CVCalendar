@@ -8,7 +8,7 @@
 
 import UIKit
 
-public extension UIFont {
+internal extension UIFont {
     func decreased() -> UIFont {
         return UIFont(name: fontName, size: pointSize - 1)!
     }
@@ -18,8 +18,18 @@ public extension UIFont {
     }
 }
 
-postfix func --(inout lhs: UIFont) {
+internal postfix func --(inout lhs: UIFont!) {
     lhs = lhs.decreased()
+}
+
+internal postfix func ++(inout lhs: UIFont!) {
+    lhs = lhs.increased()
+}
+
+internal extension CGRect {
+    var mid: CGPoint {
+        return CGPoint(x: width / 2, y: height / 2)
+    }
 }
 
 public final class CVCalendarDayView: UIView {
@@ -40,6 +50,8 @@ public final class CVCalendarDayView: UIView {
     public var isCurrentDay = false
     
     private var weekday: Weekday
+    
+    private static var count = 0
     
     public weak var monthView: CVCalendarMonthView! {
         var monthView: MonthView!
@@ -95,6 +107,7 @@ public final class CVCalendarDayView: UIView {
         isCurrentDay = date == CVDate(date: NSDate())
 
         labelSetup()
+        complementarySetup()
         setupDotMarker()
         topMarkerSetup()
         
@@ -109,32 +122,21 @@ public final class CVCalendarDayView: UIView {
         
         adjustLabelFontSize()
         
-        print("TextSize \(textSize), SelectionSize: \(CVAuxiliaryView(dayView: self, rect: dayLabel.frame, shape: .Circle).frame.size)")
+        //print("TextSize \(textSize), SelectionSize: \(CVAuxiliaryView(dayView: self, rect: dayLabel.frame, shape: .Circle).frame.size)")
     }
     
     public func dateWithWeekView(weekView: CVCalendarWeekView, andWeekIndex index: Int) -> CVDate {
         let day: Int!
         let monthDate = monthView.date
         
-
-        print("[DayView]: WeekdayIndex: \(weekdayIndex)")
-        print("[DayView]: Calculated WeekdayIndex: \(weekday)")
-        print("[DayView]: Weekdays \(weekView.weekdays.count)")
-        
         if let date = weekView.weekdays[weekday] {
             day = date.day.value()
-            print("IN::: \(day)")
+
             if date.month.value() != monthDate.month.value() {
                 isOut = true
             }
         } else {
-            
-            print(calendarView.manager.monthDateRange(monthDate).monthEnd)
-            
-            for date in weekView.weekdays {
-                print("OUT DATES::: \(date)")
-            }
-            
+            assert(false, "Day data is failed to calculate....")
             day = -1
         }
         
@@ -173,18 +175,9 @@ extension CVCalendarDayView {
     public func adjustLabelFontSize() {
         let size = auxiliaryViewSize
         
-        if max(textSize.width, textSize.height) * 2.5 > max(size.width, size.height) {
-            dayLabel.font = dayLabel.font.decreased()
+        if max(textSize.width, textSize.height) * 3 > max(size.width, size.height) {
+            dayLabel.font--
             adjustLabelFontSize()
-        }
-    }
-    
-    public func increaseFontSize() {
-        let size = auxiliaryViewSize
-        
-        if max(textSize.width, textSize.height) * 2.5 <= max(size.width, size.height) {
-            dayLabel.font = dayLabel.font.increased()
-            increaseFontSize()
         }
     }
 }
@@ -195,17 +188,15 @@ extension CVCalendarDayView {
     public func labelSetup() {
         let appearance = calendarView.appearance
         
-        dayLabel = UILabel()
+        if dayLabel == nil {
+            dayLabel = UILabel()
+        }
+        
         dayLabel!.text = String(date.day)
         dayLabel!.textAlignment = NSTextAlignment.Center
-        
-        if let complementaryView = calendarView.delegate?.complementaryView?(onDayView: self) {
-            print("Suplementary setup, \(complementaryView.frame)")
-            dayLabel!.frame = CGRect(x: 0, y: 0, width: bounds.width, height: bounds.height - complementaryView.bounds.height)
-            complementarySetup()
-        } else {
-            dayLabel!.frame = bounds
-        }
+        dayLabel!.frame = bounds
+
+        //complementarySetup()
         
         var font = appearance.dayLabelWeekdayFont
         var color: UIColor?
@@ -236,24 +227,26 @@ extension CVCalendarDayView {
             dayLabel!.font = font
         }
         
-        addSubview(dayLabel!)
+        if dayLabel.superview == nil {
+            addSubview(dayLabel!)
+        }
     }
     
-    public func complementarySetup(complementaryView: UIView? = nil) {
-        let view = complementaryView ?? calendarView.delegate?.complementaryView?(onDayView: self)
-        guard let complementaryView = view else {
+    public func complementarySetup() {
+        guard let complementaryView = calendarView.delegate?.complementaryView?(onDayView: self) else {
             return
         }
         
+        dayLabel?.frame = CGRect(x: 0, y: 0, width: bounds.width, height: bounds.height - complementaryView.bounds.height)
+        
+        self.complementaryView?.removeFromSuperview()
         self.complementaryView = complementaryView
         
         complementaryView.backgroundColor = UIColor.orangeColor()
         complementaryView.frame.origin = CGPoint(x: 0, y: dayLabel.frame.height)
-        complementaryView.center.x = center.x
+        complementaryView.center.x = bounds.mid.x
         
-        if complementaryView.superview == nil {
-            addSubview(complementaryView)
-        }
+        addSubview(complementaryView)
     }
 
     public func preliminarySetup() {
@@ -574,14 +567,9 @@ extension CVCalendarDayView {
 
 extension CVCalendarDayView {
     public func reloadContent() {
-        if let complementaryView = complementaryView {
-            dayLabel?.frame = CGRect(x: 0, y: 0, width: bounds.width, height: bounds.height - complementaryView.frame.height)
-        } else {
-            dayLabel?.frame = bounds
-        }
-        
         setupDotMarker()
-        complementarySetup(complementaryView)
+        labelSetup()
+        complementarySetup()
         
         let shouldShowDaysOut = calendarView.shouldShowWeekdaysOut!
         if !shouldShowDaysOut {
@@ -598,10 +586,7 @@ extension CVCalendarDayView {
             setSelectedWithType(.Single)
         }
         
-        increaseFontSize()
-        
-        print("Text Size: \(textSize)")
-        print("Selection Size: \(selectionView?.frame)")
+        adjustLabelFontSize()
     }
 }
 
