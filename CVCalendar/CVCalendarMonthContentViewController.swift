@@ -312,9 +312,13 @@ extension CVCalendarMonthContentViewController {
         
         if let presentedMonthView = monthViews[Presented] {
             self.presentedMonthView = presentedMonthView
-            calendarView.presentedDate = Date(date: presentedMonthView.date)
+            let _presentedDate = Date(date: presentedMonthView.date)
             
             if let selected = coordinator.selectedDayView, selectedMonthView = selected.monthView {
+                guard !matchedMonths(selected.date, _presentedDate) || (matchedMonths(selected.date, _presentedDate) && selected.isOut)  else {
+                    return
+                }
+                
                 // Clear...
                 for (_, monthView) in monthViews {
                     monthView.mapDayViews {
@@ -343,6 +347,8 @@ extension CVCalendarMonthContentViewController {
             } else {
                 selectDayViewWithDay(presentedMonthView.date.firstMonthDate().day.value(), inMonthView: presentedMonthView)
             }
+            
+            calendarView.presentedDate = _presentedDate
         }
     }
     

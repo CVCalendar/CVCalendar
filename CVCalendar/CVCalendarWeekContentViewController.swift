@@ -382,7 +382,8 @@ extension CVCalendarWeekContentViewController {
         
         if let presentedWeekView = weekViews[Presented], presentedMonthView = monthViews[Presented] {
             self.presentedMonthView = presentedMonthView
-            calendarView.presentedDate = Date(date: presentedMonthView.date)
+            
+            calendarView.presentedDate = CVDate(date: presentedMonthView.date)
             
             var presentedDate: Date!
             for dayView in presentedWeekView.dayViews {
@@ -393,6 +394,10 @@ extension CVCalendarWeekContentViewController {
             }
             
             if let selected = coordinator.selectedDayView {
+                guard !matchedWeeks(selected.date, presentedDate) else {
+                    return
+                }
+                
                 for (_, monthView) in monthViews {
                     monthView.mapDayViews { dayView in
                         if dayView == selected {

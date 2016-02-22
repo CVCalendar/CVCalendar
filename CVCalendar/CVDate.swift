@@ -81,3 +81,7 @@ private extension CVDate {
 public func ==(lhs: CVDate, rhs: CVDate) -> Bool {
     return lhs.year == rhs.year && lhs.month == rhs.month && lhs.day == rhs.day
 }
+
+public func !=(lhs: CVDate, rhs: CVDate) -> Bool {
+    return !(lhs == rhs)
+}
