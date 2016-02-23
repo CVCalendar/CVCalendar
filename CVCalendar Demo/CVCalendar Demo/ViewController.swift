@@ -28,10 +28,11 @@ class ViewController: UIViewController {
         monthLabel.text = CVDate(date: NSDate()).globalDescription
     }
 
+    // TODO:
     @IBAction func removeCircleAndDot(sender: AnyObject) {
         if let dayView = selectedDay {
-            calendarView.contentController.removeCircleLabel(dayView)
-            calendarView.contentController.removeDotViews(dayView)
+//            calendarView.contentController.removeCircleLabel(dayView)
+//            calendarView.contentController.removeDotViews(dayView)
         }
     }
     
