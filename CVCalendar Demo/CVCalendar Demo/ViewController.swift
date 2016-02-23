@@ -36,7 +36,9 @@ class ViewController: UIViewController {
     }
     
     @IBAction func refreshMonth(sender: AnyObject) {
-        calendarView.contentController.refreshPresentedMonth()
+        if let contentController = calendarView.contentController as? CVCalendarScrollableContentViewControllerImpl {
+            contentController.refreshPresentedMonth()
+        }
     }
     
     override func viewDidLayoutSubviews() {

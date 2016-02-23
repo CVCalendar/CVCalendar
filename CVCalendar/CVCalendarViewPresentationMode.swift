@@ -11,4 +11,5 @@ import UIKit
 @objc public enum CVCalendarViewPresentationMode: Int {
     case MonthView
     case WeekView
+    case MonthFlowView
 }

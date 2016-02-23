@@ -8,7 +8,7 @@
 
 import UIKit
 
-///  CVCalendarContentViewController
+///  ContentViewController2
 
 public protocol CVCalendarContentViewController: CVCalendarViewContentManager {
     typealias ContentView

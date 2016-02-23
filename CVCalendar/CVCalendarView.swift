@@ -13,7 +13,7 @@ public typealias CalendarView = CVCalendarView
 public typealias MonthView = CVCalendarMonthView
 public typealias Manager = CVCalendarManager
 public typealias DayView = CVCalendarDayView
-public typealias ContentController = CVCalendarContentViewController
+//public typealias ContentController = CVCalendarContentViewController
 public typealias Appearance = CVCalendarViewAppearance
 public typealias Coordinator = CVCalendarDayViewControlCoordinator
 public typealias Date = CVDate
@@ -23,7 +23,7 @@ public typealias Animator = CVCalendarViewAnimator
 public typealias Delegate = CVCalendarViewDelegate
 public typealias AppearanceDelegate = CVCalendarViewAppearanceDelegate
 public typealias AnimatorDelegate = CVCalendarViewAnimatorDelegate
-public typealias ContentViewController = CVCalendarContentViewController
+//public typealias ContentViewController = CVCalendarContentViewController
 public typealias MonthContentViewController = CVCalendarMonthContentViewController
 public typealias WeekContentViewController = CVCalendarWeekContentViewController
 public typealias MenuViewDelegate = CVCalendarMenuViewDelegate
@@ -37,7 +37,7 @@ public final class CVCalendarView: UIView {
     public var touchController: TouchController!
     public var coordinator: Coordinator!
     public var animator: Animator!
-    public var contentController: ContentViewController!
+    public var contentController: CVCalendarContentViewControllerImpl<UIScrollView>!
     public var calendarMode: CalendarMode!
     
     public var (weekViewSize, dayViewSize): (CGSize?, CGSize?)
@@ -218,6 +218,8 @@ extension CVCalendarView {
                         height = selfSize.height
                     case .MonthView :
                         height = (selfSize.height / countOfWeeks) - (vSpace * countOfWeeks)
+                    case .MonthFlowView:
+                        height = 0 // TODO: 
                     }
                     
                     // If no height constraint found we set it manually.
@@ -237,7 +239,13 @@ extension CVCalendarView {
                     dayViewSize = CGSizeMake((width / 7.0) - hSpace, height)
                     validated = true
                     
-                    contentController.updateFrames(selfSize != contentViewSize ? bounds : .zero)
+                    if let contentController = contentController as? CVCalendarMonthContentViewController {
+                        contentController.updateFrames(selfSize != contentViewSize ? bounds : .zero)
+                    } else {
+                        contentController.updateFrames(selfSize != contentViewSize ? bounds : .zero)
+                    }
+                    
+                    
                 }
             }
         }
@@ -251,7 +259,7 @@ extension CVCalendarView {
         if let controller = contentController {
             presentedDate = dayView.date
             delegate?.didSelectDayView?(dayView, animationDidFinish: false)
-            controller.performedDayViewSelection(dayView) // TODO: Update to range selection
+            (controller as CVCalendarViewContentManager).performedDayViewSelection?(dayView) // TODO: Update to range selection
         }
     }
 }
@@ -260,50 +268,60 @@ extension CVCalendarView {
 
 extension CVCalendarView {
     public func changeDaysOutShowingState(shouldShow: Bool) {
-        contentController.updateDayViews(shouldShow)
+        (contentController as CVCalendarViewContentManager).updateDayViews?(shouldShow)
     }
     
     public func toggleViewWithDate(date: NSDate) {
-        contentController.togglePresentedDate(date)
+        (contentController as CVCalendarViewContentManager).togglePresentedDate?(date)
     }
     
     public func toggleCurrentDayView() {
-        contentController.togglePresentedDate(NSDate())
+        (contentController as CVCalendarViewContentManager).togglePresentedDate?(NSDate())
     }
     
     public func loadNextView() {
-        contentController.presentNextView(nil)
+        (contentController as CVCalendarViewContentManager).presentNextView?(nil)
     }
     
     public func loadPreviousView() {
-        contentController.presentPreviousView(nil)
+        (contentController as CVCalendarViewContentManager).presentPreviousView?(nil)
     }
     
     public func changeMode(mode: CalendarMode, completion: () -> () = {}) {
         if let selectedDate = coordinator.selectedDayView?.date.convertedDate() where calendarMode != mode {
             calendarMode = mode
             
-            let newController: ContentController
+            guard let contentController = contentController as? CVCalendarScrollableContentViewControllerImpl else {
+                return
+            }
+            
+            let newController: CVCalendarContentViewControllerImpl<UIScrollView>
+            
             switch mode {
             case .WeekView:
                 contentController.updateHeight(dayViewSize!.height, animated: true)
-                newController = WeekContentViewController(calendarView: self, frame: bounds, presentedDate: selectedDate)
+                let controller = WeekContentViewController(calendarView: self, frame: bounds, presentedDate: selectedDate)
+                controller.updateFrames(bounds)
+                newController = controller
             case .MonthView:
                 contentController.updateHeight(contentController.presentedMonthView.potentialSize.height, animated: true)
-                newController = MonthContentViewController(calendarView: self, frame: bounds, presentedDate: selectedDate)
+                let controller = MonthContentViewController(calendarView: self, frame: bounds, presentedDate: selectedDate)
+                controller.updateFrames(bounds)
+                newController = controller
+            case .MonthFlowView:
+                fatalError("TODO: ")
+                break // TODO:
             }
             
-            
-            newController.updateFrames(bounds)
-            newController.scrollView.alpha = 0
-            addSubview(newController.scrollView)
+            newController.contentView.alpha = 0
+            addSubview(newController.contentView)
             
             UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
-                self.contentController.scrollView.alpha = 0
-                newController.scrollView.alpha = 1
+                self.contentController.contentView.alpha = 0
+                newController.contentView.alpha = 1
             }) { _ in
-                self.contentController.scrollView.removeAllSubviews()
-                self.contentController.scrollView.removeFromSuperview()
+                self.contentController.contentView.removeAllSubviews()
+                self.contentController.contentView.removeFromSuperview()
                 self.contentController = newController
                 completion()
             }
@@ -316,13 +334,20 @@ extension CVCalendarView {
 private extension CVCalendarView {
     func loadCalendarMode() {
         if let delegate = delegate {
+            
+            print("Loading mode...")
             calendarMode = delegate.presentationMode()
             switch delegate.presentationMode() {
-                case .MonthView: contentController = MonthContentViewController(calendarView: self, frame: bounds)
-                case .WeekView: contentController = WeekContentViewController(calendarView: self, frame: bounds)
+            case .MonthView:
+                print("Found Month mode")
+                contentController = MonthContentViewController(calendarView: self, frame: bounds)
+            case .WeekView:
+                contentController = WeekContentViewController(calendarView: self, frame: bounds)
+            case .MonthFlowView:
+                break // TODO:
             }
             
-            addSubview(contentController.scrollView)
+            addSubview(contentController.contentView)
         }
     }
 }
