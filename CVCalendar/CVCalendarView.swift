@@ -248,7 +248,7 @@ extension CVCalendarView {
                     case .MonthView :
                         height = (selfSize.height / countOfWeeks) - (vSpace * countOfWeeks)
                     case .MonthFlowView:
-                        height = (selfSize.height / countOfWeeks) - (vSpace * countOfWeeks) // TODO:
+                        height = ((selfSize.height / 2) / countOfWeeks) - (vSpace * countOfWeeks) // TODO:
                     }
                     
                     // If no height constraint found we set it manually.

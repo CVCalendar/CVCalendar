@@ -60,7 +60,7 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     
     /// Required method to implement!
     func presentationMode() -> CalendarMode {
-        return .MonthView
+        return .MonthFlowView
     }
     
     /// Required method to implement!

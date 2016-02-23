@@ -52,12 +52,17 @@
                                 </connections>
                             </switch>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T1w-UY-QHC" customClass="CVCalendarView" customModule="CVCalendar_Demo" customModuleProvider="target">
-                                <rect key="frame" x="20" y="103" width="560" height="300"/>
+                                <rect key="frame" x="0.0" y="103" width="600" height="497"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="300" id="3oZ-He-brt">
                                         <variation key="heightClass=regular-widthClass=regular" constant="480"/>
                                     </constraint>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="3oZ-He-brt"/>
+                                    </mask>
+                                </variation>
                                 <connections>
                                     <outlet property="calendarAppearanceDelegate" destination="vXZ-lx-hvc" id="esW-84-Ric"/>
                                     <outlet property="calendarDelegate" destination="vXZ-lx-hvc" id="BGr-mw-JIs"/>
@@ -122,7 +127,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="T1w-UY-QHC" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="1TS-li-VrB"/>
+                            <constraint firstItem="T1w-UY-QHC" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-20" id="1TS-li-VrB"/>
                             <constraint firstItem="oRb-Wa-JqA" firstAttribute="top" secondItem="t2y-Uz-Mr2" secondAttribute="bottom" constant="8" id="2N9-Zw-NaR"/>
                             <constraint firstItem="ZPD-eB-kRA" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="59J-xp-B4Q"/>
                             <constraint firstItem="T1w-UY-QHC" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" constant="103" id="9hA-gc-8YQ"/>
@@ -133,8 +138,9 @@
                             <constraint firstItem="T1w-UY-QHC" firstAttribute="top" secondItem="ZPD-eB-kRA" secondAttribute="bottom" constant="8" symbolic="YES" id="IfR-Rn-lpW"/>
                             <constraint firstItem="oRb-Wa-JqA" firstAttribute="top" secondItem="T1w-UY-QHC" secondAttribute="bottom" constant="37" id="Inc-cL-c0K"/>
                             <constraint firstItem="l1z-8G-fgL" firstAttribute="leading" secondItem="T1w-UY-QHC" secondAttribute="leading" id="JiT-jq-LeD"/>
-                            <constraint firstItem="T1w-UY-QHC" firstAttribute="leading" secondItem="ZPD-eB-kRA" secondAttribute="leading" id="Lhg-3p-WNM"/>
+                            <constraint firstItem="T1w-UY-QHC" firstAttribute="leading" secondItem="ZPD-eB-kRA" secondAttribute="leading" constant="-20" id="Lhg-3p-WNM"/>
                             <constraint firstItem="ecA-uZ-EAG" firstAttribute="trailing" secondItem="t2y-Uz-Mr2" secondAttribute="trailing" id="RKD-AT-yeW"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="T1w-UY-QHC" secondAttribute="bottom" id="S5q-0u-SCp"/>
                             <constraint firstItem="izK-WF-YDE" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="TxE-T0-Cja"/>
                             <constraint firstAttribute="trailingMargin" secondItem="lzX-jt-Rop" secondAttribute="trailing" id="UC8-fn-77M"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="naL-aC-YXb" secondAttribute="bottom" constant="84" id="V9q-TN-CyI"/>
@@ -146,7 +152,7 @@
                             <constraint firstItem="HF3-fY-vSc" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="3" id="g3v-dm-1Jg"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="lzX-jt-Rop" secondAttribute="bottom" constant="84" id="mRD-kd-jL8"/>
                             <constraint firstItem="izK-WF-YDE" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="5" id="noP-lz-cVf"/>
-                            <constraint firstItem="T1w-UY-QHC" firstAttribute="trailing" secondItem="ZPD-eB-kRA" secondAttribute="trailing" id="oay-Ad-lAp"/>
+                            <constraint firstItem="T1w-UY-QHC" firstAttribute="trailing" secondItem="ZPD-eB-kRA" secondAttribute="trailing" constant="20" id="oay-Ad-lAp"/>
                             <constraint firstAttribute="bottom" secondItem="l1z-8G-fgL" secondAttribute="bottom" constant="20" symbolic="YES" id="r7P-Sz-8Xp"/>
                             <constraint firstAttribute="centerX" secondItem="t2y-Uz-Mr2" secondAttribute="centerX" constant="-0.5" id="tzu-uz-26Y"/>
                             <constraint firstItem="ZPD-eB-kRA" firstAttribute="top" secondItem="HF3-fY-vSc" secondAttribute="bottom" constant="15" id="uiU-f1-3Z4"/>
@@ -154,6 +160,17 @@
                             <constraint firstItem="ucX-go-wCw" firstAttribute="bottom" secondItem="l1z-8G-fgL" secondAttribute="bottom" id="zIk-C3-01y"/>
                             <constraint firstItem="ecA-uZ-EAG" firstAttribute="top" secondItem="t2y-Uz-Mr2" secondAttribute="bottom" constant="8" id="zv4-8T-202"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="l1z-8G-fgL"/>
+                                <exclude reference="ucX-go-wCw"/>
+                                <exclude reference="t2y-Uz-Mr2"/>
+                                <exclude reference="ecA-uZ-EAG"/>
+                                <exclude reference="oRb-Wa-JqA"/>
+                                <exclude reference="lzX-jt-Rop"/>
+                                <exclude reference="naL-aC-YXb"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="calendarView" destination="T1w-UY-QHC" id="D3D-pv-Xhz"/>

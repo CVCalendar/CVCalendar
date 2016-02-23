@@ -14,7 +14,19 @@ public class CVCalendarContentViewControllerImpl<T: UIView>: NSObject, CVCalenda
     
     public init(calendarView: CalendarView, frame: CGRect) {
         self.calendarView = calendarView
-        contentView = T(frame: frame)
+        
+        // TODO: Swizzle init method in CVCalendarMonthFlowContentViewController
+        if T.self == UICollectionView.self {
+            let layout = UICollectionViewFlowLayout()
+            layout.itemSize = CGSize(width: UIScreen.mainScreen().bounds.width, height: 150)
+            layout.minimumLineSpacing = 2
+            
+            contentView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout) as! T
+        } else {
+            contentView = T(frame: frame)
+        }
+        
+        
         super.init()
     }
 }

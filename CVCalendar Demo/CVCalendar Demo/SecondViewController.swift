@@ -24,7 +24,7 @@ class SecondViewController: UIViewController {
         collectionView.backgroundColor = UIColor.lightGrayColor()
         
         collectionView.showsVerticalScrollIndicator = false
-        
+
         collectionView.dataSource = self
         collectionView.delegate = self
         
@@ -42,7 +42,7 @@ class SecondViewController: UIViewController {
     }
 }
 
-extension SecondViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension SecondViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
@@ -59,4 +59,6 @@ extension SecondViewController: UICollectionViewDataSource, UICollectionViewDele
         
         return cell
     }
+    
+
 }
