@@ -23,6 +23,10 @@ public final class CVCalendarMonthFlowContentHeaderView: UICollectionReusableVie
     }
     
     public override func didMoveToSuperview() {
+        if label != nil {
+            label.removeFromSuperview()
+        }
+        
         label = UILabel(frame: bounds)
         label.center = bounds.mid
         label.textAlignment = .Center
@@ -38,10 +42,21 @@ public final class CVCalendarMonthFlowContentViewControllerDataSource: NSObject,
     
     public weak var controller: CVCalendarMonthFlowContentViewController!
     
-    public var monthViews: [CVCalendarMonthView] = []
+    public var count = 0
+    public var dates: [NSDate] = []
+    public var monthViews: [NSIndexPath : CVCalendarMonthView] = [:]
+    
+    public func getMonth(date: NSDate) -> MonthView {
+        let frame = controller.contentView.bounds
+        let monthView = MonthView(calendarView: controller.calendarView, date: date)
+        
+        monthView.updateAppearance(frame)
+        
+        return monthView
+    }
     
     public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return monthViews.count
+        return count
     }
     
     public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -50,16 +65,21 @@ public final class CVCalendarMonthFlowContentViewControllerDataSource: NSObject,
     
     public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath)
-        let monthView = monthViews[indexPath.section]
         
-        print("Date \(monthView.date)")
+        let monthView: CVCalendarMonthView
+        if let _monthView = monthViews[indexPath] {
+            monthView = _monthView
+        } else {
+            monthView = getMonth(dates[indexPath.section])
+            monthViews[indexPath] = monthView
+        }
+        
+        //print("Date \(monthView.date)")
         
         //cell.backgroundColor = UIColor.magentaColor()
         for subview in cell.subviews {
             subview.removeFromSuperview()
         }
-        
-        cell.addSubview(monthView)
         
         monthView.mapDayViews { dayView in
             dayView
@@ -69,24 +89,39 @@ public final class CVCalendarMonthFlowContentViewControllerDataSource: NSObject,
             }
         }
         
-//        cell.addConstraints([
-//            NSLayoutConstraint(item: monthView, attribute: .Leading, relatedBy: .Equal, toItem: cell, attribute: .Leading, multiplier: 1, constant: 0),
-//            NSLayoutConstraint(item: monthView, attribute: .Trailing, relatedBy: .Equal, toItem: cell, attribute: .Trailing, multiplier: 1, constant: 0),
-//            NSLayoutConstraint(item: monthView, attribute: .Bottom, relatedBy: .Equal, toItem: cell, attribute: .Bottom, multiplier: 1, constant: 0),
-//            NSLayoutConstraint(item: monthView, attribute: .Top, relatedBy: .Equal, toItem: cell, attribute: .Top, multiplier: 1, constant: 0)
-//        ])
-        
+        cell.userInteractionEnabled = true
+        monthView.userInteractionEnabled = true
         cell.setNeedsDisplay()
         
         return cell
     }
     
     public func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        print("Cell")
         
+        for subview in cell.subviews {
+            subview.removeFromSuperview()
+        }
+        
+        if let monthView = monthViews[indexPath] {
+            print("Op")
+            
+
+            
+            collectionView.performBatchUpdates({
+                collectionView.reloadItemsAtIndexPaths([indexPath])
+            }, completion: nil)
+
+            monthView.frame = cell.bounds
+            cell.addSubview(monthView)
+        }
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let monthView = monthViews[indexPath.row]
+        guard let monthView = monthViews[indexPath] else {
+            return .zero
+        }
+        
         let size = controller.calendarView.weekViewSize!
         
         return CGSize(width: size.width, height: size.height * CGFloat(monthView.weekViews.count))
@@ -102,7 +137,9 @@ public final class CVCalendarMonthFlowContentViewControllerDataSource: NSObject,
         
         if kind == UICollectionElementKindSectionHeader {
             let _header = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: "HeaderView", forIndexPath: indexPath) as! CVCalendarMonthFlowContentHeaderView
-            let monthView = monthViews[indexPath.section]
+            guard let monthView = monthViews[indexPath] else {
+                return _header
+            }
             
             _header.label.text = CVDate(date: monthView.date).globalDescription
             _header.label.textColor = UIColor.whiteColor()
@@ -122,7 +159,7 @@ public final class CVCalendarMonthFlowContentViewControllerDataSource: NSObject,
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 30)
+        return CGSize(width: collectionView.frame.width, height: 1)
     }
     
 }
@@ -132,6 +169,9 @@ public final class CVCalendarMonthFlowContentViewControllerDelegate: NSObject, U
 }
 
 public final class CVCalendarMonthFlowContentViewController: CVCalendarContentViewControllerImpl<UICollectionView> {
+    
+    public var startDate: NSDate = NSDate().year == 2007
+    public var endDate: NSDate = NSDate().year + 1
     
     private let dataSource = CVCalendarMonthFlowContentViewControllerDataSource()
     private let delegate = CVCalendarMonthFlowContentViewControllerDelegate()
@@ -173,7 +213,19 @@ public final class CVCalendarMonthFlowContentViewController: CVCalendarContentVi
     }
     
     private func loadMonthData() {
-        dataSource.monthViews = [presentedMonthView] + [getFollowingMonth(NSDate())] + [getFollowingMonth(NSDate().month + 1)]
+        let leftRange = (NSDate().year.value() - startDate.year.value())
+        let leftCount = leftRange == 0 ? 1 : leftRange
+        
+        let dates = (1..<leftCount * 12).map { self.startDate.month + $0 }
+        
+        dataSource.dates = dates
+        dataSource.count = dataSource.dates.count
+        
+//        dataSource.monthViews = [
+//            NSIndexPath(forRow: 0, inSection: 0) : presentedMonthView,
+//            NSIndexPath(forRow: 0, inSection: 1) : getFollowingMonth(NSDate()),
+//            NSIndexPath(forRow: 0, inSection: 2) : getFollowingMonth(NSDate().month + 1)
+//        ]
     }
     
     private func setup() {
@@ -189,6 +241,13 @@ public final class CVCalendarMonthFlowContentViewController: CVCalendarContentVi
         contentView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
         contentView.registerClass(CVCalendarMonthFlowContentHeaderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "HeaderView")
         contentView.registerClass(CVCalendarMonthFlowContentFooterView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: "FooterView")
+        
+        if #available(iOS 9.0, *) {
+            (contentView.collectionViewLayout as! UICollectionViewFlowLayout).sectionHeadersPinToVisibleBounds = true
+            (contentView.collectionViewLayout as! UICollectionViewFlowLayout).sectionFootersPinToVisibleBounds = true
+        } else {
+            // Fallback on earlier versions
+        }
         
         if let superview = contentView.superview {
             addConstraints(superview)
@@ -210,11 +269,18 @@ public final class CVCalendarMonthFlowContentViewController: CVCalendarContentVi
         
         (contentView.collectionViewLayout as! UICollectionViewFlowLayout).itemSize.height = calendarView.weekViewSize!.height * 7
         
-        for monthView in dataSource.monthViews {
-            monthView.reloadViewsWithRect(rect != .zero ? rect : contentView.bounds)
+        for (_, monthView) in dataSource.monthViews {
+            monthView.updateAppearance(rect != .zero ? rect : contentView.bounds)
         }
         
-        contentView.reloadData()
+        let todayIndex = NSIndexPath(forRow: 0, inSection: dataSource.count - 1)
+        
+        contentView.performBatchUpdates({
+            self.contentView.scrollToItemAtIndexPath(todayIndex, atScrollPosition: .Bottom, animated: false)
+            self.contentView.reloadData()
+        }, completion: nil)
+
+
     }
     
 }
@@ -237,6 +303,15 @@ extension CVCalendarMonthFlowContentViewController {
         let newDate = (date.day == 1).month - 1
         let frame = contentView.bounds
         let monthView = MonthView(calendarView: calendarView, date: newDate)
+        
+        monthView.updateAppearance(frame)
+        
+        return monthView
+    }
+    
+    public func getMonth(date: NSDate) -> MonthView {
+        let frame = contentView.bounds
+        let monthView = MonthView(calendarView: calendarView, date: date)
         
         monthView.updateAppearance(frame)
         

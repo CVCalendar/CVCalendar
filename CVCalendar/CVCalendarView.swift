@@ -71,7 +71,7 @@ public final class CVCalendarView: UIView {
     
     public var (weekViewSize, dayViewSize): (CGSize?, CGSize?)
     
-    private var validated = false
+    public private(set) var validated = false
     
     public var firstWeekday: CVCalendarWeekday {
         if let delegate = delegate {

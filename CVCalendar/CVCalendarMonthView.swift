@@ -165,6 +165,8 @@ extension CVCalendarMonthView {
         let location = recognizer.locationInView(self.interactiveView)
         let state: UIGestureRecognizerState = recognizer.state
         
+        print("PRESS")
+        
         switch state {
         case .Began:
             touchController.receiveTouchLocation(location, inMonthView: self, withSelectionType: .Range(.Started))

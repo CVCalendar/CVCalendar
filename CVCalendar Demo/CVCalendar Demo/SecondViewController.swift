@@ -8,6 +8,9 @@
 
 import UIKit
 
+class A {
+
+}
 class SecondViewController: UIViewController {
 
     var collectionView: UICollectionView!
@@ -46,6 +49,11 @@ extension SecondViewController: UICollectionViewDataSource, UICollectionViewDele
     
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         collectionView.reloadSections(NSIndexSet(index: indexPath.section))
+        collectionView.reloadItemsAtIndexPaths([indexPath])
+    }
+    
+    func collectionView(collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, atIndexPath indexPath: NSIndexPath) {
+
     }
     
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
