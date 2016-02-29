@@ -51,6 +51,14 @@ public final class CVCalendarDayView: UIView {
     
     private var weekday: Weekday
     
+    // MARK: - UI Properties 
+    
+    public var topMarkerHidden = false {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
     private static var count = 0
     
     public weak var monthView: CVCalendarMonthView! {
@@ -195,23 +203,20 @@ extension CVCalendarDayView {
     // TODO: Make this widget customizable
     public func drawTopMarker() {
         let context = UIGraphicsGetCurrentContext()
-        
-        func drawTopMarker() {
-            let height = UIScreen.mainScreen().scale
-            
-            UIColor.orangeColor().set()
-            CGContextSaveGState(context)
-            CGContextFillRect(context, CGRectMake(0, 1, bounds.width, height))
-            CGContextRestoreGState(context)
-        }
+        let height = UIScreen.mainScreen().scale
         
         if let delegate = self.calendarView.delegate {
             if let shouldDisplay = delegate.topMarker?(shouldDisplayOnDayView: self) where shouldDisplay {
-                drawTopMarker()
+                CGContextSetBlendMode(context, .Clear)
             }
-        } else {
-            drawTopMarker()
+        } else if hidden {
+            CGContextSetBlendMode(context, .Clear)
         }
+        
+        UIColor.orangeColor().set()
+        CGContextSaveGState(context)
+        CGContextFillRect(context, CGRectMake(0, 1, bounds.width, height))
+        CGContextRestoreGState(context)
     }
 }
 
