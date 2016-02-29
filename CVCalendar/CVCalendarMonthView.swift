@@ -15,7 +15,7 @@ public final class CVCalendarMonthView: UIView {
     public override var frame: CGRect {
         didSet {
             if let calendarView = calendarView {
-                if calendarView.calendarMode == CalendarMode.MonthView {
+                if calendarView.calendarMode == CalendarMode.MonthView || calendarView.calendarMode == CalendarMode.MonthFlowView {
                     updateInteractiveView()
                 }
             }
@@ -136,8 +136,9 @@ extension CVCalendarMonthView {
 extension CVCalendarMonthView {
     public func updateInteractiveView() {
         safeExecuteBlock({
+            print("Update")
             let mode = self.calendarView!.calendarMode!
-            if mode == .MonthView {
+            if mode == .MonthView || mode == .MonthFlowView {
                 if let interactiveView = self.interactiveView {
                     interactiveView.frame = self.bounds
                     interactiveView.removeFromSuperview()

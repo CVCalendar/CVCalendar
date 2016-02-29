@@ -75,7 +75,7 @@ public final class CVCalendarDayView: UIView {
         didSet {
             if oldValue != frame {
                 selectionView?.setNeedsDisplay()
-                topMarkerSetup()
+                //topMarkerSetup()
                 preliminarySetup()
                 supplementarySetup()
             }
@@ -109,7 +109,7 @@ public final class CVCalendarDayView: UIView {
         labelSetup()
         complementarySetup()
         setupDotMarker()
-        topMarkerSetup()
+        //topMarkerSetup()
         
         if (frame.width > 0) {
             preliminarySetup()
@@ -121,8 +121,15 @@ public final class CVCalendarDayView: UIView {
         }
         
         adjustLabelFontSize()
+        backgroundColor = .clearColor()
         
         //print("TextSize \(textSize), SelectionSize: \(CVAuxiliaryView(dayView: self, rect: dayLabel.frame, shape: .Circle).frame.size)")
+    }
+    
+    override public func drawRect(rect: CGRect) {
+        super.drawRect(rect)
+        
+        drawTopMarker()
     }
     
     public func dateWithWeekView(weekView: CVCalendarWeekView, andWeekIndex index: Int) -> CVDate {
@@ -178,6 +185,32 @@ extension CVCalendarDayView {
         if max(textSize.width, textSize.height) * 3 > max(size.width, size.height) {
             dayLabel.font--
             adjustLabelFontSize()
+        }
+    }
+}
+
+// MARK: - Drawable 
+
+extension CVCalendarDayView {
+    // TODO: Make this widget customizable
+    public func drawTopMarker() {
+        let context = UIGraphicsGetCurrentContext()
+        
+        func drawTopMarker() {
+            let height = CGFloat(0.5) * UIScreen.mainScreen().scale
+            
+            UIColor.orangeColor().set()
+            CGContextSaveGState(context)
+            CGContextFillRect(context, CGRectMake(0, 1, bounds.width, height))
+            CGContextRestoreGState(context)
+        }
+        
+        if let delegate = self.calendarView.delegate {
+            if let shouldDisplay = delegate.topMarker?(shouldDisplayOnDayView: self) where shouldDisplay {
+                drawTopMarker()
+            }
+        } else {
+            drawTopMarker()
         }
     }
 }
@@ -266,7 +299,9 @@ extension CVCalendarDayView {
         }
     }
     
-    // TODO: Make this widget customizable
+    /// Deprecated since 2.0. 
+    /// Use `drawTopMarker()` function to draw 
+    /// a top marker.
     public func topMarkerSetup() {
         safeExecuteBlock({
             func createMarker() {

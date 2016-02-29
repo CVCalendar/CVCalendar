@@ -28,11 +28,14 @@ public final class CVCalendarMonthFlowContentViewControllerDataSource: NSObject,
         
         print("Date \(monthView.date)")
         
-        monthView.userInteractionEnabled = true
-        
         cell.backgroundColor = UIColor.magentaColor()
-        cell.userInteractionEnabled = false
         cell.addSubview(monthView)
+        
+        monthView.mapDayViews { dayView in
+            if dayView.isOut {
+                dayView.hidden = true
+            }
+        }
         
 //        cell.addConstraints([
 //            NSLayoutConstraint(item: monthView, attribute: .Leading, relatedBy: .Equal, toItem: cell, attribute: .Leading, multiplier: 1, constant: 0),
