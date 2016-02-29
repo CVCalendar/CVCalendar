@@ -125,7 +125,7 @@ public final class CVCalendarDayView: UIView {
         
         //print("TextSize \(textSize), SelectionSize: \(CVAuxiliaryView(dayView: self, rect: dayLabel.frame, shape: .Circle).frame.size)")
     }
-    
+   
     override public func drawRect(rect: CGRect) {
         super.drawRect(rect)
         
@@ -197,7 +197,7 @@ extension CVCalendarDayView {
         let context = UIGraphicsGetCurrentContext()
         
         func drawTopMarker() {
-            let height = CGFloat(0.5) * UIScreen.mainScreen().scale
+            let height = UIScreen.mainScreen().scale
             
             UIColor.orangeColor().set()
             CGContextSaveGState(context)

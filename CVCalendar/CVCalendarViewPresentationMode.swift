@@ -12,4 +12,12 @@ import UIKit
     case MonthView
     case WeekView
     case MonthFlowView
+    
+    public var description: String {
+        switch self {
+        case .MonthView: return "MonthView"
+        case .WeekView: return "WeekView"
+        case .MonthFlowView: return "MonthFlowView"
+        }
+    }
 }

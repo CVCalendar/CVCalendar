@@ -231,7 +231,7 @@ extension CVCalendarView {
             let selfSize = bounds.size
             let screenSize = UIScreen.mainScreen().bounds.size
             
-            let allowed = selfSize.width <= screenSize.width && selfSize.height <= screenSize.height
+            let allowed = (selfSize.width <= screenSize.width && selfSize.height <= screenSize.height) || calendarMode == .MonthFlowView
             
             if !validated && allowed {
                 let width = selfSize.width
@@ -248,7 +248,7 @@ extension CVCalendarView {
                     case .MonthView :
                         height = (selfSize.height / countOfWeeks) - (vSpace * countOfWeeks)
                     case .MonthFlowView:
-                        height = ((selfSize.height / 2) / countOfWeeks) - (vSpace * countOfWeeks) // TODO:
+                        height = ((selfSize.height / (UIScreen.mainScreen().bounds.height / selfSize.height)) / countOfWeeks) - (vSpace * countOfWeeks) 
                     }
                     
                     // If no height constraint found we set it manually.
@@ -275,8 +275,11 @@ extension CVCalendarView {
                     case .WeekView(let controller):
                         controller.updateFrames(selfSize != contentViewSize ? bounds : .zero)
                     case .MonthFlowView(let controller):
+                        print("Updating Frames for MonthFlowView...")
                         controller.updateFrames(selfSize != contentViewSize ? bounds : .zero)
                     }
+                    
+                    print("ContentView = \(contentController.contentView)")
                 }
             }
         }
@@ -390,6 +393,10 @@ private extension CVCalendarView {
             case .MonthFlowView:
                 contentController = .MonthFlowView(controller: CVCalendarMonthFlowContentViewController(calendarView: self, frame: bounds))
             }
+            
+            print("Loaded mode \(calendarMode.description)")
+            print("ContentView = \(contentController.contentView)")
+            
             
             addSubview(contentController.contentView)
         }
