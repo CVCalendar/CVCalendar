@@ -8,9 +8,6 @@
 
 import UIKit
 
-class A {
-
-}
 class SecondViewController: UIViewController {
 
     var collectionView: UICollectionView!
