@@ -8,29 +8,35 @@
 
 import UIKit
 
+public protocol CVCalendarSizeCalculator {
+    func calculatedSize() -> CGSize
+}
+
+public protocol CVCalendarMonthFlowContentViewControllerModel: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    var dates: [NSDate] { get set }
+    var calculator: CVCalendarSizeCalculator? { get set }
+}
+
+
+
+
+
 public final class CVCalendarMonthFlowContentHeaderView: UICollectionReusableView {
     public var label: UILabel!
     
-    public override var frame: CGRect {
-        didSet {
-            guard label != nil else {
-                return
-            }
-            
-            label.frame = bounds
-            label.center = bounds.mid
-        }
-    }
     
     public override func didMoveToSuperview() {
-        if label != nil {
-            label.removeFromSuperview()
-        }
+        removeAllSubviews()
         
         label = UILabel(frame: bounds)
-        label.center = bounds.mid
         label.textAlignment = .Center
         addSubview(label)
+        
+        label
+            .constraint(.Leading, relation: .Equal, toView: self, constant: 0)
+            .constraint(.Trailing, relation: .Equal, toView: self, constant: 0)
+            .constraint(.Bottom, relation: .Equal, toView: self, constant: 0)
+            .constraint(.Top, relation: .Equal, toView: self, constant: 0)
     }
 }
 
@@ -74,9 +80,6 @@ public final class CVCalendarMonthFlowContentViewControllerDataSource: NSObject,
             monthViews[indexPath] = monthView
         }
         
-        //print("Date \(monthView.date)")
-        
-        //cell.backgroundColor = UIColor.magentaColor()
         for subview in cell.subviews {
             subview.removeFromSuperview()
         }
@@ -91,40 +94,46 @@ public final class CVCalendarMonthFlowContentViewControllerDataSource: NSObject,
         
         cell.userInteractionEnabled = true
         monthView.userInteractionEnabled = true
-        cell.setNeedsDisplay()
+        
+        monthView.center = cell.bounds.mid
+        monthView.frame = cell.bounds
+        cell.addSubview(monthView)
         
         return cell
     }
     
     public func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         print("Cell")
-        
-        for subview in cell.subviews {
-            subview.removeFromSuperview()
-        }
-        
-        if let monthView = monthViews[indexPath] {
-            print("Op")
-            
-
-            
-            collectionView.performBatchUpdates({
-                collectionView.reloadItemsAtIndexPaths([indexPath])
-            }, completion: nil)
-
-            monthView.frame = cell.bounds
-            cell.addSubview(monthView)
-        }
+//        
+////        for subview in cell.subviews {
+////            subview.removeFromSuperview()
+////        }
+//        
+//        if let monthView = monthViews[indexPath] {
+//            print("Op")
+//            
+//
+////            
+////            collectionView.performBatchUpdates({
+////                collectionView.reloadItemsAtIndexPaths([indexPath])
+////            }, completion: nil)
+//
+//            
+//            monthView.center = cell.bounds.mid
+//            monthView.frame = cell.bounds
+//            cell.addSubview(monthView)
+//        }
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        guard let monthView = monthViews[indexPath] else {
-            return .zero
-        }
+//        guard let monthView = monthViews[indexPath] else {
+//  
+//                  return .zero
+//        }
         
         let size = controller.calendarView.weekViewSize!
-        
-        return CGSize(width: size.width, height: size.height * CGFloat(monthView.weekViews.count))
+        let date = dates[indexPath.section]
+        return CGSize(width: size.width, height: size.height * CGFloat(controller.calendarView.manager.monthDateRange(date).numberOfWeeks))
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
@@ -137,11 +146,11 @@ public final class CVCalendarMonthFlowContentViewControllerDataSource: NSObject,
         
         if kind == UICollectionElementKindSectionHeader {
             let _header = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: "HeaderView", forIndexPath: indexPath) as! CVCalendarMonthFlowContentHeaderView
-            guard let monthView = monthViews[indexPath] else {
-                return _header
-            }
+//            guard let monthView = monthViews[indexPath] else {
+//                return _header
+//            }
             
-            _header.label.text = CVDate(date: monthView.date).globalDescription
+            _header.label.text = CVDate(date: dates[indexPath.section]).globalDescription
             _header.label.textColor = UIColor.whiteColor()
             header = _header
         } else {
@@ -159,7 +168,7 @@ public final class CVCalendarMonthFlowContentViewControllerDataSource: NSObject,
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 1)
+        return CGSize(width: collectionView.frame.width, height: 30)
     }
     
 }
@@ -267,7 +276,7 @@ public final class CVCalendarMonthFlowContentViewController: CVCalendarContentVi
         super.updateFrames(rect)
         print("Update frames")
         
-        (contentView.collectionViewLayout as! UICollectionViewFlowLayout).itemSize.height = calendarView.weekViewSize!.height * 7
+        //(contentView.collectionViewLayout as! UICollectionViewFlowLayout).itemSize.height = calendarView.weekViewSize!.height * 7
         
         for (_, monthView) in dataSource.monthViews {
             monthView.updateAppearance(rect != .zero ? rect : contentView.bounds)
@@ -276,7 +285,7 @@ public final class CVCalendarMonthFlowContentViewController: CVCalendarContentVi
         let todayIndex = NSIndexPath(forRow: 0, inSection: dataSource.count - 1)
         
         contentView.performBatchUpdates({
-            self.contentView.scrollToItemAtIndexPath(todayIndex, atScrollPosition: .Bottom, animated: false)
+            self.contentView.scrollToItemAtIndexPath(todayIndex, atScrollPosition: .Top, animated: false)
             self.contentView.reloadData()
         }, completion: nil)
 
