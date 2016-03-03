@@ -128,7 +128,7 @@ public final class CVCalendarMonthContentViewController: CVCalendarScrollableCon
     
     public func updateFrames(rect: CGRect) {
         super.updateFrames(rect)
-        
+        print("Updating frames on MonthContentVC")
         for monthView in monthViews.values {
             monthView.reloadViewsWithRect(rect != .zero ? rect : contentView.bounds)
         }

@@ -32,12 +32,11 @@ class SecondViewController: UIViewController {
         
         view.addSubview(collectionView)
         
-        view.addConstraints([
-            NSLayoutConstraint(item: collectionView, attribute: .Leading, relatedBy: .Equal, toItem: view, attribute: .Leading, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: collectionView, attribute: .Trailing, relatedBy: .Equal, toItem: view, attribute: .Trailing, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: collectionView, attribute: .Bottom, relatedBy: .Equal, toItem: view, attribute: .Bottom, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: collectionView, attribute: .Top, relatedBy: .Equal, toItem: view, attribute: .Top, multiplier: 1, constant: 0)
-        ])
+        collectionView
+            .constraint(.Leading, relation: .Equal, toView: view, constant: 0)
+            .constraint(.Trailing, relation: .Equal, toView: view, constant: 0)
+            .constraint(.Bottom, relation: .Equal, toView: view, constant: 0)
+            .constraint(.Top, relation: .Equal, toView: view, constant: 0)
         
     }
 }
@@ -45,25 +44,12 @@ class SecondViewController: UIViewController {
 extension SecondViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-        collectionView.reloadSections(NSIndexSet(index: indexPath.section))
-        collectionView.reloadItemsAtIndexPaths([indexPath])
+        //collectionView.reloadSections(NSIndexSet(index: indexPath.section))
+        //collectionView.reloadItemsAtIndexPaths([indexPath])
     }
     
     func collectionView(collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, atIndexPath indexPath: NSIndexPath) {
 
-    }
-    
-    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: "HeaderView", forIndexPath: indexPath)
-        
-        header.frame = CGRect(origin: .zero, size: CGSize(width: 100, height: 50))
-        header.backgroundColor = UIColor.orangeColor()
-        
-        return header
-    }
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 50)
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -81,6 +67,4 @@ extension SecondViewController: UICollectionViewDataSource, UICollectionViewDele
         
         return cell
     }
-    
-
 }
