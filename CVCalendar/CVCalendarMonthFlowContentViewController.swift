@@ -103,33 +103,13 @@ public final class CVCalendarMonthFlowContentViewControllerDataSource: NSObject,
     }
     
     public func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-        print("Cell")
-//        
-////        for subview in cell.subviews {
-////            subview.removeFromSuperview()
-////        }
-//        
-//        if let monthView = monthViews[indexPath] {
-//            print("Op")
-//            
-//
-////            
-////            collectionView.performBatchUpdates({
-////                collectionView.reloadItemsAtIndexPaths([indexPath])
-////            }, completion: nil)
-//
-//            
-//            monthView.center = cell.bounds.mid
-//            monthView.frame = cell.bounds
-//            cell.addSubview(monthView)
-//        }
+        
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-//        guard let monthView = monthViews[indexPath] else {
-//  
-//                  return .zero
-//        }
+        guard indexPath.section < dates.count else {
+                  return .zero
+        }
         
         let size = controller.calendarView.weekViewSize!
         let date = dates[indexPath.section]
@@ -146,9 +126,9 @@ public final class CVCalendarMonthFlowContentViewControllerDataSource: NSObject,
         
         if kind == UICollectionElementKindSectionHeader {
             let _header = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: "HeaderView", forIndexPath: indexPath) as! CVCalendarMonthFlowContentHeaderView
-//            guard let monthView = monthViews[indexPath] else {
-//                return _header
-//            }
+            guard indexPath.section < dates.count else {
+                return _header
+            }
             
             _header.label.text = CVDate(date: dates[indexPath.section]).globalDescription
             _header.label.textColor = UIColor.whiteColor()
@@ -158,7 +138,6 @@ public final class CVCalendarMonthFlowContentViewControllerDataSource: NSObject,
             header.hidden = true
         }
 
-        //header.backgroundColor = UIColor.orangeColor()
         
         return header
     }
@@ -223,18 +202,17 @@ public final class CVCalendarMonthFlowContentViewController: CVCalendarContentVi
     
     private func loadMonthData() {
         let leftRange = (NSDate().year.value() - startDate.year.value())
-        let leftCount = leftRange == 0 ? 1 : leftRange
+        let leftCount = (leftRange == 0 ? 1 : leftRange) * 12
         
-        let dates = (1..<leftCount * 12).map { self.startDate.month + $0 }
+        let rightRange = endDate.year.value() - NSDate().year.value()
+        let rightCount = (rightRange == 0 ? 1 : rightRange) * 12
+        
+        let today = NSDate()
+        
+        let dates = (1..<leftCount).map { self.startDate.month + $0 } + [today] + (1..<rightCount).map { today.month + $0 }
         
         dataSource.dates = dates
         dataSource.count = dataSource.dates.count
-        
-//        dataSource.monthViews = [
-//            NSIndexPath(forRow: 0, inSection: 0) : presentedMonthView,
-//            NSIndexPath(forRow: 0, inSection: 1) : getFollowingMonth(NSDate()),
-//            NSIndexPath(forRow: 0, inSection: 2) : getFollowingMonth(NSDate().month + 1)
-//        ]
     }
     
     private func setup() {
@@ -276,19 +254,24 @@ public final class CVCalendarMonthFlowContentViewController: CVCalendarContentVi
         super.updateFrames(rect)
         print("Update frames")
         
-        //(contentView.collectionViewLayout as! UICollectionViewFlowLayout).itemSize.height = calendarView.weekViewSize!.height * 7
-        
         for (_, monthView) in dataSource.monthViews {
             monthView.updateAppearance(rect != .zero ? rect : contentView.bounds)
         }
         
-        let todayIndex = NSIndexPath(forRow: 0, inSection: dataSource.count - 1)
+        let rightRange = endDate.year.value() - NSDate().year.value()
+        let rightCount = (rightRange == 0 ? 1 : rightRange) * 12
+        let todayIndex = NSIndexPath(forRow: 0, inSection: dataSource.count - rightCount)
         
-        contentView.performBatchUpdates({
-            self.contentView.scrollToItemAtIndexPath(todayIndex, atScrollPosition: .Top, animated: false)
-            self.contentView.reloadData()
-        }, completion: nil)
-
+        contentView.performBatchUpdates(
+            {
+                self.contentView.scrollToItemAtIndexPath(todayIndex, atScrollPosition: .Top, animated: false)
+                self.contentView.reloadData()
+            },
+            
+            completion: { _ in
+                self.contentView.contentOffset.y -= 30
+            }
+        )
 
     }
     
