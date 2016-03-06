@@ -156,6 +156,10 @@ public final class CVCalendarMonthFlowContentViewControllerDelegate: NSObject, U
     
 }
 
+public func >(lhs: CGSize, rhs: CGSize) -> Bool {
+    return lhs.width > rhs.width && lhs.height > rhs.height
+}
+
 public final class CVCalendarMonthFlowContentViewController: CVCalendarContentViewControllerImpl<UICollectionView> {
     
     public var startDate: NSDate = NSDate().year == 2007
@@ -186,6 +190,22 @@ public final class CVCalendarMonthFlowContentViewController: CVCalendarContentVi
         
         setup()
         loadMonthData()
+    }
+    
+    public func maxSize() -> CGSize {
+        var max: CGSize = .zero
+        
+        for monthView in dataSource.monthViews.values {
+            monthView.mapDayViews { dayView in
+                if let size = self.calendarView.delegate?.complementaryView?(onDayView: dayView).frame.size where size > max {
+                    max = size
+                }
+            }
+        }
+        
+        print("MAX = \(max)")
+        
+        return max
     }
     
     private func initialLoad(date: NSDate) {
