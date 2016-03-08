@@ -103,10 +103,9 @@ extension CVCalendarMonthView {
         currentDay = NSDate().day.value()
         weekdays = calendarManager.weekdaysForDate(date)
         
+        // CollectionView setup. 
+        
         let layout = UICollectionViewFlowLayout()
-//        layout.minimumLineSpacing = 2
-//        layout.minimumInteritemSpacing = 2
-//        layout.sectionInset = UIEdgeInsetsZero
         
         collectionView = UICollectionView(frame: bounds, collectionViewLayout: layout)
         collectionView.delegate = self
@@ -187,7 +186,11 @@ extension CVCalendarMonthView: UICollectionViewDelegate, UICollectionViewDelegat
             cell.backgroundColor = UIColor.redColor()
         }
         
-        let dayView = CVCalendarDayView(calendarView: calendarView, date: CVDate(day: 12, month: 1, week: 1, year: 2016))
+        
+        let weekData = weekdays[indexPath.row / 7]
+        let date = weekData[Weekday(rawValue: indexPath.row % 7 + 1)!]!
+        
+        let dayView = CVCalendarDayView(calendarView: calendarView, date: CVDate(day: date.day.value(), month: date.month.value(), week: indexPath.row / 7, year: date.year.value()))
         cell.addSubview(dayView)
         
         dayView.center = cell.bounds.mid
@@ -213,8 +216,6 @@ extension CVCalendarMonthView: UICollectionViewDelegate, UICollectionViewDelegat
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        //let top: CGFloat = (collectionView.frame.height - cellSize.height * 7 - offset * 6) / 2
-        
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
 
