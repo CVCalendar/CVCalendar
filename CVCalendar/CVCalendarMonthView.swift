@@ -37,8 +37,8 @@ public final class CVCalendarMonthView: UIView {
     /// Deprecated
     /// -------–-------–-------–-------–-------–
     
-//    public var weeksIn: [[Int : [Int]]]?
-//    public var weeksOut: [[Int : [Int]]]?
+    //    public var weeksIn: [[Int : [Int]]]?
+    //    public var weeksOut: [[Int : [Int]]]?
     
     /// -------–-------–-------–-------–-------–
     
@@ -50,6 +50,8 @@ public final class CVCalendarMonthView: UIView {
     public var potentialSize: CGSize {
         return CGSizeMake(bounds.width, CGFloat(weekViews.count) * weekViews[0].bounds.height + calendarView.appearance.spaceBetweenWeekViews! * CGFloat(weekViews.count))
     }
+    
+    public var collectionView: UICollectionView!
     
     // MARK: - Initialization
     
@@ -69,11 +71,25 @@ public final class CVCalendarMonthView: UIView {
     }
     
     public func mapDayViews(body: (DayView) -> Void) {
-        for weekView in self.weekViews {
-            for dayView in weekView.dayViews {
-                body(dayView)
-            }
-        }
+//        for weekView in self.weekViews {
+//            for dayView in weekView.dayViews {
+//                body(dayView)
+//            }
+//        }
+    }
+    
+    public override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        
+//        guard let superview = superview else {
+//            return
+//        }
+//        
+//        self
+//            .constraint(.Leading, relation: .Equal, toView: superview, constant: 0)
+//            .constraint(.Trailing, relation: .Equal, toView: superview, constant: 0)
+//            .constraint(.Bottom, relation: .Equal, toView: superview, constant: 0)
+//            .constraint(.Top, relation: .Equal, toView: superview, constant: 0)
     }
 }
 
@@ -86,6 +102,128 @@ extension CVCalendarMonthView {
         numberOfWeeks = range.numberOfWeeks
         currentDay = NSDate().day.value()
         weekdays = calendarManager.weekdaysForDate(date)
+        
+        let layout = UICollectionViewFlowLayout()
+//        layout.minimumLineSpacing = 2
+//        layout.minimumInteritemSpacing = 2
+//        layout.sectionInset = UIEdgeInsetsZero
+        
+        collectionView = UICollectionView(frame: bounds, collectionViewLayout: layout)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.registerClass(DayViewCell.self, forCellWithReuseIdentifier: "Cell")
+        
+        collectionView.backgroundColor = UIColor.cyanColor()
+        
+        addSubview(collectionView)
+        
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        collectionView
+            .constraint(.Leading, relation: .Equal, toView: self, constant: 0)
+            .constraint(.Trailing, relation: .Equal, toView: self, constant: 0)
+            .constraint(.Bottom, relation: .Equal, toView: self, constant: 0)
+            .constraint(.Top, relation: .Equal, toView: self, constant: 0)
+    }
+}
+
+internal class DayViewCell: UICollectionViewCell {
+    var dayView: CVCalendarDayView! {
+        didSet {
+            removeAllSubviews()
+            addSubview(dayView)
+            
+            dayView
+                .constraint(.Leading, relation: .Equal, toView: self, constant: 0)
+                .constraint(.Trailing, relation: .Equal, toView: self, constant: 0)
+                .constraint(.Bottom, relation: .Equal, toView: self, constant: 0)
+                .constraint(.Top, relation: .Equal, toView: self, constant: 0)
+        }
+    }
+    
+    
+}
+
+internal class MonthViewFlowLayout: UICollectionViewFlowLayout {
+    override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        let _attributes = super.layoutAttributesForElementsInRect(rect)
+        
+        guard var attributes = _attributes else {
+            return nil
+        }
+        
+        for i in 1..<attributes.count {
+            let currentAttr = attributes[i]
+            let previousAttr = attributes[i - 1]
+            let maxSpacing: CGFloat = 1
+            
+            let originX = CGRectGetMaxX(previousAttr.frame)
+            
+            if originX + maxSpacing + currentAttr.frame.width < collectionViewContentSize().width {
+                currentAttr.frame.origin.x = originX + maxSpacing
+            }
+
+        }
+        
+        return attributes
+    }
+}
+
+extension CVCalendarMonthView: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+    public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 7 * calendarView.manager.monthDateRange(date).numberOfWeeks
+    }
+    
+    public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! DayViewCell
+        
+        if indexPath.row == 0 {
+            cell.backgroundColor = UIColor.orangeColor()
+        } else {
+            cell.backgroundColor = UIColor.redColor()
+        }
+        
+        let dayView = CVCalendarDayView(calendarView: calendarView, date: CVDate(day: 12, month: 1, week: 1, year: 2016))
+        cell.addSubview(dayView)
+        
+        dayView.center = cell.bounds.mid
+        dayView.frame.size = cell.bounds.size
+        dayView.translatesAutoresizingMaskIntoConstraints = false
+        dayView
+            .constraint(.Leading, relation: .Equal, toView: cell, constant: 0)
+            .constraint(.Trailing, relation: .Equal, toView: cell, constant: 0)
+            .constraint(.Bottom, relation: .Equal, toView: cell, constant: 0)
+            .constraint(.Top, relation: .Equal, toView: cell, constant: 0)
+        
+        dayView.backgroundColor = UIColor.greenColor()
+        
+        // TODO: Add autolayout to DayView !!!
+        
+        cell.layoutIfNeeded()
+        
+        return cell
+    }
+    
+    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        return calendarView.sizeManager.dayViewSize()
+    }
+    
+    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        //let top: CGFloat = (collectionView.frame.height - cellSize.height * 7 - offset * 6) / 2
+        
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
+
+    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 0
+    }
+    
+    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 0
     }
 }
 
@@ -111,7 +249,11 @@ extension CVCalendarMonthView {
 extension CVCalendarMonthView {
     public func updateAppearance(frame: CGRect) {
         self.frame = frame
-        createWeekViews()
+//        collectionView.frame = bounds
+//        collectionView.layoutSubviews()
+//        collectionView.reloadData()
+        
+        //createWeekViews()
     }
     
     public func createWeekViews() {

@@ -167,8 +167,7 @@ public final class CVCalendarManager {
     // MARK: - Util methods
     
     public static func componentsForDate(date: NSDate) -> NSDateComponents {
-        let units = YearUnit.union(MonthUnit).union(WeekUnit).union(DayUnit)
-        let components = NSCalendar.currentCalendar().components(units, fromDate: date)
+        let components = NSCalendar.currentCalendar().components([YearUnit, MonthUnit, WeekUnit, WeekdayUnit, DayUnit], fromDate: date)
         return components
     }
     

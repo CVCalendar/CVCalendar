@@ -12,6 +12,9 @@ import UIKit
     func presentationMode() -> CalendarMode
     func firstWeekday() -> CVCalendarWeekday
     
+    
+    optional func extraHeight() -> CGFloat
+    
     /**
     Determines whether resizing should cause related views' animation.
     */

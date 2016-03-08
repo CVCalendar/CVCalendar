@@ -108,12 +108,13 @@ public final class CVCalendarMonthFlowContentViewControllerDataSource: NSObject,
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         guard indexPath.section < dates.count else {
-                  return .zero
+            return .zero
         }
         
+        print("MonthView size = \(controller.calendarView.sizeManager.monthViewSize(dates[indexPath.section]))")
         let size = controller.calendarView.weekViewSize!
         let date = dates[indexPath.section]
-        return CGSize(width: size.width, height: size.height * CGFloat(controller.calendarView.manager.monthDateRange(date).numberOfWeeks))
+        return controller.calendarView.sizeManager.monthViewSize(dates[indexPath.section])
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
@@ -262,6 +263,7 @@ public final class CVCalendarMonthFlowContentViewController: CVCalendarContentVi
     }
     
     private func addConstraints(view: UIView) {
+        view.translatesAutoresizingMaskIntoConstraints = false 
         view.addConstraints([
             NSLayoutConstraint(item: contentView, attribute: .Leading, relatedBy: .Equal, toItem: view, attribute: .Leading, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: contentView, attribute: .Trailing, relatedBy: .Equal, toItem: view, attribute: .Trailing, multiplier: 1, constant: 0),
@@ -274,9 +276,9 @@ public final class CVCalendarMonthFlowContentViewController: CVCalendarContentVi
         super.updateFrames(rect)
         print("Update frames")
         
-        for (_, monthView) in dataSource.monthViews {
-            monthView.updateAppearance(rect != .zero ? rect : contentView.bounds)
-        }
+//        for (_, monthView) in dataSource.monthViews {
+//            monthView.updateAppearance(rect != .zero ? rect : contentView.bounds)
+//        }
         
         let rightRange = endDate.year.value() - NSDate().year.value()
         let rightCount = (rightRange == 0 ? 1 : rightRange) * 12

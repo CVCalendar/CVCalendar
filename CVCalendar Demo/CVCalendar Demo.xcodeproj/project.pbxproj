@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0409F30E1C871E530097C4F8 /* CVCalendarKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0409F30C1C871E530097C4F8 /* CVCalendarKitExtensions.swift */; };
 		0409F30F1C871E530097C4F8 /* CVCalendarKitOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0409F30D1C871E530097C4F8 /* CVCalendarKitOperators.swift */; };
+		04B7BB591C8F7CED00CB9326 /* CVCalendarSizeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B7BB581C8F7CED00CB9326 /* CVCalendarSizeManager.swift */; };
 		04CE49BE1C88C87700CC7302 /* CVCalendarLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CE49BD1C88C87700CC7302 /* CVCalendarLayoutManager.swift */; };
 		55E1221E1A588CB60013B002 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1221D1A588CB60013B002 /* AppDelegate.swift */; };
 		55E122201A588CB60013B002 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1221F1A588CB60013B002 /* ViewController.swift */; };
@@ -62,6 +63,7 @@
 /* Begin PBXFileReference section */
 		0409F30C1C871E530097C4F8 /* CVCalendarKitExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CVCalendarKitExtensions.swift; path = ../../CVCalendar/CVCalendarKitExtensions.swift; sourceTree = "<group>"; };
 		0409F30D1C871E530097C4F8 /* CVCalendarKitOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CVCalendarKitOperators.swift; path = ../../CVCalendar/CVCalendarKitOperators.swift; sourceTree = "<group>"; };
+		04B7BB581C8F7CED00CB9326 /* CVCalendarSizeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CVCalendarSizeManager.swift; path = ../../CVCalendar/CVCalendarSizeManager.swift; sourceTree = "<group>"; };
 		04CE49BD1C88C87700CC7302 /* CVCalendarLayoutManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CVCalendarLayoutManager.swift; path = ../../CVCalendar/CVCalendarLayoutManager.swift; sourceTree = "<group>"; };
 		55E122181A588CB60013B002 /* CVCalendar Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CVCalendar Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		55E1221C1A588CB60013B002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 			children = (
 				8F0C6E711C4AD75D000C17A0 /* CVCalendarManager.swift */,
 				04CE49BD1C88C87700CC7302 /* CVCalendarLayoutManager.swift */,
+				04B7BB581C8F7CED00CB9326 /* CVCalendarSizeManager.swift */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -345,6 +348,7 @@
 				TargetAttributes = {
 					55E122171A588CB60013B002 = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = RV8CYX4Z53;
 					};
 					55E1222C1A588CB60013B002 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -403,6 +407,7 @@
 				8FDB51EF1AC09E0200F7F7AC /* CVShape.swift in Sources */,
 				55E122571A588CC50013B002 /* CVCalendarViewAnimatorDelegate.swift in Sources */,
 				55E122551A588CC50013B002 /* CVCalendarView.swift in Sources */,
+				04B7BB591C8F7CED00CB9326 /* CVCalendarSizeManager.swift in Sources */,
 				8F827D071ABF682B005294B1 /* CVAuxiliaryView.swift in Sources */,
 				8F6D3F1C1ADAF1190028BE6D /* CVCalendarMonthContentViewController.swift in Sources */,
 				8F1D7A151C7C90B600147EF0 /* CVCalendarContentViewControllerImpl.swift in Sources */,
@@ -555,11 +560,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = "CVCalendar Demo/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.gameapp.production.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gameappas.production.CVCalendar-Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -569,11 +575,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = "CVCalendar Demo/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.gameapp.production.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gameappas.production.CVCalendar-Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

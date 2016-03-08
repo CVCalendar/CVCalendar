@@ -68,6 +68,7 @@ public final class CVCalendarView: UIView {
     public var animator: Animator!
     public var contentController: CVContentController!
     public var calendarMode: CalendarMode!
+    public var sizeManager: CVCalendarSizeManager!
     
     public var (weekViewSize, dayViewSize): (CGSize?, CGSize?)
     
@@ -208,17 +209,26 @@ public final class CVCalendarView: UIView {
     public init() {
         super.init(frame: .zero)
         hidden = true
+        setup()
     }
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
         hidden = true
+        setup()
     }
 
     /// IB Initialization
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         hidden = true
+        setup()
+    }
+    
+    // MARK: - Setup 
+    
+    public func setup() {
+        sizeManager = CVCalendarSizeManager(calendarView: self)
     }
 }
 

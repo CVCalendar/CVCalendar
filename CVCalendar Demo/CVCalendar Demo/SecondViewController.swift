@@ -17,7 +17,7 @@ class SecondViewController: UIViewController {
         
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: UIScreen.mainScreen().bounds.width, height: 150)
-        layout.minimumLineSpacing = 2
+        layout.minimumInteritemSpacing = 2
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -37,6 +37,7 @@ class SecondViewController: UIViewController {
             .constraint(.Trailing, relation: .Equal, toView: view, constant: 0)
             .constraint(.Bottom, relation: .Equal, toView: view, constant: 0)
             .constraint(.Top, relation: .Equal, toView: view, constant: 0)
+        
         
     }
 }
@@ -59,7 +60,7 @@ extension SecondViewController: UICollectionViewDataSource, UICollectionViewDele
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 10
     }
-    
+
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath)
         

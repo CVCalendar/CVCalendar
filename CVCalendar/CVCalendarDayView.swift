@@ -34,7 +34,7 @@ internal extension CGRect {
 
 public final class CVCalendarDayView: UIView {
     // MARK: - Public properties
-    public let weekdayIndex: Int!
+    public var weekdayIndex: Int!
     public weak var weekView: CVCalendarWeekView!
     
     public var date: CVDate!
@@ -51,6 +51,8 @@ public final class CVCalendarDayView: UIView {
     
     private var weekday: Weekday
     
+    private var bottomConstraint: NSLayoutConstraint!
+    
     // MARK: - UI Properties 
     
     public var topMarkerHidden = false {
@@ -63,20 +65,29 @@ public final class CVCalendarDayView: UIView {
     
     public weak var monthView: CVCalendarMonthView! {
         var monthView: MonthView!
-        if let weekView = weekView, let activeMonthView = weekView.monthView {
+        if let weekView = weekView, activeMonthView = weekView.monthView {
             monthView = activeMonthView
         }
         
         return monthView
     }
     
+    private weak var _calendarView: CVCalendarView!
+    
     public weak var calendarView: CVCalendarView! {
-        var calendarView: CVCalendarView!
-        if let weekView = weekView, let activeCalendarView = weekView.calendarView {
-            calendarView = activeCalendarView
+        set {
+            self._calendarView = newValue
         }
         
-        return calendarView
+        get {
+            if let calendarView = _calendarView {
+                return calendarView
+            } else if let weekView = weekView, let activeCalendarView = weekView.calendarView {
+                return activeCalendarView
+            } else {
+                return nil
+            }
+        }
     }
     
     public override var frame: CGRect {
@@ -112,8 +123,23 @@ public final class CVCalendarDayView: UIView {
         }
         
         date = dateWithWeekView(weekView, andWeekIndex: weekdayIndex)
-        isCurrentDay = date == CVDate(date: NSDate())
 
+        setup()
+        
+        //print("TextSize \(textSize), SelectionSize: \(CVAuxiliaryView(dayView: self, rect: dayLabel.frame, shape: .Circle).frame.size)")
+    }
+    
+    public init(calendarView: CVCalendarView, date: CVDate) {
+        self.date = date
+        self.weekday = Weekday(rawValue: CVCalendarManager.componentsForDate(date.convertedDate()!).weekday)!
+        super.init(frame: .zero)
+        self.calendarView = calendarView
+        setup()
+    }
+    
+    public func setup() {
+        isCurrentDay = date == CVDate(date: NSDate())
+        
         labelSetup()
         complementarySetup()
         setupDotMarker()
@@ -128,10 +154,14 @@ public final class CVCalendarDayView: UIView {
             hidden = true
         }
         
-        adjustLabelFontSize()
         backgroundColor = .clearColor()
         
-        //print("TextSize \(textSize), SelectionSize: \(CVAuxiliaryView(dayView: self, rect: dayLabel.frame, shape: .Circle).frame.size)")
+        addConstraints()
+    }
+    
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        adjustLabelFontSize()
     }
    
     override public func drawRect(rect: CGRect) {
@@ -220,6 +250,26 @@ extension CVCalendarDayView {
     }
 }
 
+extension CVCalendarDayView {
+    public func addConstraints() {
+        dayLabel.translatesAutoresizingMaskIntoConstraints = false
+        dayLabel
+            .constraint(.Leading, relation: .Equal, toView: self, constant: 0)
+            .constraint(.Trailing, relation: .Equal, toView: self, constant: 0)
+            .constraint(.Bottom, relation: .Equal, toView: self, constant: -(complementaryView?.frame.height ?? 0))
+            .constraint(.Top, relation: .Equal, toView: self, constant: 0)
+        
+        if let complementaryView = complementaryView {
+            complementaryView.translatesAutoresizingMaskIntoConstraints = false 
+            complementaryView
+                .constraint(.Bottom, relation: .Equal, toView: self, constant: 0)
+                .constraint(.Height, relation: .Equal, constant: complementaryView.frame.height)
+                .constraint(.Width, relation: .Equal, constant: complementaryView.frame.width)
+                .constraint(.CenterX, relation: .Equal, toView: self, constant: 0)
+        }
+    }
+}
+
 // MARK: - Subviews setup
 
 extension CVCalendarDayView {
@@ -268,6 +318,10 @@ extension CVCalendarDayView {
         if dayLabel.superview == nil {
             addSubview(dayLabel!)
         }
+        
+//        if let bottom = self.constraintForAttribute(.Bottom) {
+//            bottomConstraint = bottom
+//        }
     }
     
     public func complementarySetup() {
@@ -275,6 +329,11 @@ extension CVCalendarDayView {
             return
         }
         
+//        if let bottom = constraints.filter({ $0.firstAttribute == .Bottom }).first {
+//            bottom.constant = -complementaryView.frame.height
+//            layoutIfNeeded()
+//        }
+        //bottomConstraint.constant = complementaryView.frame.height
         dayLabel?.frame = CGRect(x: 0, y: 0, width: bounds.width, height: bounds.height - complementaryView.bounds.height)
         
         self.complementaryView?.removeFromSuperview()

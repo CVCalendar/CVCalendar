@@ -50,7 +50,11 @@ class ViewController: UIViewController {
     }
     
     func complementaryView(onDayView dayView: DayView) -> UIView {
-        return UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 25))
+        return UIView(frame: CGRect(x: 0, y: 0, width: calendarView.sizeManager.dayViewWidth, height: calendarView.sizeManager.dayViewWidth))
+    }
+    
+    func extraHeight() -> CGFloat {
+        return calendarView.sizeManager.dayViewWidth / 1.5
     }
 }
 
@@ -206,7 +210,7 @@ extension ViewController: CVCalendarViewAppearanceDelegate {
     }
     
     func spaceBetweenDayViews() -> CGFloat {
-        return 2
+        return 0
     }
 }
 

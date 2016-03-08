@@ -18,4 +18,16 @@ public extension UIView {
         
         return self
     }
+    
+    func constraintForAttribute(attribute: NSLayoutAttribute) -> NSLayoutConstraint? {
+        print("HERE, \(constraints)")
+        for constraint in constraints {
+            print("Constraint = \(constraint)")
+            if constraint.firstAttribute == attribute {
+                return constraint
+            }
+        }
+        
+        return nil
+    }
 }
