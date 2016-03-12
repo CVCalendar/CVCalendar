@@ -24,8 +24,6 @@ public extension CVCalendarSizeManagerType {
     func dayViewSize() -> CGSize {
         let side = (min(calendarView.frame.width, calendarView.frame.height) / 7)
         
-        print("Side = \((side))")
-        
         let width = side - (calendarView.appearance.spaceBetweenDayViews ?? 0)
         let height = side - (calendarView.appearance.spaceBetweenWeekViews ?? 0) + (calendarView.delegate?.extraHeight?() ?? 0)
         

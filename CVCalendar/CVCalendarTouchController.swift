@@ -51,9 +51,10 @@ extension CVCalendarTouchController {
 
 private extension CVCalendarTouchController {
     func receiveTouchOnDayView(dayView: CVCalendarDayView, withSelectionType selectionType: CVSelectionType) {
-        if let calendarView = dayView.weekView.monthView.calendarView {
+        if let calendarView = dayView.calendarView {
             switch selectionType {
             case .Single:
+                print("Single selection")
                 coordinator.performDayViewSingleSelection(dayView)
                 calendarView.didSelectDayView(dayView)
                 
@@ -67,25 +68,8 @@ private extension CVCalendarTouchController {
         }
     }
 
-    func monthViewLocation(location: CGPoint, doesBelongToDayView dayView: CVCalendarDayView) -> Bool {
-        var dayViewFrame = dayView.frame
-        let weekIndex = dayView.weekView.index
-        let appearance = dayView.calendarView.appearance
-        
-        if weekIndex > 0 {
-            dayViewFrame.origin.y += dayViewFrame.height
-            dayViewFrame.origin.y *= CGFloat(dayView.weekView.index)
-        }
-        
-        if dayView != dayView.weekView.dayViews!.first! {
-            dayViewFrame.origin.y += appearance.spaceBetweenWeekViews! * CGFloat(weekIndex)
-        }
-        
-        if location.x >= dayViewFrame.origin.x && location.x <= CGRectGetMaxX(dayViewFrame) && location.y >= dayViewFrame.origin.y && location.y <= CGRectGetMaxY(dayViewFrame) {
-            return true
-        } else {
-            return false
-        }
+    func monthViewLocation(location: CGPoint, doesBelongToCell cell: DayViewCell) -> Bool {
+        return cell.frame.contains(location)
     }
     
     func weekViewLocation(location: CGPoint, doesBelongToDayView dayView: CVCalendarDayView) -> Bool {
@@ -99,18 +83,14 @@ private extension CVCalendarTouchController {
     
     func ownerTouchLocation(location: CGPoint, onMonthView monthView: CVCalendarMonthView) -> DayView? {
         var owner: DayView?
-        let weekViews = monthView.weekViews
-        
-        for weekView in weekViews {
-            for dayView in weekView.dayViews! {
-                if self.monthViewLocation(location, doesBelongToDayView: dayView) {
-                    owner = dayView
-                    return owner
-                }
+
+        for cell in monthView.collectionView.visibleCells() as! [DayViewCell] {
+            if self.monthViewLocation(location, doesBelongToCell: cell) {
+                owner = cell.dayView
+                return owner
             }
         }
 
-        
         return owner
     }
     

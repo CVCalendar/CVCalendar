@@ -31,19 +31,18 @@ class SecondViewController: UIViewController {
         collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
         
         view.addSubview(collectionView)
-        
+
         collectionView
             .constraint(.Leading, relation: .Equal, toView: view, constant: 0)
             .constraint(.Trailing, relation: .Equal, toView: view, constant: 0)
             .constraint(.Bottom, relation: .Equal, toView: view, constant: 0)
             .constraint(.Top, relation: .Equal, toView: view, constant: 0)
         
-        
     }
 }
 
 extension SecondViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    
+
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         //collectionView.reloadSections(NSIndexSet(index: indexPath.section))
         //collectionView.reloadItemsAtIndexPaths([indexPath])

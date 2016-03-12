@@ -75,7 +75,7 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     // MARK: Optional methods
     
     func shouldShowWeekdaysOut() -> Bool {
-        return shouldShowDaysOut
+        return false
     }
     
     func shouldAnimateResizing() -> Bool {

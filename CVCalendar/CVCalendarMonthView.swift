@@ -52,6 +52,7 @@ public final class CVCalendarMonthView: UIView {
     }
     
     public var collectionView: UICollectionView!
+    public var dayViews: [NSIndexPath : CVCalendarDayView] = [:]
     
     // MARK: - Initialization
     
@@ -80,16 +81,6 @@ public final class CVCalendarMonthView: UIView {
     
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
-        
-//        guard let superview = superview else {
-//            return
-//        }
-//        
-//        self
-//            .constraint(.Leading, relation: .Equal, toView: superview, constant: 0)
-//            .constraint(.Trailing, relation: .Equal, toView: superview, constant: 0)
-//            .constraint(.Bottom, relation: .Equal, toView: superview, constant: 0)
-//            .constraint(.Top, relation: .Equal, toView: superview, constant: 0)
     }
 }
 
@@ -105,14 +96,14 @@ extension CVCalendarMonthView {
         
         // CollectionView setup. 
         
-        let layout = UICollectionViewFlowLayout()
+        let layout = MonthViewFlowLayout()
         
         collectionView = UICollectionView(frame: bounds, collectionViewLayout: layout)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.registerClass(DayViewCell.self, forCellWithReuseIdentifier: "Cell")
         
-        collectionView.backgroundColor = UIColor.cyanColor()
+        collectionView.backgroundColor = .clearColor()
         
         addSubview(collectionView)
         
@@ -154,7 +145,7 @@ internal class MonthViewFlowLayout: UICollectionViewFlowLayout {
         for i in 1..<attributes.count {
             let currentAttr = attributes[i]
             let previousAttr = attributes[i - 1]
-            let maxSpacing: CGFloat = 1
+            let maxSpacing: CGFloat = 0
             
             let originX = CGRectGetMaxX(previousAttr.frame)
             
@@ -165,6 +156,19 @@ internal class MonthViewFlowLayout: UICollectionViewFlowLayout {
         }
         
         return attributes
+    }
+}
+
+internal extension CVCalendarDayView {
+    func setConstaintsForView(view: UIView) {
+        //dayView.center = cell.bounds.mid
+        //dayView.frame.size = cell.bounds.size
+        translatesAutoresizingMaskIntoConstraints = false
+        self
+            .constraint(.Leading, relation: .Equal, toView: view, constant: 0)
+            .constraint(.Trailing, relation: .Equal, toView: view, constant: 0)
+            .constraint(.Bottom, relation: .Equal, toView: view, constant: 0)
+            .constraint(.Top, relation: .Equal, toView: view, constant: 0)
     }
 }
 
@@ -186,23 +190,29 @@ extension CVCalendarMonthView: UICollectionViewDelegate, UICollectionViewDelegat
             cell.backgroundColor = UIColor.redColor()
         }
         
+        if let dayView = dayViews[indexPath] {
+            cell.dayView = dayView
+            dayView.setConstaintsForView(cell)
+        } else {
+            let weekData = weekdays[indexPath.row / 7]
+            let date = weekData[Weekday(rawValue: indexPath.row % 7 + 1)!]!
+            let dayView = CVCalendarDayView(calendarView: calendarView, date: CVDate(day: date.day.value(), month: date.month.value(), week: indexPath.row / 7, year: date.year.value()))
+            
+            dayViews[indexPath] = dayView
+            
+            cell.dayView = dayView
+            
+            dayView.setConstaintsForView(cell)
+            dayView.weekIndex = indexPath.row / 7
+            
+            print("Date = \(date), Current Date = \(self.date) isOut = \(self.date.month.value() != date.month.value())")
+            
+            if self.date.month.value() != date.month.value() {
+                dayView.isOut = true
+            }
+        }
         
-        let weekData = weekdays[indexPath.row / 7]
-        let date = weekData[Weekday(rawValue: indexPath.row % 7 + 1)!]!
-        
-        let dayView = CVCalendarDayView(calendarView: calendarView, date: CVDate(day: date.day.value(), month: date.month.value(), week: indexPath.row / 7, year: date.year.value()))
-        cell.addSubview(dayView)
-        
-        dayView.center = cell.bounds.mid
-        dayView.frame.size = cell.bounds.size
-        dayView.translatesAutoresizingMaskIntoConstraints = false
-        dayView
-            .constraint(.Leading, relation: .Equal, toView: cell, constant: 0)
-            .constraint(.Trailing, relation: .Equal, toView: cell, constant: 0)
-            .constraint(.Bottom, relation: .Equal, toView: cell, constant: 0)
-            .constraint(.Top, relation: .Equal, toView: cell, constant: 0)
-        
-        dayView.backgroundColor = UIColor.greenColor()
+        cell.dayView?.backgroundColor = .clearColor()
         
         // TODO: Add autolayout to DayView !!!
         
@@ -211,8 +221,12 @@ extension CVCalendarMonthView: UICollectionViewDelegate, UICollectionViewDelegat
         return cell
     }
     
+    public func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        
+    }
+    
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return calendarView.sizeManager.dayViewSize()
+        return CGSizeMake(collectionView.frame.width / 7, round(collectionView.frame.height / CGFloat(calendarView.manager.monthDateRange(date).numberOfWeeks)))
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
@@ -279,7 +293,7 @@ extension CVCalendarMonthView {
 extension CVCalendarMonthView {
     public func updateInteractiveView() {
         safeExecuteBlock({
-            print("Update")
+            print("Setting interactive view...")
             let mode = self.calendarView!.calendarMode!
             if mode == .MonthView || mode == .MonthFlowView {
                 if let interactiveView = self.interactiveView {

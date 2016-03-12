@@ -72,6 +72,8 @@ public final class CVCalendarMonthFlowContentViewControllerDataSource: NSObject,
     public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath)
         
+        print("Making a Cell")
+        
         let monthView: CVCalendarMonthView
         if let _monthView = monthViews[indexPath] {
             monthView = _monthView
@@ -111,9 +113,8 @@ public final class CVCalendarMonthFlowContentViewControllerDataSource: NSObject,
             return .zero
         }
         
-        print("MonthView size = \(controller.calendarView.sizeManager.monthViewSize(dates[indexPath.section]))")
-        let size = controller.calendarView.weekViewSize!
-        let date = dates[indexPath.section]
+        //print("MonthView size = \(controller.calendarView.sizeManager.monthViewSize(dates[indexPath.section]))")
+
         return controller.calendarView.sizeManager.monthViewSize(dates[indexPath.section])
     }
     

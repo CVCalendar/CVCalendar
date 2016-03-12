@@ -289,7 +289,7 @@ extension CVCalendarView {
                         controller.updateFrames(selfSize != contentViewSize ? bounds : .zero)
                     }
                     
-                    print("ContentView = \(contentController.contentView)")
+                    //print("ContentView = \(contentController.contentView)")
                 }
             }
         }
