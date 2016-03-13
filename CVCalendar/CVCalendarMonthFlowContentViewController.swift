@@ -18,7 +18,9 @@ public protocol CVCalendarMonthFlowContentViewControllerModel: UICollectionViewD
 }
 
 
-
+public final class CVCalendarMonthFlowContentCell: UICollectionViewCell {
+    public var monthView: CVCalendarMonthView!
+}
 
 
 public final class CVCalendarMonthFlowContentHeaderView: UICollectionReusableView {
@@ -48,16 +50,15 @@ public final class CVCalendarMonthFlowContentViewControllerDataSource: NSObject,
     
     public weak var controller: CVCalendarMonthFlowContentViewController!
     
-    public var count = 0
+    public var count: Int {
+        return self.dates.count
+    }
+    
     public var dates: [NSDate] = []
     public var monthViews: [NSIndexPath : CVCalendarMonthView] = [:]
     
     public func getMonth(date: NSDate) -> MonthView {
-        let frame = controller.contentView.bounds
         let monthView = MonthView(calendarView: controller.calendarView, date: date)
-        
-        monthView.updateAppearance(frame)
-        
         return monthView
     }
     
@@ -70,36 +71,80 @@ public final class CVCalendarMonthFlowContentViewControllerDataSource: NSObject,
     }
     
     public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath)
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! CVCalendarMonthFlowContentCell
         
-        print("Making a Cell")
+        //print("MonthViews \(monthViews.count)")
+        //print("Making a Cell, monthView \(cell.monthView)")
         
-        let monthView: CVCalendarMonthView
-        if let _monthView = monthViews[indexPath] {
-            monthView = _monthView
-        } else {
-            monthView = getMonth(dates[indexPath.section])
-            monthViews[indexPath] = monthView
-        }
         
-        for subview in cell.subviews {
-            subview.removeFromSuperview()
-        }
         
-        monthView.mapDayViews { dayView in
-            dayView
-            if dayView.isOut {
-                dayView.topMarkerHidden = true
-                dayView.hidden = true
+        if let monthView = cell.monthView {
+            print("WITH A CELL")
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                let date = self.dates[indexPath.section]
+                monthView.reloadWithDate(date)
             }
+            
+            
+
+        } else {
+            print("WITH OUT!!! A CELL")
+            //print("IndexPath = \(indexPath.section)")
+            
+            let view: MonthView
+            if let monthView = monthViews[indexPath] {
+                view = monthView
+            } else {
+                view = getMonth(self.dates[indexPath.section])
+            }
+            
+            
+            view.userInteractionEnabled = true
+            view.center = cell.bounds.mid
+            view.frame = cell.bounds
+            
+            cell.monthView = view
+            
+            cell.addSubview(view)
+            
+                    view.translatesAutoresizingMaskIntoConstraints = false
+                    view
+                        .constraint(.Leading, relation: .Equal, toView: cell, constant: 0)
+                        .constraint(.Trailing, relation: .Equal, toView: cell, constant: 0)
+                        .constraint(.Bottom, relation: .Equal, toView: cell, constant: 0)
+                        .constraint(.Top, relation: .Equal, toView: cell, constant: 0)
         }
-        
-        cell.userInteractionEnabled = true
-        monthView.userInteractionEnabled = true
-        
-        monthView.center = cell.bounds.mid
-        monthView.frame = cell.bounds
-        cell.addSubview(monthView)
+
+
+//        let view: MonthView
+//        if let monthView = monthViews[indexPath] {
+//            view = monthView
+//        } else {
+//            fatalError("Yes")
+//        }
+//        
+//        
+//        view.userInteractionEnabled = true
+//        view.center = cell.bounds.mid
+//        view.frame = cell.bounds
+//        
+//        //
+//        
+//        //cell.addSubview(view)
+//        
+//        cell.monthView = view
+//        cell.addSubview(view)
+//
+//        monthView.translatesAutoresizingMaskIntoConstraints = false
+//        monthView
+//            .constraint(.Leading, relation: .Equal, toView: cell, constant: 0)
+//            .constraint(.Trailing, relation: .Equal, toView: cell, constant: 0)
+//            .constraint(.Bottom, relation: .Equal, toView: cell, constant: 0)
+//            .constraint(.Top, relation: .Equal, toView: cell, constant: 0)
+//        
+//        
+
         
         return cell
     }
@@ -229,12 +274,36 @@ public final class CVCalendarMonthFlowContentViewController: CVCalendarContentVi
         let rightRange = endDate.year.value() - NSDate().year.value()
         let rightCount = (rightRange == 0 ? 1 : rightRange) * 12
         
+
+        
+        // Main data
         let today = NSDate()
-        
         let dates = (1..<leftCount).map { self.startDate.month + $0 } + [today] + (1..<rightCount).map { today.month + $0 }
-        
         dataSource.dates = dates
-        dataSource.count = dataSource.dates.count
+        
+        
+        
+        // Prepare initially loaded MonthViews
+        
+        let todayIndex = NSIndexPath(forRow: 0, inSection: dataSource.count - rightCount)
+        let prevIndex = NSIndexPath(forRow: 0, inSection: dataSource.count - rightCount - 1)
+        let nextIndex = NSIndexPath(forRow: 0, inSection: dataSource.count - rightCount + 1)
+        
+    
+        var i = 0
+        for _ in 0..<dates.count {
+            dataSource.monthViews[NSIndexPath(forRow: 0, inSection: i)] = MonthView(calendarView: calendarView, date: dates[i++])
+        }
+        
+//        dataSource.monthViews = [
+//            prevIndex : MonthView(calendarView: calendarView, date: NSDate().month - 1),
+//            todayIndex : MonthView(calendarView: calendarView, date: NSDate()),
+//            nextIndex : MonthView(calendarView: calendarView, date: NSDate().month + 1)
+//        ]
+        
+        print("[Loaded] section = \(prevIndex.section)")
+        print("[Loaded] section = \(todayIndex.section)")
+        print("[Loaded] section = \(nextIndex.section)")
     }
     
     private func setup() {
@@ -247,7 +316,7 @@ public final class CVCalendarMonthFlowContentViewController: CVCalendarContentVi
         contentView.showsVerticalScrollIndicator = false
         contentView.dataSource = dataSource
         contentView.delegate = dataSource
-        contentView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
+        contentView.registerClass(CVCalendarMonthFlowContentCell.self, forCellWithReuseIdentifier: "Cell")
         contentView.registerClass(CVCalendarMonthFlowContentHeaderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "HeaderView")
         contentView.registerClass(CVCalendarMonthFlowContentFooterView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: "FooterView")
         

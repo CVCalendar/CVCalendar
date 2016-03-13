@@ -5,8 +5,24 @@
 //  Created by E. Mozharovsky on 12/26/14.
 //  Copyright (c) 2014 GameApp. All rights reserved.
 //
-
+  
 import UIKit
+
+internal extension Dictionary {
+    func filter(@noescape includeElement: (Dictionary.Generator.Element) throws -> Bool) rethrows -> Dictionary<Key, Value> {
+        var result: [Key : Value] = [:]
+        
+        for (key, value) in self {
+            guard try includeElement(key, value) else {
+                continue
+            }
+            
+            result[key] = value
+        }
+        
+        return result
+    }
+}
 
 public final class CVCalendarMonthView: UIView {
     // MARK: - Non public properties
@@ -53,6 +69,7 @@ public final class CVCalendarMonthView: UIView {
     
     public var collectionView: UICollectionView!
     public var dayViews: [NSIndexPath : CVCalendarDayView] = [:]
+    private var cachedDayViews: [NSIndexPath : CVCalendarDayView] = [:]
     
     // MARK: - Initialization
     
@@ -82,20 +99,57 @@ public final class CVCalendarMonthView: UIView {
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
     }
+    
+    
+    public func reloadWithDate(date: NSDate) {
+        self.date = date
+        
+        loadDateData()
+        
+        let max = 7 * numberOfWeeks
+        
+        for (i, day) in dayViews {
+            if i.row >= max {
+                if !cachedDayViews.values.contains(day) {
+                    cachedDayViews[i] = day
+                }
+                
+                day.removeFromSuperview()
+                
+                continue
+            }
+            
+            day.reloadWithDate(CVDate(date: date))
+        }
+        
+        if dayViews.count < max {
+            for (_, day) in cachedDayViews {
+                day.reloadWithDate(CVDate(date: date))
+                
+                if let last = dayViews.keys.map( { $0 } ).last {
+                    dayViews[NSIndexPath(forRow: last.row + 1, inSection: 0)] = day
+                }
+            }
+        }
+        
+        dayViews = dayViews.filter ({ path, _ in
+            return path.row < max
+        })
+    
+        
+        collectionView.reloadData()
+    }
 }
 
 // MARK: - Creation and destruction
 
 extension CVCalendarMonthView {
     public func commonInit() {
-        let calendarManager = calendarView.manager
-        let range = calendarManager.monthDateRange(date)
-        numberOfWeeks = range.numberOfWeeks
-        currentDay = NSDate().day.value()
-        weekdays = calendarManager.weekdaysForDate(date)
-        
-        // CollectionView setup. 
-        
+        loadDateData()
+        setupCollectionView()
+    }
+    
+    private func setupCollectionView() {
         let layout = MonthViewFlowLayout()
         
         collectionView = UICollectionView(frame: bounds, collectionViewLayout: layout)
@@ -115,6 +169,14 @@ extension CVCalendarMonthView {
             .constraint(.Bottom, relation: .Equal, toView: self, constant: 0)
             .constraint(.Top, relation: .Equal, toView: self, constant: 0)
     }
+    
+    private func loadDateData() {
+        let calendarManager = calendarView.manager
+        let range = calendarManager.monthDateRange(date)
+        numberOfWeeks = range.numberOfWeeks
+        currentDay = NSDate().day.value()
+        weekdays = calendarManager.weekdaysForDate(date)
+    }
 }
 
 internal class DayViewCell: UICollectionViewCell {
@@ -122,12 +184,6 @@ internal class DayViewCell: UICollectionViewCell {
         didSet {
             removeAllSubviews()
             addSubview(dayView)
-            
-            dayView
-                .constraint(.Leading, relation: .Equal, toView: self, constant: 0)
-                .constraint(.Trailing, relation: .Equal, toView: self, constant: 0)
-                .constraint(.Bottom, relation: .Equal, toView: self, constant: 0)
-                .constraint(.Top, relation: .Equal, toView: self, constant: 0)
         }
     }
     
@@ -178,7 +234,7 @@ extension CVCalendarMonthView: UICollectionViewDelegate, UICollectionViewDelegat
     }
     
     public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 7 * calendarView.manager.monthDateRange(date).numberOfWeeks
+        return 7 * numberOfWeeks
     }
     
     public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -223,10 +279,22 @@ extension CVCalendarMonthView: UICollectionViewDelegate, UICollectionViewDelegat
     
     public func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         
+//        let label = UILabel()
+//        label.text = "\(indexPath.row)"
+//        label.frame = cell.bounds
+//        
+//        cell.addSubview(label)
+//        //            label.translatesAutoresizingMaskIntoConstraints = false
+//        //            label
+//        //                .constraint(.Leading, relation: .Equal, toView: cell, constant: 0)
+//        //                .constraint(.Trailing, relation: .Equal, toView: cell, constant: 0)
+//        //                .constraint(.Bottom, relation: .Equal, toView: cell, constant: 0)
+//        //                .constraint(.Top, relation: .Equal, toView: cell, constant: 0)
+        
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSizeMake(collectionView.frame.width / 7, round(collectionView.frame.height / CGFloat(calendarView.manager.monthDateRange(date).numberOfWeeks)))
+        return CGSizeMake(collectionView.frame.width / 7, round(collectionView.frame.height / CGFloat(numberOfWeeks)))
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {

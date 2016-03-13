@@ -55,6 +55,10 @@ public final class CVCalendarDayView: UIView {
             if !calendarView.shouldShowWeekdaysOut {
                 hidden = true 
             }
+            
+            if !isOut || calendarView.shouldShowWeekdaysOut! {
+                hidden = false 
+            }
         }
     }
     
@@ -209,6 +213,29 @@ public final class CVCalendarDayView: UIView {
     
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+    public func reloadWithDate(date: CVDate) {
+        self.date = date
+        
+        isCurrentDay = date == CVDate(date: NSDate())
+        
+        labelSetup()
+        complementarySetup()
+        setupDotMarker()
+        //topMarkerSetup()
+        
+        if (frame.width > 0) {
+            preliminarySetup()
+            supplementarySetup()
+        }
+        
+        if !calendarView.shouldShowWeekdaysOut && isOut {
+            hidden = true
+        }
+        
+        backgroundColor = .clearColor()
     }
 }
 
