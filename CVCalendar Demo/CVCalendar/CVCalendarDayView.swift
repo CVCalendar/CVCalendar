@@ -134,7 +134,7 @@ public final class CVCalendarDayView: UIView {
         var month = dateRange.month
         
         if isOut {
-            day > 20 ? month-- : month++
+            day > 20 ? (month-=1) : (month+=1)
         }
         
         return CVDate(day: day, month: month, week: week, year: year)
@@ -289,7 +289,7 @@ extension CVCalendarDayView {
                 
                 let coordinator = calendarView.coordinator
                 if self == coordinator.selectedDayView {
-                    moveDotMarkerBack(false, coloring: false)
+                    moveDotMarkerBack(false, color: false)
                 }
             }
         }
@@ -299,9 +299,10 @@ extension CVCalendarDayView {
 // MARK: - Dot marker movement
 
 extension CVCalendarDayView {
-    public func moveDotMarkerBack(unwinded: Bool, var coloring: Bool) {
+    public func moveDotMarkerBack(unwinded: Bool, color: Bool) {
+      
+      var coloring = color
         for dotMarker in dotMarkers {
-
             if let calendarView = calendarView, let dotMarker = dotMarker {
                 var shouldMove = true
                 if let delegate = calendarView.delegate, let move = delegate.dotMarker?(shouldMoveOnHighlightingOnDayView: self) where !move {
@@ -348,7 +349,7 @@ extension CVCalendarDayView {
                                 
                         })
                     } else {
-                        moveDotMarkerBack(unwinded, coloring: coloring)
+                        moveDotMarkerBack(unwinded, color: coloring)
                     }
                 }
                 
@@ -462,7 +463,7 @@ extension CVCalendarDayView {
         selectionView!.setNeedsDisplay()
         insertSubview(selectionView!, atIndex: 0)
         
-        moveDotMarkerBack(false, coloring: false)
+        moveDotMarkerBack(false, color: false)
     }
     
     public func setDeselectedWithClearing(clearing: Bool) {
@@ -490,7 +491,7 @@ extension CVCalendarDayView {
             dayLabel?.textColor = color
             dayLabel?.font = font
             
-            moveDotMarkerBack(true, coloring: false)
+            moveDotMarkerBack(true, color: false)
             
             if clearing {
                 selectionView?.removeFromSuperview()
