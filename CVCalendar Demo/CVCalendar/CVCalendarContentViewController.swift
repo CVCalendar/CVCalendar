@@ -89,7 +89,7 @@ extension CVCalendarContentViewController {
 }
 
 
-// MARK: Delete circle and dot views (in effect refreshing the dayView circle)
+// MARK: Delete circle views (in effect refreshing the dayView circle)
 
 extension CVCalendarContentViewController {
     func removeCircleLabel(dayView: CVCalendarDayView) {
@@ -97,7 +97,7 @@ extension CVCalendarContentViewController {
             if each is UILabel {
                 continue
             }
-            else if each is CVAuxiliaryView  {
+            else if each is CVAuxiliaryView {
                 continue
             }
             else {

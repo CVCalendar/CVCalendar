@@ -134,7 +134,7 @@ public final class CVCalendarDayView: UIView {
         var month = dateRange.month
         
         if isOut {
-            day > 20 ? (month-=1) : (month+=1)
+            day > 20 ? (month -= 1) : (month += 1)
         }
         
         return CVDate(day: day, month: month, week: week, year: year)
@@ -289,7 +289,7 @@ extension CVCalendarDayView {
                 
                 let coordinator = calendarView.coordinator
                 if self == coordinator.selectedDayView {
-                    moveDotMarkerBack(false, color: false)
+                    moveDotMarkerBack(false, coloring: false)
                 }
             }
         }
@@ -299,9 +299,8 @@ extension CVCalendarDayView {
 // MARK: - Dot marker movement
 
 extension CVCalendarDayView {
-    public func moveDotMarkerBack(unwinded: Bool, color: Bool) {
-      
-      var coloring = color
+    public func moveDotMarkerBack(unwinded: Bool, coloring: Bool) {
+        var coloring = coloring
         for dotMarker in dotMarkers {
             if let calendarView = calendarView, let dotMarker = dotMarker {
                 var shouldMove = true
@@ -349,7 +348,7 @@ extension CVCalendarDayView {
                                 
                         })
                     } else {
-                        moveDotMarkerBack(unwinded, color: coloring)
+                        moveDotMarkerBack(unwinded, coloring: coloring)
                     }
                 }
                 
@@ -463,7 +462,7 @@ extension CVCalendarDayView {
         selectionView!.setNeedsDisplay()
         insertSubview(selectionView!, atIndex: 0)
         
-        moveDotMarkerBack(false, color: false)
+        moveDotMarkerBack(false, coloring: false)
     }
     
     public func setDeselectedWithClearing(clearing: Bool) {
@@ -491,7 +490,7 @@ extension CVCalendarDayView {
             dayLabel?.textColor = color
             dayLabel?.font = font
             
-            moveDotMarkerBack(true, color: false)
+            moveDotMarkerBack(true, coloring: false)
             
             if clearing {
                 selectionView?.removeFromSuperview()

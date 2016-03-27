@@ -33,6 +33,7 @@ extension CVCalendarViewAnimator {
         let selectionAnimation = delegate.selectionAnimation()
         dayView.setSelectedWithType(.Single)
         selectionAnimation(dayView) { [unowned dayView] _ in
+            let _ = dayView
             // Something...
         }
     }
