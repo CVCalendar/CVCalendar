@@ -76,14 +76,14 @@ private extension CVSet {
     }
 }
 
-
 // MARK: - SequenceType
- extension CVSet: SequenceType {
+extension CVSet: SequenceType {
     public func generate() -> AnyGenerator<T> {
         var power = 0
         let nextClosure : () -> T? = {
-            (power < self.count) ? self.storage[power++] : nil
+            (power < self.count) ? self.storage[power] : nil
         }
-        return anyGenerator(nextClosure)
+        power+=1
+        return AnyGenerator(body: nextClosure)
     }
 }
