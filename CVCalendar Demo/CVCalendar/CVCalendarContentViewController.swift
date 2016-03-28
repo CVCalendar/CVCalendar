@@ -11,9 +11,9 @@ import UIKit
 public typealias Identifier = String
 public class CVCalendarContentViewController: UIViewController {
     // MARK: - Constants
-    public let Previous = "Previous"
-    public let Presented = "Presented"
-    public let Following = "Following"
+    public let previous = "Previous"
+    public let presented = "Presented"
+    public let following = "Following"
 
     // MARK: - Public Properties
     public let calendarView: CalendarView
@@ -45,7 +45,7 @@ public class CVCalendarContentViewController: UIViewController {
 
         super.init(nibName: nil, bundle: nil)
 
-        scrollView.contentSize = CGSizeMake(frame.width * 3, frame.height)
+        scrollView.contentSize = CGSize(width: frame.width * 3, height: frame.height)
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
         scrollView.layer.masksToBounds = true
@@ -62,10 +62,10 @@ public class CVCalendarContentViewController: UIViewController {
 
 extension CVCalendarContentViewController {
     public func updateFrames(frame: CGRect) {
-        if frame != CGRectZero {
+        if frame != CGRect.zero {
             scrollView.frame = frame
             scrollView.removeAllSubviews()
-            scrollView.contentSize = CGSizeMake(frame.size.width * 3, frame.size.height)
+            scrollView.contentSize = CGSize(width: frame.size.width * 3, height: frame.size.height)
         }
 
         calendarView.hidden = false
@@ -96,11 +96,9 @@ extension CVCalendarContentViewController {
         for each in dayView.subviews {
             if each is UILabel {
                 continue
-            }
-            else if each is CVAuxiliaryView {
+            } else if each is CVAuxiliaryView {
                 continue
-            }
-            else {
+            } else {
                 each.removeFromSuperview()
             }
         }
@@ -124,7 +122,7 @@ extension CVCalendarContentViewController {
 /// UIScrollViewDelegate
 extension CVCalendarContentViewController: UIScrollViewDelegate { }
 
-/// Convenience API.
+// Convenience API.
 extension CVCalendarContentViewController {
     public func performedDayViewSelection(dayView: DayView) { }
 
@@ -143,9 +141,9 @@ extension CVCalendarContentViewController {
     public func indexOfIdentifier(identifier: Identifier) -> Int {
         let index: Int
         switch identifier {
-        case Previous: index = 0
-        case Presented: index = 1
-        case Following: index = 2
+        case previous: index = 0
+        case presented: index = 1
+        case following: index = 2
         default: index = -1
         }
 
@@ -214,32 +212,37 @@ extension CVCalendarContentViewController {
             var viewsToLayout = [UIView]()
             if let calendarSuperview = calendarView.superview {
                 for constraintIn in calendarSuperview.constraints {
-                    if let firstItem = constraintIn.firstItem as? UIView, let _ = constraintIn.secondItem as? CalendarView {
+                    if let firstItem = constraintIn.firstItem as? UIView,
+                        let _ = constraintIn.secondItem as? CalendarView {
 
-                        viewsToLayout.append(firstItem)
+                            viewsToLayout.append(firstItem)
                     }
                 }
             }
 
 
-            for constraintIn in calendarView.constraints where constraintIn.firstAttribute == NSLayoutAttribute.Height {
-                constraintIn.constant = height
+            for constraintIn in calendarView.constraints where
+                constraintIn.firstAttribute == NSLayoutAttribute.Height {
+                    constraintIn.constant = height
 
-                if animated {
-                    UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: {
-                        self.layoutViews(viewsToLayout, toHeight: height)
-                        }) { _ in
-                            self.presentedMonthView.frame.size = self.presentedMonthView.potentialSize
-                            self.presentedMonthView.updateInteractiveView()
+                    if animated {
+                        UIView.animateWithDuration(0.2, delay: 0,
+                                                   options: UIViewAnimationOptions.CurveLinear,
+                                                   animations: {
+                            self.layoutViews(viewsToLayout, toHeight: height)
+                            }) { _ in
+                                self.presentedMonthView.frame.size =
+                                    self.presentedMonthView.potentialSize
+                                self.presentedMonthView.updateInteractiveView()
+                        }
+                    } else {
+                        layoutViews(viewsToLayout, toHeight: height)
+                        presentedMonthView.updateInteractiveView()
+                        presentedMonthView.frame.size = presentedMonthView.potentialSize
+                        presentedMonthView.updateInteractiveView()
                     }
-                } else {
-                    layoutViews(viewsToLayout, toHeight: height)
-                    presentedMonthView.updateInteractiveView()
-                    presentedMonthView.frame.size = presentedMonthView.potentialSize
-                    presentedMonthView.updateInteractiveView()
-                }
 
-                break
+                    break
             }
         }
     }
