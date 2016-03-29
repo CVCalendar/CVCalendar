@@ -12,4 +12,3 @@ public enum CVSelectionType {
     case Single
     case Range(CVRange)
 }
-

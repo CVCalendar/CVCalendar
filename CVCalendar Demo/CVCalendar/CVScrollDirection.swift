@@ -12,7 +12,7 @@ public enum CVScrollDirection {
     case None
     case Right
     case Left
-    
+
     var description: String {
         get {
             switch self {
