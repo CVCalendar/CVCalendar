@@ -16,11 +16,10 @@ public typealias DayView = CVCalendarDayView
 public typealias ContentController = CVCalendarContentViewController
 public typealias Appearance = CVCalendarViewAppearance
 public typealias Coordinator = CVCalendarDayViewControlCoordinator
-public typealias Date = CVDate
 public typealias CalendarMode = CVCalendarViewPresentationMode
-public typealias Weekday = CVCalendarWeekday
+public typealias CVWeekday = CVCalendarWeekday
 public typealias Animator = CVCalendarViewAnimator
-public typealias Delegate = CVCalendarViewDelegate
+public typealias CVDelegate = CVCalendarViewDelegate
 public typealias AppearanceDelegate = CVCalendarViewAppearanceDelegate
 public typealias AnimatorDelegate = CVCalendarViewAnimatorDelegate
 public typealias ContentViewController = CVCalendarContentViewController
@@ -44,7 +43,7 @@ public final class CVCalendarView: UIView {
 
     private var validated = false
 
-    public var firstWeekday: Weekday {
+    public var firstWeekday: CVWeekday {
         get {
             if let delegate = delegate {
                 return delegate.firstWeekday()
@@ -62,7 +61,7 @@ public final class CVCalendarView: UIView {
         }
     }
 
-    public var presentedDate: Date! {
+    public var presentedDate: CVDate! {
         didSet {
             if let _ = oldValue {
                 delegate?.presentedDateUpdated?(presentedDate)
@@ -111,7 +110,7 @@ public final class CVCalendarView: UIView {
 
     @IBOutlet public weak var calendarDelegate: AnyObject? {
         set {
-            if let calendarDelegate = newValue as? Delegate {
+            if let calendarDelegate = newValue as? CVDelegate {
                 delegate = calendarDelegate
             }
         }
