@@ -16,20 +16,20 @@ import UIKit
 public struct CVSet<T: AnyObject>: NilLiteralConvertible {
     // MARK: - Private properties
     private var storage = [T]()
-    
+
     // MARK: - Public properties
     var count: Int {
         return storage.count
     }
-    
+
     var last: T? {
         return storage.last
     }
-    
+
     // MARK: - Initialization
     public init(nilLiteral: ()) { }
     init() { }
-    
+
     // MARK: - Subscript
     subscript(index: Int) -> T? {
         get {
@@ -50,19 +50,19 @@ public extension CVSet {
             storage.append(object)
         }
     }
-    
+
     mutating func removeObject(object: T) {
         if let index = indexObject(object) {
             storage.removeAtIndex(index)
         }
     }
-    
+
     mutating func removeAll(keepCapacity: Bool) {
         storage.removeAll(keepCapacity: keepCapacity)
     }
 }
 
-// MARK: - Util 
+// MARK: - Util
 
 private extension CVSet {
     func indexObject(object: T) -> Int? {
@@ -71,7 +71,7 @@ private extension CVSet {
                 return index
             }
         }
-        
+
         return nil
     }
 }
