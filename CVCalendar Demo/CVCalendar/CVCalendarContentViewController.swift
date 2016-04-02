@@ -16,7 +16,7 @@ public class CVCalendarContentViewController: UIViewController {
     public let following = "Following"
 
     // MARK: - Public Properties
-    public let calendarView: CalendarView
+    public unowned let calendarView: CalendarView
     public let scrollView: UIScrollView
 
     public var presentedMonthView: MonthView
