@@ -71,8 +71,8 @@ Now you're about to add 2 UIViews to your Storyboard as it shown in the picture 
 
 Don't forget to add 2 outlets into your code.
 ```swift
-    @IBOutlet weak var calendarView: CVCalendarView!
     @IBOutlet weak var menuView: CVCalendarMenuView!
+    @IBOutlet weak var calendarView: CVCalendarView!
 ```
 
 Two views are representing ultimately a MenuView and a CalendarView so they should have corresponding classes. To change their classes go to <b>Identity Inspector</b> and set custom classes. When it's done, you'll see in the dock panel something similar to the picture below.  (Blue UIView -> CVCalendarView, Green UIView -> CVCalendarMenuView)
