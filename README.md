@@ -94,8 +94,8 @@ Since CVCalendarView and CVCalendarMenuView will be created automatically all yo
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        calendarView.commitCalendarViewUpdate()
         menuView.commitMenuViewUpdate()
+        calendarView.commitCalendarViewUpdate()
     }
 ````
 
@@ -146,12 +146,12 @@ How it should look like.
 ```swift
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // CVCalendarMenuView initialization with frame
+        self.menuView = CVCalendarMenuView(frame: CGRectMake(0, 0, 300, 15))
 
         // CVCalendarView initialization with frame
         self.calendarView = CVCalendarView(frame: CGRectMake(0, 20, 300, 450))
-
-        // CVCalendarMenuView initialization with frame
-        self.menuView = CVCalendarMenuView(frame: CGRectMake(0, 0, 300, 15))
 
         // Appearance delegate [Unnecessary]
         self.calendarView.calendarAppearanceDelegate = self
@@ -159,11 +159,11 @@ How it should look like.
         // Animator delegate [Unnecessary]
         self.calendarView.animatorDelegate = self
 
-        // Calendar delegate [Required]
-        self.calendarView.calendarDelegate = self
-
         // Menu delegate [Required]
         self.menuView.menuViewDelegate = self
+        
+        // Calendar delegate [Required]
+        self.calendarView.calendarDelegate = self
     }
 ```
 
@@ -174,8 +174,8 @@ And do not forget to commit updates on `viewDidLayoutSubviews` method.
         super.viewDidLayoutSubviews()
 
         // Commit frames' updates
-        self.calendarView.commitCalendarViewUpdate()
         self.menuView.commitMenuViewUpdate()
+        self.calendarView.commitCalendarViewUpdate()
     }
 ```
 
