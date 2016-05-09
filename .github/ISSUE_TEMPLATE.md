@@ -1,4 +1,6 @@
-<!--- Provide a general summary of the issue in the Title above -->
+- [ ] I have verified there are no duplicate active or recent bugs, questions, or requests
+- [ ] I have verified that I am using the latest version of CVCalendar.
+- [ ] I have given my issue a non-generic title.
 
 ## Expected Behavior
 <!--- If you're describing a bug, tell us what should happen -->
@@ -15,6 +17,7 @@
 ## Steps to Reproduce (for bugs)
 <!--- Provide a link to a live example, or an unambiguous set of steps to -->
 <!--- reproduce this bug. Include code to reproduce, if relevant -->
+<!--- If you're providing code, please make sure to use the correct markdown syntax for it. -->
 1.
 2.
 3.
