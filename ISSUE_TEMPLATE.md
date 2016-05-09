@@ -1,7 +1,5 @@
 <!--- Provide a general summary of the issue in the Title above -->
 
-Only if the template is complete, we might be able to help you. Otherwise the issue will be closed.
-
 ## Expected Behavior
 <!--- If you're describing a bug, tell us what should happen -->
 <!--- If you're suggesting a change/improvement, tell us how it should work -->
