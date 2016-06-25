@@ -16,6 +16,7 @@ public final class CVCalendarMenuView: UIView {
 
     public var firstWeekday: Weekday? = .Sunday
     public var dayOfWeekTextColor: UIColor? = .darkGrayColor()
+    public var dayofWeekBackgroundColor: UIColor? = .clearColor()
     public var dayOfWeekTextUppercase: Bool? = true
     public var dayOfWeekFont: UIFont? = UIFont(name: "Avenir", size: 10)
     public var weekdaySymbolType: WeekdaySymbolType? = .Short
@@ -56,6 +57,7 @@ public final class CVCalendarMenuView: UIView {
         if let delegate = delegate {
             firstWeekday~>delegate.firstWeekday?()
             dayOfWeekTextColor~>delegate.dayOfWeekTextColor?()
+            dayofWeekBackgroundColor~>delegate.dayOfWeekBackGroundColor?()
             dayOfWeekTextUppercase~>delegate.dayOfWeekTextUppercase?()
             dayOfWeekFont~>delegate.dayOfWeekFont?()
             weekdaySymbolType~>delegate.weekdaySymbolType?()
@@ -117,7 +119,7 @@ public final class CVCalendarMenuView: UIView {
 
             symbol.font = dayOfWeekFont
             symbol.textColor = dayOfWeekTextColor
-
+            symbol.backgroundColor = dayofWeekBackgroundColor
             self.symbolViews?.append(symbol)
             self.addSubview(symbol)
         }
