@@ -225,6 +225,14 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
         
         return false
     }
+    
+    func dayOfWeekTextColor() -> UIColor {
+        return UIColor.whiteColor()
+    }
+    
+    func dayOfWeekBackGroundColor() -> UIColor {
+        return UIColor.orangeColor()
+    }
 }
 
 
