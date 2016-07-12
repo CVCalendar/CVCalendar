@@ -11,7 +11,7 @@ import UIKit
 @objc
 public protocol CVCalendarViewDelegate {
     func presentationMode() -> CalendarMode
-    func firstWeekday() -> Weekday
+    func firstWeekday() -> CVWeekday
 
     /*
     Determines whether resizing should cause related views' animation.
@@ -23,7 +23,7 @@ public protocol CVCalendarViewDelegate {
     optional func shouldAutoSelectDayOnMonthChange() -> Bool
     optional func shouldShowWeekdaysOut() -> Bool
     optional func didSelectDayView(dayView: DayView, animationDidFinish: Bool)
-    optional func presentedDateUpdated(date: Date)
+    optional func presentedDateUpdated(date: CVDate)
     optional func topMarker(shouldDisplayOnDayView dayView: DayView) -> Bool
     optional func dotMarker(shouldMoveOnHighlightingOnDayView dayView: DayView) -> Bool
     optional func dotMarker(shouldShowOnDayView dayView: DayView) -> Bool
