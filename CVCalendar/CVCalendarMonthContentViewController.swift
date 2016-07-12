@@ -227,12 +227,30 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
         setDayOutViewsVisible(hidden)
     }
 
+    enum ScrollDirection {
+        case Left, Right
+    }
+
     private var togglingBlocked = false
     public override func togglePresentedDate(date: NSDate) {
+        var scrollDirection: ScrollDirection
         let presentedDate = Date(date: date)
         guard let presentedMonth = monthViews[presented],
             selectedDate = calendarView.coordinator.selectedDayView?.date else {
                 return
+        }
+
+        // Comparing dates to set the direction of the scroll
+        if presentedDate.year > selectedDate.year {
+            scrollDirection = .Right
+        } else if presentedDate.year < selectedDate.year {
+            scrollDirection = .Left
+        } else {
+            if presentedDate.month > selectedDate.month {
+                scrollDirection = .Right
+            } else {
+                scrollDirection = .Left
+            }
         }
 
         if !matchedDays(selectedDate, presentedDate) && !togglingBlocked {
@@ -253,17 +271,40 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
 
                 calendarView.presentedDate = Date(date: date)
 
-                UIView.animateWithDuration(0.8, delay: 0,
-                                           options: UIViewAnimationOptions.CurveEaseInOut,
-                                           animations: {
-                    presentedMonth.alpha = 0
-                    currentMonthView.alpha = 1
-                }) { _ in
-                    presentedMonth.removeFromSuperview()
-                    self.selectDayViewWithDay(presentedDate.day, inMonthView: currentMonthView)
-                    self.togglingBlocked = false
-                    self.updateLayoutIfNeeded()
-                }
+                UIView.animateWithDuration(
+                    0.3,
+                    delay: 0,
+                    options: UIViewAnimationOptions.CurveEaseInOut,
+                    animations: {
+                        presentedMonth.alpha = 0
+                        if scrollDirection == .Left {
+                            self.scrollView.setContentOffset(CGPoint(
+                                x: self.scrollView.contentOffset.x-self.scrollView.frame.width,
+                                y: self.scrollView.contentOffset.y), animated: true)
+                        } else {
+                            self.scrollView.setContentOffset(CGPoint(
+                                x: self.scrollView.contentOffset.x+self.scrollView.frame.width,
+                                y: self.scrollView.contentOffset.y), animated: true)
+                        }
+                        currentMonthView.alpha = 1
+                    },
+                    completion: {
+                        _ in
+                        presentedMonth.removeFromSuperview()
+                        if scrollDirection == .Left {
+                            self.scrollView.setContentOffset(CGPoint(
+                                x: self.scrollView.contentOffset.x+self.scrollView.frame.width,
+                                y: self.scrollView.contentOffset.y), animated: false)
+                        } else {
+                            self.scrollView.setContentOffset(CGPoint(
+                                x: self.scrollView.contentOffset.x-self.scrollView.frame.width,
+                                y: self.scrollView.contentOffset.y), animated: false)
+                        }
+                        self.selectDayViewWithDay(presentedDate.day, inMonthView: currentMonthView)
+                        self.togglingBlocked = false
+                        self.updateLayoutIfNeeded()
+                    }
+                )
             } else {
                 if let currentMonthView = monthViews[presented] {
                     selectDayViewWithDay(presentedDate.day, inMonthView: currentMonthView)
