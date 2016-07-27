@@ -22,6 +22,7 @@ public final class CVCalendarDayView: UIView {
 
     public var isOut = false
     public var isCurrentDay = false
+    public var isDisabled: Bool { return !self.userInteractionEnabled }
 
     public weak var monthView: CVCalendarMonthView! {
         get {
@@ -77,7 +78,8 @@ public final class CVCalendarDayView: UIView {
         }
 
         date = dateWithWeekView(weekView, andWeekIndex: weekdayIndex)
-
+        
+        interactionSetup()
         labelSetup()
         setupDotMarker()
         topMarkerSetup()
@@ -158,7 +160,9 @@ extension CVCalendarDayView {
         var font = appearance.dayLabelWeekdayFont
         var color: UIColor?
 
-        if isOut {
+        if isDisabled {
+            color = appearance.dayLabelWeekdayDisabledColor
+        } else if isOut {
             color = appearance.dayLabelWeekdayOutTextColor
         } else if isCurrentDay {
             let coordinator = calendarView.coordinator
@@ -185,6 +189,12 @@ extension CVCalendarDayView {
         }
 
         addSubview(dayLabel!)
+    }
+    
+    public func interactionSetup() {
+        if let shouldSelect = calendarView.delegate?.shouldSelectDayView?(self) {
+            self.userInteractionEnabled = shouldSelect
+        }
     }
 
     public func preliminarySetup() {
@@ -493,7 +503,9 @@ extension CVCalendarDayView {
     public func setDeselectedWithClearing(clearing: Bool) {
         if let calendarView = calendarView, let appearance = calendarView.appearance {
             var color: UIColor?
-            if isOut {
+            if isDisabled {
+                color = appearance.dayLabelWeekdayDisabledColor
+            } else if isOut {
                 color = appearance.dayLabelWeekdayOutTextColor
             } else if isCurrentDay {
                 color = appearance.dayLabelPresentWeekdayTextColor

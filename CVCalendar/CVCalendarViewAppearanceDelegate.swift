@@ -25,6 +25,7 @@ public protocol CVCalendarViewAppearanceDelegate {
     optional func dayLabelWeekdaySelectedFont() -> UIFont
 
     // Text color.
+    optional func dayLabelWeekdayDisabledColor() -> UIColor
     optional func dayLabelWeekdayInTextColor() -> UIColor
     optional func dayLabelWeekdayOutTextColor() -> UIColor
     optional func dayLabelWeekdayHighlightedTextColor() -> UIColor
