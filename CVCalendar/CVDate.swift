@@ -45,6 +45,11 @@ public final class CVDate: NSObject {
 }
 
 extension CVDate {
+    public var weekDay: Weekday? {
+        let components = NSCalendar.currentCalendar().components(NSCalendarUnit.Weekday, fromDate: self.date)
+        return Weekday(rawValue: components.weekday)
+    }
+    
     public func convertedDate() -> NSDate? {
         let calendar = NSCalendar.currentCalendar()
         let comps = Manager.componentsForDate(NSDate())

@@ -59,11 +59,11 @@ public final class CVCalendarViewAppearance: NSObject {
     public var dayLabelPresentWeekdaySelectedBackgroundColor: UIColor? = .colorFromCode(0xFF3B30)
     public var dayLabelPresentWeekdaySelectedBackgroundAlpha: CGFloat? = 0.8
 
-
     // Default dot marker color.
     public var dotMarkerColor: UIColor? = .whiteColor()
 
-    public weak var delegate: CVCalendarViewAppearanceDelegate? {
+    public weak var delegate: CVCalendarViewAppearanceDelegate?
+ {
         didSet {
             self.setupAppearance()
         }
@@ -123,8 +123,7 @@ public final class CVCalendarViewAppearance: NSObject {
                 delegate.dayLabelPresentWeekdaySelectedBackgroundAlpha?()
             dotMarkerColor ~> delegate.dotMarkerColor?()
         }
-    }
-}
+    }}
 
 infix operator ~> { }
 public func ~> <T: Any>(inout lhs: T?, rhs: T?) -> T? {

@@ -116,10 +116,13 @@ public final class CVCalendarMenuView: UIView {
             if dayOfWeekTextUppercase! {
                 symbol.text = (self.symbols[i]).uppercaseString
             }
-
+            
+            let weekDay = Weekday(rawValue: i + 1) ?? .Monday
             symbol.font = dayOfWeekFont
-            symbol.textColor = dayOfWeekTextColor
-            symbol.backgroundColor = dayofWeekBackgroundColor
+            symbol.textColor = self.delegate?.dayOfWeekTextColor?(by: weekDay)
+                ?? dayOfWeekTextColor
+            symbol.backgroundColor = self.delegate?.dayOfWeekBackGroundColor?(by: weekDay)
+                ?? dayofWeekBackgroundColor
             self.symbolViews?.append(symbol)
             self.addSubview(symbol)
         }
