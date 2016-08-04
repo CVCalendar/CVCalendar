@@ -22,6 +22,7 @@ public final class CVCalendarDayView: UIView {
 
     public var isOut = false
     public var isCurrentDay = false
+    public var isDisabled: Bool { return !self.userInteractionEnabled }
 
     public weak var monthView: CVCalendarMonthView! {
         get {
@@ -77,7 +78,8 @@ public final class CVCalendarDayView: UIView {
         }
 
         date = dateWithWeekView(weekView, andWeekIndex: weekdayIndex)
-
+        
+        interactionSetup()
         labelSetup()
         setupDotMarker()
         topMarkerSetup()
@@ -151,14 +153,16 @@ extension CVCalendarDayView {
         let appearance = calendarView.appearance
 
         dayLabel = UILabel()
-        dayLabel!.text = String(date.day)
-        dayLabel!.textAlignment = NSTextAlignment.Center
-        dayLabel!.frame = bounds
+        dayLabel?.text = String(date.day)
+        dayLabel?.textAlignment = NSTextAlignment.Center
+        dayLabel?.frame = bounds
 
-        var font = appearance.dayLabelWeekdayFont
+        var font: UIFont? = appearance.dayLabelWeekdayFont
         var color: UIColor?
 
-        if isOut {
+        if isDisabled {
+            color = appearance.dayLabelWeekdayDisabledColor
+        } else if isOut {
             color = appearance.dayLabelWeekdayOutTextColor
         } else if isCurrentDay {
             let coordinator = calendarView.coordinator
@@ -178,13 +182,29 @@ extension CVCalendarDayView {
         } else {
             color = appearance.dayLabelWeekdayInTextColor
         }
+        
+        let weekDay = self.date?.weekDay ?? .Monday // Monday is default
+        let status: CVStatus = {
+            if isDisabled { return .Disabled }
+            else if isOut { return .Out }
+            return .In
+        }()
+        let present: CVPresent = isCurrentDay
+            && !(calendarView.coordinator.selectedDayView == nil
+                && calendarView.shouldAutoSelectDayOnMonthChange)
+            ? .Present
+            : .Not
+        
+        dayLabel?.textColor = appearance?.delegate?.dayLabelColor?(by: weekDay, status: status, present: present) ?? color
+        dayLabel?.font = appearance?.delegate?.dayLabelFont?(by: weekDay, status: status, present: present) ?? font
 
-        if color != nil && font != nil {
-            dayLabel!.textColor = color!
-            dayLabel!.font = font
+        addSubview(dayLabel)
+    }
+    
+    public func interactionSetup() {
+        if let shouldSelect = calendarView.delegate?.shouldSelectDayView?(self) {
+            self.userInteractionEnabled = shouldSelect
         }
-
-        addSubview(dayLabel!)
     }
 
     public func preliminarySetup() {
@@ -436,6 +456,9 @@ extension CVCalendarDayView {
         var backgroundColor: UIColor!
         var backgroundAlpha: CGFloat!
         var shape: CVShape!
+        
+        let weekDay = self.date?.weekDay ?? .Monday // Monday is default
+        let present: CVPresent = isCurrentDay ? .Present : .Not
 
         switch type {
         case .Single:
@@ -450,28 +473,40 @@ extension CVCalendarDayView {
             }
 
             if isCurrentDay {
-                dayLabel?.textColor = appearance.dayLabelPresentWeekdaySelectedTextColor!
-                dayLabel?.font = appearance.dayLabelPresentWeekdaySelectedFont
-                backgroundColor = appearance.dayLabelPresentWeekdaySelectedBackgroundColor
+                dayLabel?.textColor = appearance?.delegate?.dayLabelColor?(by: weekDay, status: .Selected, present: present)
+                    ?? appearance.dayLabelPresentWeekdaySelectedTextColor!
+                dayLabel?.font = appearance?.delegate?.dayLabelFont?(by: weekDay, status: .Selected, present: present)
+                    ?? appearance.dayLabelPresentWeekdaySelectedFont
+                backgroundColor = appearance?.delegate?.dayLabelBackgroundColor?(by: weekDay, status: .Selected, present: present)
+                    ?? appearance.dayLabelPresentWeekdaySelectedBackgroundColor
                 backgroundAlpha = appearance.dayLabelPresentWeekdaySelectedBackgroundAlpha
             } else {
-                dayLabel?.textColor = appearance.dayLabelWeekdaySelectedTextColor
-                dayLabel?.font = appearance.dayLabelWeekdaySelectedFont
-                backgroundColor = appearance.dayLabelWeekdaySelectedBackgroundColor
+                dayLabel?.textColor = appearance?.delegate?.dayLabelColor?(by: weekDay, status: .Selected, present: present)
+                    ?? appearance.dayLabelWeekdaySelectedTextColor
+                dayLabel?.font = appearance?.delegate?.dayLabelFont?(by: weekDay, status: .Selected, present: present)
+                    ?? appearance.dayLabelWeekdaySelectedFont
+                backgroundColor = appearance?.delegate?.dayLabelBackgroundColor?(by: weekDay, status: .Selected, present: present)
+                    ?? appearance.dayLabelWeekdaySelectedBackgroundColor
                 backgroundAlpha = appearance.dayLabelWeekdaySelectedBackgroundAlpha
             }
 
         case .Range:
             shape = .Rect
             if isCurrentDay {
-                dayLabel?.textColor = appearance.dayLabelPresentWeekdayHighlightedTextColor!
-                dayLabel?.font = appearance.dayLabelPresentWeekdayHighlightedFont
-                backgroundColor = appearance.dayLabelPresentWeekdayHighlightedBackgroundColor
+                dayLabel?.textColor = appearance?.delegate?.dayLabelColor?(by: weekDay, status: .Highlighted, present: present)
+                    ?? appearance.dayLabelPresentWeekdayHighlightedTextColor!
+                dayLabel?.font = appearance?.delegate?.dayLabelFont?(by: weekDay, status: .Highlighted, present: present)
+                    ?? appearance.dayLabelPresentWeekdayHighlightedFont
+                backgroundColor = appearance?.delegate?.dayLabelBackgroundColor?(by: weekDay, status: .Selected, present: present)
+                    ?? appearance.dayLabelPresentWeekdayHighlightedBackgroundColor
                 backgroundAlpha = appearance.dayLabelPresentWeekdayHighlightedBackgroundAlpha
             } else {
-                dayLabel?.textColor = appearance.dayLabelWeekdayHighlightedTextColor
-                dayLabel?.font = appearance.dayLabelWeekdayHighlightedFont
-                backgroundColor = appearance.dayLabelWeekdayHighlightedBackgroundColor
+                dayLabel?.textColor = appearance?.delegate?.dayLabelColor?(by: weekDay, status: .Highlighted, present: present)
+                    ?? appearance.dayLabelWeekdayHighlightedTextColor
+                dayLabel?.font = appearance?.delegate?.dayLabelFont?(by: weekDay, status: .Highlighted, present: present)
+                    ?? appearance.dayLabelWeekdayHighlightedFont
+                backgroundColor = appearance?.delegate?.dayLabelBackgroundColor?(by: weekDay, status: .Selected, present: present)
+                    ?? appearance.dayLabelWeekdayHighlightedBackgroundColor
                 backgroundAlpha = appearance.dayLabelWeekdayHighlightedBackgroundAlpha
             }
         }
@@ -493,7 +528,9 @@ extension CVCalendarDayView {
     public func setDeselectedWithClearing(clearing: Bool) {
         if let calendarView = calendarView, let appearance = calendarView.appearance {
             var color: UIColor?
-            if isOut {
+            if isDisabled {
+                color = appearance.dayLabelWeekdayDisabledColor
+            } else if isOut {
                 color = appearance.dayLabelWeekdayOutTextColor
             } else if isCurrentDay {
                 color = appearance.dayLabelPresentWeekdayTextColor
@@ -511,9 +548,17 @@ extension CVCalendarDayView {
             } else {
                 font = appearance.dayLabelWeekdayFont
             }
-
-            dayLabel?.textColor = color
-            dayLabel?.font = font
+            
+            let weekDay = self.date?.weekDay ?? .Monday // Monday is default
+            let status: CVStatus = {
+                if isDisabled { return .Disabled }
+                else if isOut { return .Out }
+                return .In
+            }()
+            let present: CVPresent = isCurrentDay ? .Present : .Not
+            
+            dayLabel?.textColor = appearance.delegate?.dayLabelColor?(by: weekDay, status: status, present: present) ?? color
+            dayLabel?.font = appearance.delegate?.dayLabelFont?(by: weekDay, status: status, present: present) ?? font
 
             moveDotMarkerBack(true, coloring: false)
 

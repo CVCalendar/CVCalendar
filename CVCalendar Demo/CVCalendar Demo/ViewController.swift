@@ -9,6 +9,16 @@
 import UIKit
 
 class ViewController: UIViewController {
+    struct Color {
+        static let selectedText = UIColor.whiteColor()
+        static let text = UIColor.blackColor()
+        static let textDisabled = UIColor.grayColor()
+        static let selectionBackground = UIColor(red: 0.2, green: 0.2, blue: 1.0, alpha: 1.0)
+        static let sundayText = UIColor(red: 1.0, green: 0.2, blue: 0.2, alpha: 1.0)
+        static let sundayTextDisabled = UIColor(red: 1.0, green: 0.6, blue: 0.6, alpha: 1.0)
+        static let sundaySelectionBackground = sundayText
+    }
+    
     // MARK: - Properties
     @IBOutlet weak var calendarView: CVCalendarView!
     @IBOutlet weak var menuView: CVCalendarMenuView!
@@ -63,12 +73,20 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     
     // MARK: Optional methods
     
+    func dayOfWeekTextColor(by weekday: Weekday) -> UIColor {
+        return weekday == .Sunday ? UIColor(red: 1.0, green: 0.5, blue: 0.5, alpha: 1.0) : UIColor.whiteColor()
+    }
+    
     func shouldShowWeekdaysOut() -> Bool {
         return shouldShowDaysOut
     }
     
     func shouldAnimateResizing() -> Bool {
         return true // Default value is true
+    }
+    
+    func shouldSelectDayView(dayView: DayView) -> Bool {
+        return arc4random_uniform(3) == 0 ? true : false
     }
     
     func didSelectDayView(dayView: CVCalendarDayView, animationDidFinish: Bool) {
@@ -245,6 +263,26 @@ extension ViewController: CVCalendarViewAppearanceDelegate {
     
     func spaceBetweenDayViews() -> CGFloat {
         return 2
+    }
+    
+    func dayLabelFont(by weekDay: Weekday, status: CVStatus, present: CVPresent) -> UIFont { return UIFont.systemFontOfSize(14) }
+    
+    func dayLabelColor(by weekDay: Weekday, status: CVStatus, present: CVPresent) -> UIColor? {
+        switch (weekDay, status, present) {
+        case (_, .Selected, _), (_, .Highlighted, _): return Color.selectedText
+        case (.Sunday, .In, _): return Color.sundayText
+        case (.Sunday, _, _): return Color.sundayTextDisabled
+        case (_, .In, _): return Color.text
+        default: return Color.textDisabled
+        }
+    }
+    
+    func dayLabelBackgroundColor(by weekDay: Weekday, status: CVStatus, present: CVPresent) -> UIColor? {
+        switch (weekDay, status, present) {
+        case (.Sunday, .Selected, _), (.Sunday, .Highlighted, _): return Color.sundaySelectionBackground
+        case (_, .Selected, _), (_, .Highlighted, _): return Color.selectionBackground
+        default: return nil
+        }
     }
 }
 

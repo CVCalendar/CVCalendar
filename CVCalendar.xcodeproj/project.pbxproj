@@ -37,6 +37,8 @@
 		45D9D9001C50073F006673B2 /* CVSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D9D8E51C50073F006673B2 /* CVSet.swift */; };
 		45D9D9011C50073F006673B2 /* CVShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D9D8E61C50073F006673B2 /* CVShape.swift */; };
 		45D9D9021C50073F006673B2 /* CVWeekdaySymbolType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D9D8E71C50073F006673B2 /* CVWeekdaySymbolType.swift */; };
+		56D2797F1D49DC18009987A6 /* CVStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D2797E1D49DC18009987A6 /* CVStatus.swift */; };
+		56D279811D4A20A4009987A6 /* CVPresent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D279801D4A20A4009987A6 /* CVPresent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +85,8 @@
 		45D9D8E51C50073F006673B2 /* CVSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVSet.swift; sourceTree = "<group>"; };
 		45D9D8E61C50073F006673B2 /* CVShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVShape.swift; sourceTree = "<group>"; };
 		45D9D8E71C50073F006673B2 /* CVWeekdaySymbolType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVWeekdaySymbolType.swift; sourceTree = "<group>"; };
+		56D2797E1D49DC18009987A6 /* CVStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVStatus.swift; sourceTree = "<group>"; };
+		56D279801D4A20A4009987A6 /* CVPresent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVPresent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -219,6 +223,8 @@
 				45D9D8E41C50073F006673B2 /* CVSelectionType.swift */,
 				45D9D8E61C50073F006673B2 /* CVShape.swift */,
 				45D9D8E71C50073F006673B2 /* CVWeekdaySymbolType.swift */,
+				56D2797E1D49DC18009987A6 /* CVStatus.swift */,
+				56D279801D4A20A4009987A6 /* CVPresent.swift */,
 			);
 			name = Enums;
 			sourceTree = "<group>";
@@ -333,6 +339,7 @@
 			files = (
 				45D9D9001C50073F006673B2 /* CVSet.swift in Sources */,
 				45D9D8F71C50073F006673B2 /* CVCalendarViewDelegate.swift in Sources */,
+				56D2797F1D49DC18009987A6 /* CVStatus.swift in Sources */,
 				45D9D8FE1C50073F006673B2 /* CVScrollDirection.swift in Sources */,
 				45D9D8F21C50073F006673B2 /* CVCalendarView.swift in Sources */,
 				45D9D8F51C50073F006673B2 /* CVCalendarViewAppearance.swift in Sources */,
@@ -354,6 +361,7 @@
 				45D9D8F61C50073F006673B2 /* CVCalendarViewAppearanceDelegate.swift in Sources */,
 				45D9D8FD1C50073F006673B2 /* CVRange.swift in Sources */,
 				45D9D8F31C50073F006673B2 /* CVCalendarViewAnimator.swift in Sources */,
+				56D279811D4A20A4009987A6 /* CVPresent.swift in Sources */,
 				45D9D8EA1C50073F006673B2 /* CVCalendarDayView.swift in Sources */,
 				45D9D8FC1C50073F006673B2 /* CVDate.swift in Sources */,
 				45D9D8ED1C50073F006673B2 /* CVCalendarMenuView.swift in Sources */,
