@@ -231,9 +231,10 @@ extension CVCalendarDayView {
     public func topMarkerSetup() {
         safeExecuteBlock({
             func createMarker() {
+                let appearance = self.calendarView.appearance
                 let height = CGFloat(0.5)
                 let layer = CALayer()
-                layer.borderColor = UIColor.grayColor().CGColor
+                layer.borderColor = (appearance.delegate?.topMarkerColor?() ?? .grayColor()).CGColor
                 layer.borderWidth = height
                 layer.frame = CGRect(x: 0, y: 1, width: CGRectGetWidth(self.frame), height: height)
 
