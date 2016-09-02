@@ -46,7 +46,7 @@ Installation
 <h3> CocoaPods </h3>
 
 ```ruby
-pod 'CVCalendar', '~> 1.2.9'
+pod 'CVCalendar', '~> 1.3.0'
 ```
 
 Usage
