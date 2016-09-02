@@ -117,7 +117,7 @@ public final class CVCalendarMenuView: UIView {
                 symbol.text = (self.symbols[i]).uppercaseString
             }
             
-            let weekDay = Weekday(rawValue: i + 1) ?? .Monday
+            let weekDay = Weekday(rawValue: (firstWeekday!.rawValue + i) % 7) ?? .Saturday
             symbol.font = dayOfWeekFont
             symbol.textColor = self.delegate?.dayOfWeekTextColor?(by: weekDay)
                 ?? dayOfWeekTextColor
