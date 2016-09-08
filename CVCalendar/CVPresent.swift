@@ -9,5 +9,5 @@
 import Foundation
 
 @objc public enum CVPresent: Int {
-    case Present, Not
+    case present, not
 }
