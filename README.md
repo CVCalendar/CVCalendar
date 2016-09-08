@@ -46,7 +46,7 @@ Installation
 <h3> CocoaPods </h3>
 
 ```ruby
-pod 'CVCalendar', '~> 1.3.0'
+pod 'CVCalendar', '~> 1.2.8'
 ```
 
 Usage
@@ -71,8 +71,8 @@ Now you're about to add 2 UIViews to your Storyboard as it shown in the picture 
 
 Don't forget to add 2 outlets into your code.
 ```swift
-    @IBOutlet weak var menuView: CVCalendarMenuView!
     @IBOutlet weak var calendarView: CVCalendarView!
+    @IBOutlet weak var menuView: CVCalendarMenuView!
 ```
 
 Two views are representing ultimately a MenuView and a CalendarView so they should have corresponding classes. To change their classes go to <b>Identity Inspector</b> and set custom classes. When it's done, you'll see in the dock panel something similar to the picture below.  (Blue UIView -> CVCalendarView, Green UIView -> CVCalendarMenuView)
@@ -94,8 +94,8 @@ Since CVCalendarView and CVCalendarMenuView will be created automatically all yo
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        menuView.commitMenuViewUpdate()
         calendarView.commitCalendarViewUpdate()
+        menuView.commitMenuViewUpdate()
     }
 ````
 
@@ -146,12 +146,12 @@ How it should look like.
 ```swift
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // CVCalendarMenuView initialization with frame
-        self.menuView = CVCalendarMenuView(frame: CGRectMake(0, 0, 300, 15))
 
         // CVCalendarView initialization with frame
         self.calendarView = CVCalendarView(frame: CGRectMake(0, 20, 300, 450))
+
+        // CVCalendarMenuView initialization with frame
+        self.menuView = CVCalendarMenuView(frame: CGRectMake(0, 0, 300, 15))
 
         // Appearance delegate [Unnecessary]
         self.calendarView.calendarAppearanceDelegate = self
@@ -159,11 +159,11 @@ How it should look like.
         // Animator delegate [Unnecessary]
         self.calendarView.animatorDelegate = self
 
-        // Menu delegate [Required]
-        self.menuView.menuViewDelegate = self
-        
         // Calendar delegate [Required]
         self.calendarView.calendarDelegate = self
+
+        // Menu delegate [Required]
+        self.menuView.menuViewDelegate = self
     }
 ```
 
@@ -174,8 +174,8 @@ And do not forget to commit updates on `viewDidLayoutSubviews` method.
         super.viewDidLayoutSubviews()
 
         // Commit frames' updates
-        self.menuView.commitMenuViewUpdate()
         self.calendarView.commitCalendarViewUpdate()
+        self.menuView.commitMenuViewUpdate()
     }
 ```
 

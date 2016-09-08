@@ -13,23 +13,23 @@ import UIKit
   *  Instead use native Swift Set<T> collection.
 */
 
-public struct CVSet<T: AnyObject>: NilLiteralConvertible {
+public struct CVSet<T: AnyObject>: ExpressibleByNilLiteral {
     // MARK: - Private properties
-    private var storage = [T]()
-
+    public var storage = [T]()
+    
     // MARK: - Public properties
     var count: Int {
         return storage.count
     }
-
+    
     var last: T? {
         return storage.last
     }
-
+    
     // MARK: - Initialization
     public init(nilLiteral: ()) { }
     init() { }
-
+    
     // MARK: - Subscript
     subscript(index: Int) -> T? {
         get {
@@ -45,45 +45,46 @@ public struct CVSet<T: AnyObject>: NilLiteralConvertible {
 // MARK: - Mutating methods
 
 public extension CVSet {
-    mutating func addObject(object: T) {
+    mutating func addObject(_ object: T) {
         if indexObject(object) == nil {
             storage.append(object)
         }
     }
-
-    mutating func removeObject(object: T) {
+    
+    mutating func removeObject(_ object: T) {
         if let index = indexObject(object) {
-            storage.removeAtIndex(index)
+            storage.remove(at: index)
         }
     }
-
-    mutating func removeAll(keepCapacity: Bool) {
-        storage.removeAll(keepCapacity: keepCapacity)
+    
+    mutating func removeAll(_ keepCapacity: Bool) {
+        storage.removeAll(keepingCapacity: keepCapacity)
     }
 }
 
-// MARK: - Util
+// MARK: - Util 
 
 private extension CVSet {
-    func indexObject(object: T) -> Int? {
-        for (index, storageObj) in storage.enumerate() {
+    func indexObject(_ object: T) -> Int? {
+        for (index, storageObj) in storage.enumerated() {
             if storageObj === object {
                 return index
             }
         }
-
+        
         return nil
     }
 }
 
+
 // MARK: - SequenceType
-extension CVSet: SequenceType {
-    public func generate() -> AnyGenerator<T> {
-        var power = 0
+ extension CVSet: Sequence {
+    public func makeIterator() -> AnyIterator<T> {
+        let power = 0
+        let power2 = power + 1
         let nextClosure : () -> T? = {
-            (power < self.count) ? self.storage[power] : nil
+            (power < self.count) ? self.storage[power2] : nil
         }
-        power+=1
-        return AnyGenerator(body: nextClosure)
+        return AnyIterator(nextClosure)
     }
 }
