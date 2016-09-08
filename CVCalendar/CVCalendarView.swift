@@ -16,7 +16,6 @@ public typealias DayView = CVCalendarDayView
 public typealias ContentController = CVCalendarContentViewController
 public typealias Appearance = CVCalendarViewAppearance
 public typealias Coordinator = CVCalendarDayViewControlCoordinator
-public typealias Date = CVDate
 public typealias CalendarMode = CVCalendarViewPresentationMode
 public typealias Weekday = CVCalendarWeekday
 public typealias Animator = CVCalendarViewAnimator
@@ -62,7 +61,7 @@ public final class CVCalendarView: UIView {
         }
     }
 
-    public var presentedDate: Date! {
+    public var presentedDate: CVDate! {
         didSet {
             if let _ = oldValue {
                 delegate?.presentedDateUpdated?(presentedDate)

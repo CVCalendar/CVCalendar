@@ -176,15 +176,15 @@ extension CVCalendarContentViewController {
         return dateAfter
     }
 
-    public func matchedMonths(_ lhs: Date, _ rhs: Date) -> Bool {
+    public func matchedMonths(_ lhs: CVDate, _ rhs: CVDate) -> Bool {
         return lhs.year == rhs.year && lhs.month == rhs.month
     }
 
-    public func matchedWeeks(_ lhs: Date, _ rhs: Date) -> Bool {
+    public func matchedWeeks(_ lhs: CVDate, _ rhs: CVDate) -> Bool {
         return (lhs.year == rhs.year && lhs.month == rhs.month && lhs.week == rhs.week)
     }
 
-    public func matchedDays(_ lhs: Date, _ rhs: Date) -> Bool {
+    public func matchedDays(_ lhs: CVDate, _ rhs: CVDate) -> Bool {
         return (lhs.year == rhs.year && lhs.month == rhs.month && lhs.day == rhs.day)
     }
 }

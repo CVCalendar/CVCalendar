@@ -38,7 +38,7 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
 
         presentedMonthView.mapDayViews { dayView in
             if self.calendarView.shouldAutoSelectDayOnMonthChange &&
-                self.matchedDays(dayView.date, Date(date: date)) {
+                self.matchedDays(dayView.date, CVDate(date: date)) {
                     self.calendarView.coordinator.flush()
                     self.calendarView.touchController.receiveTouchOnDayView(dayView)
                     dayView.selectionView?.removeFromSuperview()
@@ -137,11 +137,11 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
         if dayView.isOut && calendarView.shouldScrollOnOutDayViewSelection {
             if dayView.date.day > 20 {
                 let presentedDate = dayView.monthView.date
-                calendarView.presentedDate = Date(date: self.dateBeforeDate(presentedDate!))
+                calendarView.presentedDate = CVDate(date: self.dateBeforeDate(presentedDate!))
                 presentPreviousView(dayView)
             } else {
                 let presentedDate = dayView.monthView.date
-                calendarView.presentedDate = Date(date: self.dateAfterDate(presentedDate!))
+                calendarView.presentedDate = CVDate(date: self.dateAfterDate(presentedDate!))
                 presentNextView(dayView)
             }
         }
@@ -229,7 +229,7 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
 
     fileprivate var togglingBlocked = false
     public override func togglePresentedDate(_ date: Foundation.Date) {
-        let presentedDate = Date(date: date)
+        let presentedDate = CVDate(date: date)
         guard let presentedMonth = monthViews[presented],
             let selectedDate = calendarView.coordinator.selectedDayView?.date else {
                 return
@@ -251,7 +251,7 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
                 insertMonthView(currentMonthView, withIdentifier: presented)
                 presentedMonthView = currentMonthView
 
-                calendarView.presentedDate = Date(date: date)
+                calendarView.presentedDate = CVDate(date: date)
 
                 UIView.animate(withDuration: 0.8, delay: 0,
                                            options: UIViewAnimationOptions(),
@@ -364,20 +364,20 @@ extension CVCalendarMonthContentViewController {
 
         if let presentedMonthView = monthViews[presented] {
             self.presentedMonthView = presentedMonthView
-            calendarView.presentedDate = Date(date: presentedMonthView.date)
+            calendarView.presentedDate = CVDate(date: presentedMonthView.date)
 
             if let selected = coordinator?.selectedDayView,
                 let selectedMonthView = selected.monthView ,
-                !matchedMonths(Date(date: selectedMonthView.date),
-                               Date(date: presentedMonthView.date)) &&
+                !matchedMonths(CVDate(date: selectedMonthView.date),
+                               CVDate(date: presentedMonthView.date)) &&
                     calendarView.shouldAutoSelectDayOnMonthChange {
-                        let current = Date(date: Foundation.Date())
-                        let presented = Date(date: presentedMonthView.date)
+                        let current = CVDate(date: Date())
+                        let presented = CVDate(date: presentedMonthView.date)
 
                         if matchedMonths(current, presented) {
                             selectDayViewWithDay(current.day, inMonthView: presentedMonthView)
                         } else {
-                            selectDayViewWithDay(Date(date: calendarView.manager
+                            selectDayViewWithDay(CVDate(date: calendarView.manager
                                 .monthDateRange(presentedMonthView.date).monthStartDate).day,
                                                  inMonthView: presentedMonthView)
                         }

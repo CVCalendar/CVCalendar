@@ -24,7 +24,7 @@ public protocol CVCalendarViewDelegate {
     @objc optional func shouldShowWeekdaysOut() -> Bool
     @objc optional func shouldSelectDayView(_ dayView: DayView) -> Bool
     @objc optional func didSelectDayView(_ dayView: DayView, animationDidFinish: Bool)
-    @objc optional func presentedDateUpdated(_ date: Date)
+    @objc optional func presentedDateUpdated(_ date: CVDate)
     @objc optional func topMarker(shouldDisplayOnDayView dayView: DayView) -> Bool
     @objc optional func dotMarker(shouldMoveOnHighlightingOnDayView dayView: DayView) -> Bool
     @objc optional func dotMarker(shouldShowOnDayView dayView: DayView) -> Bool
