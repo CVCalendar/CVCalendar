@@ -253,7 +253,7 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
 
                 calendarView.presentedDate = Date(date: date)
 
-                UIView.animateWithDuration(0.8, delay: 0,
+                UIView.animateWithDuration(toggleDateAnimationDuration, delay: 0,
                                            options: UIViewAnimationOptions.CurveEaseInOut,
                                            animations: {
                     presentedMonth.alpha = 0

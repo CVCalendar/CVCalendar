@@ -259,7 +259,7 @@ public final class CVCalendarWeekContentViewController: CVCalendarContentViewCon
                 insertWeekView(currentWeekView, withIdentifier: presented)
                 insertWeekView(getFollowingWeek(currentWeekView), withIdentifier: following)
 
-                UIView.animateWithDuration(0.8, delay: 0,
+                UIView.animateWithDuration(toggleDateAnimationDuration, delay: 0,
                                            options: UIViewAnimationOptions.CurveEaseInOut,
                                            animations: {
                     presentedWeekView.alpha = 0

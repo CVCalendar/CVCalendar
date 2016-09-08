@@ -36,6 +36,10 @@ public class CVCalendarContentViewController: UIViewController {
     public var presentationEnabled = true
     public var lastContentOffset: CGFloat = 0
     public var direction: CVScrollDirection = .None
+  
+    public var toggleDateAnimationDuration: Double {
+        return calendarView.delegate?.toggleDateAnimationDuration?() ?? 0.8
+    }
 
     public init(calendarView: CalendarView, frame: CGRect) {
         self.calendarView = calendarView
