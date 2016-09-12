@@ -9,14 +9,14 @@
 import UIKit
 
 public final class CVDate: NSObject {
-    private let date: NSDate
+    fileprivate let date: Foundation.Date
 
     public let year: Int
     public let month: Int
     public let week: Int
     public let day: Int
 
-   public init(date: NSDate) {
+   public init(date: Foundation.Date) {
         let dateRange = Manager.dateRange(date)
 
         self.date = date
@@ -32,7 +32,7 @@ public final class CVDate: NSObject {
         if let date = Manager.dateFromYear(year, month: month, week: week, day: day) {
             self.date = date
         } else {
-            self.date = NSDate()
+            self.date = Foundation.Date()
         }
 
         self.year = year
@@ -46,20 +46,20 @@ public final class CVDate: NSObject {
 
 extension CVDate {
     public var weekDay: Weekday? {
-        let components = NSCalendar.currentCalendar().components(NSCalendarUnit.Weekday, fromDate: self.date)
-        return Weekday(rawValue: components.weekday)
+        let components = (Calendar.current as NSCalendar).components(NSCalendar.Unit.weekday, from: self.date)
+        return Weekday(rawValue: components.weekday!)
     }
     
-    public func convertedDate() -> NSDate? {
-        let calendar = NSCalendar.currentCalendar()
-        let comps = Manager.componentsForDate(NSDate())
+    public func convertedDate() -> Foundation.Date? {
+        let calendar = Calendar.current
+        var comps = Manager.componentsForDate(Foundation.Date())
 
         comps.year = year
         comps.month = month
         comps.weekOfMonth = week
         comps.day = day
 
-        return calendar.dateFromComponents(comps)
+        return calendar.date(from: comps)
     }
 }
 
@@ -80,9 +80,9 @@ extension CVDate {
 }
 
 private extension CVDate {
-    func dateFormattedStringWithFormat(format: String, fromDate date: NSDate) -> String {
-        let formatter = NSDateFormatter()
+    func dateFormattedStringWithFormat(_ format: String, fromDate date: Foundation.Date) -> String {
+        let formatter = DateFormatter()
         formatter.dateFormat = format
-        return formatter.stringFromDate(date)
+        return formatter.string(from: date)
     }
 }
