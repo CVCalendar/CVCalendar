@@ -52,7 +52,9 @@ public final class CVCalendarDayView: UIView {
                 selectionView?.setNeedsDisplay()
                 topMarkerSetup()
                 preliminarySetup()
-                supplementarySetup()
+								if date != nil {
+										supplementarySetup()
+								}
             }
         }
     }
