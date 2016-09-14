@@ -11,57 +11,57 @@ import UIKit
 @objc
 public protocol CVCalendarViewAppearanceDelegate {
     // Rendering options.
-    optional func spaceBetweenWeekViews() -> CGFloat
-    optional func spaceBetweenDayViews() -> CGFloat
+    @objc optional func spaceBetweenWeekViews() -> CGFloat
+    @objc optional func spaceBetweenDayViews() -> CGFloat
 
     // Font options.
-    optional func dayLabelFont(by weekDay: Weekday, status: CVStatus, present: CVPresent) -> UIFont
-    optional func dayLabelPresentWeekdayInitallyBold() -> Bool
-    optional func dayLabelWeekdayFont() -> UIFont
-    optional func dayLabelPresentWeekdayFont() -> UIFont
-    optional func dayLabelPresentWeekdayBoldFont() -> UIFont
-    optional func dayLabelPresentWeekdayHighlightedFont() -> UIFont
-    optional func dayLabelPresentWeekdaySelectedFont() -> UIFont
-    optional func dayLabelWeekdayHighlightedFont() -> UIFont
-    optional func dayLabelWeekdaySelectedFont() -> UIFont
+    @objc optional func dayLabelFont(by weekDay: Weekday, status: CVStatus, present: CVPresent) -> UIFont
+    @objc optional func dayLabelPresentWeekdayInitallyBold() -> Bool
+    @objc optional func dayLabelWeekdayFont() -> UIFont
+    @objc optional func dayLabelPresentWeekdayFont() -> UIFont
+    @objc optional func dayLabelPresentWeekdayBoldFont() -> UIFont
+    @objc optional func dayLabelPresentWeekdayHighlightedFont() -> UIFont
+    @objc optional func dayLabelPresentWeekdaySelectedFont() -> UIFont
+    @objc optional func dayLabelWeekdayHighlightedFont() -> UIFont
+    @objc optional func dayLabelWeekdaySelectedFont() -> UIFont
 
     // Text color.
-    optional func dayLabelColor(by weekDay: Weekday, status: CVStatus, present: CVPresent) -> UIColor?
-    optional func dayLabelWeekdayDisabledColor() -> UIColor
-    optional func dayLabelWeekdayInTextColor() -> UIColor
-    optional func dayLabelWeekdayOutTextColor() -> UIColor
-    optional func dayLabelWeekdayHighlightedTextColor() -> UIColor
-    optional func dayLabelWeekdaySelectedTextColor() -> UIColor
-    optional func dayLabelPresentWeekdayTextColor() -> UIColor
-    optional func dayLabelPresentWeekdayHighlightedTextColor() -> UIColor
-    optional func dayLabelPresentWeekdaySelectedTextColor() -> UIColor
+    @objc optional func dayLabelColor(by weekDay: Weekday, status: CVStatus, present: CVPresent) -> UIColor?
+    @objc optional func dayLabelWeekdayDisabledColor() -> UIColor
+    @objc optional func dayLabelWeekdayInTextColor() -> UIColor
+    @objc optional func dayLabelWeekdayOutTextColor() -> UIColor
+    @objc optional func dayLabelWeekdayHighlightedTextColor() -> UIColor
+    @objc optional func dayLabelWeekdaySelectedTextColor() -> UIColor
+    @objc optional func dayLabelPresentWeekdayTextColor() -> UIColor
+    @objc optional func dayLabelPresentWeekdayHighlightedTextColor() -> UIColor
+    @objc optional func dayLabelPresentWeekdaySelectedTextColor() -> UIColor
 
     // Text size.
-    optional func dayLabelSize(by weekDay: Weekday, status: CVStatus, present: CVPresent) -> CGFloat
-    optional func dayLabelWeekdayTextSize() -> CGFloat
-    optional func dayLabelWeekdayHighlightedTextSize() -> CGFloat
-    optional func dayLabelWeekdaySelectedTextSize() -> CGFloat
-    optional func dayLabelPresentWeekdayTextSize() -> CGFloat
-    optional func dayLabelPresentWeekdayHighlightedTextSize() -> CGFloat
-    optional func dayLabelPresentWeekdaySelectedTextSize() -> CGFloat
+    @objc optional func dayLabelSize(by weekDay: Weekday, status: CVStatus, present: CVPresent) -> CGFloat
+    @objc optional func dayLabelWeekdayTextSize() -> CGFloat
+    @objc optional func dayLabelWeekdayHighlightedTextSize() -> CGFloat
+    @objc optional func dayLabelWeekdaySelectedTextSize() -> CGFloat
+    @objc optional func dayLabelPresentWeekdayTextSize() -> CGFloat
+    @objc optional func dayLabelPresentWeekdayHighlightedTextSize() -> CGFloat
+    @objc optional func dayLabelPresentWeekdaySelectedTextSize() -> CGFloat
     
     // Background Color & Alpha
-    optional func dayLabelBackgroundColor(by weekDay: Weekday, status: CVStatus, present: CVPresent) -> UIColor?
+    @objc optional func dayLabelBackgroundColor(by weekDay: Weekday, status: CVStatus, present: CVPresent) -> UIColor?
     // Highlighted state background & alpha.
-    optional func dayLabelWeekdayHighlightedBackgroundColor() -> UIColor
-    optional func dayLabelWeekdayHighlightedBackgroundAlpha() -> CGFloat
-    optional func dayLabelPresentWeekdayHighlightedBackgroundColor() -> UIColor
-    optional func dayLabelPresentWeekdayHighlightedBackgroundAlpha() -> CGFloat
+    @objc optional func dayLabelWeekdayHighlightedBackgroundColor() -> UIColor
+    @objc optional func dayLabelWeekdayHighlightedBackgroundAlpha() -> CGFloat
+    @objc optional func dayLabelPresentWeekdayHighlightedBackgroundColor() -> UIColor
+    @objc optional func dayLabelPresentWeekdayHighlightedBackgroundAlpha() -> CGFloat
 
     // Selected state background & alpha.
-    optional func dayLabelWeekdaySelectedBackgroundColor() -> UIColor
-    optional func dayLabelWeekdaySelectedBackgroundAlpha() -> CGFloat
-    optional func dayLabelPresentWeekdaySelectedBackgroundColor() -> UIColor
-    optional func dayLabelPresentWeekdaySelectedBackgroundAlpha() -> CGFloat
+    @objc optional func dayLabelWeekdaySelectedBackgroundColor() -> UIColor
+    @objc optional func dayLabelWeekdaySelectedBackgroundAlpha() -> CGFloat
+    @objc optional func dayLabelPresentWeekdaySelectedBackgroundColor() -> UIColor
+    @objc optional func dayLabelPresentWeekdaySelectedBackgroundAlpha() -> CGFloat
 
     // Dot marker default color.
-    optional func dotMarkerColor() -> UIColor
+    @objc optional func dotMarkerColor() -> UIColor
   
     // Top marker default color.
-    optional func topMarkerColor() -> UIColor
+    @objc optional func topMarkerColor() -> UIColor
 }

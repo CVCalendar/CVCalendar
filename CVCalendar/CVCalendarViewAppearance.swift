@@ -30,14 +30,14 @@ public final class CVCalendarViewAppearance: NSObject {
     public var dayLabelWeekdaySelectedFont: UIFont? = UIFont(name: "Avenir-Heavy", size: 18)
 
     /// Default text color.
-    public var dayLabelWeekdayDisabledColor: UIColor? = .grayColor()
-    public var dayLabelWeekdayInTextColor: UIColor? = .blackColor()
-    public var dayLabelWeekdayOutTextColor: UIColor? = .grayColor()
-    public var dayLabelWeekdayHighlightedTextColor: UIColor? = .whiteColor()
-    public var dayLabelWeekdaySelectedTextColor: UIColor? = .whiteColor()
-    public var dayLabelPresentWeekdayTextColor: UIColor? = .redColor()
-    public var dayLabelPresentWeekdayHighlightedTextColor: UIColor? = .whiteColor()
-    public var dayLabelPresentWeekdaySelectedTextColor: UIColor? = .whiteColor()
+    public var dayLabelWeekdayDisabledColor: UIColor? = .gray
+    public var dayLabelWeekdayInTextColor: UIColor? = .black
+    public var dayLabelWeekdayOutTextColor: UIColor? = .gray
+    public var dayLabelWeekdayHighlightedTextColor: UIColor? = .white
+    public var dayLabelWeekdaySelectedTextColor: UIColor? = .white
+    public var dayLabelPresentWeekdayTextColor: UIColor? = .red
+    public var dayLabelPresentWeekdayHighlightedTextColor: UIColor? = .white
+    public var dayLabelPresentWeekdaySelectedTextColor: UIColor? = .white
 
     /// Default text size.
     public var dayLabelWeekdayTextSize: CGFloat? = 18
@@ -60,7 +60,7 @@ public final class CVCalendarViewAppearance: NSObject {
     public var dayLabelPresentWeekdaySelectedBackgroundAlpha: CGFloat? = 0.8
 
     // Default dot marker color.
-    public var dotMarkerColor: UIColor? = .whiteColor()
+    public var dotMarkerColor: UIColor? = .white
 
     public weak var delegate: CVCalendarViewAppearanceDelegate?
  {
@@ -125,8 +125,10 @@ public final class CVCalendarViewAppearance: NSObject {
         }
     }}
 
-infix operator ~> { }
-public func ~> <T: Any>(inout lhs: T?, rhs: T?) -> T? {
+
+infix operator ~>
+@discardableResult
+public func ~> <T: Any>(lhs: inout T?, rhs: T?) -> T? {
     if lhs != nil && rhs != nil {
         lhs = rhs
     }
@@ -135,7 +137,7 @@ public func ~> <T: Any>(inout lhs: T?, rhs: T?) -> T? {
 }
 
 extension UIColor {
-    public static func colorFromCode(code: Int) -> UIColor {
+    public static func colorFromCode(_ code: Int) -> UIColor {
         let red = CGFloat(((code & 0xFF0000) >> 16)) / 255
         let green = CGFloat(((code & 0xFF00) >> 8)) / 255
         let blue = CGFloat((code & 0xFF)) / 255
