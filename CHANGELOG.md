@@ -1,5 +1,47 @@
 # Change Log
 
+## [Unreleased](https://github.com/Mozharovsky/CVCalendar/tree/HEAD)
+
+[Full Changelog](https://github.com/Mozharovsky/CVCalendar/compare/1.3.1...HEAD)
+
+**Closed issues:**
+
+- Change the month and the app goes in crash!!! [\#337](https://github.com/Mozharovsky/CVCalendar/issues/337)
+
+## [1.3.1](https://github.com/Mozharovsky/CVCalendar/tree/1.3.1) (2016-09-14)
+[Full Changelog](https://github.com/Mozharovsky/CVCalendar/compare/1.3.0...1.3.1)
+
+**Closed issues:**
+
+- How to change Year? [\#345](https://github.com/Mozharovsky/CVCalendar/issues/345)
+- Highlight of the today is wrong [\#343](https://github.com/Mozharovsky/CVCalendar/issues/343)
+- Calendar without dots and disabled days. [\#342](https://github.com/Mozharovsky/CVCalendar/issues/342)
+- Programmatically Reloading the Calendar [\#340](https://github.com/Mozharovsky/CVCalendar/issues/340)
+- Problem with the last update!!! [\#336](https://github.com/Mozharovsky/CVCalendar/issues/336)
+- dotMarker Show wrong date match , How to fix? [\#335](https://github.com/Mozharovsky/CVCalendar/issues/335)
+- Text Label Color for Unselected Dates [\#334](https://github.com/Mozharovsky/CVCalendar/issues/334)
+- Nib Files and @IBDesignable [\#329](https://github.com/Mozharovsky/CVCalendar/issues/329)
+- How to add events to month view & reload the monthview ? [\#328](https://github.com/Mozharovsky/CVCalendar/issues/328)
+- how can we navigate  different date now it is loading currentdate.  [\#326](https://github.com/Mozharovsky/CVCalendar/issues/326)
+- New version on Cocoapods [\#323](https://github.com/Mozharovsky/CVCalendar/issues/323)
+- How can i change Scroll From Horizontal to Vertical when change month? [\#319](https://github.com/Mozharovsky/CVCalendar/issues/319)
+- How to init a date in one specific month when I calendar show up? [\#318](https://github.com/Mozharovsky/CVCalendar/issues/318)
+- display current and following months only in the calendar view [\#312](https://github.com/Mozharovsky/CVCalendar/issues/312)
+- Disable or Change Past Days text color or selection background color [\#311](https://github.com/Mozharovsky/CVCalendar/issues/311)
+- How to avoid selected day default circle being overlapped by supplementary view? [\#302](https://github.com/Mozharovsky/CVCalendar/issues/302)
+- Cant import CVCalendar [\#296](https://github.com/Mozharovsky/CVCalendar/issues/296)
+- I want this feature: 1. User can select multiple dates 2. On long tapping a date it will ask for selecting the date range to get selected. [\#295](https://github.com/Mozharovsky/CVCalendar/issues/295)
+- I want to select multiple dates on an urgent basis. Please help me. [\#294](https://github.com/Mozharovsky/CVCalendar/issues/294)
+- issue while updating on swift 2.2 [\#293](https://github.com/Mozharovsky/CVCalendar/issues/293)
+- Turn off swipe functionality? [\#277](https://github.com/Mozharovsky/CVCalendar/issues/277)
+- Slow updating when change mode [\#225](https://github.com/Mozharovsky/CVCalendar/issues/225)
+- jalali calendar [\#217](https://github.com/Mozharovsky/CVCalendar/issues/217)
+
+**Merged pull requests:**
+
+- Issue \#337, "Change the month and the app goes in crash!" [\#346](https://github.com/Mozharovsky/CVCalendar/pull/346) ([nikolay-dementiev](https://github.com/nikolay-dementiev))
+- Customize duration of date selection animation [\#338](https://github.com/Mozharovsky/CVCalendar/pull/338) ([ozgur](https://github.com/ozgur))
+
 ## [1.3.0](https://github.com/Mozharovsky/CVCalendar/tree/1.3.0) (2016-09-02)
 [Full Changelog](https://github.com/Mozharovsky/CVCalendar/compare/1.2.9...1.3.0)
 
@@ -92,7 +134,7 @@
 
 **Merged pull requests:**
 
-- Fix codestyle [\#231](https://github.com/Mozharovsky/CVCalendar/pull/231) ([gitpusher](https://github.com/gitpusher))
+- Fix codestyle [\#231](https://github.com/Mozharovsky/CVCalendar/pull/231) ([danshevluk](https://github.com/danshevluk))
 - Correct the spelling of CocoaPods in README [\#227](https://github.com/Mozharovsky/CVCalendar/pull/227) ([ReadmeCritic](https://github.com/ReadmeCritic))
 - Added weak references to delegates to prevent memory leakage. [\#219](https://github.com/Mozharovsky/CVCalendar/pull/219) ([kadarandras](https://github.com/kadarandras))
 - Carthage compatible project [\#214](https://github.com/Mozharovsky/CVCalendar/pull/214) ([sprint84](https://github.com/sprint84))

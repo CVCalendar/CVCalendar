@@ -46,7 +46,7 @@ Installation
 <h3> CocoaPods </h3>
 
 ```ruby
-pod 'CVCalendar', '~> 1.3.0'
+pod 'CVCalendar', '~> 1.3.1'
 ```
 
 Usage
@@ -146,7 +146,7 @@ How it should look like.
 ```swift
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         // CVCalendarMenuView initialization with frame
         self.menuView = CVCalendarMenuView(frame: CGRectMake(0, 0, 300, 15))
 
@@ -161,7 +161,7 @@ How it should look like.
 
         // Menu delegate [Required]
         self.menuView.menuViewDelegate = self
-        
+
         // Calendar delegate [Required]
         self.calendarView.calendarDelegate = self
     }
