@@ -7,22 +7,33 @@
 //
 
 import UIKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 public final class CVCalendarWeekView: UIView {
     // MARK: - Non public properties
-    private var interactiveView: UIView!
+    fileprivate var interactiveView: UIView!
 
     public override var frame: CGRect {
         didSet {
             if let calendarView = calendarView {
-                if calendarView.calendarMode == CalendarMode.WeekView {
+                if calendarView.calendarMode == CalendarMode.weekView {
                     updateInteractiveView()
                 }
             }
         }
     }
 
-    private var touchController: CVCalendarTouchController {
+    fileprivate var touchController: CVCalendarTouchController {
         return calendarView.touchController
     }
 
@@ -86,8 +97,8 @@ public final class CVCalendarWeekView: UIView {
                                     break
                                 }
                             } else if value < 10 {
-                                if self.index == manager.monthDateRange(self.monthView!.date!)
-                                    .countOfWeeks - 1 {
+                                if self.index == (manager?.monthDateRange(self.monthView!.date!)
+                                    .countOfWeeks)! - 1 {
                                         result = weekdaysOut
                                         break
                                 }
@@ -114,7 +125,7 @@ public final class CVCalendarWeekView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public func mapDayViews(body: (DayView) -> ()) {
+    public func mapDayViews(_ body: (DayView) -> ()) {
         if let dayViews = dayViews {
             for dayView in dayViews {
                 body(dayView)
@@ -130,14 +141,14 @@ extension CVCalendarWeekView {
         safeExecuteBlock({
 
             let mode = self.monthView!.calendarView!.calendarMode!
-            if mode == .WeekView {
+            if mode == .weekView {
                 if let interactiveView = self.interactiveView {
                     interactiveView.frame = self.bounds
                     interactiveView.removeFromSuperview()
                     self.addSubview(interactiveView)
                 } else {
                     self.interactiveView = UIView(frame: self.bounds)
-                    self.interactiveView.backgroundColor = .clearColor()
+                    self.interactiveView.backgroundColor = .clear
 
                     let tapRecognizer = UITapGestureRecognizer(target: self,
                         action: #selector(CVCalendarWeekView.didTouchInteractiveView(_:)))
@@ -155,28 +166,28 @@ extension CVCalendarWeekView {
             }, collapsingOnNil: false, withObjects: monthView, monthView?.calendarView)
     }
 
-    public func didPressInteractiveView(recognizer: UILongPressGestureRecognizer) {
-        let location = recognizer.locationInView(self.interactiveView)
+    public func didPressInteractiveView(_ recognizer: UILongPressGestureRecognizer) {
+        let location = recognizer.location(in: self.interactiveView)
         let state: UIGestureRecognizerState = recognizer.state
 
         switch state {
-        case .Began:
+        case .began:
             touchController.receiveTouchLocation(location, inWeekView: self,
-                                                 withSelectionType: .Range(.Started))
-        case .Changed:
+                                                 withSelectionType: .range(.started))
+        case .changed:
             touchController.receiveTouchLocation(location, inWeekView: self,
-                                                 withSelectionType: .Range(.Changed))
-        case .Ended:
+                                                 withSelectionType: .range(.changed))
+        case .ended:
             touchController.receiveTouchLocation(location, inWeekView: self,
-                                                 withSelectionType: .Range(.Ended))
+                                                 withSelectionType: .range(.ended))
 
         default: break
         }
     }
 
-    public func didTouchInteractiveView(recognizer: UITapGestureRecognizer) {
-        let location = recognizer.locationInView(self.interactiveView)
-        touchController.receiveTouchLocation(location, inWeekView: self, withSelectionType: .Single)
+    public func didTouchInteractiveView(_ recognizer: UITapGestureRecognizer) {
+        let location = recognizer.location(in: self.interactiveView)
+        touchController.receiveTouchLocation(location, inWeekView: self, withSelectionType: .single)
     }
 }
 
@@ -190,7 +201,7 @@ extension CVCalendarWeekView {
 
             safeExecuteBlock({
                 self.dayViews!.append(dayView)
-                }, collapsingOnNil: true, withObjects: dayViews)
+                }, collapsingOnNil: true, withObjects: dayViews as AnyObject?)
 
             addSubview(dayView)
         }
@@ -201,7 +212,7 @@ extension CVCalendarWeekView {
         if let size = calendarView.dayViewSize, let dayViews = dayViews {
             // let hSpace = calendarView.appearance.spaceBetweenDayViews!
 
-            for (index, dayView) in dayViews.enumerate() {
+            for (index, dayView) in dayViews.enumerated() {
                 let hSpace = calendarView.appearance.spaceBetweenDayViews!
                 let x = CGFloat(index) * CGFloat(size.width + hSpace) + hSpace/2
                 dayView.frame = CGRect(x: x, y: 0, width: size.width, height: size.height)
@@ -214,7 +225,7 @@ extension CVCalendarWeekView {
 // MARK: - Safe execution
 
 extension CVCalendarWeekView {
-    public func safeExecuteBlock(block: Void -> Void, collapsingOnNil collapsing: Bool,
+    public func safeExecuteBlock(_ block: (Void) -> Void, collapsingOnNil collapsing: Bool,
                                  withObjects objects: AnyObject?...) {
         for object in objects {
             if object == nil {
