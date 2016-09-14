@@ -1,8 +1,7 @@
 # Change Log
 
-## [Unreleased](https://github.com/Mozharovsky/CVCalendar/tree/HEAD)
-
-[Full Changelog](https://github.com/Mozharovsky/CVCalendar/compare/1.3.1...HEAD)
+## [1.4.0](https://github.com/Mozharovsky/CVCalendar/tree/1.4.0) (2016-09-14)
+[Full Changelog](https://github.com/Mozharovsky/CVCalendar/compare/1.3.1...1.4.0)
 
 **Closed issues:**
 
@@ -40,6 +39,7 @@
 **Merged pull requests:**
 
 - Issue \#337, "Change the month and the app goes in crash!" [\#346](https://github.com/Mozharovsky/CVCalendar/pull/346) ([nikolay-dementiev](https://github.com/nikolay-dementiev))
+- Swift 3 [\#339](https://github.com/Mozharovsky/CVCalendar/pull/339) ([Antoine4011](https://github.com/Antoine4011))
 - Customize duration of date selection animation [\#338](https://github.com/Mozharovsky/CVCalendar/pull/338) ([ozgur](https://github.com/ozgur))
 
 ## [1.3.0](https://github.com/Mozharovsky/CVCalendar/tree/1.3.0) (2016-09-02)
