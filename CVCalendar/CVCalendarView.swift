@@ -44,12 +44,10 @@ public final class CVCalendarView: UIView {
     fileprivate var validated = false
 
     public var firstWeekday: Weekday {
-        get {
-            if let delegate = delegate {
-                return delegate.firstWeekday()
-            } else {
-                return .sunday
-            }
+        if let delegate = delegate {
+            return delegate.firstWeekday()
+        } else {
+            return .sunday
         }
     }
 
@@ -70,40 +68,32 @@ public final class CVCalendarView: UIView {
     }
 
     public var shouldAnimateResizing: Bool {
-        get {
-            if let delegate = delegate, let should = delegate.shouldAnimateResizing?() {
-                return should
-            }
-
-            return true
+        if let delegate = delegate, let should = delegate.shouldAnimateResizing?() {
+            return should
         }
+        
+        return true
     }
-
+    
     public var shouldAutoSelectDayOnMonthChange: Bool {
-        get {
-            if let delegate = delegate, let should = delegate.shouldAutoSelectDayOnMonthChange?() {
-                return should
-            }
-            return true
+        if let delegate = delegate, let should = delegate.shouldAutoSelectDayOnMonthChange?() {
+            return should
         }
+        return true
     }
 
     public var shouldAutoSelectDayOnWeekChange: Bool {
-        get {
-            if let delegate = delegate, let should = delegate.shouldAutoSelectDayOnWeekChange?() {
-                return should
-            }
-            return true
+        if let delegate = delegate, let should = delegate.shouldAutoSelectDayOnWeekChange?() {
+            return should
         }
+        return true
     }
-
+    
     public var shouldScrollOnOutDayViewSelection: Bool {
-        get {
-            if let delegate = delegate, let should = delegate.shouldScrollOnOutDayViewSelection?() {
-                return should
-            }
-            return true
+        if let delegate = delegate, let should = delegate.shouldScrollOnOutDayViewSelection?() {
+            return should
         }
+        return true
     }
 
     // MARK: - Calendar View Delegate

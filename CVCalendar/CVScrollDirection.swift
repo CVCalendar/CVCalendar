@@ -14,12 +14,10 @@ public enum CVScrollDirection {
     case left
 
     var description: String {
-        get {
-            switch self {
-            case .left: return "Left"
-            case .right: return "Right"
-            case .none: return "None"
-            }
+        switch self {
+        case .left: return "Left"
+        case .right: return "Right"
+        case .none: return "None"
         }
     }
 }
