@@ -32,12 +32,10 @@ public struct CVSet<T: AnyObject>: ExpressibleByNilLiteral {
 
     // MARK: - Subscript
     subscript(index: Int) -> T? {
-        get {
-            if index < storage.count {
-                return storage[index]
-            } else {
-                return nil
-            }
+        if index < storage.count {
+            return storage[index]
+        } else {
+            return nil
         }
     }
 }

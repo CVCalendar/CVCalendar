@@ -14,9 +14,7 @@ public final class CVCalendarViewAnimator {
     // MARK: - Public properties
     public weak var delegate: CVCalendarViewAnimatorDelegate!
     public var coordinator: CVCalendarDayViewControlCoordinator {
-        get {
-            return calendarView.coordinator
-        }
+        return calendarView.coordinator
     }
 
     // MARK: - Init

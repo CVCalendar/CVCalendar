@@ -27,9 +27,7 @@ open class CVCalendarContentViewController: UIViewController {
 
     open var currentPage = 1
     open var pageChanged: Bool {
-        get {
-            return currentPage == 1 ? false : true
-        }
+        return currentPage == 1 ? false : true
     }
 
     open var pageLoadingEnabled = true
