@@ -64,6 +64,10 @@ public final class CVCalendarDayView: UIView {
             isUserInteractionEnabled = isHidden ? false : true
         }
     }
+    
+    // MARK: - Private properties
+    
+    fileprivate var preliminaryView: UIView?
 
     // MARK: - Initialization
 
@@ -213,9 +217,14 @@ extension CVCalendarDayView {
         if let delegate = calendarView.delegate,
             let shouldShow = delegate.preliminaryView?(shouldDisplayOnDayView: self) , shouldShow {
                 if let preView = delegate.preliminaryView?(viewOnDayView: self) {
+                    preliminaryView?.removeFromSuperview()
+                    preliminaryView = preView
                     weekView.insertSubview(preView, at: 0)
                     preView.layer.zPosition = CGFloat(-MAXFLOAT)
                 }
+        }
+        else {
+            preliminaryView?.removeFromSuperview()
         }
     }
 
