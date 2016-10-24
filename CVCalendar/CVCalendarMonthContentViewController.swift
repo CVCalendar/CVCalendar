@@ -382,6 +382,10 @@ extension CVCalendarMonthContentViewController {
                                                  inMonthView: presentedMonthView)
                         }
             }
+
+            if let _ = coordinator?.selectedStartDayView, let _ = coordinator?.selectedEndDayView {
+                coordinator?.highlightPreSelectedDates(in: presentedMonthView)
+            }
         }
 
     }

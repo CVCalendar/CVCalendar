@@ -15,6 +15,8 @@ public final class CVCalendarDayViewControlCoordinator {
     fileprivate unowned let calendarView: CalendarView
 
     // MARK: - Public properties
+    public var selectedStartDayView: DayView?
+    public var selectedEndDayView: DayView?
     public weak var selectedDayView: CVCalendarDayView?
     public var animator: CVCalendarViewAnimator! {
         get {
@@ -48,6 +50,8 @@ extension CVCalendarDayViewControlCoordinator {
 
     public func flush() {
         selectedDayView = nil
+        selectedEndDayView = nil
+        selectedStartDayView = nil
         selectionSet.removeAll()
     }
 }
@@ -56,7 +60,6 @@ extension CVCalendarDayViewControlCoordinator {
 
 private extension CVCalendarDayViewControlCoordinator {
     func presentSelectionOnDayView(_ dayView: DayView) {
-        print("selecting day \(dayView.date.commonDescription)")
         animator.animateSelectionOnDayView(dayView)
         //animator?.animateSelection(dayView, withControlCoordinator: self)
     }
@@ -98,8 +101,6 @@ extension CVCalendarDayViewControlCoordinator {
 //        print("Day view range selection found")
 //        selectionSet.insert(dayView)
 
-        var dayViewsToHighlight = [DayView]()
-
         if selectionSet.count == 2 {
             print("Clearing pre selections:")
             for dayViewInQueue in selectionSet {
@@ -115,6 +116,12 @@ extension CVCalendarDayViewControlCoordinator {
                 }
             }
             flush()
+
+            selectedStartDayView = dayView
+            print("adding selection: \(dayView.date.commonDescription)")
+            selectionSet.insert(dayView)
+            presentSelectionOnDayView(dayView)
+
         } else if selectionSet.count == 1 {
             print("second selection")
             guard let previouslySelectedDayView = selectionSet.first,
@@ -124,48 +131,69 @@ extension CVCalendarDayViewControlCoordinator {
             }
 
             if previouslySelectedDate < currentlySelectedDate {
-                dayViewsToHighlight = findRangeToHighlight(from: previouslySelectedDayView, to: dayView)
-                print("RANGE SELECTED: \(previouslySelectedDayView.date.commonDescription) to \(dayView.date.commonDescription)")
+//                dayViewsToHighlight = findRangeToHighlight(from: previouslySelectedDayView, to: dayView)
+                selectedStartDayView = previouslySelectedDayView
+                selectedEndDayView = dayView
+                self.calendarView.didSelectDateRange(from: previouslySelectedDayView, to: dayView)
             } else {
-                dayViewsToHighlight = findRangeToHighlight(from: dayView, to: previouslySelectedDayView)
-                print("RANGE SELECTED: \(dayView.date.commonDescription) to \(previouslySelectedDayView.date.commonDescription)")
+//                dayViewsToHighlight = findRangeToHighlight(from: dayView, to: previouslySelectedDayView)
+                selectedStartDayView = dayView
+                selectedEndDayView = previouslySelectedDayView
+                self.calendarView.didSelectDateRange(from: dayView, to: previouslySelectedDayView)
             }
-        }
-        print("adding selection: \(dayView.date.commonDescription)")
-        selectionSet.insert(dayView)
 
-        if let _ = animator {
+            print("adding selection: \(dayView.date.commonDescription)")
+            selectionSet.insert(dayView)
+            highlightPreSelectedDates(in: dayView.monthView)
+
+        } else {
+            selectedStartDayView = dayView
+            print("adding selection: \(dayView.date.commonDescription)")
+            selectionSet.insert(dayView)
             presentSelectionOnDayView(dayView)
-
-            for dayViewToHighlight in dayViewsToHighlight {
-                presentSelectionOnDayView(dayViewToHighlight)
-            }
-            highlightedDayViews = dayViewsToHighlight
         }
+
+
     }
 
-    func findRangeToHighlight(from startDayView: DayView, to endDayView: DayView) -> [DayView] {
-
-        var dayViewsToHighlight = [DayView]()
-        var shouldAddToArray = false
-
+    func highlightPreSelectedDates(in monthView: MonthView) {
         var allDayViews = [DayView]()
-        for weekView in startDayView.weekView.monthView.weekViews {
+        for weekView in monthView.weekViews {
             allDayViews += weekView.dayViews
         }
+
+        var startDateInMonthView = false
+        var endDateInMonthView = false
         for dayView in allDayViews {
-            if dayView === startDayView {
+            if dayView.date.convertedDate() == selectedStartDayView?.date.convertedDate() {
+                startDateInMonthView = true
+            }
+            if dayView.date.convertedDate() == selectedEndDayView?.date.convertedDate() {
+                endDateInMonthView = true
+            }
+            presentDeselectionOnDayView(dayView)
+        }
+
+        var shouldAddToArray = false
+        if !startDateInMonthView && endDateInMonthView {
+            shouldAddToArray = true
+        }
+        for dayView in allDayViews {
+            if shouldAddToArray {
+                presentSelectionOnDayView(dayView)
+                highlightedDayViews.append(dayView)
+            }
+            if dayView.date.convertedDate() == selectedStartDayView?.date.convertedDate() {
+                presentSelectionOnDayView(dayView)
+                highlightedDayViews.append(dayView)
+
                 shouldAddToArray = true
-                continue
-            } else if dayView === endDayView {
-                shouldAddToArray = false
+            }
+            if dayView.date.convertedDate() == selectedEndDayView?.date.convertedDate() {
+                presentSelectionOnDayView(dayView)
+                highlightedDayViews.append(dayView)
                 break
             }
-
-            if shouldAddToArray {
-                dayViewsToHighlight.append(dayView)
-            }
         }
-        return dayViewsToHighlight
     }
 }

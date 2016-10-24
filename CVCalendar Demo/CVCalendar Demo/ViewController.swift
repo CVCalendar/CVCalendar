@@ -88,10 +88,21 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     private func shouldSelectDayView(dayView: DayView) -> Bool {
         return arc4random_uniform(3) == 0 ? true : false
     }
+    func shouldAutoSelectDayOnMonthChange() -> Bool {
+        return false
+    }
     
     func didSelectDayView(_ dayView: CVCalendarDayView, animationDidFinish: Bool) {
 //        print("\(dayView.date.commonDescription) is selected!")
         selectedDay = dayView
+    }
+
+    func shouldSelectRange() -> Bool {
+        return true
+    }
+
+    func didSelectRange(from startDayView: DayView, to endDayView: DayView) {
+        print("RANGE SELECTED: \(startDayView.date.commonDescription) to \(endDayView.date.commonDescription)")
     }
     
     func presentedDateUpdated(_ date: CVDate) {
