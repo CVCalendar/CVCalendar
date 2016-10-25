@@ -98,17 +98,12 @@ extension CVCalendarDayViewControlCoordinator {
     }
 
     public func performDayViewRangeSelection(_ dayView: DayView) {
-//        print("Day view range selection found")
-//        selectionSet.insert(dayView)
 
         if selectionSet.count == 2 {
-            print("Clearing pre selections:")
             for dayViewInQueue in selectionSet {
                 if dayView.calendarView != nil {
                     presentDeselectionOnDayView(dayViewInQueue)
-                    print("Deselecting: \(dayViewInQueue.date.commonDescription)")
                 }
-
             }
             for highlightedDayView in highlightedDayViews {
                 if dayView.calendarView != nil {
@@ -118,12 +113,9 @@ extension CVCalendarDayViewControlCoordinator {
             flush()
 
             selectedStartDayView = dayView
-            print("adding selection: \(dayView.date.commonDescription)")
             selectionSet.insert(dayView)
             presentSelectionOnDayView(dayView)
-
         } else if selectionSet.count == 1 {
-            print("second selection")
             guard let previouslySelectedDayView = selectionSet.first,
                 let previouslySelectedDate = selectionSet.first?.date.convertedDate(),
                 let currentlySelectedDate = dayView.date.convertedDate() else {
@@ -131,29 +123,23 @@ extension CVCalendarDayViewControlCoordinator {
             }
 
             if previouslySelectedDate < currentlySelectedDate {
-//                dayViewsToHighlight = findRangeToHighlight(from: previouslySelectedDayView, to: dayView)
                 selectedStartDayView = previouslySelectedDayView
                 selectedEndDayView = dayView
-                self.calendarView.didSelectDateRange(from: previouslySelectedDayView, to: dayView)
+                self.calendarView.delegate?.didSelectRange?(from: previouslySelectedDayView, to: dayView)
             } else {
-//                dayViewsToHighlight = findRangeToHighlight(from: dayView, to: previouslySelectedDayView)
                 selectedStartDayView = dayView
                 selectedEndDayView = previouslySelectedDayView
-                self.calendarView.didSelectDateRange(from: dayView, to: previouslySelectedDayView)
+                self.calendarView.delegate?.didSelectRange?(from: dayView, to: previouslySelectedDayView)
             }
 
-            print("adding selection: \(dayView.date.commonDescription)")
             selectionSet.insert(dayView)
             highlightPreSelectedDates(in: dayView.monthView)
 
         } else {
             selectedStartDayView = dayView
-            print("adding selection: \(dayView.date.commonDescription)")
             selectionSet.insert(dayView)
             presentSelectionOnDayView(dayView)
         }
-
-
     }
 
     func highlightPreSelectedDates(in monthView: MonthView) {

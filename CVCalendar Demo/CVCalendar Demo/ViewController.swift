@@ -262,6 +262,10 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     func dayOfWeekBackGroundColor() -> UIColor {
         return UIColor.orange
     }
+
+//    func disableScrollingBeforeDate() -> Date {
+//        return Date()
+//    }
 }
 
 
@@ -273,7 +277,7 @@ extension ViewController: CVCalendarViewAppearanceDelegate {
     }
     
     func spaceBetweenDayViews() -> CGFloat {
-        return 2
+        return 0
     }
     
     func dayLabelFont(by weekDay: Weekday, status: CVStatus, present: CVPresent) -> UIFont { return UIFont.systemFont(ofSize: 14) }

@@ -115,6 +115,15 @@ public final class CVCalendarView: UIView {
         }
     }
 
+    public var disableScrollingBeyondDate: Date? {
+        get {
+            if let delegate = delegate, let date = delegate.disableScrollingBeforeDate?() {
+                return date
+            }
+            return nil
+        }
+    }
+
     // MARK: - Calendar View Delegate
 
     @IBOutlet public weak var calendarDelegate: AnyObject? {
@@ -269,14 +278,6 @@ extension CVCalendarView {
             presentedDate = dayView.date
             delegate?.didSelectDayView?(dayView, animationDidFinish: false)
             controller.performedDayViewSelection(dayView) // TODO: Update to range selection
-        }
-    }
-
-    public func didSelectDateRange(from startDayView: DayView, to endDayView: DayView) {
-        if let controller = contentController {
-            presentedDate = endDayView.date
-            delegate?.didSelectRange?(from: startDayView, to: endDayView)
-            controller.performedDayViewSelection(endDayView) // TODO: Update to range selection
         }
     }
 }
