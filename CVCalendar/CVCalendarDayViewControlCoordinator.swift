@@ -258,8 +258,9 @@ extension CVCalendarDayViewControlCoordinator {
                 }
                 if shouldEnable {
                     dayView.isUserInteractionEnabled = true
-                    presentDeselectionOnDayView(dayView)
                 }
+                presentDeselectionOnDayView(dayView)
+
             }
         }
     }
