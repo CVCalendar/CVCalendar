@@ -49,4 +49,8 @@ public protocol CVCalendarViewDelegate {
     @objc optional func shouldSelectRange() -> Bool
     @objc optional func didSelectRange(from startDayView: DayView, to endDayView: DayView)
     @objc optional func disableScrollingBeforeDate() -> Date
+    @objc optional func maxSelectableRange() -> Int
+    @objc optional func earliestSelectableDate() -> Date
+    @objc optional func latestSelectableDate() -> Date
+
 }

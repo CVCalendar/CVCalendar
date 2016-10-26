@@ -235,4 +235,10 @@ public final class CVCalendarManager {
 
         return Calendar.current.date(from: comps)
     }
+
+    public func date(after noOfDays: Int, from baseDate: Date) -> Date! {
+        var dayComponents = DateComponents()
+        dayComponents.day = noOfDays
+        return calendar.date(byAdding: dayComponents, to: baseDate)
+    }
 }

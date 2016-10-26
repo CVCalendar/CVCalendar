@@ -68,6 +68,7 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
         monthViews[identifier] = monthView
         scrollView.addSubview(monthView)
         checkScrollToPreviousDisabled()
+        calendarView.coordinator?.disableDays(in: presentedMonthView)
     }
 
     public func replaceMonthView(_ monthView: MonthView,
@@ -397,6 +398,8 @@ extension CVCalendarMonthContentViewController {
                                                  inMonthView: presentedMonthView)
                         }
             }
+
+            coordinator?.disableDays(in: presentedMonthView)
 
             if let _ = coordinator?.selectedStartDayView, let _ = coordinator?.selectedEndDayView {
                 coordinator?.highlightPreSelectedDates(in: presentedMonthView)

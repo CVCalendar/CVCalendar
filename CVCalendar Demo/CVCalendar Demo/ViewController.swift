@@ -263,8 +263,29 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
         return UIColor.orange
     }
 
-//    func disableScrollingBeforeDate() -> Date {
-//        return Date()
+    func disableScrollingBeforeDate() -> Date {
+        return Date()
+    }
+
+    func maxSelectableRange() -> Int {
+        return 14
+    }
+
+    func earliestSelectableDate() -> Date {
+        return Date()
+    }
+
+//    func latestSelectableDate() -> Date {
+//        var dayComponents = DateComponents()
+//        dayComponents.day = 45
+//        let calendar = Calendar(identifier: .gregorian)
+//        if let lastDate = calendar.date(byAdding: dayComponents, to: Date()) {
+//            return lastDate
+//        } else {
+//            return Date()
+//        }
+//
+////        return calendarView.manager.date(after: 45, from: Date())
 //    }
 }
 
@@ -272,6 +293,9 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
 // MARK: - CVCalendarViewAppearanceDelegate
 
 extension ViewController: CVCalendarViewAppearanceDelegate {
+    func dayLabelWeekdayDisabledColor() -> UIColor {
+        return UIColor.lightGray
+    }
     func dayLabelPresentWeekdayInitallyBold() -> Bool {
         return false
     }

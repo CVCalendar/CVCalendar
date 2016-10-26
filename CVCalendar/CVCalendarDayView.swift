@@ -478,7 +478,7 @@ extension CVCalendarDayView {
                 shouldShowCustomSelection {
                     if let block = delegate.selectionViewPath?() {
                         shape = .custom(block)
-                    }
+                    } 
             }
 
             if isCurrentDay {
@@ -536,9 +536,9 @@ extension CVCalendarDayView {
     }
 
     public func setDeselectedWithClearing(_ clearing: Bool) {
-        if !isHighlighted {
-            return
-        }
+//        if !isHighlighted {
+//            return
+//        }
         if let calendarView = calendarView, let appearance = calendarView.appearance {
             var color: UIColor?
             if isDisabled {
@@ -603,7 +603,7 @@ extension CVCalendarDayView {
         }
 
         if selectionView != nil {
-            setSelectedWithType(.single)
+            setSelectedWithType(.range(.changed))
         }
     }
 }
