@@ -536,9 +536,6 @@ extension CVCalendarDayView {
     }
 
     public func setDeselectedWithClearing(_ clearing: Bool) {
-//        if !isHighlighted {
-//            return
-//        }
         if let calendarView = calendarView, let appearance = calendarView.appearance {
             var color: UIColor?
             if isDisabled {

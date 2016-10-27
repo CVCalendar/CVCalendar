@@ -399,11 +399,12 @@ extension CVCalendarMonthContentViewController {
                         }
             }
 
+            if coordinator?.selectedStartDayView != nil || coordinator?.selectedEndDayView != nil {
+                coordinator?.highlightSelectedDays(in: presentedMonthView)
+            }
+
             coordinator?.disableDays(in: presentedMonthView)
 
-            if let _ = coordinator?.selectedStartDayView, let _ = coordinator?.selectedEndDayView {
-                coordinator?.highlightPreSelectedDates(in: presentedMonthView)
-            }
         }
 
     }

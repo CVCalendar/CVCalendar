@@ -275,18 +275,16 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
         return Date()
     }
 
-//    func latestSelectableDate() -> Date {
-//        var dayComponents = DateComponents()
-//        dayComponents.day = 45
-//        let calendar = Calendar(identifier: .gregorian)
-//        if let lastDate = calendar.date(byAdding: dayComponents, to: Date()) {
-//            return lastDate
-//        } else {
-//            return Date()
-//        }
-//
-////        return calendarView.manager.date(after: 45, from: Date())
-//    }
+    func latestSelectableDate() -> Date {
+        var dayComponents = DateComponents()
+        dayComponents.day = 70
+        let calendar = Calendar(identifier: .gregorian)
+        if let lastDate = calendar.date(byAdding: dayComponents, to: Date()) {
+            return lastDate
+        } else {
+            return Date()
+        }
+    }
 }
 
 
