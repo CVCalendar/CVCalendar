@@ -38,10 +38,10 @@ extension CVCalendarDayViewControlCoordinator {
     }
 
     public func deselectionPerformedOnDayView(_ dayView: DayView) {
-//        if dayView != selectedDayView && calendarView.shouldSelectRange == false {
-//            selectionSet.remove(dayView)
-//            dayView.setDeselectedWithClearing(true)
-//        }
+        if dayView != selectedDayView && calendarView.shouldSelectRange == false {
+            selectionSet.remove(dayView)
+            dayView.setDeselectedWithClearing(true)
+        }
     }
 
     public func dequeueDayView(_ dayView: DayView) {
@@ -73,6 +73,7 @@ private extension CVCalendarDayViewControlCoordinator {
 // MARK: - Coordinator's control actions
 
 extension CVCalendarDayViewControlCoordinator {
+
     public func performDayViewSingleSelection(_ dayView: DayView) {
         selectionSet.insert(dayView)
 
@@ -98,30 +99,11 @@ extension CVCalendarDayViewControlCoordinator {
     }
 
     public func performDayViewRangeSelection(_ dayView: DayView) {
-
         if selectionSet.count == 2 {
-//            for dayViewInQueue in selectionSet {
-//                if dayView.calendarView != nil {
-//                    presentDeselectionOnDayView(dayViewInQueue)
-//                }
-//            }
-//            for highlightedDayView in highlightedDayViews {
-//                if dayView.calendarView != nil {
-//                    presentDeselectionOnDayView(highlightedDayView)
-//                }
-//            }
-
             clearSelection(in: dayView.monthView)
             flush()
 
-            selectedStartDayView = dayView
-            selectionSet.insert(dayView)
-            presentSelectionOnDayView(dayView)
-
-            if calendarView.maxSelectableRange > 0 {
-                disableDays(in: dayView.monthView)
-            }
-
+            select(dayView: dayView)
         } else if selectionSet.count == 1 {
             guard let previouslySelectedDayView = selectionSet.first,
                 let previouslySelectedDate = selectionSet.first?.date.convertedDate(),
@@ -129,10 +111,12 @@ extension CVCalendarDayViewControlCoordinator {
                     return
             }
 
+            //prevent selection of same day twice for range
             if previouslySelectedDayView === dayView {
                 return
             }
 
+            //allows selection in reverse order (like selecting 5-10-16 first then 5-5-16) when maxselectable range is not present
             if previouslySelectedDate < currentlySelectedDate {
                 selectedStartDayView = previouslySelectedDayView
                 selectedEndDayView = dayView
@@ -145,58 +129,12 @@ extension CVCalendarDayViewControlCoordinator {
 
             selectionSet.insert(dayView)
             highlightSelectedDays(in: dayView.monthView)
-
         } else {
-            selectedStartDayView = dayView
-            selectionSet.insert(dayView)
-            presentSelectionOnDayView(dayView)
-
-            if calendarView.maxSelectableRange > 0 {
-                disableDays(in: dayView.weekView.monthView)
-            }
+            select(dayView: dayView)
         }
     }
 
-//    func highlightPreSelectedDates(in monthView: MonthView) {
-//        var startDateInMonthView = false
-//        var endDateInMonthView = false
-//
-//        clearSelection(in: monthView)
-//
-//        monthView.mapDayViews { dayView in
-//            if dayView.date.convertedDate() == selectedStartDayView?.date.convertedDate() {
-//                startDateInMonthView = true
-//            }
-//            if dayView.date.convertedDate() == selectedEndDayView?.date.convertedDate() {
-//                endDateInMonthView = true
-//            }
-//        }
-//
-//        var shouldAddToArray = false
-//        if !startDateInMonthView && endDateInMonthView {
-//            shouldAddToArray = true
-//        }
-//
-//        monthView.mapDayViews { dayView in
-//            if shouldAddToArray {
-//                presentSelectionOnDayView(dayView)
-//                highlightedDayViews.append(dayView)
-//            }
-//            if dayView.date.convertedDate() == selectedStartDayView?.date.convertedDate() {
-//                presentSelectionOnDayView(dayView)
-//                highlightedDayViews.append(dayView)
-//
-//                shouldAddToArray = true
-//            }
-//            if dayView.date.convertedDate() == selectedEndDayView?.date.convertedDate() {
-//                presentSelectionOnDayView(dayView)
-//                highlightedDayViews.append(dayView)
-//                shouldAddToArray = false
-//            }
-//        }
-//    }
-
-    func highlightSelectedDays(in monthView: MonthView) {
+    public func highlightSelectedDays(in monthView: MonthView) {
         clearSelection(in: monthView)
         let startDate = selectedStartDayView?.date.convertedDate()
         let endDate = selectedEndDayView?.date.convertedDate()
@@ -223,7 +161,7 @@ extension CVCalendarDayViewControlCoordinator {
         }
     }
 
-    func disableDays(in monthView: MonthView) {
+    public func disableDays(in monthView: MonthView) {
         var maxSelectableDate: Date? = nil
         if let startDate = selectedStartDayView?.date.convertedDate() {
             maxSelectableDate = calendarView.manager.date(after: calendarView.maxSelectableRange, from: startDate)
@@ -234,36 +172,52 @@ extension CVCalendarDayViewControlCoordinator {
         disableDays(inMonth: monthView, beforeDate: startDate, afterDate: maxSelectableDate)
     }
 
+}
+
+// MARK: - private selection and disabling methods
+
+private extension CVCalendarDayViewControlCoordinator {
+
+    func select(dayView: DayView) {
+        selectedStartDayView = dayView
+        selectionSet.insert(dayView)
+        presentSelectionOnDayView(dayView)
+
+        if calendarView.maxSelectableRange > 0 {
+            disableDays(in: dayView.weekView.monthView)
+        }
+    }
+
     func disableDays(inMonth monthView:MonthView, beforeDate: Date?, afterDate: Date?) {
-        print("disabling days")
         monthView.mapDayViews { dayView in
             if let currDate = dayView.date.convertedDate() {
 
                 if let earliestDate = calendarView.earliestSelectableDate,
                     currDate.compare(earliestDate) == .orderedAscending {
-                    dayView.isUserInteractionEnabled = false
-                    presentDeselectionOnDayView(dayView)
+                    disableUserInteraction(for: dayView)
                 }
 
                 if let beforeDate = beforeDate,
                    currDate.compare(beforeDate) == .orderedAscending {
-                    dayView.isUserInteractionEnabled = false
-                    presentDeselectionOnDayView(dayView)
+                    disableUserInteraction(for: dayView)
                 }
 
                 if let afterDate = afterDate,
                    currDate.compare(afterDate) == .orderedDescending || currDate.compare(afterDate) == .orderedSame {
-                    dayView.isUserInteractionEnabled = false
-                    presentDeselectionOnDayView(dayView)
+                    disableUserInteraction(for: dayView)
                 }
 
                 if let latestDate = calendarView.latestSelectableDate,
                     currDate.compare(latestDate) == .orderedDescending {
-                    dayView.isUserInteractionEnabled = false
-                    presentDeselectionOnDayView(dayView)
+                    disableUserInteraction(for: dayView)
                 }
             }
         }
+    }
+
+    func disableUserInteraction(for dayView: DayView) {
+        dayView.isUserInteractionEnabled = false
+        presentDeselectionOnDayView(dayView)
     }
 
     func clearSelection(in monthView: MonthView) {
