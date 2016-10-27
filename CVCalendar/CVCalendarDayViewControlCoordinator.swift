@@ -106,10 +106,10 @@ extension CVCalendarDayViewControlCoordinator {
             return
         }
 
-        if selectionSet.count == 1,
-           let previouslySelectedDayView = selectionSet.first,
+        if let previouslySelectedDayView = selectionSet.first,
            let previouslySelectedDate = selectionSet.first?.date.convertedDate(),
-           let currentlySelectedDate = dayView.date.convertedDate() {
+           let currentlySelectedDate = dayView.date.convertedDate(),
+           selectionSet.count == 1 {
 
             //prevent selection of same day twice for range
             if previouslySelectedDayView === dayView {
@@ -148,17 +148,20 @@ extension CVCalendarDayViewControlCoordinator {
             if let startDate = startDate,
                 currDate.compare(startDate) == .orderedSame {
                 presentSelectionOnDayView(dayView)
+                return
             }
 
             if let startDate = startDate,
                 let endDate = endDate,
                 currDate.compare(startDate) == .orderedDescending && currDate.compare(endDate) == .orderedAscending {
                 presentSelectionOnDayView(dayView)
+                return
             }
 
             if let endDate = endDate,
                 currDate.compare(endDate) == .orderedSame {
                 presentSelectionOnDayView(dayView)
+                return
             }
         }
     }
@@ -199,21 +202,25 @@ private extension CVCalendarDayViewControlCoordinator {
             if let earliestDate = calendarView.earliestSelectableDate,
                 currDate.compare(earliestDate) == .orderedAscending {
                 disableUserInteraction(for: dayView)
+                return
             }
 
             if let beforeDate = beforeDate,
                currDate.compare(beforeDate) == .orderedAscending {
                 disableUserInteraction(for: dayView)
+                return
             }
 
             if let afterDate = afterDate,
                currDate.compare(afterDate) == .orderedDescending || currDate.compare(afterDate) == .orderedSame {
                 disableUserInteraction(for: dayView)
+                return
             }
 
             if let latestDate = calendarView.latestSelectableDate,
                 currDate.compare(latestDate) == .orderedDescending {
                 disableUserInteraction(for: dayView)
+                return
             }
         }
     }
@@ -228,7 +235,9 @@ private extension CVCalendarDayViewControlCoordinator {
             guard let currDate = dayView.date.convertedDate() else {
                 return
             }
+
             var shouldEnable = true
+
             if let earliestDate = calendarView.earliestSelectableDate,
                 currDate.compare(earliestDate) == .orderedAscending {
                 shouldEnable = false
@@ -238,9 +247,11 @@ private extension CVCalendarDayViewControlCoordinator {
                 currDate.compare(latestDate) == .orderedDescending {
                 shouldEnable = false
             }
+
             if shouldEnable {
                 dayView.isUserInteractionEnabled = true
             }
+
             presentDeselectionOnDayView(dayView)
         }
     }
