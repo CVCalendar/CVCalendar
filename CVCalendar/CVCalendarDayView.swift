@@ -478,7 +478,7 @@ extension CVCalendarDayView {
                 shouldShowCustomSelection {
                     if let block = delegate.selectionViewPath?() {
                         shape = .custom(block)
-                    } 
+                    }
             }
 
             if isCurrentDay {
@@ -532,7 +532,7 @@ extension CVCalendarDayView {
         insertSubview(selectionView!, at: 0)
 
         moveDotMarkerBack(false, coloring: false)
-        self.isHighlighted = true
+        isHighlighted = true
     }
 
     public func setDeselectedWithClearing(_ clearing: Bool) {
@@ -575,7 +575,7 @@ extension CVCalendarDayView {
             if clearing {
                 selectionView?.removeFromSuperview()
             }
-            self.isHighlighted = false
+            isHighlighted = false
         }
     }
 }

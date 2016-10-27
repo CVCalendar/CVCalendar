@@ -61,7 +61,7 @@ private extension CVCalendarTouchController {
         if let calendarView = dayView.weekView.monthView.calendarView {
             switch selectionType {
             case .single:
-                if self.calendarView.shouldSelectRange {
+                if calendarView.shouldSelectRange {
                     coordinator.performDayViewRangeSelection(dayView)
                 } else {
                     coordinator.performDayViewSingleSelection(dayView)

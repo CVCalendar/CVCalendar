@@ -39,10 +39,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction func removeCircleAndDot(sender: AnyObject) {
-//        if let dayView = selectedDay {
-//            calendarView.contentController.removeCircleLabel(dayView)
-//            calendarView.contentController.removeDotViews(dayView)
-//        }
+
     }
     
     @IBAction func refreshMonth(sender: AnyObject) {
@@ -93,7 +90,6 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     }
     
     func didSelectDayView(_ dayView: CVCalendarDayView, animationDidFinish: Bool) {
-//        print("\(dayView.date.commonDescription) is selected!")
         selectedDay = dayView
     }
 
@@ -146,45 +142,7 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     func topMarker(shouldDisplayOnDayView dayView: CVCalendarDayView) -> Bool {
         return true
     }
-    
-//    func dotMarker(shouldShowOnDayView dayView: CVCalendarDayView) -> Bool {
-//        let day = dayView.date.day
-//        let randomDay = Int(arc4random_uniform(31))
-//        if day == randomDay {
-//            return true
-//        }
-//        
-//        return false
-//    }
-//    
-//    func dotMarker(colorOnDayView dayView: CVCalendarDayView) -> [UIColor] {
-//        
-//        let red = CGFloat(arc4random_uniform(600) / 255)
-//        let green = CGFloat(arc4random_uniform(600) / 255)
-//        let blue = CGFloat(arc4random_uniform(600) / 255)
-//        
-//        let color = UIColor(red: red, green: green, blue: blue, alpha: 1)
-//
-//        let numberOfDots = Int(arc4random_uniform(3) + 1)
-//        switch(numberOfDots) {
-//        case 2:
-//            return [color, color]
-//        case 3:
-//            return [color, color, color]
-//        default:
-//            return [color] // return 1 dot
-//        }
-//    }
-//    
-//    func dotMarker(shouldMoveOnHighlightingOnDayView dayView: CVCalendarDayView) -> Bool {
-//        return true
-//    }
-//
-//    func dotMarker(sizeOnDayView dayView: DayView) -> CGFloat {
-//        return 13
-//    }
 
-    
     func weekdaySymbolType() -> WeekdaySymbolType {
         return .short
     }
@@ -365,7 +323,6 @@ extension ViewController {
 extension ViewController {
     func toggleMonthViewWithMonthOffset(offset: Int) {
         let calendar = NSCalendar.current
-//        let calendarManager = calendarView.manager
         var components = Manager.componentsForDate(Foundation.Date()) // from today
         
         components.month! += offset
@@ -377,8 +334,6 @@ extension ViewController {
     
     func didShowNextMonthView(date: NSDate)
     {
-//        let calendar = NSCalendar.currentCalendar()
-//        let calendarManager = calendarView.manager
         let components = Manager.componentsForDate(date as Date) // from today
         
         print("Showing Month: \(components.month)")
@@ -387,8 +342,6 @@ extension ViewController {
     
     func didShowPreviousMonthView(date: NSDate)
     {
-//        let calendar = NSCalendar.currentCalendar()
-//        let calendarManager = calendarView.manager
         let components = Manager.componentsForDate(date as Date) // from today
         
         print("Showing Month: \(components.month)")

@@ -101,21 +101,21 @@ extension CVCalendarDayViewControlCoordinator {
         if selectionSet.count == 2 {
             clearSelection(in: dayView.monthView)
             flush()
-
             select(dayView: dayView)
-        } else if selectionSet.count == 1 {
-            guard let previouslySelectedDayView = selectionSet.first,
-                let previouslySelectedDate = selectionSet.first?.date.convertedDate(),
-                let currentlySelectedDate = dayView.date.convertedDate() else {
-                    return
-            }
+
+            return
+        }
+
+        if selectionSet.count == 1,
+           let previouslySelectedDayView = selectionSet.first,
+           let previouslySelectedDate = selectionSet.first?.date.convertedDate(),
+           let currentlySelectedDate = dayView.date.convertedDate() {
 
             //prevent selection of same day twice for range
             if previouslySelectedDayView === dayView {
                 return
             }
 
-            //allows selection in reverse order (like selecting 5-10-16 first then 5-5-16) when maxselectable range is not present
             if previouslySelectedDate < currentlySelectedDate {
                 selectedStartDayView = previouslySelectedDayView
                 selectedEndDayView = dayView
@@ -128,9 +128,11 @@ extension CVCalendarDayViewControlCoordinator {
 
             selectionSet.insert(dayView)
             highlightSelectedDays(in: dayView.monthView)
-        } else {
-            select(dayView: dayView)
+
+            return
         }
+
+        select(dayView: dayView)
     }
 
     public func highlightSelectedDays(in monthView: MonthView) {
@@ -139,23 +141,24 @@ extension CVCalendarDayViewControlCoordinator {
         let endDate = selectedEndDayView?.date.convertedDate()
 
         monthView.mapDayViews { dayView in
-            if let currDate = dayView.date.convertedDate() {
+            guard let currDate = dayView.date.convertedDate() else {
+                return
+            }
 
-                if let startDate = startDate,
-                    currDate.compare(startDate) == .orderedSame {
-                    presentSelectionOnDayView(dayView)
-                }
+            if let startDate = startDate,
+                currDate.compare(startDate) == .orderedSame {
+                presentSelectionOnDayView(dayView)
+            }
 
-                if let startDate = startDate,
-                    let endDate = endDate,
-                    currDate.compare(startDate) == .orderedDescending && currDate.compare(endDate) == .orderedAscending {
-                    presentSelectionOnDayView(dayView)
-                }
+            if let startDate = startDate,
+                let endDate = endDate,
+                currDate.compare(startDate) == .orderedDescending && currDate.compare(endDate) == .orderedAscending {
+                presentSelectionOnDayView(dayView)
+            }
 
-                if let endDate = endDate,
-                    currDate.compare(endDate) == .orderedSame {
-                    presentSelectionOnDayView(dayView)
-                }
+            if let endDate = endDate,
+                currDate.compare(endDate) == .orderedSame {
+                presentSelectionOnDayView(dayView)
             }
         }
     }
@@ -189,27 +192,28 @@ private extension CVCalendarDayViewControlCoordinator {
 
     func disableDays(inMonth monthView:MonthView, beforeDate: Date?, afterDate: Date?) {
         monthView.mapDayViews { dayView in
-            if let currDate = dayView.date.convertedDate() {
+            guard let currDate = dayView.date.convertedDate() else {
+                return
+            }
 
-                if let earliestDate = calendarView.earliestSelectableDate,
-                    currDate.compare(earliestDate) == .orderedAscending {
-                    disableUserInteraction(for: dayView)
-                }
+            if let earliestDate = calendarView.earliestSelectableDate,
+                currDate.compare(earliestDate) == .orderedAscending {
+                disableUserInteraction(for: dayView)
+            }
 
-                if let beforeDate = beforeDate,
-                   currDate.compare(beforeDate) == .orderedAscending {
-                    disableUserInteraction(for: dayView)
-                }
+            if let beforeDate = beforeDate,
+               currDate.compare(beforeDate) == .orderedAscending {
+                disableUserInteraction(for: dayView)
+            }
 
-                if let afterDate = afterDate,
-                   currDate.compare(afterDate) == .orderedDescending || currDate.compare(afterDate) == .orderedSame {
-                    disableUserInteraction(for: dayView)
-                }
+            if let afterDate = afterDate,
+               currDate.compare(afterDate) == .orderedDescending || currDate.compare(afterDate) == .orderedSame {
+                disableUserInteraction(for: dayView)
+            }
 
-                if let latestDate = calendarView.latestSelectableDate,
-                    currDate.compare(latestDate) == .orderedDescending {
-                    disableUserInteraction(for: dayView)
-                }
+            if let latestDate = calendarView.latestSelectableDate,
+                currDate.compare(latestDate) == .orderedDescending {
+                disableUserInteraction(for: dayView)
             }
         }
     }
@@ -221,22 +225,23 @@ private extension CVCalendarDayViewControlCoordinator {
 
     func clearSelection(in monthView: MonthView) {
         monthView.mapDayViews { dayView in
-            if let currDate = dayView.date.convertedDate() {
-                var shouldEnable = true
-                if let earliestDate = calendarView.earliestSelectableDate,
-                    currDate.compare(earliestDate) == .orderedAscending {
-                    shouldEnable = false
-                }
-
-                if let latestDate = calendarView.latestSelectableDate,
-                    currDate.compare(latestDate) == .orderedDescending {
-                    shouldEnable = false
-                }
-                if shouldEnable {
-                    dayView.isUserInteractionEnabled = true
-                }
-                presentDeselectionOnDayView(dayView)
+            guard let currDate = dayView.date.convertedDate() else {
+                return
             }
+            var shouldEnable = true
+            if let earliestDate = calendarView.earliestSelectableDate,
+                currDate.compare(earliestDate) == .orderedAscending {
+                shouldEnable = false
+            }
+
+            if let latestDate = calendarView.latestSelectableDate,
+                currDate.compare(latestDate) == .orderedDescending {
+                shouldEnable = false
+            }
+            if shouldEnable {
+                dayView.isUserInteractionEnabled = true
+            }
+            presentDeselectionOnDayView(dayView)
         }
     }
 }
