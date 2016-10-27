@@ -600,7 +600,8 @@ extension CVCalendarDayView {
         }
 
         if selectionView != nil {
-            setSelectedWithType(.range(.changed))
+            let selectionType = calendarView.shouldSelectRange ? CVSelectionType.range(.changed) : CVSelectionType.single
+            setSelectedWithType(selectionType)
         }
     }
 }

@@ -11,7 +11,6 @@ import UIKit
 public final class CVCalendarDayViewControlCoordinator {
     // MARK: - Non public properties
     fileprivate var selectionSet = Set<DayView>()
-    fileprivate var highlightedDayViews = [DayView]()
     fileprivate unowned let calendarView: CalendarView
 
     // MARK: - Public properties

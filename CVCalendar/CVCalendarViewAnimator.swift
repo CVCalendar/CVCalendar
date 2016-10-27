@@ -31,7 +31,10 @@ public final class CVCalendarViewAnimator {
 extension CVCalendarViewAnimator {
     public func animateSelectionOnDayView(_ dayView: DayView) {
         let selectionAnimation = delegate.selectionAnimation()
-        dayView.setSelectedWithType(.range(.changed))
+
+        let selectionType = calendarView.shouldSelectRange ? CVSelectionType.range(.changed) : CVSelectionType.single
+        dayView.setSelectedWithType(selectionType)
+
         selectionAnimation(dayView) { [unowned dayView] _ in
             let _ = dayView
             // Something...

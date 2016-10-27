@@ -432,6 +432,7 @@ extension CVCalendarMonthContentViewController {
             scrollView.contentOffset = CGPoint(x: scrollView.contentOffset.x, y: 0)
         }
 
+        //restricts scrolling to previous months
         if monthViews[presented]?.allowScrollToPreviousMonth == false,
            scrollView.contentOffset.x < scrollView.frame.width {
             scrollView.setContentOffset(CGPoint(x: scrollView.frame.width, y: 0), animated: false)

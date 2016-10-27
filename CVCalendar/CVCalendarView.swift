@@ -111,7 +111,7 @@ public final class CVCalendarView: UIView {
             if let delegate = delegate, let should = delegate.shouldSelectRange?() {
                 return should
             }
-            return true
+            return false
         }
     }
 
