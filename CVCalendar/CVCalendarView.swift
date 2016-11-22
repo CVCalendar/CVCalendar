@@ -96,6 +96,51 @@ public final class CVCalendarView: UIView {
         return true
     }
 
+    public var shouldSelectRange: Bool {
+        get {
+            if let delegate = delegate, let should = delegate.shouldSelectRange?() {
+                return should
+            }
+            return false
+        }
+    }
+
+    public var disableScrollingBeyondDate: Date? {
+        get {
+            if let delegate = delegate, let date = delegate.disableScrollingBeforeDate?() {
+                return date
+            }
+            return nil
+        }
+    }
+
+    public var maxSelectableRange: Int {
+        get {
+            if let delegate = delegate, let range = delegate.maxSelectableRange?() {
+                return range
+            }
+            return 0
+        }
+    }
+
+    public var earliestSelectableDate: Date? {
+        get {
+            if let delegate = delegate, let date = delegate.earliestSelectableDate?() {
+                return date
+            }
+            return nil
+        }
+    }
+
+    public var latestSelectableDate: Date? {
+        get {
+            if let delegate = delegate, let date = delegate.latestSelectableDate?() {
+                return date
+            }
+            return nil
+        }
+    }
+
     // MARK: - Calendar View Delegate
 
     @IBOutlet public weak var calendarDelegate: AnyObject? {

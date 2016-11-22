@@ -45,6 +45,8 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
             }
         }
 
+        checkScrollToPreviousDisabled()
+
         calendarView.presentedDate = CVDate(date: presentedMonthView.date)
     }
 
@@ -65,6 +67,8 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
         monthView.frame.origin = CGPoint(x: scrollView.bounds.width * index, y: 0)
         monthViews[identifier] = monthView
         scrollView.addSubview(monthView)
+        checkScrollToPreviousDisabled()
+        calendarView.coordinator?.disableDays(in: presentedMonthView)
     }
 
     public func replaceMonthView(_ monthView: MonthView,
@@ -306,6 +310,18 @@ extension CVCalendarMonthContentViewController {
 
         return monthView
     }
+
+    func checkScrollToPreviousDisabled() {
+        if let presentedMonth = monthViews[presented],
+           let disableScrollingBeyondDate = calendarView.disableScrollingBeyondDate {
+            let convertedDate = CVDate(date: disableScrollingBeyondDate)
+            presentedMonth.mapDayViews({ dayView in
+                if matchedDays(convertedDate, dayView.date) {
+                    presentedMonth.allowScrollToPreviousMonth = false
+                }
+            })
+        }
+    }
 }
 
 // MARK: - Visual preparation
@@ -382,6 +398,13 @@ extension CVCalendarMonthContentViewController {
                                                  inMonthView: presentedMonthView)
                         }
             }
+
+            if coordinator?.selectedStartDayView != nil || coordinator?.selectedEndDayView != nil {
+                coordinator?.highlightSelectedDays(in: presentedMonthView)
+            }
+
+            coordinator?.disableDays(in: presentedMonthView)
+
         }
 
     }
@@ -403,13 +426,20 @@ extension CVCalendarMonthContentViewController {
 // MARK: - UIScrollViewDelegate
 
 extension CVCalendarMonthContentViewController {
+
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y != 0 {
             scrollView.contentOffset = CGPoint(x: scrollView.contentOffset.x, y: 0)
         }
 
-        let page = Int(floor((scrollView.contentOffset.x -
-            scrollView.frame.width / 2) / scrollView.frame.width) + 1)
+        //restricts scrolling to previous months
+        if monthViews[presented]?.allowScrollToPreviousMonth == false,
+           scrollView.contentOffset.x < scrollView.frame.width {
+            scrollView.setContentOffset(CGPoint(x: scrollView.frame.width, y: 0), animated: false)
+            return
+        }
+
+        let page = Int(floor((scrollView.contentOffset.x - scrollView.frame.width / 2) / scrollView.frame.width) + 1)
         if currentPage != page {
             currentPage = page
         }
@@ -436,7 +466,6 @@ extension CVCalendarMonthContentViewController {
         updateLayoutIfNeeded()
         pageLoadingEnabled = true
         direction = .none
-
     }
 
     public func scrollViewDidEndDragging(_ scrollView: UIScrollView,

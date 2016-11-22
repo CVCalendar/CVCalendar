@@ -20,6 +20,8 @@ public final class CVCalendarDayView: UIView {
     public var topMarker: CALayer?
     public var dotMarkers = [CVAuxiliaryView?]()
 
+    public var isHighlighted = false
+
     public var isOut = false
     public var isCurrentDay = false
     public var isDisabled: Bool { return !self.isUserInteractionEnabled }
@@ -460,6 +462,10 @@ extension CVCalendarDayView {
 
 extension CVCalendarDayView {
     public func setSelectedWithType(_ type: SelectionType) {
+
+        if isHighlighted {
+            return
+        }
         let appearance = calendarView.appearance
         var backgroundColor: UIColor!
         var backgroundAlpha: CGFloat!
@@ -531,6 +537,7 @@ extension CVCalendarDayView {
         insertSubview(selectionView!, at: 0)
 
         moveDotMarkerBack(false, coloring: false)
+        isHighlighted = true
     }
 
     public func setDeselectedWithClearing(_ clearing: Bool) {
@@ -573,6 +580,7 @@ extension CVCalendarDayView {
             if clearing {
                 selectionView?.removeFromSuperview()
             }
+            isHighlighted = false
         }
     }
 }
@@ -597,7 +605,8 @@ extension CVCalendarDayView {
         }
 
         if selectionView != nil {
-            setSelectedWithType(.single)
+            let selectionType = calendarView.shouldSelectRange ? CVSelectionType.range(.changed) : CVSelectionType.single
+            setSelectedWithType(selectionType)
         }
     }
 }
