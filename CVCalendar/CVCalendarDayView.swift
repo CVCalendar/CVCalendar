@@ -122,10 +122,12 @@ public final class CVCalendarDayView: UIView {
         } else {
             day = weekdaysIn![weekdayIndex]![0]
         }
+        
+        let calendar = self.calendarView.delegate?.calendar?() ?? Calendar.current
 
         if day == monthView.currentDay && !isOut {
-            let dateRange = Manager.dateRange(monthView.date)
-            let currentDateRange = Manager.dateRange(Foundation.Date())
+            let dateRange = Manager.dateRange(monthView.date, calendar: calendar)
+            let currentDateRange = Manager.dateRange(Foundation.Date(), calendar: calendar)
 
             if dateRange.month == currentDateRange.month &&
                 dateRange.year == currentDateRange.year {
@@ -133,7 +135,7 @@ public final class CVCalendarDayView: UIView {
             }
         }
 
-        let dateRange = Manager.dateRange(monthView.date)
+        let dateRange = Manager.dateRange(monthView.date, calendar: calendar)
         let year = dateRange.year
         let week = weekView.index + 1
         var month = dateRange.month
@@ -142,7 +144,7 @@ public final class CVCalendarDayView: UIView {
             day > 20 ? (month -= 1) : (month += 1)
         }
 
-        return CVDate(day: day, month: month, week: week, year: year)
+        return CVDate(day: day, month: month, week: week, year: year, calendar: calendar)
     }
 
     public required init?(coder aDecoder: NSCoder) {
@@ -187,7 +189,8 @@ extension CVCalendarDayView {
             color = appearance?.dayLabelWeekdayInTextColor
         }
         
-        let weekDay = self.date?.weekDay ?? .monday // Monday is default
+        let calendar = self.calendarView.delegate?.calendar?() ?? Calendar.current
+        let weekDay = self.date?.weekDay(calendar: calendar) ?? .monday // Monday is default
         let status: CVStatus = {
             if isDisabled { return .disabled }
             else if isOut { return .out }
@@ -469,7 +472,8 @@ extension CVCalendarDayView {
         var backgroundAlpha: CGFloat!
         var shape: CVShape!
         
-        let weekDay = self.date?.weekDay ?? .monday // Monday is default
+        let calendar = self.calendarView.delegate?.calendar?() ?? Calendar.current
+        let weekDay = self.date?.weekDay(calendar: calendar) ?? .monday // Monday is default
         let present: CVPresent = isCurrentDay ? .present : .not
 
         switch type {
@@ -561,7 +565,8 @@ extension CVCalendarDayView {
                 font = appearance.dayLabelWeekdayFont
             }
             
-            let weekDay = self.date?.weekDay ?? .monday // Monday is default
+            let calendar = self.calendarView.delegate?.calendar?() ?? Calendar.current
+            let weekDay = self.date?.weekDay(calendar: calendar) ?? .monday // Monday is default
             let status: CVStatus = {
                 if isDisabled { return .disabled }
                 else if isOut { return .out }

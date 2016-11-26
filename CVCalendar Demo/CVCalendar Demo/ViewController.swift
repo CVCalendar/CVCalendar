@@ -32,13 +32,23 @@ class ViewController: UIViewController {
     
     var selectedDay:DayView!
     
+    var currentCalendar: Calendar?
+    
     // MARK: - Life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        monthLabel.text = CVDate(date: Date()).globalDescription
+        let timeZoneBias = 480 // (UTC+08:00)
+        currentCalendar = Calendar.init(identifier: .gregorian)
+        if let timeZone = TimeZone.init(secondsFromGMT: -timeZoneBias * 60) {
+            currentCalendar?.timeZone = timeZone
+        }
         
+        if let currentCalendar = currentCalendar {
+            monthLabel.text = CVDate(date: Date(), calendar: currentCalendar).globalDescription
+        }
+
         randomizeDotMarkers()
     }
 
@@ -91,8 +101,12 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     
     // MARK: Optional methods
     
+    func calendar() -> Calendar? {
+        return currentCalendar
+    }
+    
     func dayOfWeekTextColor(by weekday: Weekday) -> UIColor {
-        return weekday == .sunday ? UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0) : UIColor.white
+        return weekday == .sunday ? UIColor(red: 1.0, green: 0.5, blue: 0.5, alpha: 1.0) : UIColor.white
     }
     
     func shouldShowWeekdaysOut() -> Bool {
@@ -355,32 +369,36 @@ extension ViewController {
 
 extension ViewController {
     func toggleMonthViewWithMonthOffset(offset: Int) {
-        let calendar = NSCalendar.current
-//        let calendarManager = calendarView.manager
-        var components = Manager.componentsForDate(Foundation.Date()) // from today
+        guard let currentCalendar = currentCalendar else {
+            return
+        }
+        
+        var components = Manager.componentsForDate(Foundation.Date(), calendar: currentCalendar) // from today
         
         components.month! += offset
         
-        let resultDate = calendar.date(from: components)!
+        let resultDate = currentCalendar.date(from: components)!
         
         self.calendarView.toggleViewWithDate(resultDate)
     }
     
-    func didShowNextMonthView(date: NSDate)
-    {
-//        let calendar = NSCalendar.currentCalendar()
-//        let calendarManager = calendarView.manager
-        let components = Manager.componentsForDate(date as Date) // from today
+    func didShowNextMonthView(date: NSDate) {
+        guard let currentCalendar = currentCalendar else {
+            return
+        }
+        
+        let components = Manager.componentsForDate(date as Date, calendar: currentCalendar) // from today
         
         print("Showing Month: \(components.month)")
     }
     
     
-    func didShowPreviousMonthView(date: NSDate)
-    {
-//        let calendar = NSCalendar.currentCalendar()
-//        let calendarManager = calendarView.manager
-        let components = Manager.componentsForDate(date as Date) // from today
+    func didShowPreviousMonthView(date: NSDate) {
+        guard let currentCalendar = currentCalendar else {
+            return
+        }
+        
+        let components = Manager.componentsForDate(date as Date, calendar: currentCalendar) // from today
         
         print("Showing Month: \(components.month)")
     }
