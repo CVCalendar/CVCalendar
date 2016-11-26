@@ -42,6 +42,8 @@ public final class CVCalendarView: UIView {
     public var (weekViewSize, dayViewSize): (CGSize?, CGSize?)
 
     fileprivate var validated = false
+    fileprivate var currentOrientation: UIDeviceOrientation
+    fileprivate var maxHeight: CGFloat = 0
 
     public var firstWeekday: Weekday {
         if let delegate = delegate {
@@ -173,17 +175,23 @@ public final class CVCalendarView: UIView {
     // MARK: - Initialization
 
     public init() {
+        currentOrientation = UIDevice.current.orientation
+        
         super.init(frame: CGRect.zero)
         isHidden = true
     }
 
     public override init(frame: CGRect) {
+        currentOrientation = UIDevice.current.orientation
+        
         super.init(frame: frame)
         isHidden = true
     }
 
     // IB Initialization
     public required init?(coder aDecoder: NSCoder) {
+        currentOrientation = UIDevice.current.orientation
+        
         super.init(coder: aDecoder)
         isHidden = true
     }
@@ -193,6 +201,13 @@ public final class CVCalendarView: UIView {
 
 extension CVCalendarView {
     public func commitCalendarViewUpdate() {
+        if currentOrientation != UIDevice.current.orientation {
+            validated = false
+            currentOrientation = UIDevice.current.orientation
+        }
+    
+        setNeedsLayout()
+        layoutIfNeeded()
         if let _ = delegate, let contentController = contentController {
             let contentViewSize = contentController.bounds.size
             let selfSize = bounds.size
@@ -207,13 +222,18 @@ extension CVCalendarView {
 
                 let vSpace = appearance.spaceBetweenWeekViews!
                 let hSpace = appearance.spaceBetweenDayViews!
+                
+                if selfSize.height > maxHeight {
+                    maxHeight = selfSize.height
+                }
 
                 if let mode = calendarMode {
                     switch mode {
                     case .weekView:
-                        height = selfSize.height
+                        height = contentViewSize.height
+                        contentController.updateHeight(height, animated: false)
                     case .monthView :
-                        height = (selfSize.height / countOfWeeks) - (vSpace * countOfWeeks)
+                        height = (maxHeight / countOfWeeks) - (vSpace * countOfWeeks)
                     }
 
                     // If no height constraint found we set it manually.
