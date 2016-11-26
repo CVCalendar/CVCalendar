@@ -25,6 +25,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var monthLabel: UILabel!
     @IBOutlet weak var daysOutSwitch: UISwitch!
     
+    fileprivate var randomNumberOfDotMarkersForDay = [Int]()
+    
     var shouldShowDaysOut = true
     var animationFinished = true
     
@@ -36,17 +38,26 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         monthLabel.text = CVDate(date: Date()).globalDescription
+        
+        randomizeDotMarkers()
     }
 
     @IBAction func removeCircleAndDot(sender: AnyObject) {
         if let dayView = selectedDay {
             calendarView.contentController.removeCircleLabel(dayView)
-            calendarView.contentController.removeDotViews(dayView)
+            
+            if dayView.date.day < randomNumberOfDotMarkersForDay.count {
+                randomNumberOfDotMarkersForDay[dayView.date.day] = 0
+            }
+            
+            calendarView.contentController.refreshPresentedMonth()
         }
     }
     
     @IBAction func refreshMonth(sender: AnyObject) {
         calendarView.contentController.refreshPresentedMonth()
+        
+        randomizeDotMarkers()
     }
     
     override func viewDidLayoutSubviews() {
@@ -54,6 +65,13 @@ class ViewController: UIViewController {
         
         calendarView.commitCalendarViewUpdate()
         menuView.commitMenuViewUpdate()
+    }
+    
+    private func randomizeDotMarkers() {
+        randomNumberOfDotMarkersForDay = [Int]()
+        for _ in 0...31 {
+            randomNumberOfDotMarkersForDay.append(Int(arc4random_uniform(3) + 1))
+        }
     }
 }
 
@@ -74,7 +92,7 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     // MARK: Optional methods
     
     func dayOfWeekTextColor(by weekday: Weekday) -> UIColor {
-        return weekday == .sunday ? UIColor(red: 1.0, green: 0.5, blue: 0.5, alpha: 1.0) : UIColor.white
+        return weekday == .sunday ? UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0) : UIColor.white
     }
     
     func shouldShowWeekdaysOut() -> Bool {
@@ -137,9 +155,12 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     }
     
     func dotMarker(shouldShowOnDayView dayView: CVCalendarDayView) -> Bool {
-        let day = dayView.date.day
-        let randomDay = Int(arc4random_uniform(31))
-        if day == randomDay {
+        var shouldShow = false
+        if dayView.date.day < randomNumberOfDotMarkersForDay.count {
+            shouldShow = randomNumberOfDotMarkersForDay[dayView.date.day] > 0
+        }
+        
+        if shouldShow {
             return true
         }
         
@@ -154,7 +175,10 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
         
         let color = UIColor(red: red, green: green, blue: blue, alpha: 1)
 
-        let numberOfDots = Int(arc4random_uniform(3) + 1)
+        var numberOfDots = 1
+        if dayView.date.day < randomNumberOfDotMarkersForDay.count {
+            numberOfDots = randomNumberOfDotMarkersForDay[dayView.date.day]
+        }
         switch(numberOfDots) {
         case 2:
             return [color, color]
@@ -200,6 +224,10 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     }
     
     func supplementaryView(viewOnDayView dayView: DayView) -> UIView {
+        
+        dayView.setNeedsLayout()
+        dayView.layoutIfNeeded()
+        
         let π = M_PI
         
         let ringSpacing: CGFloat = 3.0
@@ -209,9 +237,9 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
         let ringLineWidth: CGFloat = 4.0
         let ringLineColour: UIColor = .blue
         
-        let newView = UIView(frame: dayView.bounds)
+        let newView = UIView(frame: dayView.frame)
         
-        let diameter: CGFloat = (newView.bounds.width) - ringSpacing
+        let diameter: CGFloat = (min(newView.bounds.width, newView.bounds.height)) - ringSpacing
         let radius: CGFloat = diameter / 2.0
         
         let rect = CGRect(x: newView.frame.midX-radius, y: newView.frame.midY-radius-ringVerticalOffset, width: diameter, height: diameter)
