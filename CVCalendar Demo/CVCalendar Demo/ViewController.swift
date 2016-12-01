@@ -48,10 +48,10 @@ class ViewController: UIViewController {
         if let currentCalendar = currentCalendar {
             monthLabel.text = CVDate(date: Date(), calendar: currentCalendar).globalDescription
         }
-
+        
         randomizeDotMarkers()
     }
-
+    
     @IBAction func removeCircleAndDot(sender: AnyObject) {
         if let dayView = selectedDay {
             calendarView.contentController.removeCircleLabel(dayView)
@@ -121,9 +121,20 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
         return arc4random_uniform(3) == 0 ? true : false
     }
     
+    func shouldAutoSelectDayOnMonthChange() -> Bool {
+        return false
+    }
+    
     func didSelectDayView(_ dayView: CVCalendarDayView, animationDidFinish: Bool) {
-        print("\(dayView.date.commonDescription) is selected!")
         selectedDay = dayView
+    }
+    
+    func shouldSelectRange() -> Bool {
+        return true
+    }
+    
+    func didSelectRange(from startDayView: DayView, to endDayView: DayView) {
+        print("RANGE SELECTED: \(startDayView.date.commonDescription) to \(endDayView.date.commonDescription)")
     }
     
     func presentedDateUpdated(_ date: CVDate) {
@@ -150,14 +161,14 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
                 updatedMonthLabel.alpha = 1
                 updatedMonthLabel.transform = CGAffineTransform.identity
                 
-                }) { _ in
-                    
-                    self.animationFinished = true
-                    self.monthLabel.frame = updatedMonthLabel.frame
-                    self.monthLabel.text = updatedMonthLabel.text
-                    self.monthLabel.transform = CGAffineTransform.identity
-                    self.monthLabel.alpha = 1
-                    updatedMonthLabel.removeFromSuperview()
+            }) { _ in
+                
+                self.animationFinished = true
+                self.monthLabel.frame = updatedMonthLabel.frame
+                self.monthLabel.text = updatedMonthLabel.text
+                self.monthLabel.transform = CGAffineTransform.identity
+                self.monthLabel.alpha = 1
+                updatedMonthLabel.removeFromSuperview()
             }
             
             self.view.insertSubview(updatedMonthLabel, aboveSubview: self.monthLabel)
@@ -168,49 +179,6 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
         return true
     }
     
-    func dotMarker(shouldShowOnDayView dayView: CVCalendarDayView) -> Bool {
-        var shouldShow = false
-        if dayView.date.day < randomNumberOfDotMarkersForDay.count {
-            shouldShow = randomNumberOfDotMarkersForDay[dayView.date.day] > 0
-        }
-        
-        if shouldShow {
-            return true
-        }
-        
-        return false
-    }
-    
-    func dotMarker(colorOnDayView dayView: CVCalendarDayView) -> [UIColor] {
-        
-        let red = CGFloat(arc4random_uniform(600) / 255)
-        let green = CGFloat(arc4random_uniform(600) / 255)
-        let blue = CGFloat(arc4random_uniform(600) / 255)
-        
-        let color = UIColor(red: red, green: green, blue: blue, alpha: 1)
-
-        var numberOfDots = 1
-        if dayView.date.day < randomNumberOfDotMarkersForDay.count {
-            numberOfDots = randomNumberOfDotMarkersForDay[dayView.date.day]
-        }
-        switch(numberOfDots) {
-        case 2:
-            return [color, color]
-        case 3:
-            return [color, color, color]
-        default:
-            return [color] // return 1 dot
-        }
-    }
-    
-    func dotMarker(shouldMoveOnHighlightingOnDayView dayView: CVCalendarDayView) -> Bool {
-        return true
-    }
-
-    func dotMarker(sizeOnDayView dayView: DayView) -> CGFloat {
-        return 13
-    }
-
     
     func weekdaySymbolType() -> WeekdaySymbolType {
         return .short
@@ -223,7 +191,7 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     func shouldShowCustomSingleSelection() -> Bool {
         return false
     }
-
+    
     func preliminaryView(viewOnDayView dayView: DayView) -> UIView {
         let circleView = CVAuxiliaryView(dayView: dayView, rect: dayView.frame, shape: CVShape.circle)
         circleView.fillColor = .colorFromCode(0xCCCCCC)
@@ -293,18 +261,47 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     func dayOfWeekBackGroundColor() -> UIColor {
         return UIColor.orange
     }
+    
+    
+    func disableScrollingBeforeDate() -> Date {
+        return Date()
+    }
+    
+    func maxSelectableRange() -> Int {
+        return 14
+    }
+    
+    func earliestSelectableDate() -> Date {
+        return Date()
+    }
+    
+    func latestSelectableDate() -> Date {
+        var dayComponents = DateComponents()
+        dayComponents.day = 70
+        let calendar = Calendar(identifier: .gregorian)
+        if let lastDate = calendar.date(byAdding: dayComponents, to: Date()) {
+            return lastDate
+        } else {
+            return Date()
+        }
+    }
 }
 
 
 // MARK: - CVCalendarViewAppearanceDelegate
 
 extension ViewController: CVCalendarViewAppearanceDelegate {
+    
+    func dayLabelWeekdayDisabledColor() -> UIColor {
+        return UIColor.lightGray
+    }
+    
     func dayLabelPresentWeekdayInitallyBold() -> Bool {
         return false
     }
     
     func spaceBetweenDayViews() -> CGFloat {
-        return 2
+        return 0
     }
     
     func dayLabelFont(by weekDay: Weekday, status: CVStatus, present: CVPresent) -> UIFont { return UIFont.systemFont(ofSize: 14) }

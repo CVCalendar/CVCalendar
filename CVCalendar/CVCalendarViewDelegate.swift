@@ -46,5 +46,14 @@ public protocol CVCalendarViewDelegate {
     @objc optional func didShowNextMonthView(_ date: Foundation.Date)
     @objc optional func didShowPreviousMonthView(_ date: Foundation.Date)
     
+    // Localization
     @objc optional func calendar() -> Calendar?
+    
+    // Range selection
+    @objc optional func shouldSelectRange() -> Bool
+    @objc optional func didSelectRange(from startDayView: DayView, to endDayView: DayView)
+    @objc optional func disableScrollingBeforeDate() -> Date
+    @objc optional func maxSelectableRange() -> Int
+    @objc optional func earliestSelectableDate() -> Date
+    @objc optional func latestSelectableDate() -> Date
 }
