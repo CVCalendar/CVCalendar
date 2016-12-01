@@ -16,7 +16,7 @@ public final class CVDate: NSObject {
     public let week: Int
     public let day: Int
 
-    public init(date: Foundation.Date, calendar: Calendar) {
+    public init(date: Foundation.Date, calendar: Calendar = Calendar.current) {
         let dateRange = Manager.dateRange(date, calendar: calendar)
 
         self.date = date
@@ -28,7 +28,7 @@ public final class CVDate: NSObject {
         super.init()
     }
 
-    public init(day: Int, month: Int, week: Int, year: Int, calendar: Calendar) {
+    public init(day: Int, month: Int, week: Int, year: Int, calendar: Calendar = Calendar.current) {
         if let date = Manager.dateFromYear(year, month: month, week: week, day: day, calendar: calendar) {
             self.date = date
         } else {
@@ -45,12 +45,12 @@ public final class CVDate: NSObject {
 }
 
 extension CVDate {
-    public func weekDay(calendar: Calendar) -> Weekday? {
+    public func weekDay(calendar: Calendar = Calendar.current) -> Weekday? {
         let components = (calendar as NSCalendar).components(NSCalendar.Unit.weekday, from: self.date)
         return Weekday(rawValue: components.weekday!)
     }
     
-    public func convertedDate(calendar: Calendar) -> Foundation.Date? {
+    public func convertedDate(calendar: Calendar = Calendar.current) -> Foundation.Date? {
         var comps = Manager.componentsForDate(Foundation.Date(), calendar: calendar)
 
         comps.year = year
