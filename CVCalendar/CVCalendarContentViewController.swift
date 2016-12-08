@@ -230,12 +230,14 @@ extension CVCalendarContentViewController {
                     if animated {
                         UIView.animate(withDuration: 0.2, delay: 0,
                                                    options: UIViewAnimationOptions.curveLinear,
-                                                   animations: {
-                            self.layoutViews(viewsToLayout, toHeight: height)
-                            }) { _ in
-                                self.presentedMonthView.frame.size =
-                                    self.presentedMonthView.potentialSize
-                                self.presentedMonthView.updateInteractiveView()
+                                                   animations: { [weak self] in
+                            self?.layoutViews(viewsToLayout, toHeight: height)
+                        }) { [weak self] _ in
+                            guard let strongSelf = self else {
+                                return
+                            }
+                            strongSelf.presentedMonthView.frame.size = strongSelf.presentedMonthView.potentialSize
+                            strongSelf.presentedMonthView.updateInteractiveView()
                         }
                     } else {
                         layoutViews(viewsToLayout, toHeight: height)
