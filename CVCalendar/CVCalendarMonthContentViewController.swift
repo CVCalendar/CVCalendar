@@ -204,27 +204,33 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
             
             UIView.animate(withDuration: 0.5, delay: 0,
                            options: UIViewAnimationOptions(),
-                           animations: {
-                            self.prepareTopMarkersOnMonthView(presented, hidden: true)
-                            
-                            extra.frame.origin.x -= self.scrollView.frame.width
-                            presented.frame.origin.x -= self.scrollView.frame.width
-                            following.frame.origin.x -= self.scrollView.frame.width
-                            
-                            self.replaceMonthView(presented, withIdentifier: self.previous, animatable: false)
-                            self.replaceMonthView(following, withIdentifier: self.presented, animatable: false)
-                            self.presentedMonthView = following
-                            
-                            self.updateLayoutIfNeeded()
-            }) { _ in
-                extra.removeFromSuperview()
-                self.insertMonthView(self.getFollowingMonth(following.date),
-                                     withIdentifier: self.following)
-                self.updateSelection()
-                self.presentationEnabled = true
+                           animations: { [weak self] in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.prepareTopMarkersOnMonthView(presented, hidden: true)
                 
-                for monthView in self.monthViews.values {
-                    self.prepareTopMarkersOnMonthView(monthView, hidden: false)
+                extra.frame.origin.x -= strongSelf.scrollView.frame.width
+                presented.frame.origin.x -= strongSelf.scrollView.frame.width
+                following.frame.origin.x -= strongSelf.scrollView.frame.width
+                
+                strongSelf.replaceMonthView(presented, withIdentifier: strongSelf.previous, animatable: false)
+                strongSelf.replaceMonthView(following, withIdentifier: strongSelf.presented, animatable: false)
+                strongSelf.presentedMonthView = following
+                
+                strongSelf.updateLayoutIfNeeded()
+            }) { [weak self] _ in
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                extra.removeFromSuperview()
+                strongSelf.insertMonthView(strongSelf.getFollowingMonth(following.date), withIdentifier: strongSelf.following)
+                strongSelf.updateSelection()
+                strongSelf.presentationEnabled = true
+                
+                for monthView in strongSelf.monthViews.values {
+                    strongSelf.prepareTopMarkersOnMonthView(monthView, hidden: false)
                 }
             }
         }
@@ -275,13 +281,13 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
                 UIView.animate(withDuration: toggleDateAnimationDuration, delay: 0,
                                options: UIViewAnimationOptions(),
                                animations: {
-                                presentedMonth.alpha = 0
-                                currentMonthView.alpha = 1
-                }) { _ in
+                    presentedMonth.alpha = 0
+                    currentMonthView.alpha = 1
+                }) { [weak self] _ in
                     presentedMonth.removeFromSuperview()
-                    self.selectDayViewWithDay(presentedDate.day, inMonthView: currentMonthView)
-                    self.togglingBlocked = false
-                    self.updateLayoutIfNeeded()
+                    self?.selectDayViewWithDay(presentedDate.day, inMonthView: currentMonthView)
+                    self?.togglingBlocked = false
+                    self?.updateLayoutIfNeeded()
                 }
             } else {
                 if let currentMonthView = monthViews[presented] {

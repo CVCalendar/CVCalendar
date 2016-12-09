@@ -452,13 +452,16 @@ extension CVCalendarDayView {
         if straight && angle < endAngle || !straight && angle > endAngle {
             UIView.animate(withDuration: pow(10, -1000), delay: 0, usingSpringWithDamping: 0.4,
                            initialSpringVelocity: 10,
-                           options: UIViewAnimationOptions.curveEaseIn, animations: {
-                            let angle = angle.toRadians()
-                            view.center = self.pointAtAngle(angle, withinCircleView: circleView)
-            }) { _ in
+                           options: UIViewAnimationOptions.curveEaseIn, animations: { [weak self] in
+                guard let strongSelf = self else {
+                    return
+                }
+                let angle = angle.toRadians()
+                view.center = strongSelf.pointAtAngle(angle, withinCircleView: circleView)
+            }) { [weak self] _ in
                 let speed = CGFloat(750).toRadians()
                 let newAngle = straight ? angle + speed : angle - speed
-                self.moveView(view, onCircleView: circleView, fromAngle: newAngle,
+                self?.moveView(view, onCircleView: circleView, fromAngle: newAngle,
                               toAngle: endAngle, straight: straight)
             }
         }

@@ -370,14 +370,13 @@ extension CVCalendarView {
         newController.scrollView.alpha = 0
         addSubview(newController.scrollView)
 
-        UIView.animate(withDuration: 0.5, delay: 0,
-                                   options: UIViewAnimationOptions(), animations: {
-            self.contentController.scrollView.alpha = 0
+        UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions(), animations: { [weak self] in
+            self?.contentController.scrollView.alpha = 0
             newController.scrollView.alpha = 1
-        }) { _ in
-            self.contentController.scrollView.removeAllSubviews()
-            self.contentController.scrollView.removeFromSuperview()
-            self.contentController = newController
+        }) { [weak self] _ in
+            self?.contentController.scrollView.removeAllSubviews()
+            self?.contentController.scrollView.removeFromSuperview()
+            self?.contentController = newController
             completion()
         }
     }
