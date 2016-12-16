@@ -263,11 +263,10 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     func dayOfWeekBackGroundColor() -> UIColor {
         return UIColor.orange
     }
-    
-    
-//    func disableScrollingBeforeDate() -> Date {
-//        return Date()
-//    }
+        
+    func disableScrollingBeforeDate() -> Date {
+        return Date()
+    }
     
     func maxSelectableRange() -> Int {
         return 14
