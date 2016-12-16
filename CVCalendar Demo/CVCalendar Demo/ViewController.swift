@@ -33,17 +33,19 @@ class ViewController: UIViewController {
     var selectedDay:DayView!
     
     var currentCalendar: Calendar?
-    
-    // MARK: - Life cycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+
+    override func awakeFromNib() {
         let timeZoneBias = 480 // (UTC+08:00)
         currentCalendar = Calendar.init(identifier: .gregorian)
         if let timeZone = TimeZone.init(secondsFromGMT: -timeZoneBias * 60) {
             currentCalendar?.timeZone = timeZone
         }
+    }
+    
+    // MARK: - Life cycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         if let currentCalendar = currentCalendar {
             monthLabel.text = CVDate(date: Date(), calendar: currentCalendar).globalDescription
@@ -261,8 +263,7 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     func dayOfWeekBackGroundColor() -> UIColor {
         return UIColor.orange
     }
-    
-    
+        
     func disableScrollingBeforeDate() -> Date {
         return Date()
     }

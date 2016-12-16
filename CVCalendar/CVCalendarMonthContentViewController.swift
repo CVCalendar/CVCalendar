@@ -89,17 +89,17 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
     // MARK: - Load management
     
     public func scrolledLeft() {
-        if let presentedMonth = monthViews[presented], let followingMonth = monthViews[following] {
+        if let presented = monthViews[presented], let following = monthViews[following] {
             if pageLoadingEnabled {
                 pageLoadingEnabled = false
                 
                 monthViews[previous]?.removeFromSuperview()
-                replaceMonthView(presentedMonth, withIdentifier: previous, animatable: false)
-                replaceMonthView(followingMonth, withIdentifier: presented, animatable: true)
                 
-                insertMonthView(getFollowingMonth(followingMonth.date),
-                                withIdentifier: following)
-                self.calendarView.delegate?.didShowNextMonthView?(followingMonth.date)
+                replaceMonthView(presented, withIdentifier: previous, animatable: false)
+                replaceMonthView(following, withIdentifier: self.presented, animatable: true)
+                
+                insertMonthView(getFollowingMonth(following.date), withIdentifier: self.following)
+                self.calendarView.delegate?.didShowNextMonthView?(following.date)
             }
         }
     }
@@ -309,7 +309,7 @@ extension CVCalendarMonthContentViewController {
         
         components.month! += 1
         
-        let newDate = Calendar.current.date(from: components)!
+        let newDate = calendar.date(from: components)!
         let frame = scrollView.bounds
         let monthView = MonthView(calendarView: calendarView, date: newDate)
         
