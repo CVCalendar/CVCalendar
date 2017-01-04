@@ -214,33 +214,29 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
         
         let π = M_PI
         
-        let ringSpacing: CGFloat = 3.0
-        let ringInsetWidth: CGFloat = 1.0
-        let ringVerticalOffset: CGFloat = 1.0
-        var ringLayer: CAShapeLayer!
+        let ringLayer = CAShapeLayer()
         let ringLineWidth: CGFloat = 4.0
-        let ringLineColour: UIColor = .blue
+        let ringLineColour = UIColor.blue
         
         let newView = UIView(frame: dayView.frame)
         
-        let diameter: CGFloat = (min(newView.bounds.width, newView.bounds.height)) - ringSpacing
-        let radius: CGFloat = diameter / 2.0
-        
-        let rect = CGRect(x: newView.frame.midX-radius, y: newView.frame.midY-radius-ringVerticalOffset, width: diameter, height: diameter)
-        
-        ringLayer = CAShapeLayer()
+        let diameter = (min(newView.bounds.width, newView.bounds.height))
+        let radius = diameter / 2.0 - ringLineWidth
+
         newView.layer.addSublayer(ringLayer)
         
         ringLayer.fillColor = nil
         ringLayer.lineWidth = ringLineWidth
         ringLayer.strokeColor = ringLineColour.cgColor
         
-        let ringLineWidthInset: CGFloat = CGFloat(ringLineWidth/2.0) + ringInsetWidth
-        let ringRect: CGRect = rect.insetBy(dx: ringLineWidthInset, dy: ringLineWidthInset)
-        let centrePoint: CGPoint = CGPoint(x: ringRect.midX, y: ringRect.midY)
-        let startAngle: CGFloat = CGFloat(-π/2.0)
-        let endAngle: CGFloat = CGFloat(π * 2.0) + startAngle
-        let ringPath: UIBezierPath = UIBezierPath(arcCenter: centrePoint, radius: ringRect.width/2.0, startAngle: startAngle, endAngle: endAngle, clockwise: true)
+        let centrePoint = CGPoint(x: newView.bounds.width/2.0, y: newView.bounds.height/2.0)
+        let startAngle = CGFloat(-π/2.0)
+        let endAngle = CGFloat(π * 2.0) + startAngle
+        let ringPath = UIBezierPath(arcCenter: centrePoint,
+                                    radius: radius,
+                                    startAngle: startAngle,
+                                    endAngle: endAngle,
+                                    clockwise: true)
         
         ringLayer.path = ringPath.cgPath
         ringLayer.frame = newView.layer.bounds
