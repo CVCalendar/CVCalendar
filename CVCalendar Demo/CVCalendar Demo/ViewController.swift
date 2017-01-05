@@ -245,13 +245,36 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     }
     
     func supplementaryView(shouldDisplayOnDayView dayView: DayView) -> Bool {
+      
+      guard let currentCalendar = currentCalendar else {
+        return false
+      }
+      var components = Manager.componentsForDate(Foundation.Date(), calendar: currentCalendar)
+      
+      /* For consistency, always show supplementaryView on the 3rd, 13th and 23rd of the current month/year.  This is to check that these expected calendar days are "circled". There was a bug that was circling the wrong dates. A fix was put in for #408 #411.
+       
+       Other month and years show random days being circled as was done previously in the Demo code.
+       */
+      
+      if dayView.date.year == components.year &&
+        dayView.date.month == components.month {
+        
+        if (dayView.date.day == 3 || dayView.date.day == 13 || dayView.date.day == 23)  {
+          print("Circle should apprear on " + dayView.date.commonDescription)
+          return true
+        }
+        return false
+      } else {
+        
         if (Int(arc4random_uniform(3)) == 1) {
-            return true
+          return true
         }
         
         return false
+      }
+      
     }
-    
+  
     func dayOfWeekTextColor() -> UIColor {
         return UIColor.white
     }
