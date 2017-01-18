@@ -313,9 +313,9 @@ extension CVCalendarView {
 
 extension CVCalendarView {
     public func didSelectDayView(_ dayView: CVCalendarDayView) {
+        presentedDate = dayView.date
+        delegate?.didSelectDayView?(dayView, animationDidFinish: false)
         if let controller = contentController {
-            presentedDate = dayView.date
-            delegate?.didSelectDayView?(dayView, animationDidFinish: false)
             controller.performedDayViewSelection(dayView) // TODO: Update to range selection
         }
     }

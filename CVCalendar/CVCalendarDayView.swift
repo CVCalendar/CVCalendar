@@ -178,6 +178,7 @@ extension CVCalendarDayView {
                 let touchController = calendarView.touchController
                 touchController?.receiveTouchOnDayView(self)
                 calendarView.didSelectDayView(self)
+                color = appearance?.dayLabelPresentWeekdaySelectedTextColor
             } else {
                 color = appearance?.dayLabelPresentWeekdayTextColor
                 if (appearance?.dayLabelPresentWeekdayInitallyBold!)! {
