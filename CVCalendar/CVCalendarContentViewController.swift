@@ -134,7 +134,7 @@ extension CVCalendarContentViewController {
 
     public func presentPreviousView(_ view: UIView?) { }
 
-    public func updateDayViews(_ hidden: Bool) { }
+    public func updateDayViews(shouldShow: Bool) { }
 }
 
 // MARK: - Contsant conversion

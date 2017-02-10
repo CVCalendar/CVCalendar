@@ -324,8 +324,8 @@ extension CVCalendarView {
 // MARK: - Convenience API
 
 extension CVCalendarView {
-    public func changeDaysOutShowingState(_ shouldShow: Bool) {
-        contentController.updateDayViews(shouldShow)
+    public func changeDaysOutShowingState(shouldShow: Bool) {
+        contentController.updateDayViews(shouldShow: shouldShow)
     }
 
     public func toggleViewWithDate(_ date: Foundation.Date) {

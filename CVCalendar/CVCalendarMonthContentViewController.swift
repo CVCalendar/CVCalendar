@@ -8,7 +8,7 @@
 
 import UIKit
 
-public final class CVCalendarMonthContentViewController: CVCalendarContentViewController {
+public final class CVCalendarMonthContentViewController: CVCalendarContentViewController, CVCalendarContentPresentationCoordinator {
     fileprivate var monthViews: [Identifier : MonthView]
     
     public override init(calendarView: CalendarView, frame: CGRect) {
@@ -237,8 +237,8 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
         
     }
     
-    public override func updateDayViews(_ hidden: Bool) {
-        setDayOutViewsVisible(hidden)
+    public override func updateDayViews(shouldShow: Bool) {
+      setDayOutViewsVisible(monthViews: monthViews, visible: shouldShow)
     }
     
     fileprivate var togglingBlocked = false
@@ -357,34 +357,6 @@ extension CVCalendarMonthContentViewController {
         }
     }
     
-    public func setDayOutViewsVisible(_ visible: Bool) {
-        for monthView in monthViews.values {
-            monthView.mapDayViews { dayView in
-                if dayView.isOut {
-                    if !visible {
-                        dayView.alpha = 0
-                        dayView.isHidden = false
-                    }
-                    
-                    UIView.animate(withDuration: 0.5, delay: 0,
-                                   options: UIViewAnimationOptions(),
-                                   animations: {
-                                    dayView.alpha = visible ? 0 : 1
-                    },
-                                   completion: { _ in
-                                    if visible {
-                                        dayView.alpha = 1
-                                        dayView.isHidden = true
-                                        dayView.isUserInteractionEnabled = false
-                                    } else {
-                                        dayView.isUserInteractionEnabled = true
-                                    }
-                    })
-                }
-            }
-        }
-    }
-    
     public func updateSelection() {
         let coordinator = calendarView.coordinator
         if let selected = coordinator?.selectedDayView {
@@ -401,7 +373,7 @@ extension CVCalendarMonthContentViewController {
                 }
             }
         }
-        
+      
         let calendar = self.calendarView.delegate?.calendar?() ?? Calendar.current
 
         if let presentedMonthView = monthViews[presented] {

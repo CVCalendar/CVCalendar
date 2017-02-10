@@ -8,7 +8,7 @@
 
 import UIKit
 
-public final class CVCalendarWeekContentViewController: CVCalendarContentViewController {
+public final class CVCalendarWeekContentViewController: CVCalendarContentViewController, CVCalendarContentPresentationCoordinator {
     fileprivate var weekViews: [Identifier : WeekView]
     fileprivate var monthViews: [Identifier : MonthView]
 
@@ -231,8 +231,8 @@ public final class CVCalendarWeekContentViewController: CVCalendarContentViewCon
 
     }
 
-    public override func updateDayViews(_ hidden: Bool) {
-        setDayOutViewsVisible(hidden)
+    public override func updateDayViews(shouldShow: Bool) {
+      setDayOutViewsVisible(monthViews: monthViews, visible: shouldShow)
     }
 
     fileprivate var togglingBlocked = false
@@ -407,34 +407,6 @@ extension CVCalendarWeekContentViewController {
     public func prepareTopMarkersOnWeekView(_ weekView: WeekView, hidden: Bool) {
         weekView.mapDayViews { dayView in
             dayView.topMarker?.isHidden = hidden
-        }
-    }
-
-    public func setDayOutViewsVisible(_ visible: Bool) {
-        for monthView in monthViews.values {
-            monthView.mapDayViews { dayView in
-                if dayView.isOut {
-                    if !visible {
-                        dayView.alpha = 0
-                        dayView.isHidden = false
-                    }
-
-                    UIView.animate(withDuration: 0.5, delay: 0,
-                        options: UIViewAnimationOptions(),
-                        animations: {
-                            dayView.alpha = visible ? 0 : 1
-                            },
-                        completion: { _ in
-                            if visible {
-                                dayView.alpha = 1
-                                dayView.isHidden = true
-                                dayView.isUserInteractionEnabled = false
-                            } else {
-                                dayView.isUserInteractionEnabled = true
-                            }
-                    })
-                }
-            }
         }
     }
 

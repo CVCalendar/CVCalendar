@@ -43,6 +43,7 @@
 		564E035F1D51DA100088B8D3 /* CVStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564E03411D51DA100088B8D3 /* CVStatus.swift */; };
 		564E03601D51DA100088B8D3 /* CVWeekdaySymbolType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564E03421D51DA100088B8D3 /* CVWeekdaySymbolType.swift */; };
 		564E03611D51DA100088B8D3 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 564E03431D51DA100088B8D3 /* Info.plist */; };
+		AAAC86141E4E57C100D098DF /* CVCalendarContentPresentationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAC86131E4E57C100D098DF /* CVCalendarContentPresentationCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +98,7 @@
 		564E03411D51DA100088B8D3 /* CVStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVStatus.swift; sourceTree = "<group>"; };
 		564E03421D51DA100088B8D3 /* CVWeekdaySymbolType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVWeekdaySymbolType.swift; sourceTree = "<group>"; };
 		564E03431D51DA100088B8D3 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AAAC86131E4E57C100D098DF /* CVCalendarContentPresentationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVCalendarContentPresentationCoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,6 +198,7 @@
 				564E03351D51DA100088B8D3 /* CVCalendarViewDelegate.swift */,
 				564E03361D51DA100088B8D3 /* CVCalendarViewPresentationMode.swift */,
 				564E03371D51DA100088B8D3 /* CVCalendarWeekContentViewController.swift */,
+				AAAC86131E4E57C100D098DF /* CVCalendarContentPresentationCoordinator.swift */,
 				564E03381D51DA100088B8D3 /* CVCalendarWeekday.swift */,
 				564E03391D51DA100088B8D3 /* CVCalendarWeekView.swift */,
 				564E033A1D51DA100088B8D3 /* CVDate.swift */,
@@ -340,6 +343,7 @@
 				564E03541D51DA100088B8D3 /* CVCalendarViewPresentationMode.swift in Sources */,
 				564E03501D51DA100088B8D3 /* CVCalendarViewAnimatorDelegate.swift in Sources */,
 				564E034C1D51DA100088B8D3 /* CVCalendarMonthView.swift in Sources */,
+				AAAC86141E4E57C100D098DF /* CVCalendarContentPresentationCoordinator.swift in Sources */,
 				564E03491D51DA100088B8D3 /* CVCalendarMenuView.swift in Sources */,
 				564E03561D51DA100088B8D3 /* CVCalendarWeekday.swift in Sources */,
 				564E034E1D51DA100088B8D3 /* CVCalendarView.swift in Sources */,
