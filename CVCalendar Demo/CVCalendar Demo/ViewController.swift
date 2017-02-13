@@ -349,15 +349,10 @@ extension ViewController: CVCalendarViewAppearanceDelegate {
 
 extension ViewController {
     @IBAction func switchChanged(sender: UISwitch) {
-        if sender.isOn {
-            calendarView.changeDaysOutShowingState(false)
-            shouldShowDaysOut = true
-        } else {
-            calendarView.changeDaysOutShowingState(true)
-            shouldShowDaysOut = false
-        }
+      calendarView.changeDaysOutShowingState(shouldShow: sender.isOn)
+      shouldShowDaysOut = sender.isOn
     }
-    
+  
     @IBAction func todayMonthView() {
         calendarView.toggleCurrentDayView()
     }

@@ -56,13 +56,7 @@ public final class CVCalendarDayView: UIView {
             }
         }
     }
-    
-    public override var isHidden: Bool {
-        didSet {
-            isUserInteractionEnabled = isHidden ? false : true
-        }
-    }
-    
+  
     // MARK: - Private properties
     
     fileprivate var preliminaryView: UIView?
