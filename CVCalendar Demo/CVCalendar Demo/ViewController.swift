@@ -33,7 +33,7 @@ class ViewController: UIViewController {
     var selectedDay:DayView!
     
     var currentCalendar: Calendar?
-
+    
     override func awakeFromNib() {
         let timeZoneBias = 480 // (UTC+08:00)
         currentCalendar = Calendar.init(identifier: .gregorian)
@@ -222,7 +222,7 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
         
         let diameter = (min(newView.bounds.width, newView.bounds.height))
         let radius = diameter / 2.0 - ringLineWidth
-
+        
         newView.layer.addSublayer(ringLayer)
         
         ringLayer.fillColor = nil
@@ -245,36 +245,36 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     }
     
     func supplementaryView(shouldDisplayOnDayView dayView: DayView) -> Bool {
-      
-      guard let currentCalendar = currentCalendar else {
-        return false
-      }
-      var components = Manager.componentsForDate(Foundation.Date(), calendar: currentCalendar)
-      
-      /* For consistency, always show supplementaryView on the 3rd, 13th and 23rd of the current month/year.  This is to check that these expected calendar days are "circled". There was a bug that was circling the wrong dates. A fix was put in for #408 #411.
-       
-       Other month and years show random days being circled as was done previously in the Demo code.
-       */
-      
-      if dayView.date.year == components.year &&
-        dayView.date.month == components.month {
         
-        if (dayView.date.day == 3 || dayView.date.day == 13 || dayView.date.day == 23)  {
-          print("Circle should apprear on " + dayView.date.commonDescription)
-          return true
+        guard let currentCalendar = currentCalendar else {
+            return false
         }
-        return false
-      } else {
+        var components = Manager.componentsForDate(Foundation.Date(), calendar: currentCalendar)
         
-        if (Int(arc4random_uniform(3)) == 1) {
-          return true
+        /* For consistency, always show supplementaryView on the 3rd, 13th and 23rd of the current month/year.  This is to check that these expected calendar days are "circled". There was a bug that was circling the wrong dates. A fix was put in for #408 #411.
+         
+         Other month and years show random days being circled as was done previously in the Demo code.
+         */
+        
+        if dayView.date.year == components.year &&
+            dayView.date.month == components.month {
+            
+            if (dayView.date.day == 3 || dayView.date.day == 13 || dayView.date.day == 23)  {
+                print("Circle should appear on " + dayView.date.commonDescription)
+                return true
+            }
+            return false
+        } else {
+            
+            if (Int(arc4random_uniform(3)) == 1) {
+                return true
+            }
+            
+            return false
         }
         
-        return false
-      }
-      
     }
-  
+    
     func dayOfWeekTextColor() -> UIColor {
         return UIColor.white
     }
@@ -282,7 +282,7 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     func dayOfWeekBackGroundColor() -> UIColor {
         return UIColor.orange
     }
-        
+    
     func disableScrollingBeforeDate() -> Date {
         return Date()
     }
@@ -349,10 +349,10 @@ extension ViewController: CVCalendarViewAppearanceDelegate {
 
 extension ViewController {
     @IBAction func switchChanged(sender: UISwitch) {
-      calendarView.changeDaysOutShowingState(shouldShow: sender.isOn)
-      shouldShowDaysOut = sender.isOn
+        calendarView.changeDaysOutShowingState(shouldShow: sender.isOn)
+        shouldShowDaysOut = sender.isOn
     }
-  
+    
     @IBAction func todayMonthView() {
         calendarView.toggleCurrentDayView()
     }
@@ -394,25 +394,26 @@ extension ViewController {
         self.calendarView.toggleViewWithDate(resultDate)
     }
     
-    func didShowNextMonthView(date: NSDate) {
+    
+    func didShowNextMonthView(_ date: Date) {
         guard let currentCalendar = currentCalendar else {
             return
         }
         
-        let components = Manager.componentsForDate(date as Date, calendar: currentCalendar) // from today
+        let components = Manager.componentsForDate(date, calendar: currentCalendar) // from today
         
-        print("Showing Month: \(components.month)")
+        print("Showing Month: \(components.month!)")
     }
     
     
-    func didShowPreviousMonthView(date: NSDate) {
+    func didShowPreviousMonthView(_ date: Date) {
         guard let currentCalendar = currentCalendar else {
             return
         }
         
-        let components = Manager.componentsForDate(date as Date, calendar: currentCalendar) // from today
+        let components = Manager.componentsForDate(date, calendar: currentCalendar) // from today
         
-        print("Showing Month: \(components.month)")
+        print("Showing Month: \(components.month!)")
     }
     
 }
