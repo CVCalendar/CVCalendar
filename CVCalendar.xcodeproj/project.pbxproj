@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1846DE781E77382D00339E93 /* CVCalendarContentPresentationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1846DE771E77382D00339E93 /* CVCalendarContentPresentationCoordinator.swift */; };
 		45D9D8B71C5006AA006673B2 /* CVCalendar.h in Headers */ = {isa = PBXBuildFile; fileRef = 45D9D8B61C5006AA006673B2 /* CVCalendar.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		45D9D8E81C50073F006673B2 /* CVAuxiliaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D9D8CD1C50073F006673B2 /* CVAuxiliaryView.swift */; };
 		45D9D8E91C50073F006673B2 /* CVCalendarContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D9D8CE1C50073F006673B2 /* CVCalendarContentViewController.swift */; };
@@ -40,6 +41,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1846DE771E77382D00339E93 /* CVCalendarContentPresentationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVCalendarContentPresentationCoordinator.swift; sourceTree = "<group>"; };
 		45D9D8B31C5006AA006673B2 /* CVCalendar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CVCalendar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		45D9D8B61C5006AA006673B2 /* CVCalendar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CVCalendar.h; sourceTree = "<group>"; };
 		45D9D8B81C5006AA006673B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 		45D9D9071C5007D6006673B2 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				1846DE771E77382D00339E93 /* CVCalendarContentPresentationCoordinator.swift */,
 				45D9D8D01C50073F006673B2 /* CVCalendarDayViewControlCoordinator.swift */,
 				45D9D8D61C50073F006673B2 /* CVCalendarTouchController.swift */,
 				45D9D8D81C50073F006673B2 /* CVCalendarViewAnimator.swift */,
@@ -278,6 +281,7 @@
 				45D9D9001C50073F006673B2 /* CVSet.swift in Sources */,
 				45D9D8F71C50073F006673B2 /* CVCalendarViewDelegate.swift in Sources */,
 				56D2797F1D49DC18009987A6 /* CVStatus.swift in Sources */,
+				1846DE781E77382D00339E93 /* CVCalendarContentPresentationCoordinator.swift in Sources */,
 				45D9D8FE1C50073F006673B2 /* CVScrollDirection.swift in Sources */,
 				45D9D8F21C50073F006673B2 /* CVCalendarView.swift in Sources */,
 				45D9D8F51C50073F006673B2 /* CVCalendarViewAppearance.swift in Sources */,
