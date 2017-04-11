@@ -212,7 +212,7 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
         dayView.setNeedsLayout()
         dayView.layoutIfNeeded()
         
-        let π = M_PI
+        let π = Double.pi
         
         let ringLayer = CAShapeLayer()
         let ringLineWidth: CGFloat = 4.0
