@@ -102,9 +102,6 @@ extension CVAuxiliaryView {
     }
 
     func rightFlagPath() -> UIBezierPath {
-//        let appearance = dayView.calendarView.appearance
-//        let offset = appearance.spaceBetweenDayViews!
-
         let flag = UIBezierPath()
         flag.move(to: CGPoint(x: bounds.width / 2, y: bounds.height / 2 - radius))
         flag.addLine(to: CGPoint(x: bounds.width, y: bounds.height / 2 - radius))
@@ -133,7 +130,6 @@ extension CVAuxiliaryView {
     }
 
     func rectPath() -> UIBezierPath {
-//        let midX = bounds.width / 2
         let midY = bounds.height / 2
 
         let appearance = dayView.calendarView.appearance
