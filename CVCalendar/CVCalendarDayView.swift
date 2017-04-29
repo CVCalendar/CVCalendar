@@ -233,7 +233,7 @@ extension CVCalendarDayView {
             if let supView = delegate.supplementaryView?(viewOnDayView: self) {
                 supplementaryView?.removeFromSuperview()
                 supplementaryView = supView
-                weekView.insertSubview(supView, at: 0)
+                insertSubview(supView, at: 0)
             }
         } else {
             supplementaryView?.removeFromSuperview()
