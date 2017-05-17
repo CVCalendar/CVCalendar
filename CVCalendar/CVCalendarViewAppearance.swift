@@ -25,7 +25,7 @@ public final class CVCalendarViewAppearance: NSObject {
     public var dayLabelPresentWeekdayBoldFont: UIFont? = UIFont(name: "Avenir-Heavy", size: 18)
     public var dayLabelPresentWeekdayHighlightedFont: UIFont? =
         UIFont(name: "Avenir-Heavy", size: 18)
-    public var dayLabelPresentWeekdaySelectedFont: UIFont? = UIFont(name: "Avenir-Heavy", size: 18)
+public var dayLabelPresentWeekdaySelectedFont: UIFont? = UIFont(name: "Lato-Semibold", size: 14)
     public var dayLabelWeekdayHighlightedFont: UIFont? = UIFont(name: "Avenir-Heavy", size: 18)
     public var dayLabelWeekdaySelectedFont: UIFont? = UIFont(name: "Avenir-Heavy", size: 18)
 

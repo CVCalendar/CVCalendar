@@ -26,6 +26,9 @@ public final class CVCalendarDayView: UIView {
     public var isCurrentDay = false
     public var isDisabled: Bool { return !self.isUserInteractionEnabled }
     
+    public var supViews = [UIView]()
+    public var preViews = [UIView]()
+    
     public weak var monthView: CVCalendarMonthView! {
         var monthView: MonthView!
         if let weekView = weekView, let activeMonthView = weekView.monthView {
@@ -48,6 +51,7 @@ public final class CVCalendarDayView: UIView {
         didSet {
             if oldValue != frame {
                 selectionView?.setNeedsDisplay()
+                selectionView?.alpha = 0
                 topMarkerSetup()
                 preliminarySetup()
                 if date != nil {
@@ -169,8 +173,6 @@ extension CVCalendarDayView {
         } else if isCurrentDay {
             let coordinator = calendarView.coordinator
             if coordinator?.selectedDayView == nil && calendarView.shouldAutoSelectDayOnMonthChange {
-                let touchController = calendarView.touchController
-                touchController?.receiveTouchOnDayView(self)
                 calendarView.didSelectDayView(self)
                 color = appearance?.dayLabelPresentWeekdaySelectedTextColor
             } else {
@@ -215,10 +217,13 @@ extension CVCalendarDayView {
         if let delegate = calendarView.delegate,
             let shouldShow = delegate.preliminaryView?(shouldDisplayOnDayView: self) , shouldShow {
             if let preView = delegate.preliminaryView?(viewOnDayView: self) {
+                selectionView?.alpha = 0
+                removePreliminaryViews()
                 preliminaryView?.removeFromSuperview()
                 preliminaryView = preView
                 weekView.insertSubview(preView, at: 0)
                 preView.layer.zPosition = CGFloat(-MAXFLOAT)
+                preViews.insert(preView, at: 0)
             }
         }
         else {
@@ -231,14 +236,35 @@ extension CVCalendarDayView {
             let shouldShow = delegate.supplementaryView?(shouldDisplayOnDayView: self) ,
             shouldShow {
             if let supView = delegate.supplementaryView?(viewOnDayView: self) {
-                supplementaryView?.removeFromSuperview()
-                supplementaryView = supView
-                weekView.insertSubview(supView, at: 0)
+                removeSupplementaryViews()
+                insertSubview(supView, at: 0)
+                supViews.insert(supView, at: 0)
+                selectionView?.alpha = 0
             }
         } else {
             supplementaryView?.removeFromSuperview()
             supplementaryView = nil
         }
+    }
+    
+    public func removeSupplementaryViews() {
+        for view in supViews {
+            view.removeFromSuperview()
+            
+        }
+        
+        supViews.removeAll()
+        
+    }
+    
+    public func removePreliminaryViews() {
+        for view in preViews {
+            view.removeFromSuperview()
+            
+        }
+        
+        preViews.removeAll()
+        
     }
     
     // TODO: Make this widget customizable
@@ -484,14 +510,6 @@ extension CVCalendarDayView {
         case .single:
             shape = .circle
             
-            if let delegate = calendarView.delegate,
-                let shouldShowCustomSelection = delegate.shouldShowCustomSingleSelection?() ,
-                shouldShowCustomSelection {
-                if let block = delegate.selectionViewPath?() {
-                    shape = .custom(block)
-                }
-            }
-            
             if isCurrentDay {
                 dayLabel?.textColor = appearance?.delegate?.dayLabelColor?(by: weekDay, status: .selected, present: present)
                     ?? appearance?.dayLabelPresentWeekdaySelectedTextColor!
@@ -530,18 +548,7 @@ extension CVCalendarDayView {
                 backgroundAlpha = appearance?.dayLabelWeekdayHighlightedBackgroundAlpha
             }
         }
-        
-        if let selectionView = selectionView , selectionView.frame != dayLabel.bounds {
-            selectionView.frame = dayLabel.bounds
-        } else {
-            selectionView = CVAuxiliaryView(dayView: self, rect: dayLabel.bounds, shape: shape)
-        }
-        
-        selectionView!.fillColor = backgroundColor
-        selectionView!.alpha = backgroundAlpha
-        selectionView!.setNeedsDisplay()
-        insertSubview(selectionView!, at: 0)
-        
+                
         moveDotMarkerBack(false, coloring: false)
         isHighlighted = true
     }

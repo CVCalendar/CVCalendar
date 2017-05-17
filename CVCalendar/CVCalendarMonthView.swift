@@ -140,19 +140,12 @@ extension CVCalendarMonthView {
                 if let interactiveView = self.interactiveView {
                     interactiveView.frame = self.bounds
                     interactiveView.removeFromSuperview()
-                    self.addSubview(interactiveView)
+                    self.interactiveView = UIView(frame: self.bounds)
+                    self.interactiveView.backgroundColor = .clear
+                    self.addSubview(self.interactiveView)
                 } else {
                     self.interactiveView = UIView(frame: self.bounds)
                     self.interactiveView.backgroundColor = .clear
-
-                    let tapRecognizer = UITapGestureRecognizer(target: self,
-                        action: #selector(CVCalendarMonthView.didTouchInteractiveView(_:)))
-                    let pressRecognizer = UILongPressGestureRecognizer(target: self,
-                        action: #selector(CVCalendarMonthView.didPressInteractiveView(_:)))
-                    pressRecognizer.minimumPressDuration = 0.3
-
-                    self.interactiveView.addGestureRecognizer(pressRecognizer)
-                    self.interactiveView.addGestureRecognizer(tapRecognizer)
 
                     self.addSubview(self.interactiveView)
                 }
@@ -162,28 +155,10 @@ extension CVCalendarMonthView {
     }
 
     public func didPressInteractiveView(_ recognizer: UILongPressGestureRecognizer) {
-        let location = recognizer.location(in: self.interactiveView)
-        let state: UIGestureRecognizerState = recognizer.state
 
-        switch state {
-        case .began:
-            touchController.receiveTouchLocation(location, inMonthView: self,
-                                                 withSelectionType: .range(.started))
-        case .changed:
-            touchController.receiveTouchLocation(location, inMonthView: self,
-                                                 withSelectionType: .range(.changed))
-        case .ended:
-            touchController.receiveTouchLocation(location, inMonthView: self,
-                                                 withSelectionType: .range(.ended))
-
-        default: break
-        }
     }
 
     public func didTouchInteractiveView(_ recognizer: UITapGestureRecognizer) {
-        let location = recognizer.location(in: self.interactiveView)
-        touchController.receiveTouchLocation(location, inMonthView: self,
-                                             withSelectionType: .single)
     }
 }
 

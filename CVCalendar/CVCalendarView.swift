@@ -283,20 +283,6 @@ extension CVCalendarView {
                         height = (maxHeight / countOfWeeks) - (vSpace * countOfWeeks)
                     }
 
-                    // If no height constraint found we set it manually.
-                    var found = false
-                    for constraint in constraints {
-                        if constraint.firstAttribute == .height {
-                            found = true
-                        }
-                    }
-
-                    if !found {
-                        addConstraint(NSLayoutConstraint(item: self, attribute: .height,
-                            relatedBy: .equal, toItem: nil, attribute: .height,
-                            multiplier: 1, constant: frame.height))
-                    }
-
                     weekViewSize = CGSize(width: width, height: height)
                     dayViewSize = CGSize(width: (width / 7.0) - hSpace, height: height)
                     validated = true

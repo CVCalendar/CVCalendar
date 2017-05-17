@@ -421,6 +421,22 @@ extension CVCalendarMonthContentViewController {
     }
 }
 
+extension CVCalendarMonthContentViewController {
+    public override func refreshPresentedMonth() {
+        for (_, month) in monthViews {
+            for weekV in month.weekViews {
+                for dayView in weekV.dayViews {
+                    removeCircleLabel(dayView)
+                    dayView.setupDotMarker()
+                    dayView.preliminarySetup()
+                    dayView.supplementarySetup()
+                    dayView.topMarkerSetup()
+                }
+            }
+        }
+    }
+}
+
 // MARK: - UIScrollViewDelegate
 
 extension CVCalendarMonthContentViewController {
@@ -460,7 +476,6 @@ extension CVCalendarMonthContentViewController {
             }
         }
         
-        updateSelection()
         updateLayoutIfNeeded()
         pageLoadingEnabled = true
         direction = .none
