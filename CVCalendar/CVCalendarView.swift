@@ -41,7 +41,7 @@ public final class CVCalendarView: UIView {
 
     public var (weekViewSize, dayViewSize): (CGSize?, CGSize?)
 
-    fileprivate var validated = false
+    public var validated = false
     fileprivate var currentOrientation: UIDeviceOrientation
     fileprivate var maxHeight: CGFloat = 0
 
