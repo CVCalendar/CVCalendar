@@ -22,5 +22,14 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>NSPrincipalClass</key>
 	<string></string>
+    <key>UIAppFonts</key>
+    <array>
+        <string>Lato-Regular.ttf</string>
+        <string>Lato-Bold.ttf</string>
+        <string>Lato-Semibold.ttf</string>
+        <string>Lato-Black.ttf</string>
+        <string>Lato-Light.ttf</string>
+        <string>digitalism.ttf</string>
+    </array>
 </dict>
 </plist>

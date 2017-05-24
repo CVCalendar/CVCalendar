@@ -38,6 +38,11 @@
 		45D9D9021C50073F006673B2 /* CVWeekdaySymbolType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D9D8E71C50073F006673B2 /* CVWeekdaySymbolType.swift */; };
 		56D2797F1D49DC18009987A6 /* CVStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D2797E1D49DC18009987A6 /* CVStatus.swift */; };
 		56D279811D4A20A4009987A6 /* CVPresent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D279801D4A20A4009987A6 /* CVPresent.swift */; };
+		8C428C091ED5A13100D74B7E /* Lato-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8C428C041ED5A13100D74B7E /* Lato-Black.ttf */; };
+		8C428C0A1ED5A13100D74B7E /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8C428C051ED5A13100D74B7E /* Lato-Bold.ttf */; };
+		8C428C0B1ED5A13100D74B7E /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8C428C061ED5A13100D74B7E /* Lato-Light.ttf */; };
+		8C428C0C1ED5A13100D74B7E /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8C428C071ED5A13100D74B7E /* Lato-Regular.ttf */; };
+		8C428C0D1ED5A13100D74B7E /* Lato-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8C428C081ED5A13100D74B7E /* Lato-Semibold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,6 +79,11 @@
 		45D9D8E71C50073F006673B2 /* CVWeekdaySymbolType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVWeekdaySymbolType.swift; sourceTree = "<group>"; };
 		56D2797E1D49DC18009987A6 /* CVStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVStatus.swift; sourceTree = "<group>"; };
 		56D279801D4A20A4009987A6 /* CVPresent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVPresent.swift; sourceTree = "<group>"; };
+		8C428C041ED5A13100D74B7E /* Lato-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Black.ttf"; sourceTree = "<group>"; };
+		8C428C051ED5A13100D74B7E /* Lato-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bold.ttf"; sourceTree = "<group>"; };
+		8C428C061ED5A13100D74B7E /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
+		8C428C071ED5A13100D74B7E /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
+		8C428C081ED5A13100D74B7E /* Lato-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Semibold.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +118,7 @@
 			children = (
 				45D9D8B61C5006AA006673B2 /* CVCalendar.h */,
 				45D9D8B81C5006AA006673B2 /* Info.plist */,
+				8C428C031ED5A0B400D74B7E /* Fonts */,
 				45D9D9031C50075E006673B2 /* Content Controllers */,
 				45D9D9051C50078B006673B2 /* Main Views */,
 				45D9D9061C5007A9006673B2 /* Unit Views */,
@@ -198,6 +209,18 @@
 			name = Enums;
 			sourceTree = "<group>";
 		};
+		8C428C031ED5A0B400D74B7E /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				8C428C041ED5A13100D74B7E /* Lato-Black.ttf */,
+				8C428C051ED5A13100D74B7E /* Lato-Bold.ttf */,
+				8C428C061ED5A13100D74B7E /* Lato-Light.ttf */,
+				8C428C071ED5A13100D74B7E /* Lato-Regular.ttf */,
+				8C428C081ED5A13100D74B7E /* Lato-Semibold.ttf */,
+			);
+			name = Fonts;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -268,6 +291,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C428C0D1ED5A13100D74B7E /* Lato-Semibold.ttf in Resources */,
+				8C428C0B1ED5A13100D74B7E /* Lato-Light.ttf in Resources */,
+				8C428C091ED5A13100D74B7E /* Lato-Black.ttf in Resources */,
+				8C428C0A1ED5A13100D74B7E /* Lato-Bold.ttf in Resources */,
+				8C428C0C1ED5A13100D74B7E /* Lato-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
