@@ -161,7 +161,7 @@ extension CVCalendarMonthView {
             }, collapsingOnNil: false, withObjects: calendarView)
     }
 
-    public func didPressInteractiveView(_ recognizer: UILongPressGestureRecognizer) {
+    @objc public func didPressInteractiveView(_ recognizer: UILongPressGestureRecognizer) {
         let location = recognizer.location(in: self.interactiveView)
         let state: UIGestureRecognizerState = recognizer.state
 
@@ -180,7 +180,7 @@ extension CVCalendarMonthView {
         }
     }
 
-    public func didTouchInteractiveView(_ recognizer: UITapGestureRecognizer) {
+    @objc public func didTouchInteractiveView(_ recognizer: UITapGestureRecognizer) {
         let location = recognizer.location(in: self.interactiveView)
         touchController.receiveTouchLocation(location, inMonthView: self,
                                              withSelectionType: .single)
@@ -195,7 +195,7 @@ extension CVCalendarMonthView {
         for object in objects {
             if object == nil {
                 if collapsing {
-                    fatalError("Object { \(object) } must not be nil!")
+                  fatalError("Object { \(String(describing: object)) } must not be nil!") 
                 } else {
                     return
                 }
