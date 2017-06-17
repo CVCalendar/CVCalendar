@@ -63,7 +63,7 @@ open class CVCalendarContentViewController: UIViewController {
 // MARK: - UI Refresh
 
 extension CVCalendarContentViewController {
-    public func updateFrames(_ frame: CGRect) {
+    @objc public func updateFrames(_ frame: CGRect) {
         if frame != CGRect.zero {
             scrollView.frame = frame
             scrollView.removeAllSubviews()
@@ -126,15 +126,15 @@ extension CVCalendarContentViewController: UIScrollViewDelegate { }
 
 // Convenience API.
 extension CVCalendarContentViewController {
-    public func performedDayViewSelection(_ dayView: DayView) { }
+    @objc public func performedDayViewSelection(_ dayView: DayView) { }
 
-    public func togglePresentedDate(_ date: Foundation.Date) { }
+    @objc public func togglePresentedDate(_ date: Foundation.Date) { }
 
-    public func presentNextView(_ view: UIView?) { }
+    @objc public func presentNextView(_ view: UIView?) { }
 
-    public func presentPreviousView(_ view: UIView?) { }
+    @objc public func presentPreviousView(_ view: UIView?) { }
 
-    public func updateDayViews(shouldShow: Bool) { }
+    @objc public func updateDayViews(shouldShow: Bool) { }
 }
 
 // MARK: - Contsant conversion
