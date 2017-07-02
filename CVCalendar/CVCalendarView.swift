@@ -109,9 +109,18 @@ public final class CVCalendarView: UIView {
         }
     }
     
-    public var disableScrollingBeyondDate: Date? {
+    public var disableScrollingBeforeDate: Date? {
         get {
             if let delegate = delegate, let date = delegate.disableScrollingBeforeDate?() {
+                return date
+            }
+            return nil
+        }
+    }
+    
+    public var disableScrollingBeyondDate: Date? {
+        get {
+            if let delegate = delegate, let date = delegate.disableScrollingBeyondDate?() {
                 return date
             }
             return nil
