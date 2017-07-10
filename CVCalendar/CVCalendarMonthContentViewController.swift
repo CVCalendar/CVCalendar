@@ -48,6 +48,7 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
         }
         
         checkScrollToPreviousDisabled()
+        checkScrollToNextDisabled()
         
         calendarView.presentedDate = CVDate(date: presentedMonthView.date, calendar: calendar)
     }
@@ -70,6 +71,7 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
         monthViews[identifier] = monthView
         scrollView.addSubview(monthView)
         checkScrollToPreviousDisabled()
+        checkScrollToNextDisabled()
         calendarView.coordinator?.disableDays(in: presentedMonthView)
     }
     
@@ -338,11 +340,24 @@ extension CVCalendarMonthContentViewController {
     func checkScrollToPreviousDisabled() {
         let calendar = self.calendarView.delegate?.calendar?() ?? Calendar.current
         if let presentedMonth = monthViews[presented],
+            let disableScrollingBeforeDate = calendarView.disableScrollingBeforeDate {
+            let convertedDate = CVDate(date: disableScrollingBeforeDate, calendar: calendar)
+            presentedMonth.mapDayViews({ dayView in
+                if matchedDays(convertedDate, dayView.date) {
+                    presentedMonth.allowScrollToPreviousMonth = false
+                }
+            })
+        }
+    }
+    
+    func checkScrollToNextDisabled() {
+        let calendar = self.calendarView.delegate?.calendar?() ?? Calendar.current
+        if let presentedMonth = monthViews[presented],
             let disableScrollingBeyondDate = calendarView.disableScrollingBeyondDate {
             let convertedDate = CVDate(date: disableScrollingBeyondDate, calendar: calendar)
             presentedMonth.mapDayViews({ dayView in
                 if matchedDays(convertedDate, dayView.date) {
-                    presentedMonth.allowScrollToPreviousMonth = false
+                    presentedMonth.allowScrollToNextMonth = false
                 }
             })
         }
@@ -433,6 +448,12 @@ extension CVCalendarMonthContentViewController {
         //restricts scrolling to previous months
         if monthViews[presented]?.allowScrollToPreviousMonth == false,
             scrollView.contentOffset.x < scrollView.frame.width {
+            scrollView.setContentOffset(CGPoint(x: scrollView.frame.width, y: 0), animated: false)
+            return
+        }
+        
+        if monthViews[presented]?.allowScrollToNextMonth == false,
+            scrollView.contentOffset.x > scrollView.frame.width {
             scrollView.setContentOffset(CGPoint(x: scrollView.frame.width, y: 0), animated: false)
             return
         }

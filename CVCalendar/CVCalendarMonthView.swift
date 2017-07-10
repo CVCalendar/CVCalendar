@@ -27,6 +27,7 @@ public final class CVCalendarMonthView: UIView {
     }
 
     var allowScrollToPreviousMonth = true
+    var allowScrollToNextMonth = true
     
     // MARK: - Public properties
 
