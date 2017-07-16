@@ -418,7 +418,7 @@ extension CVCalendarDayView {
 
 extension CGFloat {
     public func toRadians() -> CGFloat {
-        return CGFloat(self) * CGFloat(Double.pi / 180)
+      return CGFloat(self) * CGFloat(Double.pi / 180)
     }
     
     public func toDegrees() -> CGFloat {
@@ -624,12 +624,12 @@ extension CVCalendarDayView {
 // MARK: - Safe execution
 
 extension CVCalendarDayView {
-    public func safeExecuteBlock(_ block: (Void) -> Void, collapsingOnNil collapsing: Bool,
+    public func safeExecuteBlock(_ block: () -> Void, collapsingOnNil collapsing: Bool,
                                  withObjects objects: AnyObject?...) {
         for object in objects {
             if object == nil {
                 if collapsing {
-                    fatalError("Object { \(String(describing: object)) } must not be nil!")
+                  fatalError("Object { \(String(describing: object)) } must not be nil!")
                 } else {
                     return
                 }

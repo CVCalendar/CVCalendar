@@ -136,7 +136,7 @@ public final class CVCalendarWeekView: UIView {
 
 extension CVCalendarWeekView {
     public func updateInteractiveView() {
-        safeExecuteBlock({
+      safeExecuteBlock({
 
             let mode = self.monthView!.calendarView!.calendarMode!
             if mode == .weekView {
@@ -164,7 +164,7 @@ extension CVCalendarWeekView {
             }, collapsingOnNil: false, withObjects: monthView, monthView?.calendarView)
     }
 
-    public func didPressInteractiveView(_ recognizer: UILongPressGestureRecognizer) {
+    @objc public func didPressInteractiveView(_ recognizer: UILongPressGestureRecognizer) {
         let location = recognizer.location(in: self.interactiveView)
         let state: UIGestureRecognizerState = recognizer.state
 
@@ -183,7 +183,7 @@ extension CVCalendarWeekView {
         }
     }
 
-    public func didTouchInteractiveView(_ recognizer: UITapGestureRecognizer) {
+    @objc public func didTouchInteractiveView(_ recognizer: UITapGestureRecognizer) {
         let location = recognizer.location(in: self.interactiveView)
         touchController.receiveTouchLocation(location, inWeekView: self, withSelectionType: .single)
     }
@@ -197,7 +197,7 @@ extension CVCalendarWeekView {
         for i in 1...7 {
             let dayView = CVCalendarDayView(weekView: self, weekdayIndex: i)
 
-            safeExecuteBlock({
+          safeExecuteBlock({
                 self.dayViews!.append(dayView)
                 }, collapsingOnNil: true, withObjects: dayViews as AnyObject?)
 
@@ -223,18 +223,18 @@ extension CVCalendarWeekView {
 // MARK: - Safe execution
 
 extension CVCalendarWeekView {
-    public func safeExecuteBlock(_ block: (Void) -> Void, collapsingOnNil collapsing: Bool,
+    public func safeExecuteBlock(_ block: () -> Void, collapsingOnNil collapsing: Bool,
                                  withObjects objects: AnyObject?...) {
         for object in objects {
             if object == nil {
                 if collapsing {
-                    fatalError("Object { \(String(describing: object)) } must not be nil!")
+                  fatalError("Object { \(String(describing: object)) } must not be nil!")
                 } else {
                     return
                 }
             }
         }
 
-        block()
+      block()
     }
 }
