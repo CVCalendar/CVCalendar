@@ -8,7 +8,11 @@
 
 import UIKit
 
-public enum CVSelectionType {
+public enum CVSelectionType : Equatable {
     case single
     case range(CVRange)
+}
+
+public func ==(lhs: CVSelectionType, rhs: CVSelectionType) -> Bool {
+    return lhs == rhs
 }

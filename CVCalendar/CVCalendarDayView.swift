@@ -468,9 +468,10 @@ extension CVCalendarDayView {
 extension CVCalendarDayView {
     public func setSelectedWithType(_ type: SelectionType) {
         
-        if isHighlighted {
+        if isHighlighted && type != SelectionType.single {
             return
         }
+        
         let appearance = calendarView.appearance
         var backgroundColor: UIColor!
         var backgroundAlpha: CGFloat!
