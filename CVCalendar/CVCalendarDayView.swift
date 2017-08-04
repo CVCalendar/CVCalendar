@@ -468,7 +468,7 @@ extension CVCalendarDayView {
 extension CVCalendarDayView {
     public func setSelectedWithType(_ type: SelectionType) {
         
-        if isHighlighted && type != SelectionType.single {
+        if isHighlighted {
             return
         }
         

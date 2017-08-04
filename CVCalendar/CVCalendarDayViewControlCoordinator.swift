@@ -12,7 +12,7 @@ public final class CVCalendarDayViewControlCoordinator {
     // MARK: - Non public properties
     fileprivate var selectionSet = Set<DayView>()
     fileprivate unowned let calendarView: CalendarView
-
+    
     // MARK: - Public properties
     public var selectedStartDayView: DayView?
     public var selectedEndDayView: DayView?
@@ -20,7 +20,7 @@ public final class CVCalendarDayViewControlCoordinator {
     public var animator: CVCalendarViewAnimator! {
         return calendarView.animator
     }
-
+    
     // MARK: - initialization
     public init(calendarView: CalendarView) {
         self.calendarView = calendarView
@@ -33,18 +33,18 @@ extension CVCalendarDayViewControlCoordinator {
     public func selectionPerformedOnDayView(_ dayView: DayView) {
         // TODO:
     }
-
+    
     public func deselectionPerformedOnDayView(_ dayView: DayView) {
         if dayView != selectedDayView && calendarView.shouldSelectRange == false {
             selectionSet.remove(dayView)
             dayView.setDeselectedWithClearing(true)
         }
     }
-
+    
     public func dequeueDayView(_ dayView: DayView) {
         selectionSet.remove(dayView)
     }
-
+    
     public func flush() {
         selectedDayView = nil
         selectedEndDayView = nil
@@ -61,7 +61,7 @@ private extension CVCalendarDayViewControlCoordinator {
         animator.animateSelectionOnDayView(dayView)
         //animator?.animateSelection(dayView, withControlCoordinator: self)
     }
-
+    
     func presentDeselectionOnDayView(_ dayView: DayView) {
         animator.animateDeselectionOnDayView(dayView)
         //animator?.animateDeselection(dayView, withControlCoordinator: self)
@@ -73,20 +73,20 @@ private extension CVCalendarDayViewControlCoordinator {
 extension CVCalendarDayViewControlCoordinator {
     public func performDayViewSingleSelection(_ dayView: DayView) {
         selectionSet.insert(dayView)
-
+        
         if selectionSet.count > 1 {
-//            let count = selectionSet.count-1
+            //            let count = selectionSet.count-1
             for dayViewInQueue in selectionSet {
                 if dayView != dayViewInQueue {
                     if dayView.calendarView != nil {
                         presentDeselectionOnDayView(dayViewInQueue)
                     }
-
+                    
                 }
-
+                
             }
         }
-
+        
         if let _ = animator {
             if selectedDayView != dayView {
                 selectedDayView = dayView
@@ -94,7 +94,7 @@ extension CVCalendarDayViewControlCoordinator {
             }
         }
     }
-
+    
     public func performDayViewRangeSelection(_ dayView: DayView) {
         if selectionSet.count == 2 {
             clearSelection(in: dayView.monthView)
@@ -105,7 +105,7 @@ extension CVCalendarDayViewControlCoordinator {
         }
         
         let calendar = self.calendarView.delegate?.calendar?() ?? Calendar.current
-
+        
         if let previouslySelectedDayView = selectionSet.first,
             let previouslySelectedDate = selectionSet.first?.date.convertedDate(calendar: calendar),
             let currentlySelectedDate = dayView.date.convertedDate(calendar: calendar),
@@ -201,30 +201,34 @@ private extension CVCalendarDayViewControlCoordinator {
                 return
             }
             
-            if let earliestDate = calendarView.earliestSelectableDate,
-                currDate.compare(earliestDate) == .orderedAscending {
+            if compareDatesByDay(calendar: calendar, first: currDate, second: calendarView.earliestSelectableDate, ordering: .orderedAscending) {
                 disableUserInteraction(for: dayView)
                 return
             }
             
-            if let beforeDate = beforeDate,
-                currDate.compare(beforeDate) == .orderedAscending {
+            if compareDatesByDay(calendar: calendar, first: currDate, second: beforeDate, ordering: .orderedAscending) {
                 disableUserInteraction(for: dayView)
                 return
             }
             
-            if let afterDate = afterDate,
-                currDate.compare(afterDate) == .orderedDescending || currDate.compare(afterDate) == .orderedSame {
+            if compareDatesByDay(calendar: calendar, first: currDate, second: afterDate, ordering: .orderedDescending) || compareDatesByDay(calendar: calendar, first: currDate, second: afterDate, ordering: .orderedSame) {
                 disableUserInteraction(for: dayView)
                 return
             }
             
-            if let latestDate = calendarView.latestSelectableDate,
-                currDate.compare(latestDate) == .orderedDescending {
+            if compareDatesByDay(calendar: calendar, first: currDate, second: calendarView.latestSelectableDate, ordering: .orderedDescending) {
                 disableUserInteraction(for: dayView)
                 return
             }
         }
+    }
+    
+    func compareDatesByDay(calendar: Calendar, first: Date?, second: Date?, ordering: ComparisonResult) -> Bool {
+        guard let first = first, let second = second else {
+            return false
+        }
+        
+        return calendar.compare(first, to: second, toGranularity: .day) == ordering
     }
     
     func disableUserInteraction(for dayView: DayView) {
