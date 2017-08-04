@@ -471,6 +471,7 @@ extension CVCalendarDayView {
         if isHighlighted {
             return
         }
+        
         let appearance = calendarView.appearance
         var backgroundColor: UIColor!
         var backgroundAlpha: CGFloat!
