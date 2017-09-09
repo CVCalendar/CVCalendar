@@ -56,7 +56,7 @@ public final class CVCalendarDayView: UIView {
             }
         }
     }
-  
+    
     // MARK: - Private properties
     
     fileprivate var preliminaryView: UIView?
@@ -448,16 +448,16 @@ extension CVCalendarDayView {
             UIView.animate(withDuration: pow(10, -1000), delay: 0, usingSpringWithDamping: 0.4,
                            initialSpringVelocity: 10,
                            options: UIViewAnimationOptions.curveEaseIn, animations: { [weak self] in
-                guard let strongSelf = self else {
-                    return
-                }
-                let angle = angle.toRadians()
-                view.center = strongSelf.pointAtAngle(angle, withinCircleView: circleView)
+                            guard let strongSelf = self else {
+                                return
+                            }
+                            let angle = angle.toRadians()
+                            view.center = strongSelf.pointAtAngle(angle, withinCircleView: circleView)
             }) { [weak self] _ in
                 let speed = CGFloat(750).toRadians()
                 let newAngle = straight ? angle + speed : angle - speed
                 self?.moveView(view, onCircleView: circleView, fromAngle: newAngle,
-                              toAngle: endAngle, straight: straight)
+                               toAngle: endAngle, straight: straight)
             }
         }
     }
@@ -544,7 +544,6 @@ extension CVCalendarDayView {
         insertSubview(selectionView!, at: 0)
         
         moveDotMarkerBack(false, coloring: false)
-        isHighlighted = true
     }
     
     public func setDeselectedWithClearing(_ clearing: Bool) {
@@ -617,6 +616,7 @@ extension CVCalendarDayView {
             selectionView?.removeFromSuperview()
             let selectionType = calendarView.shouldSelectRange ? CVSelectionType.range(.changed) : CVSelectionType.single
             setSelectedWithType(selectionType)
+            isHighlighted = true
         }
     }
 }
