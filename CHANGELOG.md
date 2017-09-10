@@ -1,5 +1,27 @@
 # Change Log
 
+## [1.5.2](https://github.com/CVCalendar/CVCalendar/tree/1.5.2) (2017-09-10)
+[Full Changelog](https://github.com/CVCalendar/CVCalendar/compare/1.5.1...1.5.2)
+
+**Fixed bugs:**
+
+- ERROR IN SELECTING THE DAY [\#444](https://github.com/CVCalendar/CVCalendar/issues/444)
+
+**Closed issues:**
+
+- I am adding calender in custom uiview and then add view as subview of parent view. but then contentview controller is coming nil [\#472](https://github.com/CVCalendar/CVCalendar/issues/472)
+- CircleView does not appear on start. [\#471](https://github.com/CVCalendar/CVCalendar/issues/471)
+- Initial circle is missing  [\#470](https://github.com/CVCalendar/CVCalendar/issues/470)
+- Gesture behind calendar [\#469](https://github.com/CVCalendar/CVCalendar/issues/469)
+- CalendarView leaking memory [\#427](https://github.com/CVCalendar/CVCalendar/issues/427)
+- Select dayOut and change month [\#419](https://github.com/CVCalendar/CVCalendar/issues/419)
+- How to manipulate Month change [\#287](https://github.com/CVCalendar/CVCalendar/issues/287)
+- crashing on previous and Next button [\#272](https://github.com/CVCalendar/CVCalendar/issues/272)
+
+**Merged pull requests:**
+
+- Fix \#471 [\#473](https://github.com/CVCalendar/CVCalendar/pull/473) ([elsesiy](https://github.com/elsesiy))
+
 ## [1.5.1](https://github.com/CVCalendar/CVCalendar/tree/1.5.1) (2017-08-25)
 [Full Changelog](https://github.com/CVCalendar/CVCalendar/compare/1.5.0...1.5.1)
 
