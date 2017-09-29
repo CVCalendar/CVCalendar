@@ -4,30 +4,14 @@
 
 Overview
 ==========
-* [Version matrix](https://github.com/Mozharovsky/CVCalendar#version-matrix)
-* [For contributors](https://github.com/Mozharovsky/CVCalendar#for-contributors)
 * [Screenshots](https://github.com/Mozharovsky/CVCalendar#screenshots)
 * [GIF Demo](https://github.com/Mozharovsky/CVCalendar#gif-demo)
-* [Architecture](https://github.com/Mozharovsky/CVCalendar#architecture)
 * [Installation](https://github.com/Mozharovsky/CVCalendar#installation)
 * [Usage](https://github.com/Mozharovsky/CVCalendar#usage)
+* [Architecture](https://github.com/Mozharovsky/CVCalendar#architecture)
+* [Version matrix](https://github.com/Mozharovsky/CVCalendar#version-matrix)
 * [Advanced API](https://github.com/Mozharovsky/CVCalendar#advanced-api)
-
-Version matrix
-==========
-**CVCalendar** adapts the newest swift language syntax but keeps revisions as stated below:
-
-| CVCalendar | Swift    | Xcode    | Release Notes |
-| ---------- | -------- | -------- | ------------  | 
-|     1.6    | 4.x      | 8.x, 9.x |     HEAD      |
-|     1.5    | 3.x      | 8.x, 9.x | swift3-branch |
-|     1.4    | 3.x      | 7.x, 8.0 |  Unsupported  |
-|     1.3    | 2.x      | 7.x      |  Unsupported  |
-|     1.2    | 1.x      | 7.x      |  Unsupported  |
-
-For contributors
-==========
-Please, note that the Demo project is supposed to test the changes on CVCalendar. If you've committed any, do not forget to update the root folder (<b>CVCalendar/CVCalendar</b>). Feel free to add wiki pages and/or edits on the README or existing docs.
+* [For contributors](https://github.com/Mozharovsky/CVCalendar#for-contributors)
 
 Screenshots
 ==========
@@ -42,10 +26,6 @@ GIF Demo
 <p align="center">
   <img src ="https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/Demo_grey.gif" />
 </p>
-
-
-[Architecture](https://github.com/Mozharovsky/CVCalendar/wiki/Architecture)
-==========
 
 Installation
 ==========
@@ -187,5 +167,24 @@ And do not forget to commit updates on `viewDidLayoutSubviews` method.
 
 Here you go.
 
+[Architecture](https://github.com/Mozharovsky/CVCalendar/wiki/Architecture)
+==========
+
+Version matrix
+==========
+**CVCalendar** adapts the newest swift language syntax but keeps revisions as stated below:
+
+| CVCalendar | Swift    | Xcode    | Release Notes |
+| ---------- | -------- | -------- | ------------  | 
+|     1.6    | 4.x      | 8.x, 9.x |     HEAD      |
+|     1.5    | 3.x      | 8.x, 9.x | swift3-branch |
+|     1.4    | 3.x      | 7.x, 8.0 |  Unsupported  |
+|     1.3    | 2.x      | 7.x      |  Unsupported  |
+|     1.2    | 1.x      | 7.x      |  Unsupported  |
+
 [Advanced API](https://github.com/Mozharovsky/CVCalendar/wiki/Advanced-API)
 ==========
+
+For contributors
+==========
+If you've any remarks please feel free to open up an issue or submit PRs. Please make sure to adhere to the provided issue template while doing so. Also note that the Demo project is supposed to test the changes on CVCalendar. If you've committed any, do not forget to check if everything compiles and works as intended and update the docs accordingly. Thanks :+1:
