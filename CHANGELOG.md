@@ -1,5 +1,17 @@
 # Change Log
 
+## [1.6.0](https://github.com/CVCalendar/CVCalendar/tree/1.6.0) (2017-09-29)
+[Full Changelog](https://github.com/CVCalendar/CVCalendar/compare/1.5.2...1.6.0)
+
+**Closed issues:**
+
+- Swift 4.0 Support [\#478](https://github.com/CVCalendar/CVCalendar/issues/478)
+- Disable before dates behind today in week mode [\#475](https://github.com/CVCalendar/CVCalendar/issues/475)
+
+**Merged pull requests:**
+
+- Swift4 [\#480](https://github.com/CVCalendar/CVCalendar/pull/480) ([elsesiy](https://github.com/elsesiy))
+
 ## [1.5.2](https://github.com/CVCalendar/CVCalendar/tree/1.5.2) (2017-09-10)
 [Full Changelog](https://github.com/CVCalendar/CVCalendar/compare/1.5.1...1.5.2)
 
