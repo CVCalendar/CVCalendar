@@ -17,7 +17,17 @@ Overview
 
 The project is currently being under an active maintenance. We're going to bring a lot of new features as well as fix all bugs and optimize the library to make it incredibly efficient and fast ([see the full list](https://github.com/Mozharovsky/CVCalendar/issues/28)). API isn't changed so you don't pay anything for the update.
 
-**CVCalendar** DOES require Xcode 8 and Swift 3.0 since Version >1.4.
+Version matrix
+==========
+**CVCalendar** adapts the newest swift language syntax but keeps revisions as stated below:
+
+| CVCalendar | Swift    | Xcode    | Release Notes |
+| ---------- | -------- | -------- | ------------  | 
+|     1.6    | 4.x      | 8.x, 9.x |     HEAD      |
+|     1.5    | 3.x      | 8.x, 9.x | swift3-branch |
+|     1.4    | 3.x      | 7.x, 8.0 |  Unsupported  |
+|     1.3    | 2.x      | 7.x      |  Unsupported  |
+|     1.2    | 1.x      | 7.x      |  Unsupported  |
 
 For contributors
 ==========
@@ -46,7 +56,7 @@ Installation
 <h3> CocoaPods </h3>
 
 ```ruby
-pod 'CVCalendar', '~> 1.5.2'
+pod 'CVCalendar', '~> 1.6.0'
 ```
 
 Usage
