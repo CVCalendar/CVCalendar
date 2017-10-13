@@ -48,6 +48,7 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
         }
 
         checkScrollToPreviousDisabled()
+        checkScrollToBeyondDisabled()
 
         calendarView.presentedDate = CVDate(date: presentedMonthView.date, calendar: calendar)
     }
@@ -70,6 +71,7 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
         monthViews[identifier] = monthView
         scrollView.addSubview(monthView)
         checkScrollToPreviousDisabled()
+        checkScrollToBeyondDisabled()
         calendarView.coordinator?.disableDays(in: presentedMonthView)
     }
 
@@ -343,15 +345,34 @@ extension CVCalendarMonthContentViewController {
 
     func checkScrollToPreviousDisabled() {
         let calendar = self.calendarView.delegate?.calendar?() ?? Calendar.current
-        if let presentedMonth = monthViews[presented],
-            let disableScrollingBeyondDate = calendarView.disableScrollingBeyondDate {
-            let convertedDate = CVDate(date: disableScrollingBeyondDate, calendar: calendar)
-            presentedMonth.mapDayViews({ dayView in
-                if matchedDays(convertedDate, dayView.date) {
-                    presentedMonth.allowScrollToPreviousMonth = false
-                }
-            })
+
+        guard let presentedMonth = monthViews[presented],
+            let disableScrollingBeforeDate = calendarView.disableScrollingBeforeDate else {
+                return
         }
+
+        let convertedDate = CVDate(date: disableScrollingBeforeDate, calendar: calendar)
+        presentedMonth.mapDayViews({ dayView in
+            if matchedDays(convertedDate, dayView.date) {
+                presentedMonth.allowScrollToPreviousMonth = false
+            }
+        })
+    }
+
+    func checkScrollToBeyondDisabled() {
+        let calendar = self.calendarView.delegate?.calendar?() ?? Calendar.current
+
+        guard let presentedMonth = monthViews[presented],
+            let disableScrollingBeyondDate = calendarView.disableScrollingBeyondDate else {
+                return
+        }
+
+        let convertedDate = CVDate(date: disableScrollingBeyondDate, calendar: calendar)
+        presentedMonth.mapDayViews({ dayView in
+            if matchedDays(convertedDate, dayView.date) {
+                presentedMonth.allowScrollToNextMonth = false
+            }
+        })
     }
 }
 
@@ -439,6 +460,13 @@ extension CVCalendarMonthContentViewController {
         //restricts scrolling to previous months
         if monthViews[presented]?.allowScrollToPreviousMonth == false,
             scrollView.contentOffset.x < scrollView.frame.width {
+            scrollView.setContentOffset(CGPoint(x: scrollView.frame.width, y: 0), animated: false)
+            return
+        }
+
+        //restricts scrolling to next months
+        if monthViews[presented]?.allowScrollToNextMonth == false,
+            scrollView.contentOffset.x > scrollView.frame.width {
             scrollView.setContentOffset(CGPoint(x: scrollView.frame.width, y: 0), animated: false)
             return
         }
