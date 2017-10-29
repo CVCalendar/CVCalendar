@@ -37,6 +37,7 @@ class ViewController: UIViewController {
     override func awakeFromNib() {
         let timeZoneBias = 480 // (UTC+08:00)
         currentCalendar = Calendar.init(identifier: .gregorian)
+        currentCalendar?.locale = Locale(identifier: "fr_FR")
         if let timeZone = TimeZone.init(secondsFromGMT: -timeZoneBias * 60) {
             currentCalendar?.timeZone = timeZone
         }
