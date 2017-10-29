@@ -19,4 +19,5 @@ public protocol CVCalendarMenuViewDelegate {
     @objc optional func dayOfWeekTextUppercase() -> Bool
     @objc optional func dayOfWeekFont() -> UIFont
     @objc optional func weekdaySymbolType() -> WeekdaySymbolType
+    func calendar() -> Calendar?
 }
