@@ -34,7 +34,7 @@ open class CVCalendarContentViewController: UIViewController {
     open var presentationEnabled = true
     open var lastContentOffset: CGFloat = 0
     open var direction: CVScrollDirection = .none
-  
+
     open var toggleDateAnimationDuration: Double {
         return calendarView.delegate?.toggleDateAnimationDuration?() ?? 0.8
     }
@@ -42,7 +42,7 @@ open class CVCalendarContentViewController: UIViewController {
     public init(calendarView: CalendarView, frame: CGRect) {
         self.calendarView = calendarView
         scrollView = UIScrollView(frame: frame)
-        presentedMonthView = MonthView(calendarView: calendarView, date: Foundation.Date())
+        presentedMonthView = MonthView(calendarView: calendarView, date: calendarView.presentedDate.convertedDate() ?? Foundation.Date())
         presentedMonthView.updateAppearance(frame)
 
         super.init(nibName: nil, bundle: nil)
