@@ -42,7 +42,7 @@ open class CVCalendarContentViewController: UIViewController {
     public init(calendarView: CalendarView, frame: CGRect) {
         self.calendarView = calendarView
         scrollView = UIScrollView(frame: frame)
-        presentedMonthView = MonthView(calendarView: calendarView, date: calendarView.presentedDate.convertedDate() ?? Foundation.Date())
+        presentedMonthView = MonthView(calendarView: calendarView, date: calendarView.presentedDate?.convertedDate() ?? Foundation.Date())
         presentedMonthView.updateAppearance(frame)
 
         super.init(nibName: nil, bundle: nil)
