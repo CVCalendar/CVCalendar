@@ -85,6 +85,7 @@ extension CVCalendarContentViewController {
                 dayView.preliminarySetup()
                 dayView.supplementarySetup()
                 dayView.topMarkerSetup()
+                dayView.interactionSetup()
             }
         }
     }
