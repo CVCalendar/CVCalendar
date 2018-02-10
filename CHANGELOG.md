@@ -1,5 +1,29 @@
 # Change Log
 
+## [1.6.1](https://github.com/CVCalendar/CVCalendar/tree/1.6.1) (2018-02-10)
+[Full Changelog](https://github.com/CVCalendar/CVCalendar/compare/1.6.0...1.6.1)
+
+**Closed issues:**
+
+- remove the seperator lines between rows for month calendar [\#501](https://github.com/CVCalendar/CVCalendar/issues/501)
+- Day View Circle Appear on previous month date [\#494](https://github.com/CVCalendar/CVCalendar/issues/494)
+- The demo crash [\#491](https://github.com/CVCalendar/CVCalendar/issues/491)
+- Dot marker moves down to the date right beneath it when a date with dot marker is selected [\#490](https://github.com/CVCalendar/CVCalendar/issues/490)
+-  change presentedDate date . [\#488](https://github.com/CVCalendar/CVCalendar/issues/488)
+- Xcode 9 + Swift 4 errors - Declarations from extensions cannot be overridden yet  [\#479](https://github.com/CVCalendar/CVCalendar/issues/479)
+- Programmatically create and show the Calendar [\#468](https://github.com/CVCalendar/CVCalendar/issues/468)
+- Update example to use dayView.frame instead of bounds for preliminaryView \(ERROR\) [\#371](https://github.com/CVCalendar/CVCalendar/issues/371)
+- typealiases too broad [\#264](https://github.com/CVCalendar/CVCalendar/issues/264)
+
+**Merged pull requests:**
+
+- Call interactionSetup\(\) when refreshing [\#493](https://github.com/CVCalendar/CVCalendar/pull/493) ([terrypanghoming](https://github.com/terrypanghoming))
+- Safe unwrap presentedDate and update changeMode [\#492](https://github.com/CVCalendar/CVCalendar/pull/492) ([elsesiy](https://github.com/elsesiy))
+- Initialize month view with calendar view's presented date, if availab… [\#489](https://github.com/CVCalendar/CVCalendar/pull/489) ([exsortis](https://github.com/exsortis))
+- Feature/extend localization [\#487](https://github.com/CVCalendar/CVCalendar/pull/487) ([shaahin](https://github.com/shaahin))
+- fix latestSelectableDate and earliestSelectableDate [\#484](https://github.com/CVCalendar/CVCalendar/pull/484) ([kmonde89](https://github.com/kmonde89))
+- fix disableScrollingBeforeDate [\#483](https://github.com/CVCalendar/CVCalendar/pull/483) ([kmonde89](https://github.com/kmonde89))
+
 ## [1.6.0](https://github.com/CVCalendar/CVCalendar/tree/1.6.0) (2017-09-29)
 [Full Changelog](https://github.com/CVCalendar/CVCalendar/compare/1.5.2...1.6.0)
 
