@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18E4B2C3202F6BDB00B61996 /* ColorsConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E4B2C2202F6BDB00B61996 /* ColorsConfig.swift */; };
 		55E1221E1A588CB60013B002 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1221D1A588CB60013B002 /* AppDelegate.swift */; };
 		55E122201A588CB60013B002 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1221F1A588CB60013B002 /* ViewController.swift */; };
 		55E122231A588CB60013B002 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55E122211A588CB60013B002 /* Main.storyboard */; };
@@ -57,6 +58,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		18E4B2C2202F6BDB00B61996 /* ColorsConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsConfig.swift; sourceTree = "<group>"; };
 		55E122181A588CB60013B002 /* CVCalendar Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CVCalendar Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		55E1221C1A588CB60013B002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55E1221D1A588CB60013B002 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				55E1221D1A588CB60013B002 /* AppDelegate.swift */,
+				18E4B2C2202F6BDB00B61996 /* ColorsConfig.swift */,
 				55E1221F1A588CB60013B002 /* ViewController.swift */,
 				55E122211A588CB60013B002 /* Main.storyboard */,
 				55E122241A588CB60013B002 /* Images.xcassets */,
@@ -323,6 +326,7 @@
 			files = (
 				564E034B1D51DA100088B8D3 /* CVCalendarMonthContentViewController.swift in Sources */,
 				564E03521D51DA100088B8D3 /* CVCalendarViewAppearanceDelegate.swift in Sources */,
+				18E4B2C3202F6BDB00B61996 /* ColorsConfig.swift in Sources */,
 				564E03581D51DA100088B8D3 /* CVDate.swift in Sources */,
 				55E122201A588CB60013B002 /* ViewController.swift in Sources */,
 				564E03481D51DA100088B8D3 /* CVCalendarManager.swift in Sources */,
