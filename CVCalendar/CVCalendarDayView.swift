@@ -20,8 +20,6 @@ public final class CVCalendarDayView: UIView {
     public var topMarker: CALayer?
     public var dotMarkers = [CVAuxiliaryView?]()
     
-    public var isHighlighted = false
-    
     public var isOut = false
     public var isCurrentDay = false
     public var isDisabled: Bool { return !self.isUserInteractionEnabled }
@@ -47,7 +45,7 @@ public final class CVCalendarDayView: UIView {
     public override var frame: CGRect {
         didSet {
             if oldValue != frame {
-                selectionView?.setNeedsDisplay()
+                setupDotMarker()
                 topMarkerSetup()
                 preliminarySetup()
                 if date != nil {
@@ -123,7 +121,7 @@ public final class CVCalendarDayView: UIView {
         
         if day == monthView.currentDay && !isOut {
             let dateRange = Manager.dateRange(monthView.date, calendar: calendar)
-            let currentDateRange = Manager.dateRange(Foundation.Date(), calendar: calendar)
+            let currentDateRange = Manager.dateRange(Date(), calendar: calendar)
             
             if dateRange.month == currentDateRange.month &&
                 dateRange.year == currentDateRange.year {
@@ -153,6 +151,7 @@ public final class CVCalendarDayView: UIView {
 extension CVCalendarDayView {
     public func labelSetup() {
         let appearance = calendarView.appearance
+        dayLabel?.removeFromSuperview()
         
         dayLabel = UILabel()
         let numberFormatter = NumberFormatter()
@@ -471,11 +470,6 @@ extension CVCalendarDayView {
 
 extension CVCalendarDayView {
     public func setSelectedWithType(_ type: SelectionType) {
-        
-        if isHighlighted {
-            return
-        }
-        
         let appearance = calendarView.appearance
         var backgroundColor: UIColor!
         var backgroundAlpha: CGFloat!
@@ -592,7 +586,6 @@ extension CVCalendarDayView {
                 selectionView?.removeFromSuperview()
                 selectionView = nil
             }
-            isHighlighted = false
         }
     }
 }
@@ -601,27 +594,9 @@ extension CVCalendarDayView {
 // MARK: - Content reload
 
 extension CVCalendarDayView {
-    public func reloadContent() {
-        setupDotMarker()
+    public func updateSubviewFrames() {
         dayLabel?.frame = bounds
-        
-        let shouldShowDaysOut = calendarView.shouldShowWeekdaysOut!
-        if !shouldShowDaysOut {
-            if isOut {
-                isHidden = true
-            }
-        } else {
-            if isOut {
-                isHidden = false
-            }
-        }
-        
-        if selectionView != nil {
-            selectionView?.removeFromSuperview()
-            let selectionType = calendarView.shouldSelectRange ? CVSelectionType.range(.changed) : CVSelectionType.single
-            setSelectedWithType(selectionType)
-            isHighlighted = true
-        }
+        selectionView?.updateFrame(bounds)
     }
 }
 
