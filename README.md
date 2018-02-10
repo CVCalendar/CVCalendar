@@ -1,30 +1,30 @@
 <p align="center">
-  <img src ="https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/CVCalendarIcon.png" />
+  <img src ="https://raw.githubusercontent.com/CVCalendar/CVCalendar/master/Screenshots/CVCalendarIcon.png" />
 </p>
 
 Overview
 ==========
-* [Screenshots](https://github.com/Mozharovsky/CVCalendar#screenshots)
-* [GIF Demo](https://github.com/Mozharovsky/CVCalendar#gif-demo)
-* [Installation](https://github.com/Mozharovsky/CVCalendar#installation)
-* [Usage](https://github.com/Mozharovsky/CVCalendar#usage)
-* [Architecture](https://github.com/Mozharovsky/CVCalendar#architecture)
-* [Version matrix](https://github.com/Mozharovsky/CVCalendar#version-matrix)
-* [Advanced API](https://github.com/Mozharovsky/CVCalendar#advanced-api)
-* [For contributors](https://github.com/Mozharovsky/CVCalendar#for-contributors)
+* [Screenshots](https://github.com/CVCalendar/CVCalendar#screenshots)
+* [GIF Demo](https://github.com/CVCalendar/CVCalendar#gif-demo)
+* [Installation](https://github.com/CVCalendar/CVCalendar#installation)
+* [Usage](https://github.com/CVCalendar/CVCalendar#usage)
+* [Architecture](https://github.com/CVCalendar/CVCalendar#architecture)
+* [Version matrix](https://github.com/CVCalendar/CVCalendar#version-matrix)
+* [Advanced API](https://github.com/CVCalendar/CVCalendar#advanced-api)
+* [For contributors](https://github.com/CVCalendar/CVCalendar#for-contributors)
 
 Screenshots
 ==========
 
 <p align="center">
-  <img src ="https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/CVCalendar_White.png" />
+  <img src ="https://raw.githubusercontent.com/CVCalendar/CVCalendar/master/Screenshots/CVCalendar_White.png" />
 </p>
 
 GIF Demo
 ==========
 
 <p align="center">
-  <img src ="https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/Demo_grey.gif" />
+  <img src ="https://raw.githubusercontent.com/CVCalendar/CVCalendar/master/Screenshots/Demo_grey.gif" />
 </p>
 
 Installation
@@ -44,7 +44,7 @@ Using CVCalendar isn't difficult at all. There are two actual ways of implementi
 
 So let's get started.
 
-Warning! Since 1.1.1 version CVCalendar requires an implementation of two protocols **CVCalendarViewDelegate** and **CVCalendarMenuViewDelegate**, please implement both. Also note, they both have a method with the same signature which means you need to impement it only once. Take a look at the [Demo](https://github.com/Mozharovsky/CVCalendar/tree/master/CVCalendar) project for more info.
+Warning! Since 1.1.1 version CVCalendar requires an implementation of two protocols **CVCalendarViewDelegate** and **CVCalendarMenuViewDelegate**, please implement both. Also note, they both have a method with the same signature which means you need to impement it only once. Take a look at the [Demo](https://github.com/CVCalendar/CVCalendar/tree/master/CVCalendar) project for more info.
 
 <h3> Storyboard Setup </h3>
 
@@ -53,7 +53,7 @@ Warning! Since 1.1.1 version CVCalendar requires an implementation of two protoc
 First, you have to integrate **CVCalendar** with your project through **CocoaPods**.
 
 Now you're about to add 2 UIViews to your Storyboard as it shown in the picture below.  
-![alt tag](https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/Pic2.png)
+![alt tag](https://raw.githubusercontent.com/CVCalendar/CVCalendar/master/Screenshots/Pic2.png)
 
 Don't forget to add 2 outlets into your code.
 ```swift
@@ -63,7 +63,7 @@ Don't forget to add 2 outlets into your code.
 
 Two views are representing ultimately a MenuView and a CalendarView so they should have corresponding classes. To change their classes go to <b>Identity Inspector</b> and set custom classes. When it's done, you'll see in the dock panel something similar to the picture below.  (Blue UIView -> CVCalendarView, Green UIView -> CVCalendarMenuView)
 
-![alt tag](https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/Pic3.png)
+![alt tag](https://raw.githubusercontent.com/CVCalendar/CVCalendar/master/Screenshots/Pic3.png)
 
 > <b>NOTE</b>: Please note that both CalendarView and MenuView are calculating their content's frames depending on their own ones. So in your projects you may be editing the size of initial UIViews in the storyboard to reach an optimal content size.
 
@@ -91,7 +91,7 @@ CVCalendar requires to implement two protocols. They are <b>CVCalendarViewDelega
 
 These protocols stand for getting the data for building CVCalendarView and CVCalendarMenuView. So do not forget to implement them.
 
-[<b>API Page</b>](https://github.com/Mozharovsky/CVCalendar/wiki)
+[<b>API Page</b>](https://github.com/CVCalendar/CVCalendar/wiki)
 
 A long story in short or customizable properties:
 * Showing weekdays out
@@ -108,10 +108,10 @@ Behavior:
 
 Finally we're going to customize properties. To make this possible you have to implement approptiate protocols. (You can see presented protocols and short descriptions in the <b>Architecture Section</b>). Open your Storyboard and do a right-click on CVCalendarView, you'll see the window with outlets and there are a few ones we actually need. Take a look at the picture to make sure you're doing everything properly.
 
-![alt tag](https://raw.githubusercontent.com/Mozharovsky/CVCalendar/master/Screenshots/Pic4.png)
+![alt tag](https://raw.githubusercontent.com/CVCalendar/CVCalendar/master/Screenshots/Pic4.png)
 
 Now depending on what you'd like to change you should implement a particular protocol providing methods for customizing that stuff. For delegates' API description take a look at [<b>this page</b>]
-(https://github.com/Mozharovsky/CVCalendar/wiki).
+(https://github.com/CVCalendar/CVCalendar/wiki).
 
 Do NOT forget to connect a particular outlet with your ViewController if you're implementing its protocol.
 
@@ -167,7 +167,7 @@ And do not forget to commit updates on `viewDidLayoutSubviews` method.
 
 Here you go.
 
-[Architecture](https://github.com/Mozharovsky/CVCalendar/wiki/Architecture)
+[Architecture](https://github.com/CVCalendar/CVCalendar/wiki/Architecture)
 ==========
 
 Version matrix
@@ -182,7 +182,7 @@ Version matrix
 |     1.3    | 2.x      | 7.x      |  Unsupported  |
 |     1.2    | 1.x      | 7.x      |  Unsupported  |
 
-[Advanced API](https://github.com/Mozharovsky/CVCalendar/wiki/Advanced-API)
+[Advanced API](https://github.com/CVCalendar/CVCalendar/wiki/Advanced-API)
 ==========
 
 For contributors
