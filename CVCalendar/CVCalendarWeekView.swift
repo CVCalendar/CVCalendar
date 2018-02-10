@@ -208,13 +208,11 @@ extension CVCalendarWeekView {
     public func reloadDayViews() {
 
         if let size = calendarView.dayViewSize, let dayViews = dayViews {
-            // let hSpace = calendarView.appearance.spaceBetweenDayViews!
-
             for (index, dayView) in dayViews.enumerated() {
                 let hSpace = calendarView.appearance.spaceBetweenDayViews!
                 let x = CGFloat(index) * CGFloat(size.width + hSpace) + hSpace/2
                 dayView.frame = CGRect(x: x, y: 0, width: size.width, height: size.height)
-                dayView.reloadContent()
+                dayView.updateSubviewFrames()
             }
         }
     }
