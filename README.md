@@ -2,6 +2,9 @@
   <img src ="https://raw.githubusercontent.com/CVCalendar/CVCalendar/master/Screenshots/CVCalendarIcon.png" />
 </p>
 
+![pod](https://img.shields.io/cocoapods/v/CVCalendar.svg)
+[![License](https://img.shields.io/cocoapods/l/CVCalendar.svg)](http://cocoapods.org/pods/CVCalendar)
+
 Overview
 ==========
 * [Screenshots](https://github.com/CVCalendar/CVCalendar#screenshots)
