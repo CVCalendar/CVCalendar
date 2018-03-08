@@ -171,7 +171,8 @@ extension CVCalendarDayView {
             color = appearance?.dayLabelWeekdayOutTextColor
         } else if isCurrentDay {
             let coordinator = calendarView.coordinator
-            if coordinator?.selectedDayView == nil && calendarView.shouldAutoSelectDayOnMonthChange {
+            let selectedDayView = coordinator?.selectedDayView
+            if (selectedDayView == nil || selectedDayView == self) && calendarView.shouldAutoSelectDayOnMonthChange {
                 let touchController = calendarView.touchController
                 touchController?.receiveTouchOnDayView(self)
                 calendarView.didSelectDayView(self)
@@ -184,6 +185,9 @@ extension CVCalendarDayView {
                     font = appearance?.dayLabelPresentWeekdayFont
                 }
             }
+            
+        } else if calendarView.coordinator?.selectedDayView == self {
+            color = appearance?.dayLabelWeekdaySelectedTextColor
             
         } else {
             color = appearance?.dayLabelWeekdayInTextColor
