@@ -1,5 +1,115 @@
 # Change Log
 
+## [1.6.1](https://github.com/CVCalendar/CVCalendar/tree/1.6.1) (2018-02-10)
+[Full Changelog](https://github.com/CVCalendar/CVCalendar/compare/1.6.0...1.6.1)
+
+**Closed issues:**
+
+- remove the seperator lines between rows for month calendar [\#501](https://github.com/CVCalendar/CVCalendar/issues/501)
+- Day View Circle Appear on previous month date [\#494](https://github.com/CVCalendar/CVCalendar/issues/494)
+- The demo crash [\#491](https://github.com/CVCalendar/CVCalendar/issues/491)
+- Dot marker moves down to the date right beneath it when a date with dot marker is selected [\#490](https://github.com/CVCalendar/CVCalendar/issues/490)
+-  change presentedDate date . [\#488](https://github.com/CVCalendar/CVCalendar/issues/488)
+- Xcode 9 + Swift 4 errors - Declarations from extensions cannot be overridden yet  [\#479](https://github.com/CVCalendar/CVCalendar/issues/479)
+- Programmatically create and show the Calendar [\#468](https://github.com/CVCalendar/CVCalendar/issues/468)
+- Update example to use dayView.frame instead of bounds for preliminaryView \(ERROR\) [\#371](https://github.com/CVCalendar/CVCalendar/issues/371)
+- typealiases too broad [\#264](https://github.com/CVCalendar/CVCalendar/issues/264)
+
+**Merged pull requests:**
+
+- Call interactionSetup\(\) when refreshing [\#493](https://github.com/CVCalendar/CVCalendar/pull/493) ([terrypanghoming](https://github.com/terrypanghoming))
+- Safe unwrap presentedDate and update changeMode [\#492](https://github.com/CVCalendar/CVCalendar/pull/492) ([elsesiy](https://github.com/elsesiy))
+- Initialize month view with calendar view's presented date, if availab… [\#489](https://github.com/CVCalendar/CVCalendar/pull/489) ([exsortis](https://github.com/exsortis))
+- Feature/extend localization [\#487](https://github.com/CVCalendar/CVCalendar/pull/487) ([shaahin](https://github.com/shaahin))
+- fix latestSelectableDate and earliestSelectableDate [\#484](https://github.com/CVCalendar/CVCalendar/pull/484) ([kmonde89](https://github.com/kmonde89))
+- fix disableScrollingBeforeDate [\#483](https://github.com/CVCalendar/CVCalendar/pull/483) ([kmonde89](https://github.com/kmonde89))
+
+## [1.6.0](https://github.com/CVCalendar/CVCalendar/tree/1.6.0) (2017-09-29)
+[Full Changelog](https://github.com/CVCalendar/CVCalendar/compare/1.5.2...1.6.0)
+
+**Closed issues:**
+
+- Swift 4.0 Support [\#478](https://github.com/CVCalendar/CVCalendar/issues/478)
+- Disable before dates behind today in week mode [\#475](https://github.com/CVCalendar/CVCalendar/issues/475)
+
+**Merged pull requests:**
+
+- Swift4 [\#480](https://github.com/CVCalendar/CVCalendar/pull/480) ([elsesiy](https://github.com/elsesiy))
+
+## [1.5.2](https://github.com/CVCalendar/CVCalendar/tree/1.5.2) (2017-09-10)
+[Full Changelog](https://github.com/CVCalendar/CVCalendar/compare/1.5.1...1.5.2)
+
+**Fixed bugs:**
+
+- ERROR IN SELECTING THE DAY [\#444](https://github.com/CVCalendar/CVCalendar/issues/444)
+
+**Closed issues:**
+
+- I am adding calender in custom uiview and then add view as subview of parent view. but then contentview controller is coming nil [\#472](https://github.com/CVCalendar/CVCalendar/issues/472)
+- CircleView does not appear on start. [\#471](https://github.com/CVCalendar/CVCalendar/issues/471)
+- Initial circle is missing  [\#470](https://github.com/CVCalendar/CVCalendar/issues/470)
+- Gesture behind calendar [\#469](https://github.com/CVCalendar/CVCalendar/issues/469)
+- CalendarView leaking memory [\#427](https://github.com/CVCalendar/CVCalendar/issues/427)
+- Select dayOut and change month [\#419](https://github.com/CVCalendar/CVCalendar/issues/419)
+- How to manipulate Month change [\#287](https://github.com/CVCalendar/CVCalendar/issues/287)
+- crashing on previous and Next button [\#272](https://github.com/CVCalendar/CVCalendar/issues/272)
+
+**Merged pull requests:**
+
+- Fix \#471 [\#473](https://github.com/CVCalendar/CVCalendar/pull/473) ([elsesiy](https://github.com/elsesiy))
+
+## [1.5.1](https://github.com/CVCalendar/CVCalendar/tree/1.5.1) (2017-08-25)
+[Full Changelog](https://github.com/CVCalendar/CVCalendar/compare/1.5.0...1.5.1)
+
+**Implemented enhancements:**
+
+- Prevent scrolling between weeks or months [\#36](https://github.com/CVCalendar/CVCalendar/issues/36)
+
+**Fixed bugs:**
+
+- toggleCurrentDayView doesn't work [\#381](https://github.com/CVCalendar/CVCalendar/issues/381)
+
+**Closed issues:**
+
+- Calendar showing wrong prev/next month [\#465](https://github.com/CVCalendar/CVCalendar/issues/465)
+- Panel behind panel CalendarView not collapse [\#464](https://github.com/CVCalendar/CVCalendar/issues/464)
+- Reload SupplementaryView for wrong month [\#463](https://github.com/CVCalendar/CVCalendar/issues/463)
+- DayView for location in CalendarView? [\#462](https://github.com/CVCalendar/CVCalendar/issues/462)
+- current date is not click-able on first load [\#461](https://github.com/CVCalendar/CVCalendar/issues/461)
+- Calendar current date not showing properly like it did on the swift 2 version [\#459](https://github.com/CVCalendar/CVCalendar/issues/459)
+- Change colour of text within dates with circles [\#458](https://github.com/CVCalendar/CVCalendar/issues/458)
+- How to disable dates lesser than current date in single selection. [\#457](https://github.com/CVCalendar/CVCalendar/issues/457)
+- Change CVCalendarViewPresentationMode from monthView to weekView automatically when user sellects a particular date.  [\#456](https://github.com/CVCalendar/CVCalendar/issues/456)
+- New branch for Swift4 [\#454](https://github.com/CVCalendar/CVCalendar/issues/454)
+- How do I get the weekly dates to continue in full weekly periods? [\#453](https://github.com/CVCalendar/CVCalendar/issues/453)
+- Not showing present date [\#452](https://github.com/CVCalendar/CVCalendar/issues/452)
+- Not showing Present Date  [\#451](https://github.com/CVCalendar/CVCalendar/issues/451)
+- Memory Leak [\#450](https://github.com/CVCalendar/CVCalendar/issues/450)
+- Having problem with swift 3.. [\#449](https://github.com/CVCalendar/CVCalendar/issues/449)
+- Need update with Swift 3.0 [\#448](https://github.com/CVCalendar/CVCalendar/issues/448)
+- Month view doesn't appear when pre-selecting a date from a month different from current month [\#447](https://github.com/CVCalendar/CVCalendar/issues/447)
+- Method to clear calendar? [\#443](https://github.com/CVCalendar/CVCalendar/issues/443)
+- Today action will enable the earliest-selectable-date which disabled [\#442](https://github.com/CVCalendar/CVCalendar/issues/442)
+- Don't have a CircleView on the start [\#440](https://github.com/CVCalendar/CVCalendar/issues/440)
+- Setup dotmaker [\#439](https://github.com/CVCalendar/CVCalendar/issues/439)
+- Question: How to make dotMarker the same size as didSelectDayView marker [\#438](https://github.com/CVCalendar/CVCalendar/issues/438)
+- Select a day and pass to another String in a label [\#428](https://github.com/CVCalendar/CVCalendar/issues/428)
+- Is there anyway to disable sundays? [\#426](https://github.com/CVCalendar/CVCalendar/issues/426)
+- Method preliminaryView\(shouldDisplayOnDayView dayView: DayView\) -\> Bool works incorrect. [\#425](https://github.com/CVCalendar/CVCalendar/issues/425)
+- How to override/detect a swipe gesture?? [\#423](https://github.com/CVCalendar/CVCalendar/issues/423)
+- Pods not updated [\#420](https://github.com/CVCalendar/CVCalendar/issues/420)
+- Help put the blue circles to this day [\#282](https://github.com/CVCalendar/CVCalendar/issues/282)
+- Saving CircleView via NSUserDefault to keep the same days highlighted when app opens [\#280](https://github.com/CVCalendar/CVCalendar/issues/280)
+- show dots from an array of NSDate [\#279](https://github.com/CVCalendar/CVCalendar/issues/279)
+
+**Merged pull requests:**
+
+- Hotfixes [\#467](https://github.com/CVCalendar/CVCalendar/pull/467) ([elsesiy](https://github.com/elsesiy))
+- modifications for self protection in CVCalendarMonthContentVC, and CV… [\#466](https://github.com/CVCalendar/CVCalendar/pull/466) ([dhsu210](https://github.com/dhsu210))
+- Ability to scroll to before or after a given date [\#460](https://github.com/CVCalendar/CVCalendar/pull/460) ([daltyboy11](https://github.com/daltyboy11))
+- Migration to Swift4 available on Xcode 9 Beta 1 [\#455](https://github.com/CVCalendar/CVCalendar/pull/455) ([felipeplets](https://github.com/felipeplets))
+- Update for Swift 3.1 [\#437](https://github.com/CVCalendar/CVCalendar/pull/437) ([chamnan1](https://github.com/chamnan1))
+
 ## [1.5.0](https://github.com/CVCalendar/CVCalendar/tree/1.5.0) (2017-03-24)
 [Full Changelog](https://github.com/CVCalendar/CVCalendar/compare/1.4.1...1.5.0)
 
@@ -470,3 +580,7 @@
 
 - Month View segue [\#4](https://github.com/CVCalendar/CVCalendar/issues/4)
 - Segue on selecting days out [\#3](https://github.com/CVCalendar/CVCalendar/issues/3)
+
+
+
+\* *This Change Log was automatically generated by [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator)*

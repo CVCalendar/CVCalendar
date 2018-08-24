@@ -60,7 +60,7 @@ public final class CVCalendarDayView: UIView {
             }
         }
     }
-  
+    
     // MARK: - Private properties
     
     fileprivate var preliminaryView: UIView?
@@ -159,7 +159,11 @@ extension CVCalendarDayView {
         let appearance = calendarView.appearance
         
         dayLabel = UILabel()
-        dayLabel?.text = String(date.day)
+        let numberFormatter = NumberFormatter()
+        if let locale = calendarView.delegate?.calendar?()?.locale {
+            numberFormatter.locale = locale
+        }
+        dayLabel?.text = numberFormatter.string(from: NSNumber.init(value: date.day))
         dayLabel?.textAlignment = NSTextAlignment.center
         dayLabel?.frame = bounds
         
@@ -444,7 +448,7 @@ extension CVCalendarDayView {
 
 extension CGFloat {
     public func toRadians() -> CGFloat {
-        return CGFloat(self) * CGFloat(Double.pi / 180)
+      return CGFloat(self) * CGFloat(Double.pi / 180)
     }
     
     public func toDegrees() -> CGFloat {
@@ -474,16 +478,16 @@ extension CVCalendarDayView {
             UIView.animate(withDuration: pow(10, -1000), delay: 0, usingSpringWithDamping: 0.4,
                            initialSpringVelocity: 10,
                            options: UIViewAnimationOptions.curveEaseIn, animations: { [weak self] in
-                guard let strongSelf = self else {
-                    return
-                }
-                let angle = angle.toRadians()
-                view.center = strongSelf.pointAtAngle(angle, withinCircleView: circleView)
+                            guard let strongSelf = self else {
+                                return
+                            }
+                            let angle = angle.toRadians()
+                            view.center = strongSelf.pointAtAngle(angle, withinCircleView: circleView)
             }) { [weak self] _ in
                 let speed = CGFloat(750).toRadians()
                 let newAngle = straight ? angle + speed : angle - speed
                 self?.moveView(view, onCircleView: circleView, fromAngle: newAngle,
-                              toAngle: endAngle, straight: straight)
+                               toAngle: endAngle, straight: straight)
             }
         }
     }
@@ -497,6 +501,7 @@ extension CVCalendarDayView {
         if isHighlighted {
             return
         }
+        
         let appearance = calendarView.appearance
         var backgroundColor: UIColor!
         var backgroundAlpha: CGFloat!
@@ -550,7 +555,6 @@ extension CVCalendarDayView {
         }
                 
         moveDotMarkerBack(false, coloring: false)
-        isHighlighted = true
     }
     
     public func setDeselectedWithClearing(_ clearing: Bool) {
@@ -623,6 +627,7 @@ extension CVCalendarDayView {
             selectionView?.removeFromSuperview()
             let selectionType = calendarView.shouldSelectRange ? CVSelectionType.range(.changed) : CVSelectionType.single
             setSelectedWithType(selectionType)
+            isHighlighted = true
         }
     }
 }
@@ -630,12 +635,12 @@ extension CVCalendarDayView {
 // MARK: - Safe execution
 
 extension CVCalendarDayView {
-    public func safeExecuteBlock(_ block: (Void) -> Void, collapsingOnNil collapsing: Bool,
+    public func safeExecuteBlock(_ block: () -> Void, collapsingOnNil collapsing: Bool,
                                  withObjects objects: AnyObject?...) {
         for object in objects {
             if object == nil {
                 if collapsing {
-                    fatalError("Object { \(String(describing: object)) } must not be nil!")
+                  fatalError("Object { \(String(describing: object)) } must not be nil!")
                 } else {
                     return
                 }
