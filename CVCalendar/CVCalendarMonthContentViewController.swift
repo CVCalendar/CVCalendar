@@ -447,7 +447,7 @@ extension CVCalendarMonthContentViewController {
         }
     }
     
-    public override func refreshPresentedMonth() {
+    @objc public override func refreshPresentedMonth() {
         for (_, month) in monthViews {
             for weekV in month.weekViews {
                 for dayView in weekV.dayViews {

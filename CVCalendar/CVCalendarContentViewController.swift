@@ -77,7 +77,7 @@ extension CVCalendarContentViewController {
 //MARK: - Month Refresh
 
 extension CVCalendarContentViewController {
-    public func refreshPresentedMonth() {
+    @objc public func refreshPresentedMonth() {
         for weekV in presentedMonthView.weekViews {
             for dayView in weekV.dayViews {
                 removeCircleLabel(dayView)

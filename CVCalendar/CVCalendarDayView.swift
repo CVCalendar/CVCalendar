@@ -503,9 +503,6 @@ extension CVCalendarDayView {
         }
         
         let appearance = calendarView.appearance
-        var backgroundColor: UIColor!
-        var backgroundAlpha: CGFloat!
-        var shape: CVShape!
         
         let calendar = self.calendarView.delegate?.calendar?() ?? Calendar.current
         let weekDay = self.date?.weekDay(calendar: calendar) ?? .monday // Monday is default
@@ -513,8 +510,6 @@ extension CVCalendarDayView {
         
         switch type {
         case .single:
-            shape = .circle
-            
             if isCurrentDay {
                 dayLabel?.textColor = appearance?.delegate?.dayLabelColor?(by: weekDay, status: .selected, present: present)
                     ?? appearance?.dayLabelPresentWeekdaySelectedTextColor!
@@ -522,7 +517,6 @@ extension CVCalendarDayView {
                     ?? appearance?.dayLabelPresentWeekdaySelectedFont
                 backgroundColor = appearance?.delegate?.dayLabelBackgroundColor?(by: weekDay, status: .selected, present: present)
                     ?? appearance?.dayLabelPresentWeekdaySelectedBackgroundColor
-                backgroundAlpha = appearance?.dayLabelPresentWeekdaySelectedBackgroundAlpha
             } else {
                 dayLabel?.textColor = appearance?.delegate?.dayLabelColor?(by: weekDay, status: .selected, present: present)
                     ?? appearance?.dayLabelWeekdaySelectedTextColor
@@ -530,11 +524,9 @@ extension CVCalendarDayView {
                     ?? appearance?.dayLabelWeekdaySelectedFont
                 backgroundColor = appearance?.delegate?.dayLabelBackgroundColor?(by: weekDay, status: .selected, present: present)
                     ?? appearance?.dayLabelWeekdaySelectedBackgroundColor
-                backgroundAlpha = appearance?.dayLabelWeekdaySelectedBackgroundAlpha
             }
             
         case .range:
-            shape = .rect
             if isCurrentDay {
                 dayLabel?.textColor = appearance?.delegate?.dayLabelColor?(by: weekDay, status: .highlighted, present: present)
                     ?? appearance?.dayLabelPresentWeekdayHighlightedTextColor!
@@ -542,7 +534,6 @@ extension CVCalendarDayView {
                     ?? appearance?.dayLabelPresentWeekdayHighlightedFont
                 backgroundColor = appearance?.delegate?.dayLabelBackgroundColor?(by: weekDay, status: .selected, present: present)
                     ?? appearance?.dayLabelPresentWeekdayHighlightedBackgroundColor
-                backgroundAlpha = appearance?.dayLabelPresentWeekdayHighlightedBackgroundAlpha
             } else {
                 dayLabel?.textColor = appearance?.delegate?.dayLabelColor?(by: weekDay, status: .highlighted, present: present)
                     ?? appearance?.dayLabelWeekdayHighlightedTextColor
@@ -550,7 +541,6 @@ extension CVCalendarDayView {
                     ?? appearance?.dayLabelWeekdayHighlightedFont
                 backgroundColor = appearance?.delegate?.dayLabelBackgroundColor?(by: weekDay, status: .selected, present: present)
                     ?? appearance?.dayLabelWeekdayHighlightedBackgroundColor
-                backgroundAlpha = appearance?.dayLabelWeekdayHighlightedBackgroundAlpha
             }
         }
                 
