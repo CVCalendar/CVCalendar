@@ -11,13 +11,13 @@ import UIKit
 public typealias Identifier = String
 open class CVCalendarContentViewController: UIViewController {
     // MARK: - Constants
-    open let previous = "Previous"
-    open let presented = "Presented"
-    open let following = "Following"
+    public let previous = "Previous"
+    public let presented = "Presented"
+    public let following = "Following"
 
     // MARK: - Public Properties
-    open unowned let calendarView: CalendarView
-    open let scrollView: UIScrollView
+    public unowned let calendarView: CalendarView
+    public let scrollView: UIScrollView
 
     open var presentedMonthView: MonthView
 
