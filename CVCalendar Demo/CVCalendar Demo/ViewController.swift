@@ -130,7 +130,7 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
             updatedMonthLabel.transform = CGAffineTransform(translationX: 0, y: offset)
             updatedMonthLabel.transform = CGAffineTransform(scaleX: 1, y: 0.1)
             
-            UIView.animate(withDuration: 0.35, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+            UIView.animate(withDuration: 0.35, delay: 0, options: UIView.AnimationOptions.curveEaseIn, animations: {
                 self.animationFinished = false
                 self.monthLabel.transform = CGAffineTransform(translationX: 0, y: -offset)
                 self.monthLabel.transform = CGAffineTransform(scaleX: 1, y: 0.1)

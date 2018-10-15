@@ -387,7 +387,7 @@ extension CVCalendarView {
         newController.scrollView.alpha = 0
         addSubview(newController.scrollView)
 
-        UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions(), animations: { [weak self] in
+        UIView.animate(withDuration: 0.5, delay: 0, options: UIView.AnimationOptions(), animations: { [weak self] in
             self?.contentController.scrollView.alpha = 0
             newController.scrollView.alpha = 1
         }) { [weak self] _ in

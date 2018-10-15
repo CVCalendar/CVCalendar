@@ -166,7 +166,7 @@ extension CVCalendarWeekView {
 
     @objc public func didPressInteractiveView(_ recognizer: UILongPressGestureRecognizer) {
         let location = recognizer.location(in: self.interactiveView)
-        let state: UIGestureRecognizerState = recognizer.state
+        let state: UIGestureRecognizer.State = recognizer.state
 
         switch state {
         case .began:

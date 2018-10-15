@@ -226,12 +226,12 @@ extension CVCalendarContentViewController {
 
 
             for constraintIn in calendarView.constraints where
-                constraintIn.firstAttribute == NSLayoutAttribute.height {
+                constraintIn.firstAttribute == NSLayoutConstraint.Attribute.height {
                     constraintIn.constant = height
 
                     if animated {
                         UIView.animate(withDuration: 0.2, delay: 0,
-                                                   options: UIViewAnimationOptions.curveLinear,
+                                                   options: UIView.AnimationOptions.curveLinear,
                                                    animations: { [weak self] in
                             self?.layoutViews(viewsToLayout, toHeight: height)
                         }) { [weak self] _ in
