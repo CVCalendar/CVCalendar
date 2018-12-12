@@ -241,13 +241,22 @@ public final class CVCalendarWeekContentViewController: CVCalendarContentViewCon
         
         let presentedDate = CVDate(date: date, calendar: calendar)
         guard let _ = monthViews[presented],
-            let presentedWeekView = weekViews[presented],
-            let selectedDate = calendarView.coordinator.selectedDayView?.date else {
-                return
+          let presentedWeekView = weekViews[presented] else {
+            return
         }
-
-        if !matchedDays(selectedDate, CVDate(date: date, calendar: calendar)) && !togglingBlocked {
-            if !matchedWeeks(presentedDate, selectedDate) {
+      
+        var isMatchedDays = false
+        var isMatchedWeeks = false
+      
+        // selectedDayView would be nil if shouldAutoSelectDayOnMonthChange returns false
+        // we want to still allow the user to toggle to a date even if there is nothing selected
+        if let selectedDate = calendarView.coordinator.selectedDayView?.date {
+          isMatchedDays = matchedDays(selectedDate, presentedDate)
+          isMatchedWeeks = matchedWeeks(presentedDate, selectedDate)
+        }
+      
+        if !isMatchedDays && !togglingBlocked {
+          if !isMatchedWeeks {
                 togglingBlocked = true
 
                 weekViews[previous]?.removeFromSuperview()
