@@ -381,7 +381,7 @@ extension CVCalendarWeekContentViewController {
 
         components.month! += 1
 
-        let newDate = Calendar.current.date(from: components)!
+        let newDate = calendar.date(from: components)!
         let monthView = MonthView(calendarView: calendarView, date: newDate)
         let frame = CGRect(x: 0, y: 0, width: scrollView.bounds.width,
                            height: scrollView.bounds.height)
@@ -398,7 +398,7 @@ extension CVCalendarWeekContentViewController {
 
         components.month! -= 1
 
-        let newDate = Calendar.current.date(from: components)!
+        let newDate = calendar.date(from: components)!
         let monthView = MonthView(calendarView: calendarView, date: newDate)
         let frame = CGRect(x: 0, y: 0, width: scrollView.bounds.width,
                            height: scrollView.bounds.height)
