@@ -45,6 +45,9 @@ public protocol CVCalendarViewDelegate {
 
     @objc optional func didShowNextMonthView(_ date: Foundation.Date)
     @objc optional func didShowPreviousMonthView(_ date: Foundation.Date)
+  
+    @objc optional func didShowNextWeekView(from startDayView: DayView, to endDayView: DayView)
+    @objc optional func didShowPreviousWeekView(from startDayView: DayView, to endDayView: DayView)
     
     // Localization
     @objc optional func calendar() -> Calendar?

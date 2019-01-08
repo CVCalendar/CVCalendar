@@ -355,5 +355,13 @@ extension ViewController {
         
         print("Showing Month: \(components.month!)")
     }
+  
+    func didShowNextWeekView(from startDayView: DayView, to endDayView: DayView) {
+        print("Showing Week: from \(startDayView.date.day) to \(endDayView.date.day)")
+    }
+  
+    func didShowPreviousWeekView(from startDayView: DayView, to endDayView: DayView) {
+        print("Showing Week: from \(startDayView.date.day) to \(endDayView.date.day)")
+    }
     
 }
