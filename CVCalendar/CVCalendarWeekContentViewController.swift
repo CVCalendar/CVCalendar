@@ -100,6 +100,11 @@ public final class CVCalendarWeekContentViewController: CVCalendarContentViewCon
                 replaceWeekView(followingWeek, withIdentifier: self.presented, animatable: true)
 
                 insertWeekView(getFollowingWeek(followingWeek), withIdentifier: following)
+                if let dayViews = followingWeek.dayViews,
+                   let fromDay = dayViews.first,
+                   let toDay = dayViews.last {
+                    self.calendarView.delegate?.didShowNextWeekView?(from: fromDay, to: toDay)
+                }
             }
         }
     }
@@ -114,6 +119,11 @@ public final class CVCalendarWeekContentViewController: CVCalendarContentViewCon
                 replaceWeekView(previousWeek, withIdentifier: presented, animatable: true)
 
                 insertWeekView(getPreviousWeek(previousWeek), withIdentifier: previous)
+                if let dayViews = previousWeek.dayViews,
+                   let fromDay = dayViews.first,
+                   let toDay = dayViews.last{
+                    self.calendarView.delegate?.didShowPreviousWeekView?(from: fromDay, to: toDay)
+                }
             }
         }
     }
@@ -175,6 +185,11 @@ public final class CVCalendarWeekContentViewController: CVCalendarContentViewCon
                     strongSelf.prepareTopMarkersOnWeekView(weekView, hidden: false)
                 }
             }
+            if let dayViews = previous.dayViews,
+               let fromDay = dayViews.first,
+               let toDay = dayViews.last {
+                self.calendarView.delegate?.didShowPreviousWeekView?(from: fromDay, to: toDay)
+            }
         }
     }
 
@@ -214,6 +229,11 @@ public final class CVCalendarWeekContentViewController: CVCalendarContentViewCon
                 for weekView in strongSelf.weekViews.values {
                     strongSelf.prepareTopMarkersOnWeekView(weekView, hidden: false)
                 }
+            }
+            if let dayViews = following.dayViews,
+               let fromDay = dayViews.first,
+               let toDay = dayViews.last {
+                self.calendarView.delegate?.didShowNextWeekView?(from: fromDay, to: toDay)
             }
         }
 
