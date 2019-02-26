@@ -471,7 +471,13 @@ extension CVCalendarMonthContentViewController {
             return
         }
 
-        let page = Int(floor((scrollView.contentOffset.x - scrollView.frame.width / 2) / scrollView.frame.width) + 1)
+        var page = 0
+        if (scrollView.contentOffset.x - scrollView.frame.width) == 0 {
+                page = 1
+        } else {
+            page = Int(floor((scrollView.contentOffset.x - scrollView.frame.width / 2) / scrollView.frame.width) + 1)
+        }
+        
         if currentPage != page {
             currentPage = page
         }
