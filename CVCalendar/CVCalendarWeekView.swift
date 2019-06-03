@@ -36,6 +36,9 @@ public final class CVCalendarWeekView: UIView {
     fileprivate var touchController: CVCalendarTouchController {
         return calendarView.touchController
     }
+  
+    var allowScrollToPreviousWeek = true
+    var allowScrollToNextWeek = true
 
     // MARK: - Public properties
 
