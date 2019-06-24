@@ -26,6 +26,9 @@ public final class CVCalendarDayView: UIView {
     public var isCurrentDay = false
     public var isDisabled: Bool { return !self.isUserInteractionEnabled }
     
+    public var plusXOrigin: CGFloat!
+    public var plusLabel = UILabel()
+    
     public weak var monthView: CVCalendarMonthView! {
         var monthView: MonthView!
         if let weekView = weekView, let activeMonthView = weekView.monthView {
@@ -284,6 +287,7 @@ extension CVCalendarDayView {
     }
     
     public func setupDotMarker() {
+        plusLabel.removeFromSuperview()
         for (index, dotMarker) in dotMarkers.enumerated() {
             dotMarker?.removeFromSuperview()
             dotMarkers[index] = nil
@@ -331,8 +335,18 @@ extension CVCalendarDayView {
                     
                     dotMarker.setNeedsDisplay()
                     dotMarkers.append(dotMarker)
+                    plusXOrigin = x
+
                 }
-                
+                if colors!.count > 2 {
+                    plusLabel = UILabel()
+                    plusLabel.frame = CGRect(x:plusXOrigin-5 , y:y-7 , width : 10 , height : 10)
+                    plusLabel.text = "+"
+                    plusLabel.textColor = UIColor.init(red: 0.29, green: 0.29, blue: 0.29, alpha: 1)
+                    insertSubview(plusLabel, at: 0)
+                    
+                    //                    assert(false, "Only 3 dot markers allowed per day")
+                }
                 let coordinator = calendarView.coordinator
                 if self == coordinator?.selectedDayView {
                     moveDotMarkerBack(false, coloring: false)
@@ -366,7 +380,7 @@ extension CVCalendarDayView {
                     } else {
                         color = appearance?.dotMarkerColor
                     }
-                    
+                    dotMarker.dayView.plusLabel.textColor = UIColor.init(red: 0.29, green: 0.29, blue: 0.29, alpha: 1)
                     dotMarker.fillColor = color
                     dotMarker.setNeedsDisplay()
                 }
