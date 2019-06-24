@@ -340,12 +340,11 @@ extension CVCalendarDayView {
                 }
                 if colors!.count > 2 {
                     plusLabel = UILabel()
-                    plusLabel.frame = CGRect(x:plusXOrigin-5 , y:y-7 , width : 10 , height : 10)
+                    plusLabel.frame = CGRect(x: plusXOrigin - 5, y: y - 7, width: 10, height: 10)
                     plusLabel.text = "+"
-                    plusLabel.textColor = UIColor.init(red: 0.29, green: 0.29, blue: 0.29, alpha: 1)
+                    plusLabel.textColor = UIColor(red: 0.29, green: 0.29, blue: 0.29, alpha: 1)
                     insertSubview(plusLabel, at: 0)
-                    
-                    //                    assert(false, "Only 3 dot markers allowed per day")
+//                    assert(false, "Only 3 dot markers allowed per day")
                 }
                 let coordinator = calendarView.coordinator
                 if self == coordinator?.selectedDayView {
@@ -380,7 +379,7 @@ extension CVCalendarDayView {
                     } else {
                         color = appearance?.dotMarkerColor
                     }
-                    dotMarker.dayView.plusLabel.textColor = UIColor.init(red: 0.29, green: 0.29, blue: 0.29, alpha: 1)
+                    dotMarker.dayView.plusLabel.textColor = UIColor(red: 0.29, green: 0.29, blue: 0.29, alpha: 1)
                     dotMarker.fillColor = color
                     dotMarker.setNeedsDisplay()
                 }
