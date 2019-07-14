@@ -15,7 +15,7 @@ public final class CVCalendarMenuView: UIView {
     public var symbolViews: [UILabel]?
 
     public var firstWeekday: Weekday? = .sunday
-    public var dayOfWeekTextColor: UIColor? = .darkGray
+    public var dayOfWeekTextColor: UIColor? = .secondaryText
     public var dayofWeekBackgroundColor: UIColor? = .clear
     public var dayOfWeekTextUppercase: Bool? = true
     public var dayOfWeekFont: UIFont? = UIFont(name: "Avenir", size: 10)
