@@ -4,7 +4,7 @@
 
 ![pod](https://img.shields.io/cocoapods/v/CVCalendar.svg)
 [![License](https://img.shields.io/cocoapods/l/CVCalendar.svg)](http://cocoapods.org/pods/CVCalendar)
-[![Build Status](https://travis-ci.org/CVCalendar/CVCalendar.svg?branch=master)](https://travis-ci.org/CVCalendar/CVCalendar)
+[![Build Status](https://travis-ci.com/CVCalendar/CVCalendar.svg?branch=master)](https://travis-ci.com/CVCalendar/CVCalendar)
 [![Twitter](https://img.shields.io/badge/twitter-@elsesiy-blue.svg)](http://twitter.com/elsesiy)
 
 Overview
