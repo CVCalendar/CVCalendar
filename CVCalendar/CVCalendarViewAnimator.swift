@@ -9,12 +9,12 @@
 import UIKit
 
 public final class CVCalendarViewAnimator {
-    fileprivate unowned let calendarView: CalendarView
+    fileprivate var calendarView: CalendarView?
 
     // MARK: - Public properties
     public weak var delegate: CVCalendarViewAnimatorDelegate!
-    public var coordinator: CVCalendarDayViewControlCoordinator {
-        return calendarView.coordinator
+    public var coordinator: CVCalendarDayViewControlCoordinator? {
+        return calendarView?.coordinator
     }
 
     // MARK: - Init
@@ -29,7 +29,7 @@ public final class CVCalendarViewAnimator {
 extension CVCalendarViewAnimator {
     public func animateSelectionOnDayView(_ dayView: DayView) {
         let selectionAnimation = delegate.selectionAnimation()
-        let selectionType = calendarView.shouldSelectRange ? CVSelectionType.range(.changed) : CVSelectionType.single
+        let selectionType = (calendarView?.shouldSelectRange ?? false) ? CVSelectionType.range(.changed) : CVSelectionType.single
         dayView.setSelectedWithType(selectionType)
         selectionAnimation(dayView) { _ in
             //should not do anything here for now. can cause crashs if calender is dismissed before animation is completed.
@@ -40,7 +40,7 @@ extension CVCalendarViewAnimator {
         let deselectionAnimation = delegate.deselectionAnimation()
         deselectionAnimation(dayView) { [weak dayView] _ in
             if let selectedDayView = dayView {
-               self.coordinator.deselectionPerformedOnDayView(selectedDayView)
+               self.coordinator?.deselectionPerformedOnDayView(selectedDayView)
             }
         }
     }
