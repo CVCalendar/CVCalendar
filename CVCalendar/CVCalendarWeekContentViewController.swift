@@ -558,7 +558,7 @@ extension CVCalendarWeekContentViewController {
 
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         if let presented = weekViews[presented] {
-            prepareTopMarkersOnWeekView(presented, hidden: true)
+            prepareTopMarkersOnWeekView(presented, hidden: self.calendarView.delegate?.shouldHideTopMarkerOnPresentedView?() ?? true)
         }
     }
 
