@@ -217,7 +217,7 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
                 guard let strongSelf = self else {
                     return
                 }
-                            strongSelf.prepareTopMarkersOnMonthView(presented, hidden: self?.calendarView.delegate?.shouldHideTopMarkerOnPresentedView?() ?? true)
+                strongSelf.prepareTopMarkersOnMonthView(presented, hidden: self?.calendarView.delegate?.shouldHideTopMarkerOnPresentedView?() ?? true)
 
                 extra.frame.origin.x -= strongSelf.scrollView.frame.width
                 presented.frame.origin.x -= strongSelf.scrollView.frame.width
