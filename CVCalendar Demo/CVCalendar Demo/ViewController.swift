@@ -155,6 +155,10 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
     
     func topMarker(shouldDisplayOnDayView dayView: CVCalendarDayView) -> Bool { return true }
     
+    func shouldHideTopMarkerOnPresentedView() -> Bool {
+        return true
+    }
+    
     func weekdaySymbolType() -> WeekdaySymbolType { return .short }
     
     func selectionViewPath() -> ((CGRect) -> (UIBezierPath)) {
