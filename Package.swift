@@ -10,5 +10,5 @@ let package = Package(
     targets: [
         .target(name: "CVCalendar", path: "CVCalendar")
     ],
-    swiftLanguageVersions: [.v4_2]
+    swiftLanguageVersions: [.v5]
 )
