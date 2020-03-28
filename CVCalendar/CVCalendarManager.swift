@@ -99,11 +99,9 @@ public final class CVCalendarManager {
             calendar.firstWeekday = starterWeekday
             
             let countOfWeeks = self.monthDateRange(date).countOfWeeks
-            let totalCountOfDays = countOfWeeks * 7
             let firstMonthDateIn = self.monthDateRange(date).monthStartDate
             let lastMonthDateIn = self.monthDateRange(date).monthEndDate
             let countOfDaysIn = Manager.dateRange(lastMonthDateIn, calendar: calendar).day
-            let countOfDaysOut = totalCountOfDays - countOfDaysIn
             
             // Find all dates in.
             var datesIn = [NSDate]()
@@ -115,7 +113,6 @@ public final class CVCalendarManager {
             }
             
             // Find all dates out.
-            
             let firstMonthDateOut: Foundation.Date? = {
                 let firstMonthDateInWeekday = self.weekdayForDate(firstMonthDateIn)
                 if firstMonthDateInWeekday == self.starterWeekday {
@@ -164,7 +161,7 @@ public final class CVCalendarManager {
                 return nextWeekDate
             }
             
-            for weekIndex in 1...countOfWeeks {
+            for _ in 1...countOfWeeks {
                 firstWeekDates.append(firstWeekDate as NSDate)
                 lastWeekDates.append(lastWeekDate as NSDate)
                 
@@ -184,7 +181,6 @@ public final class CVCalendarManager {
                 var weekdaysOut = [Int : [Int]]()
                 
                 let firstWeekDate = firstWeekDates[i]
-                let lastWeekDate = lastWeekDates[i]
                 
                 var components = Manager.componentsForDate(firstWeekDate as Foundation.Date, calendar: calendar)
                 for weekday in 1...7 {
