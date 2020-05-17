@@ -20,8 +20,6 @@ public final class CVCalendarDayView: UIView {
     public var topMarker: CALayer?
     public var dotMarkers = [CVAuxiliaryView?]()
     
-    public var isHighlighted = false
-    
     public var isOut = false
     public var isCurrentDay = false
     public var isDisabled: Bool { return !self.isUserInteractionEnabled }
@@ -472,10 +470,6 @@ extension CVCalendarDayView {
 extension CVCalendarDayView {
     public func setSelectedWithType(_ type: SelectionType) {
         
-        if isHighlighted {
-            return
-        }
-        
         let appearance = calendarView.appearance
         var backgroundColor: UIColor!
         var backgroundAlpha: CGFloat!
@@ -592,7 +586,6 @@ extension CVCalendarDayView {
                 selectionView?.removeFromSuperview()
                 selectionView = nil
             }
-            isHighlighted = false
         }
     }
 }
