@@ -620,7 +620,6 @@ extension CVCalendarDayView {
             selectionView?.removeFromSuperview()
             let selectionType = calendarView.shouldSelectRange ? CVSelectionType.range(.changed) : CVSelectionType.single
             setSelectedWithType(selectionType)
-            isHighlighted = true
         }
     }
 }
