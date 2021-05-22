@@ -250,7 +250,7 @@ public final class CVCalendarWeekContentViewController: CVCalendarContentViewCon
     }
 
     fileprivate var togglingBlocked = false
-    public override func togglePresentedDate(_ date: Foundation.Date) {
+    public override func togglePresentedDate(_ date: Foundation.Date, shouldSelect: Bool = true) {
         let calendar = self.calendarView.delegate?.calendar?() ?? Calendar.current
         
         let presentedDate = CVDate(date: date, calendar: calendar)
