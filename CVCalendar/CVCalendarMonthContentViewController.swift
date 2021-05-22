@@ -251,7 +251,7 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
     }
 
     fileprivate var togglingBlocked = false
-    public override func togglePresentedDate(_ date: Foundation.Date) {
+    public override func togglePresentedDate(_ date: Foundation.Date, shouldSelect: Bool = true) {
         let calendar = self.calendarView.delegate?.calendar?() ?? Calendar.current
 
         let presentedDate = CVDate(date: date, calendar: calendar)
@@ -294,12 +294,14 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
                     currentMonthView.alpha = 1
                 }) { [weak self] _ in
                     presentedMonth.removeFromSuperview()
-                    self?.selectDayViewWithDay(presentedDate.day, inMonthView: currentMonthView)
+                    if shouldSelect {
+                        self?.selectDayViewWithDay(presentedDate.day, inMonthView: currentMonthView)
+                    }
                     self?.togglingBlocked = false
                     self?.updateLayoutIfNeeded()
                 }
             } else {
-                if let currentMonthView = monthViews[presented] {
+                if let currentMonthView = monthViews[presented], shouldSelect {
                     selectDayViewWithDay(presentedDate.day, inMonthView: currentMonthView)
                 }
             }

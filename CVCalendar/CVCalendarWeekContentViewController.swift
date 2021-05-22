@@ -250,7 +250,7 @@ public final class CVCalendarWeekContentViewController: CVCalendarContentViewCon
     }
 
     fileprivate var togglingBlocked = false
-    public override func togglePresentedDate(_ date: Foundation.Date) {
+    public override func togglePresentedDate(_ date: Foundation.Date, shouldSelect: Bool = true) {
         let calendar = self.calendarView.delegate?.calendar?() ?? Calendar.current
         
         let presentedDate = CVDate(date: date, calendar: calendar)
@@ -307,11 +307,13 @@ public final class CVCalendarWeekContentViewController: CVCalendarContentViewCon
                     currentWeekView.alpha = 1
                 }) { [weak self]  _ in
                     presentedWeekView.removeFromSuperview()
-                    self?.selectDayViewWithDay(currentDate.day, inWeekView: currentWeekView)
+                    if shouldSelect {
+                        self?.selectDayViewWithDay(currentDate.day, inWeekView: currentWeekView)
+                    }
                     self?.togglingBlocked = false
                 }
             } else {
-                if let currentWeekView = weekViews[presented] {
+                if let currentWeekView = weekViews[presented], shouldSelect {
                     selectDayViewWithDay(presentedDate.day, inWeekView: currentWeekView)
                 }
             }

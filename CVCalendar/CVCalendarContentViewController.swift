@@ -129,7 +129,7 @@ extension CVCalendarContentViewController: UIScrollViewDelegate { }
 extension CVCalendarContentViewController {
     @objc public func performedDayViewSelection(_ dayView: DayView) { }
 
-    @objc public func togglePresentedDate(_ date: Foundation.Date) { }
+    @objc public func togglePresentedDate(_ date: Foundation.Date, shouldSelect: Bool = true) { }
 
     @objc public func presentNextView(_ view: UIView?) { }
 
