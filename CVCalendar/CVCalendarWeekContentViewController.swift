@@ -307,11 +307,13 @@ public final class CVCalendarWeekContentViewController: CVCalendarContentViewCon
                     currentWeekView.alpha = 1
                 }) { [weak self]  _ in
                     presentedWeekView.removeFromSuperview()
-                    self?.selectDayViewWithDay(currentDate.day, inWeekView: currentWeekView)
+                    if shouldSelect {
+                        self?.selectDayViewWithDay(currentDate.day, inWeekView: currentWeekView)
+                    }
                     self?.togglingBlocked = false
                 }
             } else {
-                if let currentWeekView = weekViews[presented] {
+                if let currentWeekView = weekViews[presented], shouldSelect {
                     selectDayViewWithDay(presentedDate.day, inWeekView: currentWeekView)
                 }
             }
