@@ -193,3 +193,9 @@ Version matrix
 For contributors
 ==========
 If you've any remarks please feel free to open up an issue or submit PRs. Please make sure to adhere to the provided issue template while doing so. Also note that the Demo project is supposed to test the changes on CVCalendar. If you've committed any, do not forget to check if everything compiles and works as intended and update the docs accordingly. Thanks :+1:
+
+## Sponsor
+![Scheduling API](https://user-images.githubusercontent.com/9488406/125080407-0dd25780-e0c5-11eb-9f70-ef958968674a.png)
+
+This repo is sponsored by [**Spurwing**](https://www.spurwing.io/), where their API Makes Adding Scheduling Quick, Reliable and Scalable.
+Use Spurwing to build and integrate Scheduling, Booking & Calendar features in your project. Read more about Spurwing [**Scheduling API on GitHub**](https://github.com/Spurwing/Appointment-Scheduling-API).
