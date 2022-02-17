@@ -11,13 +11,13 @@ import UIKit
 public typealias Identifier = String
 open class CVCalendarContentViewController: UIViewController {
     // MARK: - Constants
-    open let previous = "Previous"
-    open let presented = "Presented"
-    open let following = "Following"
+    public let previous = "Previous"
+    public let presented = "Presented"
+    public let following = "Following"
 
     // MARK: - Public Properties
-    open unowned let calendarView: CalendarView
-    open let scrollView: UIScrollView
+    public unowned let calendarView: CalendarView
+    public let scrollView: UIScrollView
 
     open var presentedMonthView: MonthView
 
@@ -226,12 +226,12 @@ extension CVCalendarContentViewController {
 
 
             for constraintIn in calendarView.constraints where
-                constraintIn.firstAttribute == NSLayoutAttribute.height {
+            constraintIn.firstAttribute == NSLayoutConstraint.Attribute.height {
                     constraintIn.constant = height
 
                     if animated {
                         UIView.animate(withDuration: 0.2, delay: 0,
-                                                   options: UIViewAnimationOptions.curveLinear,
+                                       options: UIView.AnimationOptions.curveLinear,
                                                    animations: { [weak self] in
                             self?.layoutViews(viewsToLayout, toHeight: height)
                         }) { [weak self] _ in

@@ -23,7 +23,7 @@ extension CVCalendarContentPresentationCoordinator {
           }
 
           UIView.animate(withDuration: 0.5, delay: 0,
-                         options: UIViewAnimationOptions(),
+                         options: UIView.AnimationOptions(),
                          animations: {
             dayView.alpha = visible ? 1 : 0
           }, completion: { _ in

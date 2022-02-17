@@ -103,7 +103,7 @@ public final class CVCalendarManager {
             let firstMonthDateIn = self.monthDateRange(date).monthStartDate
             let lastMonthDateIn = self.monthDateRange(date).monthEndDate
             let countOfDaysIn = Manager.dateRange(lastMonthDateIn, calendar: calendar).day
-            let countOfDaysOut = totalCountOfDays - countOfDaysIn
+            _ = totalCountOfDays - countOfDaysIn
             
             // Find all dates in.
             var datesIn = [NSDate]()

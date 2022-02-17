@@ -160,7 +160,7 @@ public final class CVCalendarWeekContentViewController: CVCalendarContentViewCon
             }
 
             UIView.animate(withDuration: toggleDateAnimationDuration, delay: 0,
-                                       options: UIViewAnimationOptions.curveEaseInOut,
+                           options: UIView.AnimationOptions.curveEaseInOut,
                                        animations: { [weak self] in
                 guard let strongSelf = self else {
                     return
@@ -200,7 +200,7 @@ public final class CVCalendarWeekContentViewController: CVCalendarContentViewCon
             }
 
             UIView.animate(withDuration: 0.5, delay: 0,
-                                       options: UIViewAnimationOptions(),
+                           options: UIView.AnimationOptions(),
                                        animations: { [weak self] in
                 guard let strongSelf = self else {
                     return
@@ -278,7 +278,7 @@ public final class CVCalendarWeekContentViewController: CVCalendarContentViewCon
                 insertWeekView(getFollowingWeek(currentWeekView), withIdentifier: following)
 
                 UIView.animate(withDuration: toggleDateAnimationDuration, delay: 0,
-                                           options: UIViewAnimationOptions(),
+                               options: UIView.AnimationOptions(),
                                            animations: {
                     presentedWeekView.alpha = 0
                     currentWeekView.alpha = 1

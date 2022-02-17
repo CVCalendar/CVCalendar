@@ -372,7 +372,7 @@ extension CVCalendarDayView {
 
 extension CVCalendarDayView {
     public func moveDotMarkerBack(_ unwinded: Bool, coloring: Bool) {
-        var coloring = coloring
+        let coloring = coloring
         var dotIndex = 0
         for dotMarker in dotMarkers {
             if let calendarView = calendarView, let dotMarker = dotMarker {
@@ -420,7 +420,7 @@ extension CVCalendarDayView {
                             withDuration: 0.3, delay: 0,
                             usingSpringWithDamping: 0.6,
                             initialSpringVelocity: 0,
-                            options: UIViewAnimationOptions.curveEaseOut,
+                            options: UIView.AnimationOptions.curveEaseOut,
                             animations: {
                                 dotMarker.transform = transform
                         },
@@ -477,7 +477,7 @@ extension CVCalendarDayView {
         if straight && angle < endAngle || !straight && angle > endAngle {
             UIView.animate(withDuration: pow(10, -1000), delay: 0, usingSpringWithDamping: 0.4,
                            initialSpringVelocity: 10,
-                           options: UIViewAnimationOptions.curveEaseIn, animations: { [weak self] in
+                           options: UIView.AnimationOptions.curveEaseIn, animations: { [weak self] in
                             guard let strongSelf = self else {
                                 return
                             }
